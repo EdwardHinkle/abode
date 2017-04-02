@@ -1,0 +1,39 @@
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <a href="/" class="u-author"></a>
+    <h1 class="post-title p-name" itemprop="name headline">{{ page.title }}</h1>
+    <p class="post-meta"><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished" class="dt-published">{{ page.date | date: "%b %-d, %Y" }}</time>{% if page.author %} • <span rel="author" class="p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author }}</span></span>{% endif %}
+    <span class="reading-time-container">{{ page.duration}} min read</span>
+        <span class="tag-container">
+          {% for tag in page.tags %}
+            <span class="post-tag p-category">{{ tag }}</span>
+          {% endfor %}
+        </span>
+    </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    {{ content }}
+  </div>
+
+  <footer class="">
+    {% capture syndicationSize %}{{page.syndication | size}}{% endcapture %}
+    {% assign syndicationCount = syndicationSize | plus: 0 %}
+    {% if syndicationCount > 0 %}
+    Syndicated: 
+      {% if page.syndication %}
+        {% for syndicated in page.syndication %}
+          {% include syndication.html %}
+        {% endfor %}
+      {% endif %}
+    {% endif %}
+  </footer>
+
+</article>
+
+{% assign likes = site.data.webmentions[page.url].likes %}
+{% assign replies = site.data.webmentions[page.url].replies %}
+{% assign reactions = site.data.webmentions[page.url].reactions %}
+{% assign mentions = site.data.webmentions[page.url].mentions %}
+{% include responses/responses.html %}

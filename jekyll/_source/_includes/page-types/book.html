@@ -1,0 +1,37 @@
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <a href="/" class="u-author"></a>
+    <h1 class="post-title p-name" itemprop="name headline">{{ page.title }}</h1>
+    <p class="post-meta"><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished" class="dt-published">{{ page.date | date: "%b %-d, %Y" }}</time>{% if page.author %} • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name" rel="author" class="p-author h-card">{{ page.author }}</span></span>{% endif %}
+    <span class="reading-time-container">{{ page.duration}} min read</span>
+        <span class="tag-container">
+          {% for tag in page.tags %}
+            <span class="post-tag p-category">{{ tag }}</span>
+          {% endfor %}
+        </span>
+    </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    {{ content }}
+  </div>
+
+  <footer class="">
+    {% capture syndicationSize %}{{page.syndication | size}}{% endcapture %}
+    {% assign syndicationCount = syndicationSize | plus: 0 %}
+    {% if syndicationCount > 0 %}
+    Syndicated: 
+      {% if page.syndication %}
+        {% for syndicated in page.syndication %}
+          {% include syndication.html %}
+        {% endfor %}
+      {% endif %}
+    {% endif %}
+  </footer>
+
+</article>
+<div style="text-align: center" class="book-post-link">
+<a target="_blank"  href="https://www.amazon.com/gp/product/{{page.isbn}}/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN={{page.isbn}}&linkCode=as2&tag=eddiehinkle-20&linkId=548bcfcd387054abd34130716cb12cd9"><img border="0" src="//ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=US&ASIN={{page.isbn}}&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL200_&tag=eddiehinkle-20"></a>
+<h2>Buy this book on <a target="_blank"  href="https://www.amazon.com/gp/product/{{page.isbn}}/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN={{page.isbn}}&linkCode=as2&tag=eddiehinkle-20&linkId=548bcfcd387054abd34130716cb12cd9">Amazon</a></h2>
+</div>

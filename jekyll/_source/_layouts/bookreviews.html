@@ -1,0 +1,14 @@
+---
+layout: default
+---
+<div class="home">
+  {% include social-page-links.html %}
+
+  <ul class="post-list">
+    {% assign posts = site.media | where_exp:"item","item.isbn != undefined" | sort: 'date' | reverse %}
+    {% for post in posts %}
+      {% include preview-types/preview.html %}
+    {% endfor %}
+  </ul>
+
+</div>

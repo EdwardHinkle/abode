@@ -1,0 +1,11 @@
+<li class="type-micro-post">
+    <span class="post-meta">
+        <a class="u-url u-uid" href="{{ post.url | prepend: site.baseurl }}"><span class="date-container">{{ post.date | date: "%b %-d, %Y" }}</span></a>
+        <span class="tag-container">
+        {% for tag in post.tags %}
+            <span class="post-tag">{{ tag }}</span>
+        {% endfor %}
+        </span>
+    </span>
+    <img src="{{site.baseurl}}/images/{{post.photo}}">
+</li>

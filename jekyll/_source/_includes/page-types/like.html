@@ -1,0 +1,39 @@
+<article class="type-like post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">{{ page.title }}</h1>
+    <div class="post-meta"><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished" class="dt-published">{{ page.date | date: "%b %-d, %Y" }}</time>{% if page.author %} • <span rel="author" class="p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author }}</span></span>{% endif %}
+    <span class="tag-container">
+      {% for tag in page.tags %}
+        <span class="post-tag p-category">{{ tag }}</span>
+      {% endfor %}
+    </span>
+    </div>
+  </header>
+
+  <div class="like-statement">
+      <span>👍 <a class="u-author" href="/">Eddie</a> liked <a target="_blank" href="{{page.mf-u-like-of}}">"{{page.like-title}}" <i class="fa fa-external-link" aria-hidden="true"></i></a></span>
+  </div>
+
+  <div class="like-context h-cite u-like-of">
+        <div class="like-author"><div class="p-author h-card">{% if page.like-photo %}<img class="u-photo" src="{{page.like-photo}}">{% endif %}<br><a href="{{page.like-site}}" class="p-name u-url">{{page.like-author}}</a></div></div>
+        <h2 class="post-title p-name"><a class="u-url" href="{{page.mf-u-like-of}}">{{ page.like-title }}</a></h2>
+        {% if page.like-context %}
+            <blockquote>{{page.like-context}}</blockquote>
+        {% endif %}
+    </div>
+
+  <footer class="">
+    {% capture syndicationSize %}{{page.syndication | size}}{% endcapture %}
+    {% assign syndicationCount = syndicationSize | plus: 0 %}
+    {% if syndicationCount > 0 %}
+    Syndicated: 
+      {% if page.syndication %}
+        {% for syndicated in page.syndication %}
+          {% include syndication.html %}
+        {% endfor %}
+      {% endif %}
+    {% endif %}
+  </footer>
+
+</article>

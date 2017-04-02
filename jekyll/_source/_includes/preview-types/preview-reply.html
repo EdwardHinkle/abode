@@ -1,0 +1,18 @@
+<li class="type-reply h-entry basic-card">
+    <div class="post-meta">
+        <a class="u-url u-uid" href="{{ post.url | prepend: site.baseurl }}"><time class="date-container dt-published" datetime="{{ post.date }}">{{ post.date | date: "%b %-d, %Y" }}</time></a>
+        {% if post.duration %}<span class="reading-time-container">{{ post.duration}} min read</span>{% endif %}
+        <span class="tag-container">
+        {% for tag in post.tags %}
+            <span class="post-tag p-category">{{ tag }}</span>
+        {% endfor %}
+        </span>
+        <a rel="author" class="p-author h-card" href="http://eddiehinkle.com" style="display: none;">Eddie Hinkle</a>
+    </div>
+    <div class="reply-context">
+        <h2 class="post-title p-name">{{ post.reply-title }}</h2>
+        <blockquote>{{post.reply-context}}</blockquote>
+        <div class="reply-author"><span class="p-author h-card">{% if post.reply-photo %}<img class="u-photo" src="{{post.reply-photo}}">{% endif %}<i class="fa fa-reply" aria-hidden="true"></i> In Reply To  <a href="{{post.reply-site}}" class="p-name u-url">{{post.reply-author}}</a></span> on <a class="u-url" href="{{post.in-reply-to}}" target="_blank">{{post.reply-site}} <i class="fa fa-external-link" aria-hidden="true"></i></a></div>
+    </div>
+    <div class="reply-content post-excerpt e-content">{{ post.content}}</div>
+</li>

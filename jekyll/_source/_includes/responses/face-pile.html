@@ -1,0 +1,12 @@
+<div class="facepile-container">
+{% for face in facepile %}
+    <div class="single-face">
+    {% if face.data.author.photo != null %}
+    <img class="face-in-pile" src="{{face.data.author.photo}}">
+        {% if overlay != undefined %}
+            <div class="reaction-overlay">{{overlay}}</div>
+        {% endif %}
+    {% endif %}
+    </div>
+{% endfor %}
+</div>

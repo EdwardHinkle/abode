@@ -1,0 +1,12 @@
+<li class="type-video">
+    <span class="post-meta">
+        <a class="u-url u-uid" href="{{ post.url | prepend: site.baseurl }}"><span class="date-container">{{ post.date | date: "%b %-d, %Y" }}</span></a>
+        <span class="reading-time-container">{{ post.duration}} min to watch</span>
+        <span class="tag-container">
+        {% for tag in post.tags %}
+            <span class="post-tag">{{ tag }}</span>
+        {% endfor %}
+        </span>
+    </span>
+    <iframe width="100%" height="420" src="http://www.youtube.com/embed/{{post.video}}" frameborder="0" allowfullscreen></iframe>
+</li>

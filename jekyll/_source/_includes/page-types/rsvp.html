@@ -1,0 +1,21 @@
+<div class="h-entry">
+ <div class="rsvp-response">
+   <div class="rsvp-date">
+      <div class="year">{{page.rsvp.date.year}}</div>
+      <div class="weekday">{{page.rsvp.date.weekday}},</div>
+      <div class="monthday">{{page.rsvp.date.month}} {{page.rsvp.date.day}}</div>
+      <div class="starttime">{{page.rsvp.date.starttime}}</div>
+    </div>
+    <div class="rsvp-content">
+      <a class="p-author h-card" href="http://eddiehinkle.com"><img alt="Eddie Hinkle" src="http://eddiehinkle.com/images/profile.jpg"/> Eddie</a> is <data class="p-rsvp" value="{{page.p-rsvp}}">{% if page.p-rsvp == 'yes' %}going to attend{% endif %}{% if page.p-rsvp == 'no' %}not able to attend{% endif %}{% if page.p-rsvp == 'maybe' %}not sure if he can attend{% endif %}{% if page.p-rsvp == 'interested' %}interested in attending{% endif %}</data> <a href="{{page.u-in-reply-to}}" class="u-in-reply-to" target="_blank">{{page.event-title}}</a>
+    </div>
+ </div>
+ 
+ <div class="post-content e-content p-name" itemprop="articleBody">
+    {{ content }}
+  </div>
+
+<span class="tag-container">{% for tag in page.tags %}
+    <span class="post-tag">{{ tag }}</span>
+{% endfor %}</span>
+</div>

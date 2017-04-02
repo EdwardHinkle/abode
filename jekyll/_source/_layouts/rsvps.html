@@ -1,0 +1,14 @@
+---
+layout: default
+---
+<div class="home">
+  {% include social-page-links.html %}
+
+  <ul class="post-list">
+    {% assign posts = site.note | where_exp:"item","item.p-rsvp != undefined" | sort: 'date' | reverse %}
+    {% for post in posts %}
+      {% include preview-types/preview.html %}
+    {% endfor %}
+  </ul>
+
+</div>

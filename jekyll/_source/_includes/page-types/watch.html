@@ -1,0 +1,48 @@
+<article class="type-watch post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <a href="/" class="u-author"></a>
+    <h1 class="post-title p-name" itemprop="name headline">{{ page.title }}</h1>
+    <p class="post-meta"><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished" class="dt-published">{{ page.date | date: "%b %-d, %Y" }}</time>{% if page.author %} • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name" rel="author" class="p-author h-card">{{ page.author }}</span></span>{% endif %}
+        <span class="tag-container">
+          {% for tag in page.tags %}
+            <span class="post-tag p-category">{{ tag }}</span>
+          {% endfor %}
+        </span></p>
+  </header>
+
+  <div class="basic-card">
+        {% if page.show_name %}
+            <img class="show-image" src="{{page.show_image}}">
+        {% endif %}
+        {% if page.movie_name %}
+            <img class="show-image" src="{{page.movie_image}}">
+        {% endif %}
+        {% if page.video_site_url or page.video_url %}
+            <img class="show-image" src="{{page.video_cover}}">
+        {% endif %}
+        <div class="watch-content">
+            <div class="watch-info">
+              {% assign show = page %}
+              {% include watch-info.html %}
+            </div>
+            <div class="watch-status">
+                {{page.content}}
+            </div>
+        </div>
+    </div>
+
+  <footer class="">
+    {% capture syndicationSize %}{{page.syndication | size}}{% endcapture %}
+    {% assign syndicationCount = syndicationSize | plus: 0 %}
+    {% if syndicationCount > 0 %}
+    Syndicated: 
+      {% if page.syndication %}
+        {% for syndicated in page.syndication %}
+          {% include syndication.html %}
+        {% endfor %}
+      {% endif %}
+    {% endif %}
+  </footer>
+
+</article>

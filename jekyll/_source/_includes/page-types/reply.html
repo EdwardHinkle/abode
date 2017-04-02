@@ -1,0 +1,40 @@
+<article class="type-reply post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <a href="/" class="u-author"></a>
+    <h1 class="post-title p-name" itemprop="name headline">{{ page.title }}</h1>
+    <div class="post-meta"><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished" class="dt-published">{{ page.date | date: "%b %-d, %Y" }}</time>{% if page.author %} • <span rel="author" class="p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author }}</span></span>{% endif %}
+    {% if page.duration %}<span class="reading-time-container">{{ page.duration}} min read</span>{% endif %}
+        <span class="tag-container">
+          {% for tag in page.tags %}
+            <span class="post-tag p-category">{{ tag }}</span>
+          {% endfor %}
+        </span>
+        </div>
+  </header>
+
+  <div class="reply-context u-in-reply-to h-cite">
+        <h2 class="post-title">{{ page.reply-title }}</h2>
+        <blockquote class="p-content">{{page.reply-context}}</blockquote>
+        <div class="reply-author"><span class="p-author h-card">{% if page.reply-photo %}<img class="u-photo" src="{{page.reply-photo}}">{% endif %}<i class="fa fa-reply" aria-hidden="true"></i> In Reply To  <a href="{{page.reply-site}}" class="p-name u-url">{{page.reply-author}}</a></span> on <a class="u-url" href="{{page.in-reply-to}}" target="_blank">{{page.reply-site}} <i class="fa fa-external-link" aria-hidden="true"></i></a></div>
+  </div>
+  
+
+  <div class="reply-content post-content p-name e-content" itemprop="articleBody">
+    {{ content }}
+  </div>
+
+  <footer class="">
+    {% capture syndicationSize %}{{page.syndication | size}}{% endcapture %}
+    {% assign syndicationCount = syndicationSize | plus: 0 %}
+    {% if syndicationCount > 0 %}
+    Syndicated: 
+      {% if page.syndication %}
+        {% for syndicated in page.syndication %}
+          {% include syndication.html %}
+        {% endfor %}
+      {% endif %}
+    {% endif %}
+  </footer>
+
+</article>

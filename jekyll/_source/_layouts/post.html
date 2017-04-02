@@ -1,0 +1,40 @@
+---
+layout: default
+---
+{% if page.p-rsvp %} <!-- RSVP -->
+    {% include page-types/rsvp.html %}
+{% else %}
+    {% if page.in-reply-to %}
+        {% include page-types/reply.html %}
+    {% else %}
+        {% if page.repost-of %}
+            {% include page-types/repost.html %}
+        {% else %}
+            {% if page.mf-u-like-of %}
+                {% include page-types/like.html %}
+            {% else %}
+                {% if page.show_name or page.movie_name or page.video_url or page.video_site_url %} <!-- Watch -->
+                    {% include page-types/watch.html %}
+                {% else %}
+                    {% if page.isbn %}
+                        {% include page-types/book.html %}
+                    {% else %}
+                        {% if page.video %}
+                            {% include page-types/video.html %}
+                        {% else %}
+                            {% if page.photo %}
+                                {% include page-types/photo.html %}
+                            {% else %}
+                                {% if page.title %}
+                                    {% include page-types/article.html %}
+                                {% else %}
+                                    {% include page-types/note.html %}
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endif %}

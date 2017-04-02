@@ -1,0 +1,6 @@
+{% if mention.data.author == undefined %}
+    <div class="mention">
+        <a href="{{mention.data.url}}" target="_blank">{{ mention.data.url | remove:'http://' | remove:'https://' | split:'/' | first }}</a> mentioned this post {% if mention.data.name != null %}in <a href="{{mention.data.url}}" target="_blank">{{mention.data.name}}</a>{% endif %}</div>
+{% else %}
+    <div class="mention"><a href="{{mention.data.author.url}}" target="_blank">{{mention.data.author.name}}</a> mentioned this post in <a href="{{mention.data.url}}" target="_blank">{% if mention.data.name != null %}{{mention.data.name}}{% else %}{{mention.data.url}}{% endif %}</a></div>
+{% endif %}
