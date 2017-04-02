@@ -1,0 +1,40 @@
+{
+  "name": "abode",
+  "version": "0.1.0",
+  "description": "TypeScript node.js backend built based on indieweb principles.",
+  "main": "./server-build/server.js",
+  "types": "./server-build/server.d.ts",
+  "scripts": {
+    "start": "node ./server-build/server.js",
+    "build": "tsc"
+  },
+  "keywords": [
+    "indieweb"
+  ],
+  "author": "Eddie Hinkle (http://eddiehinkle.com)",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EdwardHinkle/abode-eddie.git"
+  },
+  "dependencies": {
+    "@types/bluebird": "^3.5.2",
+    "@types/body-parser": "^1.16.0",
+    "@types/es6-promise": "0.0.32",
+    "@types/express": "^4.0.35",
+    "@types/lodash": "^4.14.55",
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "goodreads": "^0.1.0",
+    "format-microformat": "^0.9.1",
+    "lodash": "^4.17.4",
+    "micropub-express": "^0.7.1",
+    "moment": "^2.18.0",
+    "request": "^2.81.0",
+    "emoji-data": "git@github.com:EdwardHinkle/emoji-data-js.git"
+  }
+}

@@ -1,0 +1,15 @@
+{
+    "PORT": <portNumber>,
+    "micropub": {
+        "authenticationEndpoint": "<Url>",
+        "tokenEndpoint": "<Url>"
+    },
+    "goodreads": {
+        "key": "<GoodreadsApiKey>",
+        "secret": "<GoodreadsApiSecret>",
+        "userid": <GoodreadsUserId>
+    },
+    "webmention": {
+        "token": "<WebmentionIoToken>"
+    }
+}

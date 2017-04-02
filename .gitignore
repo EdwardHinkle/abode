@@ -1,0 +1,5 @@
+.DS_Store
+/abodeConfig.json
+/server-build
+/node_modules
+/jekyll/_build
