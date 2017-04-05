@@ -1,55 +1,59 @@
-import { request } from 'request';
+import * as request from 'request';
 import * as Promise from 'bluebird';
 import * as _ from 'lodash';
 import * as fs from 'fs';
+import * as path from 'path';
 
 var emojiData = require('emoji-data');
 var config = require('../../abodeConfig.json');
 
-export function getWebmentionData() {
-    request("https://webmention.io/api/mentions?token=" + config.webmention.token, {
-
-    }, (err, data) => {
-        if (err != undefined) {
-            console.log("Error");
-            console.log(err);
-        }
-        
-        var webmentions = {};
-        var webmentionData = JSON.parse(data.body);
-
-        Promise.each(webmentionData.links, (mention: any) => {
-            var targetPage = mention.target.split("http://eddiehinkle.com").pop().split("?")[0];
-
-            if (webmentions[targetPage] === undefined) {
-                webmentions[targetPage] = { likes: [], replies: [], reactions: [], mentions: [] }
+export function getWebmentionData(): Promise<any> {
+    
+    return new Promise((resolve, reject) => {
+    
+        request("https://webmention.io/api/mentions?token=" + config.webmention.token, {}, (err, data) => {
+            if (err != undefined) {
+                reject(err);
             }
+            
+            var webmentions = {};
+            var webmentionData = JSON.parse(data.body);
 
-            switch(mention.activity.type) {
-                case 'like':
-                    // Check if item exists
-                    addOrCreateEmojiArray("+1", webmentions[targetPage].reactions, mention);
-                    break;
-                case 'link':
-                    if (tryAddEmojiReaction(webmentions[targetPage].reactions, mention) == false) {
-                        addReplaceOrIgnoreWebMention(webmentions[targetPage].mentions, mention);
-                    }
-                    break;
-                case 'reply':
-                    if (tryAddEmojiReaction(webmentions[targetPage].reactions, mention) == false) {
-                        addReplaceOrIgnoreWebMention(webmentions[targetPage].replies, mention);
-                    }
-                    break;
-            }
-        }).then(() => {
-            var json = JSON.stringify(webmentions);
-            fs.writeFile(__dirname + '/../_source/_data/webmentions.json', json, 'utf8', function(error){
-                if (error != undefined) {
-                    console.error("OOPS!", error);
+            Promise.each(webmentionData.links, (mention: any) => {
+                var targetPage = mention.target.split("http://eddiehinkle.com").pop().split("?")[0];
+
+                if (webmentions[targetPage] === undefined) {
+                    webmentions[targetPage] = { likes: [], replies: [], reactions: [], mentions: [] }
                 }
-                console.log("Webmentions Retrieved");
-            }); 
+
+                switch(mention.activity.type) {
+                    case 'like':
+                        // Check if item exists
+                        addOrCreateEmojiArray("+1", webmentions[targetPage].reactions, mention);
+                        break;
+                    case 'link':
+                        if (tryAddEmojiReaction(webmentions[targetPage].reactions, mention) == false) {
+                            addReplaceOrIgnoreWebMention(webmentions[targetPage].mentions, mention);
+                        }
+                        break;
+                    case 'reply':
+                        if (tryAddEmojiReaction(webmentions[targetPage].reactions, mention) == false) {
+                            addReplaceOrIgnoreWebMention(webmentions[targetPage].replies, mention);
+                        }
+                        break;
+                }
+            }).then(() => {
+                var json = JSON.stringify(webmentions);
+                fs.writeFile(path.join(__dirname, '../../jekyll/_source/_data/webmentions.json'), json, 'utf8', function(error){
+                    if (error != undefined) {
+                        reject(error);
+                    }
+                    console.log("Webmentions Retrieved");
+                    resolve();
+                }); 
+            });
         });
+
     });
 }
 
