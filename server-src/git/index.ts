@@ -19,7 +19,7 @@ export function runGitPull(): Promise<any> {
 export function runGitCommit(): Promise<any> {
     return new Promise((resolve, reject) => {
     
-        childProcess.exec('cd ' + __dirname + '; cd ../../; git add .; git commit -m "abode auto-commit ' + moment().format("MMM D, YYYY") + '"', (error, stdout, stderr, res) => {
+        childProcess.exec('cd ' + __dirname + '; cd ../../; git add .; git commit -m "abode auto-commit ' + moment().format("MMM D, YYYY h:mm a") + '"', (error, stdout, stderr, res) => {
             if (error) {
                 reject(error);
             }
