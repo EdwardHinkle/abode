@@ -5,7 +5,9 @@ import * as jekyll from '../jekyll';
 import * as git from '../git';
 
 export function rebuildServer(req?, res?) {
-    git.runGitPull().then(() => {
+    git.runGitPull().then(() => { return git.runGitCommit(); })
+                    .then(() => { return git.runGitPush(); })
+                    .then(() => {
 
         return Promise.all([
             goodreads.getGoodreadsData(),
