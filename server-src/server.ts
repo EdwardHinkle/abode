@@ -3,7 +3,9 @@ import * as bodyParser from 'body-parser';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import * as fs from 'fs';
+import * as cron from 'cron';
 import { router } from './routes';
+import { rebuildServer } from './process-server/rebuildServer';
 
 var config = require('../abodeConfig.json');
 
@@ -18,10 +20,6 @@ app.use(bodyParser.json());
 // App Routes
 app.use('/', router);
 
-// var exec = require('child_process').exec;
-// var CronJob = require('cron').CronJob;
-
-// new CronJob('0 0 2 * * *', function() {
-// 	winston.info("Cron Running ", moment().toDate());
-// 	exec("./update-eh-personal", puts);
-// }, null, true, 'America/New_York');
+new cron.CronJob('0 0 2 * * *', function() {
+	rebuildServer();
+}, null, true, 'America/New_York');
