@@ -21,7 +21,10 @@
 
         </article>
         <!-- This is where the book info goes -->
-        {{ site.data.recently_read | jsonify }}
+        {% assign book-list-title = "The Books I'm Currently Reading" %}
+        {% assign book-list-books = site.data.currently_reading %}
+        {% assign book-list-title = "The Books I Just Read" %}
+        {% assign book-list-books = site.data.recently_read %}
       </div>
     </div>
 
