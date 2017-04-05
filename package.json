@@ -30,7 +30,7 @@
     "bookmark": "git@github.com:EdwardHinkle/bookmark.git",
     "child_process": "^1.0.2",
     "cron": "^1.2.1",
-    "emoji-data": "git@github.com:EdwardHinkle/emoji-data.git",
+    "emoji-data": "git@github.com:EdwardHinkle/emoji-data-js.git",
     "express": "^4.15.2",
     "format-microformat": "^0.9.1",
     "goodreads": "^0.1.0",
