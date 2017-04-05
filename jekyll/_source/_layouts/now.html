@@ -23,6 +23,7 @@
         <!-- This is where the book info goes -->
         {% assign book-list-title = "The Books I'm Currently Reading" %}
         {% assign book-list-books = site.data.currently_reading %}
+        {% include book-list/book-list.html %}
         {% assign book-list-title = "The Books I Just Read" %}
         {% assign book-list-books = site.data.recently_read %}
       </div>
