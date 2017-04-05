@@ -5,9 +5,7 @@ import * as jekyll from '../jekyll';
 import * as git from '../git';
 
 export function rebuildServer(req?, res?) {
-    git.runGitPull().then(() => { return git.runGitCommit(); })
-                    .then(() => { return git.runGitPush(); })
-                    .then(() => {
+    git.runGitPull().then(() => {
 
         return Promise.all([
             goodreads.getGoodreadsData(),
@@ -16,7 +14,10 @@ export function rebuildServer(req?, res?) {
             // All tasks are done, we can restart the jekyll server, etc.
             console.log("Rebuild ready...");
 
-            return jekyll.runJekyllBuild().then(() => {
+            return jekyll.runJekyllBuild()
+            .then(() => { return git.runGitCommit(); })
+            .then(() => { return git.runGitPush(); })
+            .then(() => {
                 if (res != undefined) {
                     res.status(202).send('Processing Rebuild...');
                 }
