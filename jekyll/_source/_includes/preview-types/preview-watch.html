@@ -15,12 +15,16 @@
         {% if post.movie_name %}
             <img class="show-image" src="{{post.movie_image}}">
         {% endif %}
-        {% if post.video_site_url or post.video_url %}
-            <img class="show-image" src="{{post.video_cover}}">
-        {% endif %}
+        <!--{% if post.properties.watch-of.properties.photo %}
+            <img class="show-image" src="{{post.properties.watch-of.properties.photo}}">
+        {% endif %}-->
         <div class="watch-content">
             <div class="watch-info">
-                {% assign show = post %}
+                {% if post.properties.watch-of %}
+                    {% assign watch = post.properties.watch-of.properties %}
+                {% else %}
+                    {% assign watch = post %}
+                {% endif %}
                 {% include watch-info.html %}
             </div>
             <div class="watch-status">

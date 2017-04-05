@@ -1,4 +1,4 @@
-<article class="type-watch post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+<article class="type-listen post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
     <a href="/" class="u-author"></a>
@@ -11,26 +11,17 @@
         </span></p>
   </header>
 
-  <div class="basic-card">
-        {% if page.show_name %}
-            <img class="show-image" src="{{page.show_image}}">
+  <div class="basic-card h-cite u-listen-to">
+        {% if page.properties.listen-to.properties.photo %}
+            <img class="listen-image u-photo" src="{{page.properties.listen-to.properties.photo}}">
         {% endif %}
-        {% if page.movie_name %}
-            <img class="show-image" src="{{page.movie_image}}">
-        {% endif %}
-        <!--{% if page.properties.watch-of.properties.photo %}
-            <img class="show-image" src="{{page.properties.watch-of.properties.photo}}">
-        {% endif %}-->
-        <div class="watch-content">
-            <div class="watch-info">
-              {% if page.properties.watch-of %}
-                {% assign watch = page.properties.watch-of.properties %}
-              {% else %}
-                {% assign watch = page %}
-              {% endif %}
-              {% include watch-info.html %}
+        <div class="listen-content">
+            <audio class="u-audio audio-player" src="{{page.properties.listen-to.properties.audio}}" controls="controls"></audio>
+            <div class="listen-info p-summary">
+                {% assign listen = page.properties.listen-to.properties %}
+                {% include listen-info.html %}
             </div>
-            <div class="watch-status">
+            <div class="listen-status">
                 {{page.content}}
             </div>
         </div>

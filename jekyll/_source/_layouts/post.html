@@ -13,22 +13,26 @@ layout: default
             {% if page.mf-u-like-of %}
                 {% include page-types/like.html %}
             {% else %}
-                {% if page.show_name or page.movie_name or page.video_url or page.video_site_url %} <!-- Watch -->
-                    {% include page-types/watch.html %}
+                {% if page.properties.listen-to %}
+                    {% include page-types/listen.html %}
                 {% else %}
-                    {% if page.isbn %}
-                        {% include page-types/book.html %}
+                    {% if page.show_name or page.movie_name or page.properties.watch-of %} <!-- Watch -->
+                        {% include page-types/watch.html %}
                     {% else %}
-                        {% if page.video %}
-                            {% include page-types/video.html %}
+                        {% if page.isbn %}
+                            {% include page-types/book.html %}
                         {% else %}
-                            {% if page.photo %}
-                                {% include page-types/photo.html %}
+                            {% if page.video %}
+                                {% include page-types/video.html %}
                             {% else %}
-                                {% if page.title %}
-                                    {% include page-types/article.html %}
+                                {% if page.photo %}
+                                    {% include page-types/photo.html %}
                                 {% else %}
-                                    {% include page-types/note.html %}
+                                    {% if page.title %}
+                                        {% include page-types/article.html %}
+                                    {% else %}
+                                        {% include page-types/note.html %}
+                                    {% endif %}
                                 {% endif %}
                             {% endif %}
                         {% endif %}

@@ -17,7 +17,6 @@ page_order: 4
 
 ### Writing
 
-- I use [Jekyll](https://jekyllrb.com/) for this blog
 - All of my writing starts out in [Ulysses](https://www.ulyssesapp.com/)
 
 ### Programming
@@ -26,6 +25,7 @@ page_order: 4
 - For my day job, I currently live in the JavaScript world, primarily [Angular](https://angularjs.org/) and [Node.js](https://nodejs.org/en/), in [TypeScript](https://www.typescriptlang.org/) whenever possible..
 - On the side I play around with [Swift](https://swift.org/).
 - When programming you use lots of windows on the computer, to manage those I use an app called [Magnet](http://magnet.crowdcafe.com).
+- This blog is powered by my IndieWeb software, [abode](https://github.com/EdwardHinkle/abode) and is hosted by [DreamHost](https://www.dreamhost.com/cloud/computing/).
 
 ### Communication
 

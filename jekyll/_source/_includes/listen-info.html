@@ -1,0 +1,13 @@
+{% if listen %}
+    {% if listen.status == 'finished' %}
+        🎧 Listened to 
+    {% endif %}
+    {% if listen.status == 'interested' %}
+        🎧 💭 Looking forward to
+    {% endif %}
+    {% if listen.url %}
+        <strong><a class="u-url p-name" href="{{listen.url}}" target="_blank">{{listen.name}}</a></strong>
+    {% else %}
+        <strong class="p-name">{{listen.name}}</strong>
+    {% endif %}
+{% endif %}

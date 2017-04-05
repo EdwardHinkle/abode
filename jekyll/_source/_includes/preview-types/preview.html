@@ -10,22 +10,26 @@
             {% if post.mf-u-like-of %} <!-- Like -->
                 {% include preview-types/preview-like.html %}
             {% else %}
-                {% if post.show_name or post.movie_name or post.video_url or post.video_site_url %} <!-- Watch -->
-                    {% include preview-types/preview-watch.html %}
+                {% if post.properties.listen-to %}
+                    {% include preview-types/preview-listen.html %}
                 {% else %}
-                    {% if post.isbn %} <!-- Book -->
-                        {% include preview-types/preview-book.html %}
+                    {% if post.show_name or post.movie_name or post.properties.watch-of %} <!-- Watch -->
+                        {% include preview-types/preview-watch.html %}
                     {% else %}
-                        {% if post.video %} <!-- Video -->
-                            {% include preview-types/preview-video.html %}
+                        {% if post.isbn %} <!-- Book -->
+                            {% include preview-types/preview-book.html %}
                         {% else %}
-                            {% if post.photo %} <!-- Photo -->
-                                {% include preview-types/preview-photo.html %}
+                            {% if post.video %} <!-- Video -->
+                                {% include preview-types/preview-video.html %}
                             {% else %}
-                                {% if post.title %} <!-- Article -->
-                                    {% include preview-types/preview-article.html %}
-                                {% else %} <!-- Note -->
-                                    {% include preview-types/preview-note.html %}
+                                {% if post.photo %} <!-- Photo -->
+                                    {% include preview-types/preview-photo.html %}
+                                {% else %}
+                                    {% if post.title %} <!-- Article -->
+                                        {% include preview-types/preview-article.html %}
+                                    {% else %} <!-- Note -->
+                                        {% include preview-types/preview-note.html %}
+                                    {% endif %}
                                 {% endif %}
                             {% endif %}
                         {% endif %}

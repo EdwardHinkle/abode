@@ -1,0 +1,25 @@
+<li class="type-listen">
+    <span class="post-meta">
+        <a class="u-url u-uid" href="{{ post.url | prepend: site.baseurl }}"><span class="date-container">{{ post.date | date: "%b %-d, %Y" }}</span></a>
+        <span class="tag-container">
+        {% for tag in post.tags %}
+            <span class="post-tag">{{ tag }}</span>
+        {% endfor %}
+        </span>
+    </span>
+    {% capture wordCount %}{{ post.content | number_of_words }}{% endcapture %}
+    <div class="basic-card words-{{wordCount}}">
+        {% if post.properties.listen-to.properties.photo %}
+            <img class="listen-image" src="{{post.properties.listen-to.properties.photo}}">
+        {% endif %}
+        <div class="listen-content">
+            <div class="listen-info">
+                {% assign listen = post.properties.listen-to.properties %}
+                {% include listen-info.html %}
+            </div>
+            <div class="listen-status">
+                {{post.excerpt}}
+            </div>
+        </div>
+    </div>
+</li>

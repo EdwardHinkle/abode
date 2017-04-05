@@ -552,10 +552,14 @@ a, a:visited {
             display: inline-block;
             width: 74%;
 
+            &:first-child {
+                width: 100% !important;
+            }
+
             @media screen and (max-width: 474px) {
                 display: block;
                 width: auto;
-            }
+            } 
         }
 
         .watch-info {
@@ -578,6 +582,68 @@ a, a:visited {
         }
 
         .watch-status {
+            font-size: 20px;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+    }
+}
+
+.type-listen {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+
+    .basic-card {
+
+        .listen-image {
+            display: inline-block;
+            width: 39%;
+            vertical-align: top;
+
+            @media screen and (max-width: 474px) {
+                display: block;
+                width: auto;
+            }
+        }
+
+        .listen-content {
+            display: inline-block;
+            width: 60%;
+
+            .audio-player {
+                width: 100%;
+                display: block;
+            }
+
+            @media screen and (max-width: 474px) {
+                display: block;
+                width: auto;
+            }
+        }
+
+        .listen-info {
+            font-size: 18px;
+            // background-color: $primary-color;
+            // color: #fff;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 10px;
+        }
+
+        &.words-0 {
+            .listen-image {
+                vertical-align: top;
+            }
+
+            .listen-info {
+                font-size: 26px;
+            }
+        }
+
+        .listen-status {
             font-size: 20px;
             padding-left: 20px;
             padding-right: 20px;
