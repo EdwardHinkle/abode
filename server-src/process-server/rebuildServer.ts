@@ -19,13 +19,13 @@ export function rebuildServer(req?, res?) {
             .then(() => { return git.runGitPush(); })
             .then(() => {
                 if (res != undefined) {
-                    res.status(202).send('Processing Rebuild...');
+                    res.status(202).send('Site Rebuilt');
                 }
             }).catch((error) => {
                 console.log("Caught Error");
                 console.log(error);
                 if (error != undefined && res != undefined) {
-                    res.status(202).send('Error: ' + error);
+                    res.status(202).send(error);
                 }
             });
             
