@@ -9,7 +9,7 @@
     "build": "tsc",
     "freshbuild": "npm run build; npm start",
     "restartServer": "npm run build; forever restart ./server-build/server.js",
-    "updateServer": "git pull; npm run restart server"
+    "updateServer": "git pull; npm run restartServer"
   },
   "keywords": [
     "indieweb"
