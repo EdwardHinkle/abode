@@ -22,6 +22,8 @@ export function rebuildServer(req?, res?) {
                     res.status(202).send('Processing Rebuild...');
                 }
             }).catch((error) => {
+                console.log("Caught Error");
+                console.log(error);
                 if (error != undefined && res != undefined) {
                     res.status(202).send('Error: ' + error);
                 }
