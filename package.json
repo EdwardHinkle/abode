@@ -8,8 +8,8 @@
     "start": "node ./server-build/server.js",
     "build": "tsc",
     "freshbuild": "npm run build; npm start",
-    "restart server": "npm run build; forever restart ./server-build/server.js",
-    "update server": "git pull; npm run restart server"
+    "restartServer": "npm run build; forever restart ./server-build/server.js",
+    "updateServer": "git pull; npm run restart server"
   },
   "keywords": [
     "indieweb"
