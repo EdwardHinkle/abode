@@ -35,3 +35,10 @@ collections:
   media:
     output: true
     permalink: /:path/:title/
+
+jekyll-archives:
+  enabled:
+    - tags
+  layout: 'archive'
+  permalinks:
+    tag: '/tag/:name/'
