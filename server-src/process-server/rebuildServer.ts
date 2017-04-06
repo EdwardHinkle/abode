@@ -21,6 +21,10 @@ export function rebuildServer(req?, res?) {
                 if (res != undefined) {
                     res.status(202).send('Processing Rebuild...');
                 }
+            }).catch((error) => {
+                if (error != undefined && res != undefined) {
+                    res.status(202).send('Error: ' + error);
+                }
             });
             
         });
