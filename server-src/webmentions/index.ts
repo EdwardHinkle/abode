@@ -18,30 +18,41 @@ export function getWebmentionData(): Promise<any> {
             
             var webmentions = {};
             var webmentionData = JSON.parse(data.body);
+            var webmentionsOfLinks = {};
 
             Promise.each(webmentionData.links, (mention: any) => {
                 var targetPage = mention.target.split("http://eddiehinkle.com").pop().split("?")[0];
+                
+                if (mention.activity.sentence.indexOf("on a post that linked to") > -1 ||
+                    (mention.activity.type == "like" && mention.activity.sentence.indexOf("favorited a tweet") > -1)) {
+                    if (webmentionsOfLinks[targetPage] === undefined) {
+                        webmentionsOfLinks[targetPage] = [];
+                    }
+                    webmentionsOfLinks[targetPage].push(mention);
+                } else {
 
-                if (webmentions[targetPage] === undefined) {
-                    webmentions[targetPage] = { likes: [], replies: [], reactions: [], mentions: [] }
-                }
+                    if (webmentions[targetPage] === undefined) {
+                        webmentions[targetPage] = { likes: [], replies: [], reactions: [], mentions: [] }
+                    }
 
-                switch(mention.activity.type) {
-                    case 'like':
-                        // Check if item exists
-                        addOrCreateEmojiArray("+1", webmentions[targetPage].reactions, mention);
-                        break;
-                    case 'link':
-                        if (tryAddEmojiReaction(webmentions[targetPage].reactions, mention) == false) {
-                            addReplaceOrIgnoreWebMention(webmentions[targetPage].mentions, mention);
-                        }
-                        break;
-                    case 'reply':
-                        if (tryAddEmojiReaction(webmentions[targetPage].reactions, mention) == false) {
-                            addReplaceOrIgnoreWebMention(webmentions[targetPage].replies, mention);
-                        }
-                        break;
-                }
+                    switch(mention.activity.type) {
+                        case 'like':
+                            // Check if item exists
+                            addOrCreateEmojiArray("+1", webmentions[targetPage].reactions, mention);
+                            break;
+                        case 'link':
+                            if (tryAddEmojiReaction(webmentions[targetPage].reactions, mention) == false) {
+                                addReplaceOrIgnoreWebMention(webmentions[targetPage].mentions, mention);
+                            }
+                            break;
+                        case 'reply':
+                            if (tryAddEmojiReaction(webmentions[targetPage].reactions, mention) == false) {
+                                addReplaceOrIgnoreWebMention(webmentions[targetPage].replies, mention);
+                            }
+                            break;
+                    }
+                } 
+
             }).then(() => {
                 var json = JSON.stringify(webmentions);
                 fs.writeFile(path.join(__dirname, '../../jekyll/_source/_data/webmentions.json'), json, 'utf8', function(error){
@@ -49,6 +60,14 @@ export function getWebmentionData(): Promise<any> {
                         reject(error);
                     }
                     console.log("Webmentions Retrieved");
+                    resolve();
+                }); 
+                var linksJson = JSON.stringify(webmentionsOfLinks);
+                fs.writeFile(path.join(__dirname, '../../jekyll/_source/_data/webmentions_of_links.json'), linksJson, 'utf8', function(error){
+                    if (error != undefined) {
+                        reject(error);
+                    }
+                    console.log("Webmentions of Links Retrieved");
                     resolve();
                 }); 
             });
