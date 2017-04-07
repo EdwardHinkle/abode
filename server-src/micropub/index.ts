@@ -3,6 +3,7 @@ import * as micropub from 'micropub-express';
 import * as MicropubFormatter from 'format-microformat';
 import * as moment from 'moment';
 import * as fs from 'fs';
+import * as path from 'path';
 
 var config = require('../../abodeConfig.json');
 
@@ -20,34 +21,43 @@ micropubRouter.use('/', micropub({
 
 // Support Functions
 function micropubHandler(micropubDocument, req) {
-	// console.log("Micropub Retrieved");
-	// console.log(JSON.stringify(micropubDocument, null, 2));
+	console.log("Micropub Retrieved");
+	var writeJson = JSON.stringify(micropubDocument, null, 2);
 
-    // return { url: "http://eddiehinkle.com/now" };
-	formatter.preFormat(micropubDocument)
-  .then(function (preFormatted) {
-		return Promise.all([
-			formatFilename(preFormatted),
-			formatter.formatURL(preFormatted),
-			formatter.format(preFormatted)
-		]);
-  	})
-	.then(function (formatted) {
+	fs.writeFile(path.join(__dirname, '../../log-files/' + moment().unix() + '.json'), writeJson, (err) => {
+		if(err) {
+			return console.log(err);
+		}
 
-		var filename = formatted[0];
-		var contentUrl = formatted[1];
-		var fileContent = formatted[2];
+		console.log("The file was saved!");
+	}); 
+
+    return { url: "http://eddiehinkle.com/now" };
+// 	return formatter.preFormat(micropubDocument)
+//   .then(function (preFormatted) {
+// 		return Promise.all([
+// 			formatFilename(preFormatted),
+// 			formatter.formatURL(preFormatted),
+// 			formatter.format(preFormatted)
+// 		]);
+//   	})
+// 	.then(function (formatted) {
+
+// 		var filename = formatted[0];
+// 		var contentUrl = formatted[1];
+// 		var fileContent = formatted[2];
 		
-		console.log("Formatted Micropub");
-		console.log(formatted);
-		fs.writeFile(__dirname + "/../savedDocuments/" + filename, fileContent, (err) => {
-			if(err) {
-				return console.log(err);
-			}
+// 		console.log("Formatted Micropub");
+// 		console.log(formatted);
+// 		fs.writeFile(__dirname + "/../savedDocuments/" + filename, fileContent, (err) => {
+// 			if(err) {
+// 				return console.log(err);
+// 			}
 
-			console.log("The file was saved!");
-		}); 
-	});
+// 			console.log("The file was saved!");
+// 		}); 
+	// 	return { url: "http://eddiehinkle.com/now" };
+	// });
 }
 
 function formatFilename(preformattedData) {

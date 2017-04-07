@@ -9,4 +9,4 @@ export let router = express.Router();
 
 router.use('/', staticSiteRouter);
 router.use('/abode', processRouter);
-// router.use('/micropub', micropubRouter);
+router.use('/micropub', micropubRouter);
