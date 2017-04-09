@@ -11,7 +11,7 @@ email: hello@eddiehinkle.com
 description: > # this means to ignore newlines until "baseurl:"
   This is a simple website and blog by Eddie. I'm working on making it a lot nicer and a lot prettier soon. 
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://eddiehinkle.com" # the base hostname & protocol for your site
+url: "https://eddiehinkle.com" # the base hostname & protocol for your site
 twitter_username: eddiehinkle
 github_username: edwardhinkle
 instagram_username: eddiehinkle
@@ -19,8 +19,8 @@ facebook_username: EdwardTHinkle
 applenews_id: TlUsl76dFRNCfv54V0xuVJQ
 permalink: /:year/:month/:day/:title.html
 
-remoteUrl: http://eddiehinkle.com
-localUrl: http://eddiehinkle.com
+remoteUrl: https://eddiehinkle.com
+localUrl: https://eddiehinkle.com
 
 source: _source
 destination: _build
