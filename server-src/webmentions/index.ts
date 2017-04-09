@@ -21,7 +21,7 @@ export function getWebmentionData(): Promise<any> {
             var webmentionsOfLinks = {};
 
             Promise.each(webmentionData.links, (mention: any) => {
-                var targetPage = mention.target.split("http://eddiehinkle.com").pop().split("?")[0];
+                var targetPage = mention.target.split("eddiehinkle.com").pop().split("?")[0];
                 
                 if (mention.activity.sentence.indexOf("on a post that linked to") > -1 ||
                     (mention.activity.type == "like" && mention.activity.sentence.indexOf("favorited a tweet") > -1)) {
