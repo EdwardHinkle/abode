@@ -35,29 +35,25 @@ export function rebuildServer(req?, res?) {
 }
 
 export function refreshServer(req?, res?) {
-    git.runGitPull().then(() => {
+    return Promise.all([
+        goodreads.getGoodreadsData(),
+        webmentions.getWebmentionData()
+    ]).then((results) => {
+        // All tasks are done, we can restart the jekyll server, etc.
+        console.log("Refresh ready...");
 
-        return Promise.all([
-            goodreads.getGoodreadsData(),
-            webmentions.getWebmentionData()
-        ]).then((results) => {
-            // All tasks are done, we can restart the jekyll server, etc.
-            console.log("Refresh ready...");
-
-            return jekyll.runJekyllBuild()
-            .then(() => {
-                if (res != undefined) {
-                    res.status(202).send('Site Refresh');
-                }
-            }).catch((error) => {
-                console.log("Caught Error");
-                console.log(error);
-                if (error != undefined && res != undefined) {
-                    res.status(202).send(error);
-                }
-            });
-            
+        return jekyll.runJekyllBuild()
+        .then(() => {
+            if (res != undefined) {
+                res.status(202).send('Site Refresh');
+            }
+        }).catch((error) => {
+            console.log("Caught Error");
+            console.log(error);
+            if (error != undefined && res != undefined) {
+                res.status(202).send(error);
+            }
         });
-
+        
     });
 }
