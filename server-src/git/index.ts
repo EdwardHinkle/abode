@@ -5,7 +5,7 @@ import * as moment from 'moment';
 export function runGitPull(): Promise<any> {
     return new Promise((resolve, reject) => {
     
-        childProcess.exec('cd ' + __dirname + '; cd ../../jekyll/_source/; git pull', (error, stdout, stderr, res) => {
+        childProcess.exec('cd ' + __dirname + '; cd ../../jekyll/_source/; git pull --rebase origin master', (error, stdout, stderr, res) => {
             if (error) {
                 reject(error);
             }
