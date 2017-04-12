@@ -32,7 +32,9 @@ function micropubHandler(micropubDocument, req) {
 		console.log("The file was saved!");
 	}); 
 
-    return { url: "https://eddiehinkle.com/now" };
+    return Promise.resolve().then(function () {
+		return { url: "https://eddiehinkle.com/now" };
+	});
 // 	return formatter.preFormat(micropubDocument)
 //   .then(function (preFormatted) {
 // 		return Promise.all([
