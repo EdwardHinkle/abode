@@ -5,7 +5,7 @@
   "main": "./server-build/server.js",
   "types": "./server-build/server.d.ts",
   "scripts": {
-    "start": "node ./server-build/server.js",
+    "start": "node ./server-build/server.js --harmony_array_includes",
     "build": "tsc",
     "freshbuild": "npm run build; npm start",
     "restartServer": "npm run build; forever restart ./server-build/server.js",
