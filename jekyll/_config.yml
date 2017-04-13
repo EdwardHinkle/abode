@@ -28,6 +28,8 @@ destination: _build
 # Build settings
 markdown: kramdown
 
+private_posts: false
+
 collections:
   note:
     output: true

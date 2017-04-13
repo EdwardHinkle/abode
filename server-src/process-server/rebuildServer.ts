@@ -57,3 +57,27 @@ export function refreshServer(req?, res?) {
         
     });
 }
+
+export function refreshServerWithDrafts(req?, res?) {
+    return Promise.all([
+        goodreads.getGoodreadsData(),
+        webmentions.getWebmentionData()
+    ]).then((results) => {
+        // All tasks are done, we can restart the jekyll server, etc.
+        console.log("Refresh ready...");
+
+        return jekyll.runJekyllDraftBuild()
+        .then(() => {
+            if (res != undefined) {
+                res.status(202).send('Draft Site Refresh');
+            }
+        }).catch((error) => {
+            console.log("Caught Error");
+            console.log(error);
+            if (error != undefined && res != undefined) {
+                res.status(202).send(error);
+            }
+        });
+        
+    });
+}
