@@ -11,7 +11,7 @@ export function getWebmentionData(): Promise<any> {
     
     return new Promise((resolve, reject) => {
     
-        request("https://webmention.io/api/mentions?token=" + config.webmention.token, {}, (err, data) => {
+        request("https://webmention.io/api/mentions?token=" + config.webmention.token + "&perPage=500", {}, (err, data) => {
             if (err != undefined) {
                 reject(err);
             }
@@ -22,6 +22,10 @@ export function getWebmentionData(): Promise<any> {
 
             Promise.each(webmentionData.links, (mention: any) => {
                 var targetPage = mention.target.split("eddiehinkle.com").pop().split("?")[0];
+
+                if (targetPage == "/now" && mention.data.author != undefined && mention.data.author.name == "Swarm") {
+                    return;
+                }
                 
                 if (mention.activity.sentence.indexOf("on a post that linked to") > -1 ||
                     (mention.activity.type == "like" && mention.activity.sentence.indexOf("favorited a tweet") > -1)) {
