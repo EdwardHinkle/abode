@@ -38,7 +38,7 @@ export function runGitCommit(): Promise<any> {
             if (error) {
                 console.log("Git Commit Error");
                 console.log(JSON.stringify(error, null, 2));
-                reject(error);
+                // reject(error);
             }
             console.log(stdout);
             resolve();
