@@ -5,8 +5,23 @@ import * as moment from 'moment';
 export function runGitPull(): Promise<any> {
     return new Promise((resolve, reject) => {
     
-        childProcess.exec('cd ' + __dirname + '; cd ../../jekyll/_source/; git pull --rebase origin master', (error, stdout, stderr, res) => {
+        childProcess.exec('cd ' + __dirname + '/../../jekyll/_source/; git pull --rebase origin master', (error, stdout, stderr, res) => {
             if (error) {
+                reject(error);
+            }
+            console.log(stdout);
+            resolve();
+        });
+
+    });
+}
+
+export function runGitStageAll(): Promise<any> {
+    return new Promise((resolve, reject) => {
+    
+        childProcess.exec('cd ' + __dirname + '/../../jekyll/_source/; git add .', (error, stdout, stderr, res) => {
+            if (error) {
+                console.log("Stage All Error with git");
                 reject(error);
             }
             console.log(stdout);
@@ -19,8 +34,9 @@ export function runGitPull(): Promise<any> {
 export function runGitCommit(): Promise<any> {
     return new Promise((resolve, reject) => {
     
-        childProcess.exec('cd ' + __dirname + '; cd ../../jekyll/_source/; git add .; git commit -m "abode auto-commit ' + moment().format("MMM D, YYYY h:mm a") + '"', (error, stdout, stderr, res) => {
+        childProcess.exec('cd ' + __dirname + '/../../jekyll/_source/; git commit -m "abode auto-commit ' + moment().format("MMM D, YYYY h:mm a") + '"', (error, stdout, stderr, res) => {
             if (error) {
+                console.log("Git Commit Error");
                 reject(error);
             }
             console.log(stdout);
@@ -33,7 +49,7 @@ export function runGitCommit(): Promise<any> {
 export function runGitPush(): Promise<any> {
     return new Promise((resolve, reject) => {
     
-        childProcess.exec('cd ' + __dirname + '; cd ../../jekyll/_source/; git push', (error, stdout, stderr, res) => {
+        childProcess.exec('cd ' + __dirname + '/../../jekyll/_source/; git push', (error, stdout, stderr, res) => {
             if (error) {
                 reject(error);
             }

@@ -15,6 +15,7 @@ export function rebuildServer(req?, res?) {
             console.log("Rebuild ready...");
 
             return jekyll.runJekyllBuild()
+            .then(() => { return git.runGitStageAll(); })
             .then(() => { return git.runGitCommit(); })
             .then(() => { return git.runGitPush(); })
             .then(() => {
