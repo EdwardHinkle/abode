@@ -37,6 +37,7 @@ export function runGitCommit(): Promise<any> {
         childProcess.exec('cd ' + __dirname + '/../../jekyll/_source/; git commit -m "abode auto-commit ' + moment().format("MMM D, YYYY h:mm a") + '"', (error, stdout, stderr, res) => {
             if (error) {
                 console.log("Git Commit Error");
+                console.log(JSON.stringify(error, null, 2));
                 reject(error);
             }
             console.log(stdout);
