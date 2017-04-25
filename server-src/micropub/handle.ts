@@ -58,6 +58,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                     console.log("Caught Error");
                     console.log(error);
                 });
+                console.log("Sending return");
+                console.log(results);
                 return results;
                 
             });
