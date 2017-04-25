@@ -3,6 +3,8 @@ import * as moment from 'moment';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as http from 'http';
+import * as git from '../git';
+import * as jekyll from '../jekyll';
 
 var config = require('../../abodeConfig.json');
 
@@ -15,33 +17,56 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
     if (micropubDocument.properties.checkin != undefined) {
 
-        return formatter.preFormat(micropubDocument)
-        .then(function (preFormatted) {
-            return Promise.all([
-                formatFilename(preFormatted),
-                formatUrl(preFormatted),
-                formatContent(preFormatted)
-            ]);
-        })
-        .then(function (formatted) {
+        git.runGitPull().then(() => {
 
-            var filename = formatted[0];
-            var contentUrl = formatted[1];
-            var fileContent = formatted[2];
-            
-            console.log("Formatted Micropub");
-            console.log(filename);
-            console.log(contentUrl);
-            console.log(formatted);
-            fs.writeFile(__dirname + "/../../jekyll/_source/" + filename, fileContent, (err) => {
-                if(err) {
-                    return console.log(err);
-                }
+            return formatter.preFormat(micropubDocument)
+            .then(function (preFormatted) {
+                return Promise.all([
+                    formatFilename(preFormatted),
+                    formatUrl(preFormatted),
+                    formatContent(preFormatted)
+                ]);
+            })
+            .then(function (formatted) {
 
-                console.log("The file was saved!");
-            }); 
-            return { url: contentUrl };
+                var filename = formatted[0];
+                var contentUrl = formatted[1];
+                var fileContent = formatted[2];
+                
+                console.log("Formatted Micropub");
+                console.log(filename);
+                console.log(contentUrl);
+                console.log(formatted);
+                fs.writeFile(__dirname + "/../../jekyll/_source/" + filename, fileContent, (err) => {
+                    if(err) {
+                        return console.log(err);
+                    }
+
+                    console.log("The file was saved!");
+                }); 
+                return { url: contentUrl };
+            })
+            .then((results) => {
+                // All tasks are done, we can restart the jekyll server, etc.
+                console.log("Rebuild ready...");
+
+                return jekyll.runJekyllBuild()
+                .then(() => { return git.runGitStageAll(); })
+                .then(() => { return git.runGitCommit(); })
+                .then(() => { return git.runGitPush(); })
+                .then(() => {
+                    return results;
+                }).catch((error) => {
+                    console.log("Caught Error");
+                    console.log(error);
+                    return {}
+                });
+                
+            });
+
         });
+
+        
     } else {
         var writeJson = JSON.stringify(micropubDocument, null, 2);
 
