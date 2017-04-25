@@ -50,17 +50,15 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                 // All tasks are done, we can restart the jekyll server, etc.
                 console.log("Rebuild ready...");
 
-                return jekyll.runJekyllBuild()
-                .then(() => { return git.runGitStageAll(); })
+                git.runGitStageAll()
                 .then(() => { return git.runGitCommit(); })
                 .then(() => { return git.runGitPush(); })
-                .then(() => {
-                    return results;
-                }).catch((error) => {
+                .then(() => { return jekyll.runJekyllBuild(); })
+                .catch((error) => {
                     console.log("Caught Error");
                     console.log(error);
-                    return {}
                 });
+                return results;
                 
             });
 
