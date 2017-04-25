@@ -160,16 +160,18 @@ function formatContent(preformattedData): Promise<any> {
                 }
             }
 
-            if (properties.category != undefined && properties.category.length > 0) {
-                if (properties.checkin != undefined && properties.checkin.length > 0) {
-                    properties.category.push("checkin");
+            if (properties.checkin != undefined && properties.checkin.length > 0) {
+                if (properties.category == undefined) {
+                    properties.category = [];
                 }
-                
-                if (properties.category != undefined && properties.category.length > 0) {
-                    contentString += "tags:\n";
-                    for (let tag of properties.category) {
-                        contentString += "  - " + tag + "\n";
-                    }
+                properties.category.push("checkin");
+            }
+
+               
+            if (properties.category != undefined && properties.category.length > 0) {
+                contentString += "tags:\n";
+                for (let tag of properties.category) {
+                    contentString += "  - " + tag + "\n";
                 }
             }
 
