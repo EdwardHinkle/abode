@@ -17,6 +17,17 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 	console.log("Micropub Retrieved");
     console.log(micropubDocument);
 
+    // This section is mainly to log everything for debugging later
+    var writeJson = JSON.stringify(micropubDocument, null, 2);
+
+    fs.writeFile(path.join(__dirname, '../../log-files/' + moment().format("YYYY-MM-DD-HH:mm:ss") + '.json'), writeJson, (err) => {
+        if(err) {
+            return console.log(err);
+        }
+    });
+    // This is the end of the debugging section
+
+
     if (micropubDocument.properties.checkin != undefined) {
 
         return git.runGitPull().then(() => {
@@ -76,15 +87,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
         });
         
     } else {
-        var writeJson = JSON.stringify(micropubDocument, null, 2);
-
-        fs.writeFile(path.join(__dirname, '../../log-files/' + moment().unix() + '.json'), writeJson, (err) => {
-            if(err) {
-                return console.log(err);
-            }
-
-            console.log("Non-checkin Micropub Recieved");
-        }); 
+        console.log("Non-checkin Micropub Recieved...check the log files");
 
         return Promise.resolve().then(function () {
             return { url: "https://eddiehinkle.com/404" };
@@ -191,7 +194,10 @@ function formatContent(preformattedData): Promise<any> {
             contentString += "slug: \"" + slug + "\"\n";
             contentString += "permalink: /:year/:month/:day/:slug/checkin/\n";
 
-            contentString += '---\n' + properties.content[0];
+            contentString += '---\n';
+            if (properties.content != undefined && properties.content.length > 0) {
+                contentString += properties.content[0];
+            }
             resolve(contentString);
         } else {
             reject("Unrecognized Type " + preformattedData.type);
