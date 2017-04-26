@@ -188,7 +188,7 @@ function formatContent(preformattedData): Promise<any> {
             }
 
             let slug = preformattedData.postInfo.postIndex;
-            contentString += "slug: " + slug + "\n";
+            contentString += "slug: \"" + slug + "\"\n";
             contentString += "permalink: /:year/:month/:day/:slug/checkin/\n";
 
             contentString += '---\n' + properties.content[0];
