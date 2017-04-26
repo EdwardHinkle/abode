@@ -5,8 +5,10 @@ import * as path from 'path';
 import * as http from 'http';
 import * as git from '../git';
 import * as jekyll from '../jekyll';
+import * as _ from 'lodash';
 
 var config = require('../../abodeConfig.json');
+var dataDir = __dirname + "/../../jekyll/_source/";
 
 let formatter = new MicropubFormatter();
 
@@ -17,55 +19,61 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
     if (micropubDocument.properties.checkin != undefined) {
 
-        git.runGitPull().then(() => {
+        return git.runGitPull().then(() => {
 
-            return formatter.preFormat(micropubDocument)
-            .then(function (preFormatted) {
-                return Promise.all([
-                    formatFilename(preFormatted),
-                    formatUrl(preFormatted),
-                    formatContent(preFormatted)
-                ]);
-            })
-            .then(function (formatted) {
-
-                var filename = formatted[0];
-                var contentUrl = formatted[1];
-                var fileContent = formatted[2];
+            return preparePostInfo(micropubDocument).then(function(postInfo){
                 
-                console.log("Formatted Micropub");
-                console.log(filename);
-                console.log(contentUrl);
-                console.log(formatted);
-                fs.writeFile(__dirname + "/../../jekyll/_source/" + filename, fileContent, (err) => {
-                    if(err) {
-                        return console.log(err);
-                    }
+                formatter.preFormat(micropubDocument)
+                    .then(function (preFormatted) {
+                        preFormatted.postInfo = postInfo;
+                        return Promise.all([
+                            formatFilename(preFormatted),
+                            formatUrl(preFormatted),
+                            formatContent(preFormatted)
+                        ]);
+                    })
+                    .then(function (formatted) {
 
-                    console.log("The file was saved!");
-                }); 
-                return { url: contentUrl };
-            })
-            .then((results) => {
-                // All tasks are done, we can restart the jekyll server, etc.
-                console.log("Rebuild ready...");
+                        var filename = formatted[0];
+                        var contentUrl = formatted[1];
+                        var fileContent = formatted[2];
+                        
+                        console.log("Formatted Micropub");
+                        console.log(filename);
+                        console.log(contentUrl);
+                        console.log(formatted);
+                        fs.writeFile(filename, fileContent, (err) => {
+                            if(err) {
+                                return console.log(err);
+                            }
 
-                git.runGitStageAll()
-                .then(() => { return git.runGitCommit(); })
-                .then(() => { return git.runGitPush(); })
-                .then(() => { return jekyll.runJekyllBuild(); })
-                .catch((error) => {
-                    console.log("Caught Error");
-                    console.log(error);
+                            console.log("The file was saved!");
+                        }); 
+                    })
+                    .then((results) => {
+                        // All tasks are done, we can restart the jekyll server, etc.
+                        console.log("Rebuild ready...");
+
+                        git.runGitStageAll()
+                        .then(() => { return git.runGitCommit(); })
+                        .then(() => { return git.runGitPush(); })
+                        .then(() => { return jekyll.runJekyllBuild(); })
+                        .catch((error) => {
+                            console.log("Caught Error");
+                            console.log(error);
+                        });
+                        return;
+                        
+                    });
+
+                    micropubDocument.postInfo = postInfo;
+                    return formatUrl(micropubDocument).then(function(returnUrl) {
+                        return { url: returnUrl };
+                    });
+
                 });
-                console.log("Sending return");
-                console.log(results);
-                return results;
-                
-            });
 
         });
-
         
     } else {
         var writeJson = JSON.stringify(micropubDocument, null, 2);
@@ -92,13 +100,17 @@ function formatContent(preformattedData): Promise<any> {
 
             var contentString =  '---\n';
             contentString += "date: " + moment(properties.published[0]).format("YYYY-MM-DD HH:mm:ss ZZ") + "\n";
+            contentString += "content-type: text/markdown\n";
+            if (preformattedData.client_id) {
+                contentString += "client_id: " + preformattedData.client_id + "\n";
+            }
             contentString += "layout: entry\n";
             if (properties.title == undefined) {
                 contentString += "title: \"\"\n";
             } else {
                 contentString += "title: " + properties.title[0] + "\n";
             }
-            
+
             contentString += "properties:\n";
 
             if (properties.checkin != undefined && properties.checkin.length > 0 && properties.checkin[0].type == "h-card") {
@@ -175,7 +187,10 @@ function formatContent(preformattedData): Promise<any> {
                 }
             }
 
-            contentString += "permalink: /:year/:month/:title/checkin/\n";
+            let slug = preformattedData.postInfo.postIndex;
+            contentString += "slug: " + slug + "\n";
+            contentString += "permalink: /:year/:month/:day/:slug/checkin/\n";
+
             contentString += '---\n' + properties.content[0];
             resolve(contentString);
         } else {
@@ -191,8 +206,34 @@ function formatUrl(preformattedData): Promise<any> {
         let properties = preformattedData.properties;
         let year = moment(properties.published[0]).format("YYYY");
         let month = moment(properties.published[0]).format("MM");
-        let slug = (preformattedData.mp != undefined && preformattedData.mp.slug != undefined) ? preformattedData.mp.slug[0] : preformattedData.properties.slug[0];
-        resolve('https://eddiehinkle.com/' + year + "/" + month + "/" + slug + "/" + "checkin/");
+        let day = moment(properties.published[0]).format("DD");
+        // This needs to be based on how many posts exist for this day
+        // var postIndex = 1;
+        var yearDir = dataDir + "_note/" + year + "/";
+        // if (!fs.existsSync(yearDir)) {
+        //     fs.mkdirSync(yearDir);
+        //     console.log(yearDir + " created");
+        // }
+        var monthDir = yearDir + month + "/";
+        // if (!fs.existsSync(monthDir)) {
+        //     fs.mkdirSync(monthDir);
+        //     console.log(monthDir + " created");
+        // }
+        var dayDir = monthDir + day + "/";
+        // if (!fs.existsSync(dayDir)) {
+        //     fs.mkdirSync(dayDir);
+        //     console.log(dayDir + " created");
+        // } else {
+        //     var dirContents = fs.readdirSync(dayDir);
+        //     dirContents = _.filter(dirContents, (filename) => {
+        //         return fs.statSync(dayDir + "/" + filename).isDirectory();
+        //     });
+        //     postIndex = dirContents.length + 1;
+        // }
+        
+        let slug = (preformattedData.mp != undefined && preformattedData.mp.slug != undefined) ? preformattedData.mp.slug[0] : preformattedData.postInfo.postIndex;
+
+        resolve('https://eddiehinkle.com/' + year + "/" + month + "/" + day + "/" + slug + "/" + "checkin/");
     });
 }
 
@@ -200,20 +241,54 @@ function formatFilename(preformattedData) {
 	return new Promise((resolve, reject) => {
 		console.log("Formatting Filename");
 		console.log(preformattedData);
-		var slug = (preformattedData.mp != undefined && preformattedData.mp.slug != undefined) ? preformattedData.mp.slug[0] : preformattedData.properties.slug[0];
+		let properties = preformattedData.properties;
+        let year = moment(properties.published[0]).format("YYYY");
+        let month = moment(properties.published[0]).format("MM");
+        let day = moment(properties.published[0]).format("DD");
+
+        // var postIndex = 1;
+        var yearDir = dataDir + "_note/" + year + "/";
+        // if (!fs.existsSync(yearDir)) {
+        //     fs.mkdirSync(yearDir);
+        //     console.log(yearDir + " created");
+        // }
+        var monthDir = yearDir + month + "/";
+        // if (!fs.existsSync(monthDir)) {
+        //     fs.mkdirSync(monthDir);
+        //     console.log(monthDir + " created");
+        // }
+        var dayDir = monthDir + day + "/";
+        // if (!fs.existsSync(dayDir)) {
+        //     fs.mkdirSync(dayDir);
+        //     console.log(dayDir + " created");
+        // } else {
+        //     var dirContents = fs.readdirSync(dayDir);
+        //     dirContents = _.filter(dirContents, (filename) => {
+        //         return fs.statSync(dayDir + filename).isDirectory();
+        //     });
+        //     postIndex = dirContents.length + 1;
+        // }
+        var postDir = dayDir + preformattedData.postInfo.postIndex + "/";
+        if (!fs.existsSync(postDir)) {
+            fs.mkdirSync(postDir);
+            console.log(postDir + " created");
+        }
+        
+        let slug = (preformattedData.mp != undefined && preformattedData.mp.slug != undefined) ? preformattedData.mp.slug[0] : preformattedData.postInfo.postIndex;
+        
 		if (preformattedData.type[0] == "h-entry") {
 			var publishedDate = preformattedData.properties.published[0];
 			if (preformattedData.properties['in-reply-to'] != undefined && preformattedData.properties['in-reply-to'].length > 0) {
-				resolve("_note/reply/" + formatFileSlug(publishedDate, slug));
+				resolve(dataDir + "_note/reply/" + formatFileSlug(publishedDate, slug));
 			}
 			else if (preformattedData.properties['like-of'] != undefined && preformattedData.properties['like-of'].length > 0) {
-				resolve("_note/likes/" + formatFileSlug(publishedDate, slug));
+				resolve(dataDir + "_note/likes/" + formatFileSlug(publishedDate, slug));
 			}
 			else if (preformattedData.properties['repost-of'] != undefined && preformattedData.properties['repost-of'].length > 0) {
-				resolve("_note/repost/" + formatFileSlug(publishedDate, slug));
+				resolve(dataDir + "_note/repost/" + formatFileSlug(publishedDate, slug));
 			}
 			else if (preformattedData.properties['checkin'] != undefined && preformattedData.properties['checkin'].length > 0) {
-				resolve("_note/checkins/" + formatFileSlug(publishedDate, slug));
+				resolve(postDir + "post.md");
             } else {
                 formatter.formatFilename(preformattedData).then(function(data){
                     resolve(data);
@@ -225,4 +300,38 @@ function formatFilename(preformattedData) {
 
 function formatFileSlug(date, slug) {
 	return moment(date).format("Y-MM-DD") + "-" + slug + ".md";
+}
+
+function preparePostInfo(preformattedData) {
+    return new Promise((resolve, reject) => {
+        let properties = preformattedData.properties;
+        let year = moment(properties.published[0]).format("YYYY");
+        let month = moment(properties.published[0]).format("MM");
+        let day = moment(properties.published[0]).format("DD");
+        
+        var postIndex = 1;
+        var yearDir = dataDir + "_note/" + year + "/";
+        if (!fs.existsSync(yearDir)) {
+            fs.mkdirSync(yearDir);
+            console.log(yearDir + " created");
+        }
+        var monthDir = yearDir + month + "/";
+        if (!fs.existsSync(monthDir)) {
+            fs.mkdirSync(monthDir);
+            console.log(monthDir + " created");
+        }
+        var dayDir = monthDir + day + "/";
+        if (!fs.existsSync(dayDir)) {
+            fs.mkdirSync(dayDir);
+            console.log(dayDir + " created");
+        } else {
+            var dirContents = fs.readdirSync(dayDir);
+            dirContents = _.filter(dirContents, (filename) => {
+                return fs.statSync(dayDir + "/" + filename).isDirectory();
+            });
+            postIndex = dirContents.length + 1;
+        }
+        
+        resolve({ postIndex: postIndex });
+    });
 }
