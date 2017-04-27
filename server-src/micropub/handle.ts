@@ -7,8 +7,8 @@ import * as git from '../git';
 import * as jekyll from '../jekyll';
 import * as _ from 'lodash';
 
-var config = require('../../abodeConfig.json');
-var dataDir = __dirname + "/../../jekyll/_source/";
+let config = require('../../abodeConfig.json');
+let dataDir = __dirname + "/../../jekyll/_source/";
 
 let formatter = new MicropubFormatter();
 
@@ -27,8 +27,18 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
     });
     // This is the end of the debugging section
 
+    let authorizedProperties = [
+        "checkin",
+        "drank",
+        "ate"
+    ]
 
-    if (micropubDocument.properties.checkin != undefined || micropubDocument.properties.drank != undefined) {
+    var micropubProperties = _.keys(micropubDocument.properties);
+
+    console.log("Properties Intersection");
+    console.log(_.intersection(micropubProperties, authorizedProperties));
+
+    if (_.intersection(micropubProperties, authorizedProperties).length > 0) {
 
         return git.runGitPull().then(() => {
 
@@ -148,6 +158,22 @@ function formatContent(preformattedData): Promise<any> {
                 }
             }
 
+            if (properties.ate != undefined && properties.ate.length > 0) {
+                var ate = properties.ate[0].properties;
+                contentString += "  ate:\n";
+                contentString += "    type: h-food\n";
+                contentString += "    properties:\n";
+                for (let key in ate) {
+                    var value: String;
+                    if (key == "latitude" || key == "longitude") {
+                        value = ate[key];
+                    } else {
+                        value = '"' + ate[key] + '"';
+                    }
+                    contentString += "      " + key + ": " + value + "\n";
+                }
+            }
+
             // if (properties['like-of'] != undefined && properties['like-of'].length > 0) {
 			// 	contentString += "  like-of:\n";
             //     for (let like of properties['like-of']) {
@@ -202,6 +228,10 @@ function formatContent(preformattedData): Promise<any> {
             if (properties.drank != undefined && properties.drank.length > 0) {   
                 properties.category.push("drank");
             }
+
+            if (properties.ate != undefined && properties.ate.length > 0) {   
+                properties.category.push("ate");
+            }
                
             if (properties.category != undefined && properties.category.length > 0) {
                 contentString += "tags:\n";
@@ -248,6 +278,9 @@ function formatContent(preformattedData): Promise<any> {
             else if (preformattedData.properties['drank'] != undefined && preformattedData.properties['drank'].length > 0) {
                 contentString += "permalink: /:year/:month/:day/:slug/drank/\n";
             }
+            else if (preformattedData.properties['ate'] != undefined && preformattedData.properties['ate'].length > 0) {
+                contentString += "permalink: /:year/:month/:day/:slug/ate/\n";
+            }
             
 
             contentString += '---\n';
@@ -281,6 +314,9 @@ function formatUrl(preformattedData): Promise<any> {
         }
         else if (preformattedData.properties['drank'] != undefined && preformattedData.properties['drank'].length > 0) {
             resolve('https://eddiehinkle.com/' + year + "/" + month + "/" + day + "/" + slug + "/" + "drank/");
+        }
+        else if (preformattedData.properties['ate'] != undefined && preformattedData.properties['ate'].length > 0) {
+            resolve('https://eddiehinkle.com/' + year + "/" + month + "/" + day + "/" + slug + "/" + "ate/");
         }
     });
 }
@@ -321,6 +357,9 @@ function formatFilename(preformattedData) {
 				resolve(postDir + "post.md");
             }
 			else if (preformattedData.properties['drank'] != undefined && preformattedData.properties['drank'].length > 0) {
+				resolve(postDir + "post.md");
+            }
+			else if (preformattedData.properties['ate'] != undefined && preformattedData.properties['ate'].length > 0) {
 				resolve(postDir + "post.md");
             } else {
                 formatter.formatFilename(preformattedData).then(function(data){
