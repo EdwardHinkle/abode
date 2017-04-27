@@ -28,7 +28,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
     // This is the end of the debugging section
 
 
-    if (micropubDocument.properties.checkin != undefined) {
+    if (micropubDocument.properties.checkin != undefined || micropubDocument.properties.drank != undefined) {
 
         return git.runGitPull().then(() => {
 
@@ -132,6 +132,22 @@ function formatContent(preformattedData): Promise<any> {
                 }
             }
 
+            if (properties.drank != undefined && properties.drank.length > 0) {
+                var drank = properties.drank[0].properties;
+                contentString += "  drank:\n";
+                contentString += "    type: h-food\n";
+                contentString += "    properties:\n";
+                for (let key in drank) {
+                    var value: String;
+                    if (key == "latitude" || key == "longitude") {
+                        value = drank[key];
+                    } else {
+                        value = '"' + drank[key] + '"';
+                    }
+                    contentString += "      " + key + ": " + value + "\n";
+                }
+            }
+
             // if (properties['like-of'] != undefined && properties['like-of'].length > 0) {
 			// 	contentString += "  like-of:\n";
             //     for (let like of properties['like-of']) {
@@ -175,13 +191,17 @@ function formatContent(preformattedData): Promise<any> {
                 }
             }
 
-            if (properties.checkin != undefined && properties.checkin.length > 0) {
-                if (properties.category == undefined) {
-                    properties.category = [];
-                }
+            if (properties.category == undefined) {
+                properties.category = [];
+            }
+
+            if (properties.checkin != undefined && properties.checkin.length > 0) {   
                 properties.category.push("checkin");
             }
 
+            if (properties.drank != undefined && properties.drank.length > 0) {   
+                properties.category.push("drank");
+            }
                
             if (properties.category != undefined && properties.category.length > 0) {
                 contentString += "tags:\n";
@@ -190,9 +210,45 @@ function formatContent(preformattedData): Promise<any> {
                 }
             }
 
+            if (properties.location != undefined && properties.location.length > 0) {
+                contentString += "location:\n";
+                for (let location of properties.location) {
+                    if (typeof location == "string") {
+                        var geoInfo = location.split("geo:").pop();
+                        var locInfo = geoInfo.split(";");
+                        var locArray = locInfo[0].split(",");
+                        if (locArray.length > 0) {
+                            var locationObject = {
+                                uncertainty: locInfo[1].split("=").pop(),
+                                latitude: locArray[0],
+                                longitude: locArray[1]
+                            }
+                        
+                            contentString += "  type: h-adr\n";
+                            contentString += "  properties:\n";
+                            for (let key in locationObject) {
+                                var value: String;
+                                if (key == "latitude" || key == "longitude" || key == "uncertainty") {
+                                    value = locationObject[key];
+                                } else {
+                                    value = '"' + locationObject[key] + '"';
+                                }
+                                contentString += "    " + key + ": " + value + "\n";
+                            }
+                        }
+                    }
+                }
+            }
+
             let slug = preformattedData.postInfo.postIndex;
             contentString += "slug: \"" + slug + "\"\n";
-            contentString += "permalink: /:year/:month/:day/:slug/checkin/\n";
+            if (preformattedData.properties['checkin'] != undefined && preformattedData.properties['checkin'].length > 0) {
+                contentString += "permalink: /:year/:month/:day/:slug/checkin/\n";
+            }
+            else if (preformattedData.properties['drank'] != undefined && preformattedData.properties['drank'].length > 0) {
+                contentString += "permalink: /:year/:month/:day/:slug/drank/\n";
+            }
+            
 
             contentString += '---\n';
             if (properties.content != undefined && properties.content.length > 0) {
@@ -213,33 +269,19 @@ function formatUrl(preformattedData): Promise<any> {
         let year = moment(properties.published[0]).format("YYYY");
         let month = moment(properties.published[0]).format("MM");
         let day = moment(properties.published[0]).format("DD");
-        // This needs to be based on how many posts exist for this day
-        // var postIndex = 1;
+        
         var yearDir = dataDir + "_note/" + year + "/";
-        // if (!fs.existsSync(yearDir)) {
-        //     fs.mkdirSync(yearDir);
-        //     console.log(yearDir + " created");
-        // }
         var monthDir = yearDir + month + "/";
-        // if (!fs.existsSync(monthDir)) {
-        //     fs.mkdirSync(monthDir);
-        //     console.log(monthDir + " created");
-        // }
         var dayDir = monthDir + day + "/";
-        // if (!fs.existsSync(dayDir)) {
-        //     fs.mkdirSync(dayDir);
-        //     console.log(dayDir + " created");
-        // } else {
-        //     var dirContents = fs.readdirSync(dayDir);
-        //     dirContents = _.filter(dirContents, (filename) => {
-        //         return fs.statSync(dayDir + "/" + filename).isDirectory();
-        //     });
-        //     postIndex = dirContents.length + 1;
-        // }
         
         let slug = (preformattedData.mp != undefined && preformattedData.mp.slug != undefined) ? preformattedData.mp.slug[0] : preformattedData.postInfo.postIndex;
 
-        resolve('https://eddiehinkle.com/' + year + "/" + month + "/" + day + "/" + slug + "/" + "checkin/");
+        if (preformattedData.properties['checkin'] != undefined && preformattedData.properties['checkin'].length > 0) {
+            resolve('https://eddiehinkle.com/' + year + "/" + month + "/" + day + "/" + slug + "/" + "checkin/");
+        }
+        else if (preformattedData.properties['drank'] != undefined && preformattedData.properties['drank'].length > 0) {
+            resolve('https://eddiehinkle.com/' + year + "/" + month + "/" + day + "/" + slug + "/" + "drank/");
+        }
     });
 }
 
@@ -252,28 +294,10 @@ function formatFilename(preformattedData) {
         let month = moment(properties.published[0]).format("MM");
         let day = moment(properties.published[0]).format("DD");
 
-        // var postIndex = 1;
         var yearDir = dataDir + "_note/" + year + "/";
-        // if (!fs.existsSync(yearDir)) {
-        //     fs.mkdirSync(yearDir);
-        //     console.log(yearDir + " created");
-        // }
         var monthDir = yearDir + month + "/";
-        // if (!fs.existsSync(monthDir)) {
-        //     fs.mkdirSync(monthDir);
-        //     console.log(monthDir + " created");
-        // }
         var dayDir = monthDir + day + "/";
-        // if (!fs.existsSync(dayDir)) {
-        //     fs.mkdirSync(dayDir);
-        //     console.log(dayDir + " created");
-        // } else {
-        //     var dirContents = fs.readdirSync(dayDir);
-        //     dirContents = _.filter(dirContents, (filename) => {
-        //         return fs.statSync(dayDir + filename).isDirectory();
-        //     });
-        //     postIndex = dirContents.length + 1;
-        // }
+        
         var postDir = dayDir + preformattedData.postInfo.postIndex + "/";
         if (!fs.existsSync(postDir)) {
             fs.mkdirSync(postDir);
@@ -294,6 +318,9 @@ function formatFilename(preformattedData) {
 				resolve(dataDir + "_note/repost/" + formatFileSlug(publishedDate, slug));
 			}
 			else if (preformattedData.properties['checkin'] != undefined && preformattedData.properties['checkin'].length > 0) {
+				resolve(postDir + "post.md");
+            }
+			else if (preformattedData.properties['drank'] != undefined && preformattedData.properties['drank'].length > 0) {
 				resolve(postDir + "post.md");
             } else {
                 formatter.formatFilename(preformattedData).then(function(data){
