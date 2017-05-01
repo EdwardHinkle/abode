@@ -40,7 +40,11 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
     if (_.intersection(micropubProperties, authorizedProperties).length > 0) {
 
-        return git.runGitPull().then(() => {
+        
+        return git.runGitStageAll()
+            .then(() => { return git.runGitCommit(); })
+            .then(() => { return git.runGitPull(); })
+            .then(() => {
 
             return preparePostInfo(micropubDocument).then(function(postInfo){
                 
