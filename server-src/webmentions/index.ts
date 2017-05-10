@@ -92,13 +92,14 @@ function tryAddEmojiReaction(reactionsArray, mention) {
 
 function addOrCreateEmojiArray(emoji, reactionsArray, mention) {
     var reactionIndex = _.findIndex(reactionsArray, (object: any) => {
-        return object.code == emoji;
+        return object.code == emoji.shortName;
     });
     
     if (reactionIndex == -1) {
         reactionsArray.push({
-            code: emoji,
-            display: "" + emojiData.find_by_short_name(emoji),
+            code: emoji.shortName,
+            display: "" + emoji.display,
+            // display: "" + emojiData.find_by_short_name(emoji),
             content: []
         });
         reactionIndex = reactionsArray.length-1;
@@ -113,7 +114,7 @@ function getEmojiReaction(mention) {
     emojiData.scan(stripContent).forEach(
         function(ec) {
             if (stripContent.length < 5) {
-                emojiFound = ec.short_name;
+                emojiFound = {shortName: ec.short_name, display: stripContent};
             }
         }
     );
