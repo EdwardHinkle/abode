@@ -42,7 +42,7 @@ export function getWebmentionData(): Promise<any> {
                     switch(mention.activity.type) {
                         case 'like':
                             // Check if item exists
-                            addOrCreateEmojiArray("+1", webmentions[targetPage].reactions, mention);
+                            addOrCreateEmojiArray({shortName: "+1", display: "👍"}, webmentions[targetPage].reactions, mention);
                             break;
                         case 'link':
                             if (tryAddEmojiReaction(webmentions[targetPage].reactions, mention) == false) {
