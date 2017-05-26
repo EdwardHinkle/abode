@@ -1,6 +1,7 @@
 import * as Promise from 'bluebird';
 import * as goodreads from '../goodreads';
 import * as webmentions from '../webmentions';
+import * as configTools from '../config';
 import * as jekyll from '../jekyll';
 import * as git from '../git';
 
@@ -12,7 +13,8 @@ export function rebuildServer(req?, res?) {
 
             return Promise.all([
                 goodreads.getGoodreadsData(),
-                webmentions.getWebmentionData()
+                webmentions.getWebmentionData(),
+                configTools.importPeopleData()
             ]).then((results) => {
                 // All tasks are done, we can restart the jekyll server, etc.
                 console.log("Rebuild ready...");
