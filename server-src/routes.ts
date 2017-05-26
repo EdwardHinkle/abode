@@ -4,7 +4,7 @@ import * as express from "express";
 import { micropubRouter } from './micropub';
 import { staticSiteRouter } from './static-site';
 import { processRouter } from './process-server';
-import { webmentionRouter } from './webmention';
+import { webmentionRouter } from './webmentions';
 
 export let router = express.Router();
 
