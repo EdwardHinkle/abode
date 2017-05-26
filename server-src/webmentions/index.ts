@@ -3,9 +3,43 @@ import * as Promise from 'bluebird';
 import * as _ from 'lodash';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as express from 'express';
 
 var emojiData = require('emoji-data');
 var config = require('../../abodeConfig.json');
+
+export let webmentionRouter = express.Router();
+
+// Routes
+webmentionRouter.get('/alert', webmentionAlert);
+
+function webmentionAlert(req, res) {
+    console.log("Webmention Alert");
+    console.log(req.body);
+
+    // Slack Incoming Webhook
+    // https://hooks.slack.com/services/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
+
+    //payload={"channel": "#general", "username": "webhookbot", "text": "This is posted to #general and comes from a bot named webhookbot.", "icon_emoji": ":ghost:"}
+
+//     {
+// 	"fallback": "Required text summary of the attachment that is shown by clients that understand attachments but choose not to show them.",
+
+// 	"text": "Optional text that should appear within the attachment",
+// 	"pretext": "Optional text that should appear above the formatted data",
+
+// 	"color": "#36a64f", // Can either be one of 'good', 'warning', 'danger', or any hex color code
+
+// 	// Fields are displayed in a table on the message
+// 	"fields": [
+// 		{
+// 			"title": "Required Field Title", // The title may not contain markup and will be escaped for you
+// 			"value": "Text value of the field. May contain standard message markup and must be escaped as normal. May be multi-line.",
+// 			"short": false // Optional flag indicating whether the `value` is short enough to be displayed side-by-side with other values
+// 		}
+// 	]
+// }				
+}
 
 export function getWebmentionData(): Promise<any> {
     
