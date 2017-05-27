@@ -11,7 +11,7 @@ var config = require('../../abodeConfig.json');
 export let webmentionRouter = express.Router();
 
 // Routes
-webmentionRouter.get('/alert', webmentionAlert);
+webmentionRouter.post('/alert', webmentionAlert);
 
 function webmentionAlert(req, res) {
     console.log("Webmention Alert");
