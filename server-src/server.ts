@@ -16,6 +16,9 @@ app.listen(config.PORT, function() {
 	console.log("Abode API running on " + config.PORT);
 });
 
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(bodyParser.json());
 
 // App Routes
