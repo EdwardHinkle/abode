@@ -17,6 +17,14 @@ webmentionRouter.post('/alert', webmentionAlert);
 
 function webmentionAlert(req, res) {
     
+    let receivedWebmention = req.body as WebmentionIOFatPing;
+
+    if (receivedWebmention.secret != "djasi83h9vhjdjsd3uhc9fhf") {
+        console.log("Unauthorized Webmention Alert Attempt");
+        res.status(401);
+        return;
+    }
+
     console.log("Received Webmention Alert");
 
     fs.writeFile(`${__dirname}/../../log-files/webmention/${moment().format("YYYY-MM-DD-HH:mm:ss")}.json`, JSON.stringify(req.body, null, 2), (err) => {
@@ -24,8 +32,6 @@ function webmentionAlert(req, res) {
             return console.log(err);
         }
     });
-
-    let receivedWebmention = req.body as WebmentionIOFatPing;
 
     var slackMessage = {
         "channel": "#website",
