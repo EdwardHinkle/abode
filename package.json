@@ -39,6 +39,7 @@
     "goodreads": "^0.1.0",
     "js-yaml": "^3.8.4",
     "lodash": "^4.17.4",
+    "mf-obj": "^2.1.0",
     "micropub-express": "^0.7.1",
     "moment": "^2.18.0",
     "request": "^2.81.0"
