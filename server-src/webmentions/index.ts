@@ -60,7 +60,7 @@ function webmentionAlert(req, res) {
         .then(entry => {
             slackMessage.text = `${receivedWebmention.post.content.value} (<${receivedWebmention.post.url}|in reply to>: <${replyToUrl}|${entry.name}>)`;
         }).catch((error) => {
-            slackMessage.text = `<${receivedWebmention.post.url}|liked> ${replyToUrl}`;
+            slackMessage.text = `${receivedWebmention.post.content.value} (<${receivedWebmention.post.url}|in reply to>: ${replyToUrl})`;
         }));
 
         if (receivedWebmention.post['swarm-coins'] != undefined) {
