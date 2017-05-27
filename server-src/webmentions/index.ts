@@ -32,7 +32,46 @@ function webmentionAlert(req, res) {
         "username": receivedWebmention.post.author.name,
         "icon_url": receivedWebmention.post.author.photo,
         "text": receivedWebmention.post.content.value,
-        "attachments": [
+        "attachments": undefined
+    }
+
+    var finishedProcessing: Promise<any>[] = [];
+
+    // If it is a like
+    if (receivedWebmention.post["wm-property"] == "like-of") {
+         finishedProcessing.push(mfo.getEntry(receivedWebmention.post.content.value)
+        .then(entry => {
+            slackMessage.text = `<${receivedWebmention.post.url}|liked> <${receivedWebmention.post.content.value}|'${entry.name}'>`;
+            delete slackMessage.attachments;
+        }));
+    }
+    // If it is in reply to
+    else if (receivedWebmention.post["wm-property"] == "in-reply-to") {
+        let replyToUrl = receivedWebmention.post[receivedWebmention.post['wm-property']];
+        finishedProcessing.push(mfo.getEntry(replyToUrl)
+        .then(entry => {
+            slackMessage.text = `${receivedWebmention.post.content.value} (<${receivedWebmention.post.url}|in reply to>: <${replyToUrl}|${entry.name}>)`;
+
+            if (receivedWebmention.post['swarm-coins'] != undefined) {
+                slackMessage.attachments = [
+                    {
+                        "fallback": `Coins Awarded: ${receivedWebmention.post['swarm-coins']}`,
+                        "color": "#36a64f",
+                        "fields": [
+                            {
+                                "title": "Coins Awarded",
+                                "value": receivedWebmention.post['swarm-coins'],
+                                "short": false
+                            }
+                        ],
+                    }
+                ]
+            }
+        }));
+    }
+    // We don't know what it is, act generically
+    else {
+        slackMessage.attachments = [
             {
                 "fallback": `${receivedWebmention.post.author.name}: ${receivedWebmention.post.content.value}`,
                 "color": "#36a64f",
@@ -45,25 +84,8 @@ function webmentionAlert(req, res) {
         ]
     }
 
-    var finishedProcessing: Promise<any>[] = [];
-
-    // If it is a like
-    if (receivedWebmention.post["wm-property"] == "like-of") {
-         finishedProcessing.push(mfo.getEntry(receivedWebmention.post.content.value)
-        .then(entry => {
-            slackMessage.text = `${slackMessage.username} <${receivedWebmention.post.url}|liked> <${receivedWebmention.post.content.value}|'${entry.name}'>`;
-            delete slackMessage.attachments;
-        }));
-    }
-
     // If it has swarm coins
-    if (receivedWebmention.post['swarm-coins'] != undefined) {
-        slackMessage.attachments[0].fields.push({
-            "title": "Coins Awarded",
-            "value": receivedWebmention.post['swarm-coins'],
-            "short": false
-        });
-    }
+    
 
     Promise.all(finishedProcessing).then(() => {
         // Slack Incoming Webhook
