@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as express from 'express';
+import * as moment from 'moment';
 
 var emojiData = require('emoji-data');
 var config = require('../../abodeConfig.json');
@@ -16,6 +17,12 @@ webmentionRouter.post('/alert', webmentionAlert);
 function webmentionAlert(req, res) {
     
     console.log("Received Webmention Alert");
+
+    fs.writeFile(`${__dirname}/../../log-files/webmention/${moment().format("YYYY-MM-DD-HH:mm:ss")}.json`, JSON.stringify(req.body, null, 2), (err) => {
+        if(err) {
+            return console.log(err);
+        }
+    });
 
     let receivedWebmention = req.body as WebmentionIOFatPing;
 
