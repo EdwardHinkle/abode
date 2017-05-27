@@ -5,6 +5,7 @@ import * as path from 'path';
 import * as express from 'express';
 import * as moment from 'moment';
 import * as mfo from 'mf-obj';
+import * as Bluebird from 'bluebird';
 
 var emojiData = require('emoji-data');
 var config = require('../../abodeConfig.json');
@@ -100,7 +101,7 @@ export function getWebmentionData(): Promise<any> {
             var webmentionData = JSON.parse(data.body);
             var webmentionsOfLinks = {};
 
-            Promise.each(webmentionData.links, (mention: any) => {
+            Bluebird.each(webmentionData.links, (mention: any) => {
                 var targetPage = mention.target.split("eddiehinkle.com").pop().split("?")[0];
 
                 if (targetPage == "/now" && mention.data.author != undefined && mention.data.author.name == "Swarm") {
