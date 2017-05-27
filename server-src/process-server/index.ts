@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as path from 'path';
-import { rebuildServer, refreshServer, refreshServerWithDrafts } from './rebuildServer';
+import { rebuildServer, refreshServer, refreshServerWithDrafts, rebuildServerFromSlack } from './rebuildServer';
 
 export let processRouter = express.Router();
 
@@ -8,3 +8,4 @@ export let processRouter = express.Router();
 processRouter.get('/rebuild', rebuildServer);
 processRouter.get('/refresh', refreshServer);
 processRouter.get('/draftRefresh', refreshServerWithDrafts);
+processRouter.post('/rebuild/slack', rebuildServerFromSlack);
