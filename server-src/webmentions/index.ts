@@ -49,6 +49,8 @@ function webmentionAlert(req, res) {
          finishedProcessing.push(mfo.getEntry(likeOfUrl)
         .then(entry => {
             slackMessage.text = `<${receivedWebmention.post.url}|liked> <${likeOfUrl}|'${entry.name}'>`;
+        }).catch((error) => {
+            slackMessage.text = `<${receivedWebmention.post.url}|liked> ${likeOfUrl}`;
         }));
     }
     // If it is in reply to
@@ -57,23 +59,25 @@ function webmentionAlert(req, res) {
         finishedProcessing.push(mfo.getEntry(replyToUrl)
         .then(entry => {
             slackMessage.text = `${receivedWebmention.post.content.value} (<${receivedWebmention.post.url}|in reply to>: <${replyToUrl}|${entry.name}>)`;
-
-            if (receivedWebmention.post['swarm-coins'] != undefined) {
-                slackMessage.attachments = [
-                    {
-                        "fallback": `Coins Awarded: ${receivedWebmention.post['swarm-coins']}`,
-                        "color": "#36a64f",
-                        "fields": [
-                            {
-                                "title": "Coins Awarded",
-                                "value": receivedWebmention.post['swarm-coins'],
-                                "short": false
-                            }
-                        ],
-                    }
-                ]
-            }
+        }).catch((error) => {
+            slackMessage.text = `<${receivedWebmention.post.url}|liked> ${replyToUrl}`;
         }));
+
+        if (receivedWebmention.post['swarm-coins'] != undefined) {
+            slackMessage.attachments = [
+                {
+                    "fallback": `Coins Awarded: ${receivedWebmention.post['swarm-coins']}`,
+                    "color": "#36a64f",
+                    "fields": [
+                        {
+                            "title": "Coins Awarded",
+                            "value": receivedWebmention.post['swarm-coins'],
+                            "short": false
+                        }
+                    ],
+                }
+            ]
+        }
     }
     // We don't know what it is, act generically
     else {
