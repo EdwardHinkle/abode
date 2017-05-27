@@ -1,10 +1,10 @@
 import * as request from 'request';
-import * as Promise from 'bluebird';
 import * as _ from 'lodash';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as express from 'express';
 import * as moment from 'moment';
+import * as mfo from 'mf-obj';
 
 var emojiData = require('emoji-data');
 var config = require('../../abodeConfig.json');
@@ -44,6 +44,17 @@ function webmentionAlert(req, res) {
         ]
     }
 
+    var finishedProcessing: Promise<any>[] = [];
+
+    // If it is a like
+    if (receivedWebmention.post["wm-property"] == "like-of") {
+         finishedProcessing.push(mfo.getEntry(receivedWebmention.post.content.value)
+        .then(entry => {
+            slackMessage.text = `${slackMessage.username} liked <${receivedWebmention.post.content.value}|'${entry.name}'>`;
+        }));
+    }
+
+    // If it has swarm coins
     if (receivedWebmention.post['swarm-coins'] != undefined) {
         slackMessage.attachments[0].fields.push({
             "title": "Coins Awarded",
@@ -52,21 +63,23 @@ function webmentionAlert(req, res) {
         });
     }
 
-    // Slack Incoming Webhook
-    request.post({
-        url: `https://hooks.slack.com/services/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`,
-        json: slackMessage
-    }, (err, data) => {
-        if (err != undefined) {
-            console.log(`ERROR: ${err}`);
-        }
-        if (data.statusCode != 200) {
-            console.log("oops Slack Error");
-        } else {
-            console.log("Successfull sent Slack Message");
-        }
+    Promise.all(finishedProcessing).then(() => {
+        // Slack Incoming Webhook
+        request.post({
+            url: `https://hooks.slack.com/services/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`,
+            json: slackMessage
+        }, (err, data) => {
+            if (err != undefined) {
+                console.log(`ERROR: ${err}`);
+            }
+            if (data.statusCode != 200) {
+                console.log("oops Slack Error");
+            } else {
+                console.log("Successfull sent Slack Message");
+            }
 
 
+        });
     });
 
     res.status(200).send("ok");
