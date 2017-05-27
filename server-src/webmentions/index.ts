@@ -14,31 +14,56 @@ export let webmentionRouter = express.Router();
 webmentionRouter.post('/alert', webmentionAlert);
 
 function webmentionAlert(req, res) {
-    console.log("Webmention Alert");
-    console.log(req.body);
+    
+    console.log("Received Webmention Alert");
+
+    let receivedWebmention = req.body as WebmentionIOFatPing;
+
+    var slackMessage = {
+        "channel": "#website",
+        "username": receivedWebmention.post.author.name,
+        "icon_url": receivedWebmention.post.author.photo,
+        "text": receivedWebmention.post.content.value,
+        "attachments": [
+            {
+                "fallback": `${receivedWebmention.post.author.name}: ${receivedWebmention.post.content.value}`,
+                "color": "#36a64f",
+                "author_name": (receivedWebmention.post.name ? receivedWebmention.post.name : 'Note'),
+                "author_link": receivedWebmention.post.url,
+                "title": receivedWebmention.post['wm-property'],
+                "title_link": receivedWebmention.post[receivedWebmention.post['wm-property']],
+                "fields": [],
+            }
+        ]
+    }
+
+    if (receivedWebmention.post['swarm-coins'] != undefined) {
+        slackMessage.attachments[0].fields.push({
+            "title": "Coins Awarded",
+            "value": receivedWebmention.post['swarm-coins'],
+            "short": false
+        });
+    }
 
     // Slack Incoming Webhook
-    // https://hooks.slack.com/services/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
+    request.post({
+        url: `https://hooks.slack.com/services/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`,
+        json: slackMessage
+    }, (err, data) => {
+        if (err != undefined) {
+            console.log(`ERROR: ${err}`);
+        }
+        if (data.statusCode != 200) {
+            console.log("oops Slack Error");
+        } else {
+            console.log("Successfull sent Slack Message");
+        }
 
-    //payload={"channel": "#general", "username": "webhookbot", "text": "This is posted to #general and comes from a bot named webhookbot.", "icon_emoji": ":ghost:"}
 
-//     {
-// 	"fallback": "Required text summary of the attachment that is shown by clients that understand attachments but choose not to show them.",
+    });
 
-// 	"text": "Optional text that should appear within the attachment",
-// 	"pretext": "Optional text that should appear above the formatted data",
+    res.status(200).send("ok");
 
-// 	"color": "#36a64f", // Can either be one of 'good', 'warning', 'danger', or any hex color code
-
-// 	// Fields are displayed in a table on the message
-// 	"fields": [
-// 		{
-// 			"title": "Required Field Title", // The title may not contain markup and will be escaped for you
-// 			"value": "Text value of the field. May contain standard message markup and must be escaped as normal. May be multi-line.",
-// 			"short": false // Optional flag indicating whether the `value` is short enough to be displayed side-by-side with other values
-// 		}
-// 	]
-// }				
 }
 
 export function getWebmentionData(): Promise<any> {
@@ -172,4 +197,13 @@ function addReplaceOrIgnoreWebMention(current_array, mention) {
             current_array[replaceIndex] = mention;
         }
     }
+}
+
+
+interface WebmentionIOFatPing {
+    secret: String;
+    source: String;
+    target: String;
+    private: Boolean;
+    post: any;
 }
