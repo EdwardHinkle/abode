@@ -39,10 +39,10 @@ function webmentionAlert(req, res) {
 
     // If it is a like
     if (receivedWebmention.post["wm-property"] == "like-of") {
-         finishedProcessing.push(mfo.getEntry(receivedWebmention.post.content.value)
+        let likeOfUrl = receivedWebmention.post[receivedWebmention.post['wm-property']];
+         finishedProcessing.push(mfo.getEntry(likeOfUrl)
         .then(entry => {
-            slackMessage.text = `<${receivedWebmention.post.url}|liked> <${receivedWebmention.post.content.value}|'${entry.name}'>`;
-            delete slackMessage.attachments;
+            slackMessage.text = `<${receivedWebmention.post.url}|liked> <${likeOfUrl}|'${entry.name}'>`;
         }));
     }
     // If it is in reply to
