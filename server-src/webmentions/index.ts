@@ -50,7 +50,8 @@ function webmentionAlert(req, res) {
     if (receivedWebmention.post["wm-property"] == "like-of") {
          finishedProcessing.push(mfo.getEntry(receivedWebmention.post.content.value)
         .then(entry => {
-            slackMessage.text = `${slackMessage.username} liked <${receivedWebmention.post.content.value}|'${entry.name}'>`;
+            slackMessage.text = `${slackMessage.username} <${receivedWebmention.post.url}|liked> <${receivedWebmention.post.content.value}|'${entry.name}'>`;
+            delete slackMessage.attachments;
         }));
     }
 
