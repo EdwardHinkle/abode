@@ -245,7 +245,7 @@ function addReplaceOrIgnoreWebMention(current_array, mention) {
 
     if (replaceIndex == -1) {
         // If item doesn't exist, add it
-        let insertIndex = _.sortedIndexBy(current_array, mention, function(item) { return item.data.published_ts; });
+        let insertIndex = _.sortedIndexBy(current_array, mention, function(item) { return -item.data.published_ts; });
         current_array.splice(insertIndex, 0, mention);
 
         // current_array.push(mention);
