@@ -171,6 +171,7 @@ export function getWebmentionData(): Promise<any> {
                 } 
 
             }).then(() => {
+
                 var json = JSON.stringify(webmentions);
                 fs.writeFile(path.join(__dirname, '../../jekyll/_source/_data/webmentions.json'), json, 'utf8', function(error){
                     if (error != undefined) {
@@ -244,7 +245,10 @@ function addReplaceOrIgnoreWebMention(current_array, mention) {
 
     if (replaceIndex == -1) {
         // If item doesn't exist, add it
-        current_array.push(mention);
+        let insertIndex = _.sortedIndexBy(current_array, mention, function(item) { return item.data.published_ts; });
+        current_array.splice(insertIndex, 0, mention);
+
+        // current_array.push(mention);
     } else {
         // If item does exist, only add it if it has a date and the date is older than the new item
         if (current_array[replaceIndex].data.published_ts != undefined && current_array[replaceIndex].data.published_ts < mention.data.published_ts) {
