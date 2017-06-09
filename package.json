@@ -26,8 +26,9 @@
     "@types/cron": "^1.2.0",
     "@types/es6-promise": "0.0.32",
     "@types/express": "^4.0.35",
-    "@types/js-yaml": "^3.5.30",
+    "@types/js-yaml": "^3.5.31",
     "@types/lodash": "^4.14.55",
+    "@types/to-markdown": "^3.0.0",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
     "bookmark": "git@github.com:EdwardHinkle/bookmark.git",
@@ -37,11 +38,13 @@
     "express": "^4.15.2",
     "format-microformat": "^0.9.1",
     "goodreads": "^0.1.0",
+    "image-type": "^3.0.0",
     "js-yaml": "^3.8.4",
     "lodash": "^4.17.4",
     "mf-obj": "^2.1.0",
     "micropub-express": "^0.7.1",
     "moment": "^2.18.0",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "to-markdown": "^3.0.4"
   }
 }
