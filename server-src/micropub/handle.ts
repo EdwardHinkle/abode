@@ -30,11 +30,11 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
     // This section is mainly to log everything for debugging later
     var writeJson = JSON.stringify(micropubDocument, null, 2);
 
-    // fs.writeFile(path.join(__dirname, '../../log-files/' + moment().format("YYYY-MM-DD-HH:mm:ss") + '.json'), writeJson, (err) => {
-    //     if(err) {
-    //         return console.log(err);
-    //     }
-    // });
+    fs.writeFile(path.join(__dirname, '../../log-files/' + moment().format("YYYY-MM-DD-HH:mm:ss") + '.json'), writeJson, (err) => {
+        if(err) {
+            return console.log(err);
+        }
+    });
     // This is the end of the debugging section
 
     let authorizedPostTypes: [mfTypes.postType] = [
@@ -519,31 +519,31 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         console.log(`Test Fileoutput for ${fileName}`);
                         console.log(fileData);
 
-                        // fs.writeFile(fileName, fileData, function(err) {
-                        //     if(err) {
-                        //         return console.log(err);
-                        //     }
+                        fs.writeFile(fileName, fileData, function(err) {
+                            if(err) {
+                                return console.log(err);
+                            }
 
-                        //     console.log(`Finished saving: ${fileName}`);
-                        // }); 
+                            console.log(`Finished saving: ${fileName}`);
+                        }); 
 
                         return;
                     })
-                    // .then(() => {
-                    //     // All tasks are done, we can restart the jekyll server, etc.
-                    //     console.log("Rebuild ready...");
+                    .then(() => {
+                        // All tasks are done, we can restart the jekyll server, etc.
+                        console.log("Rebuild ready...");
 
-                    //     git.runGitStageAll()
-                    //     .then(() => { return git.runGitCommit(); })
-                    //     .then(() => { return git.runGitPush(); })
-                    //     .then(() => { return jekyll.runJekyllBuild(); })
-                    //     .catch((error) => {
-                    //         console.log("Caught Error");
-                    //         console.log(error);
-                    //     });
-                    //     return;
+                        git.runGitStageAll()
+                        .then(() => { return git.runGitCommit(); })
+                        .then(() => { return git.runGitPush(); })
+                        .then(() => { return jekyll.runJekyllBuild(); })
+                        .catch((error) => {
+                            console.log("Caught Error");
+                            console.log(error);
+                        });
+                        return;
                         
-                    // });
+                    });
 
                     // Make sure the document has the post index
                     let micropubInfoForUrl = _.clone(micropubDocument);
@@ -645,15 +645,15 @@ function preparePostInfo(preformattedData) {
             postIndex++;
         }
 
-        // fs.writeFile(`${dayDir}/${postIndex}/post.md`, '', function(err) {
-        //     if(err) {
-        //         console.log(err);
-        //         reject(err);
-        //     }
+        fs.writeFile(`${dayDir}/${postIndex}/post.md`, '', function(err) {
+            if(err) {
+                console.log(err);
+                reject(err);
+            }
 
-        //     console.log(`Created: ${dayDir}/${postIndex}/post.md`);
-        //     resolve({ postIndex: postIndex });
-        // }); 
+            console.log(`Created: ${dayDir}/${postIndex}/post.md`);
+            resolve({ postIndex: postIndex });
+        }); 
         resolve({ postIndex: postIndex });
         
     });
