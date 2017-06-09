@@ -240,10 +240,13 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                                     if (entry.author != undefined) {
                                         entryPropertiesToAdd.author = {
-                                            name: entry.author.name,
-                                            photo: entry.author.photo,
-                                            url: entry.author.url,
-                                            uid: entry.author.uid
+                                            type: "h-card",
+                                            properties: {
+                                                name: entry.author.name,
+                                                photo: entry.author.photo,
+                                                url: entry.author.url,
+                                                uid: entry.author.uid
+                                            }
                                         }
                                     }
 
@@ -252,7 +255,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                     }
 
                                     yamlDocument.properties[propertyToExpand] = {
-                                        type: "h-entry",
+                                        type: "h-cite",
                                         properties: entryPropertiesToAdd
                                     }
                                 }).catch((err) => {
