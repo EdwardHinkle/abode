@@ -18,8 +18,7 @@ export function importPeopleData(): Promise<any> {
         let dataByName = JSON.stringify(personData);
         let personByUrl = {};
         _.forEach(personData, (person, key) => {
-            let personUrl = person[person.representitive];
-            person.name = key;
+            let personUrl = person[person.representitiveUrl];
             personByUrl[personUrl] = person;
         });
         let dataByUrl = JSON.stringify(personByUrl);

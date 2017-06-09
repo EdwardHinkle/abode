@@ -1,35 +1,68 @@
 Ash:
-  representitive: url
+  nickname: Ash
+  firstName: Ashley
+  lastName: Hinkle
+  representitiveUrl: url
   url: http://ashleyhinkle.com
-  fb: https://www.facebook.com/ashleybhinkle
+  facebook: https://www.facebook.com/ashleybhinkle
 Mom:
-  representitive: fb
-  fb: https://www.facebook.com/sarah.hinkle.5
-Dad: 
-  representitive: fb
-  fb: https://www.facebook.com/dean.hinkle
+  nickname: Mom
+  firstName: Sarah
+  lastName: Hinkle
+  representitiveUrl: facebook
+  facebook: https://www.facebook.com/sarah.hinkle.5
+Dad:
+  nickname: Dad
+  firstName: Dean
+  lastName: Hinkle
+  representitiveUrl: facebook
+  facebook: https://www.facebook.com/dean.hinkle
 Eli:
-  representitive: twitter
-  fb: https://www.facebook.com/eli.choi
+  nickname: Eli
+  firstName: Eli
+  lastName: Choi
+  representitiveUrl: twitter
+  facebook: https://www.facebook.com/eli.choi
   twitter: https://twitter.com/elidchoi
 Helen:
-  representitive: fb
-  fb: https://www.facebook.com/profile.php?id=530666733
+  nickname: Helen
+  firstName: Helen
+  lastName: Choi
+  representitiveUrl: facebook
+  facebook: https://www.facebook.com/profile.php?id=530666733
 Phil:
-  representitive: fb
-  fb: https://www.facebook.com/philly.joe.3
+  nickname: Phil
+  firstName: Phil
+  lastName: ?
+  representitiveUrl: facebook
+  facebook: https://www.facebook.com/philly.joe.3
 Jean:
-  representitive: fb
-  fb: https://www.facebook.com/jeansunmi
+  nickname: Jean
+  firstName: Jean
+  lastName: ?
+  representitiveUrl: facebook
+  facebook: https://www.facebook.com/jeansunmi
 Sarah:
-  representitive: fb
-  fb: https://www.facebook.com/sarah.wilson.96155669
+  nickname: Sarah
+  firstName: Sarah
+  lastName: Wilson
+  representitiveUrl: facebook
+  facebook: https://www.facebook.com/sarah.wilson.96155669
 Cindy:
-  representitive: fb
-  fb: https://www.facebook.com/cindy.wilson.52206654
+  nickname: Cindy
+  firstName: Cindy
+  lastName: Wilson
+  representitiveUrl: facebook
+  facebook: https://www.facebook.com/cindy.wilson.52206654
 Eric:
-  representitive: fb
-  fb: https://www.facebook.com/eric.silva.96434
+  nickname: Eric
+  firstName: Eric
+  lastName: Silva
+  representitiveUrl: facebook
+  facebook: https://www.facebook.com/eric.silva.96434
 Ben:
-  representitive: fb
-  fb: https://www.facebook.com/profile.php?id=7028461
+  nickname: Ben
+  firstName: Ben
+  lastName: Hegler
+  representitiveUrl: facebook
+  facebook: https://www.facebook.com/profile.php?id=7028461
