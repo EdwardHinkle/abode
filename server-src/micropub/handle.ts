@@ -45,7 +45,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
         "Like",
         "Reply",
         "Article",
-        "Photo"
+        "Photo",
+        "Repost"
     ];
 
     let tagsForPostType = {
@@ -223,12 +224,16 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                 console.log("Finding context for: " + propertyToExpand);
                                 yamlDocumentReady.push(mfo.getEntry(getContextProperty)
                                 .then((entry) => {
+
+                                    if (entry.name == undefined) {
+                                        console.log("No name found: ");
+                                        console.log(entry);
+                                        throw new Error("No name found");
+                                    }
                                     
                                     let entryPropertiesToAdd: any = {};
                                     
-                                    if (entry.name != undefined) {
-                                        entryPropertiesToAdd.name = entry.name;
-                                    }
+                                    entryPropertiesToAdd.name = entry.name;
 
                                     if (entry.url != undefined) {
                                         entryPropertiesToAdd.url = entry.url;
@@ -531,21 +536,21 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         }); 
 
                         return;
-                    })
-                    .then(() => {
+                    // })
+                    // .then(() => {
                         // All tasks are done, we can restart the jekyll server, etc.
-                        console.log("Rebuild ready...");
+                        // console.log("Rebuild ready...");
 
-                        git.runGitStageAll()
-                        .then(() => { return git.runGitCommit(); })
-                        .then(() => { return git.runGitPush(); })
-                        .then(() => { return jekyll.runJekyllBuild(); })
-                        .catch((error) => {
-                            console.log("Caught Error");
-                            console.log(error);
-                        });
-                        return;
+                        // git.runGitStageAll()
+                        // .then(() => { return git.runGitCommit(); })
+                        // .then(() => { return git.runGitPush(); })
+                        // .then(() => { return jekyll.runJekyllBuild(); })
                         
+                        // return;
+                        
+                    }).catch((error) => {
+                        console.log("Caught Error");
+                        console.log(error);
                     });
 
                     // Make sure the document has the post index
