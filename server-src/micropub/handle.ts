@@ -544,11 +544,13 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         // git.runGitStageAll()
                         // .then(() => { return git.runGitCommit(); })
                         // .then(() => { return git.runGitPush(); })
-                        // .then(() => { return jekyll.runJekyllBuild(); })
+                        // .then(() => { return jekyll.runJekyllBuild(); })                        
                         
                         // return;
                         
-                    }).catch((error) => {
+                    })
+                    .then(() => { return jekyll.runJekyllBuild(); })
+                    .catch((error) => {
                         console.log("Caught Error");
                         console.log(error);
                     });
