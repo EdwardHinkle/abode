@@ -12,6 +12,7 @@ import * as toMarkdown from 'to-markdown';
 import * as mfo from 'mf-obj';
 
 let imageType = require('image-type');
+let readingTime = require('reading-time');
 
 import { People } from '../people';
 
@@ -124,7 +125,11 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                         // Convert name to title
                         if (micropubDocument.properties.name != undefined) {
-                            yamlDocument.title = micropubDocument.properties.name[0];
+                            if (micropubDocument.properties.name instanceof Array) {
+                                yamlDocument.title = micropubDocument.properties.name[0];
+                            } else {
+                                yamlDocument.title = micropubDocument.properties.name;
+                            }
                         }
 
                         let micropubContent: any = "";
@@ -145,6 +150,14 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         // if there is no title or if the title is the prefix to the content, ignore it
                         if (yamlDocument.title == undefined || micropubContent.indexOf(yamlDocument.title) == 0) {
                             yamlDocument.title = "";
+                        }
+
+                        if (yamlDocument.title > "" && micropubContent > "") {
+                            // Add featured if there is a title and content
+                            yamlDocument.featured = true;
+                            
+                            // Add duration estimate
+                            yamlDocument.duration = readingTime(micropubContent);
                         }
 
                         // Loop through all properties
