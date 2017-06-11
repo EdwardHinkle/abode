@@ -97,7 +97,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                         // For posts the date needs to be in the root object
                         if (micropubDocument.properties.published != undefined) {
-                            yamlDocument.date = moment(micropubDocument.properties.published[0]).format("YYYY-MM-DD HH:mm:ss ZZ");
+                            let dateString = (micropubDocument.properties.published instanceof Array ? micropubDocument.properties.published[0] : micropubDocument.properties.published);
+                            yamlDocument.date = moment(dateString).format("YYYY-MM-DD HH:mm:ss ZZ");
                         } else {
                             yamlDocument.date = moment().format("YYYY-MM-DD HH:mm:ss ZZ");
                         }
@@ -580,7 +581,14 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 function formatUrl(micropubDocument): Promise<any> {
 	return new Promise((resolve, reject) => {
         console.log("Formatting URL");
-        let date = micropubDocument.properties.published != undefined ? moment(micropubDocument.properties.published[0]) : moment();
+        let date;
+        if (micropubDocument.properties.published != undefined) {
+            let dateString = (micropubDocument.properties.published instanceof Array ? micropubDocument.properties.published[0] : micropubDocument.properties.published);
+            date = moment(dateString);
+        } else {
+            date = moment();
+        }
+        
         let year = date.format("YYYY");
         let month = date.format("MM");
         let day = date.format("DD");
@@ -623,7 +631,14 @@ function formatFilename(data) {
 function preparePostInfo(preformattedData) {
     return new Promise((resolve, reject) => {
         let properties = preformattedData.properties;
-        let date = properties.published != undefined ? moment(properties.published[0]) : moment();
+        let date;
+        if (properties.published != undefined) {
+            let dateString = (properties.published instanceof Array ? properties.published[0] : properties.published);
+            date = moment(dateString);
+        } else {
+            date = moment();
+        }
+        
         let year = date.format("YYYY");
         let month = date.format("MM");
         let day = date.format("DD");
