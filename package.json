@@ -44,6 +44,7 @@
     "mf-obj": "^2.1.0",
     "micropub-express": "^0.7.1",
     "moment": "^2.18.0",
+    "reading-time": "^1.1.0",
     "request": "^2.81.0",
     "to-markdown": "^3.0.4"
   }
