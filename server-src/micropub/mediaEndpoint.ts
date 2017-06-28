@@ -23,6 +23,8 @@ let entryImageDirName = `entry-images`;
 
 export function getMediaEndpointRequest(req, res) {
 
+    console.log("Reached Endpoint");
+
     // output the headers
     console.log(req.headers);
 
