@@ -9,7 +9,9 @@
     "build": "tsc",
     "freshbuild": "npm run build; npm start",
     "restartServer": "npm run build; forever restart ./server-build/server.js",
-    "updateServer": "git pull; npm run restartServer"
+    "updateServer": "git pull; npm run restartServer",
+    "rebuildJekyll": "cd jekyll; jekyll build",
+    "rebuildJekyllPrivate": "cd jekyll; jekyll build --config=_config.yml,_local_config.yml"
   },
   "keywords": [
     "indieweb"
