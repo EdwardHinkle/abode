@@ -14,6 +14,8 @@ export let micropubRouter = express.Router();
 
 // Routes
 // micropubRouter.get('/local', convertSavedJsonToMarkdown);
+micropubRouter.use('/media', getMediaEndpointRequest);
+
 micropubRouter.use('/', micropub({
 	tokenReference: {
 		me: config.micropub.authenticationEndpoint,
@@ -22,8 +24,6 @@ micropubRouter.use('/', micropub({
 	handler: convertMicropubToJekyll,
 	queryHandler: getMicropubConfig
 }));
-
-micropubRouter.use('/media', getMediaEndpointRequest);
 
 // Support Functions
 function micropubHandler(micropubDocument, req) {
