@@ -6,6 +6,7 @@ import * as path from 'path';
 import { convertSavedJsonToMarkdown } from './convert';
 import { convertMicropubToJekyll } from './handle';
 import { getMicropubConfig } from './config';
+import { getMediaEndpointRequest } from './mediaEndpoint';
 
 var config = require('../../abodeConfig.json');
 
@@ -21,6 +22,8 @@ micropubRouter.use('/', micropub({
 	handler: convertMicropubToJekyll,
 	queryHandler: getMicropubConfig
 }));
+
+micropubRouter.use('/media', getMediaEndpointRequest);
 
 // Support Functions
 function micropubHandler(micropubDocument, req) {
