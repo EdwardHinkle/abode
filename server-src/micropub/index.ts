@@ -9,12 +9,18 @@ import { getMicropubConfig } from './config';
 import { getMediaEndpointRequest } from './mediaEndpoint';
 
 var config = require('../../abodeConfig.json');
+let dataDir = __dirname + "/../../jekyll/_source/";
+let imageDir = `${dataDir}/images`;
+let entryImageDirName = `entry-images`;
 
 export let micropubRouter = express.Router();
 
+var multer  = require('multer');
+var upload = multer({ dest: `${imageDir}/${entryImageDirName}` });
+
 // Routes
 // micropubRouter.get('/local', convertSavedJsonToMarkdown);
-micropubRouter.use('/media', getMediaEndpointRequest);
+micropubRouter.post('/media', upload.single('file'), getMediaEndpointRequest);
 
 micropubRouter.use('/', micropub({
 	tokenReference: {

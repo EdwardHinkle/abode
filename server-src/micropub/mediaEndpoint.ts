@@ -11,15 +11,13 @@ import * as yaml from 'js-yaml';
 import * as toMarkdown from 'to-markdown';
 import * as mfo from 'mf-obj';
 
-let imageType = require('image-type');
-let readingTime = require('reading-time');
-
-import { People } from '../people';
-
 let config = require('../../abodeConfig.json');
 let dataDir = __dirname + "/../../jekyll/_source/";
 let imageDir = `${dataDir}/images`;
 let entryImageDirName = `entry-images`;
+
+let imageType = require('image-type');
+let readingTime = require('reading-time');
 
 export function getMediaEndpointRequest(req, res) {
 
@@ -27,11 +25,13 @@ export function getMediaEndpointRequest(req, res) {
 
     // output the headers
     console.log(req.headers);
+    console.log(req.body);
+    console.log(req.file);
 
     // capture the encoded form data
-    req.on('data', (data) => {
-        console.log(data.toString());
-    });
+    // req.on('data', (data) => {
+    //     console.log(data.toString());
+    // });
 
     // send a response when finished reading
     // the encoded form data
