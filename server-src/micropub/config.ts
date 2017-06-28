@@ -25,23 +25,39 @@ export function getMicropubConfig(queryType, req): Promise<any> {
     return Promise.resolve().then(function () {
         switch(queryType) {
             case 'syndicate-to':
-                return [
-                    {
-                        "uid": "https://twitter.com/eddiehinkle",
-                        "name": "Twitter"
-                    },
-                    {
-                        "uid": "https://www.facebook.com/EdwardTHinkle",
-                        "name": "Facebook"
-                    },
-                    {
-                        "uid": "https://news.indieweb.org/en",
-                        "name": "IndieNews"
-                    }
-                ];
+                return {
+                    "syndicate-to": [
+                        {
+                            "uid": "https://twitter.com/eddiehinkle",
+                            "name": "Twitter"
+                        },
+                        {
+                            "uid": "https://www.facebook.com/EdwardTHinkle",
+                            "name": "Facebook"
+                        },
+                        {
+                            "uid": "https://news.indieweb.org/en",
+                            "name": "IndieNews"
+                        }
+                    ]
+                };
             case 'config':
                 return {
-                    "media-endpoint": "https://eddiehinkle.com/micropub/media"
+                    "media-endpoint": "https://eddiehinkle.com/micropub/media",
+                    "syndicate-to": [
+                        {
+                            "uid": "https://twitter.com/eddiehinkle",
+                            "name": "Twitter"
+                        },
+                        {
+                            "uid": "https://www.facebook.com/EdwardTHinkle",
+                            "name": "Facebook"
+                        },
+                        {
+                            "uid": "https://news.indieweb.org/en",
+                            "name": "IndieNews"
+                        }
+                    ]
                 };
         }
     });
