@@ -22,9 +22,9 @@ let imageDir = `${dataDir}/images`;
 let entryImageDirName = `entry-images`;
 
 export function getMicropubConfig(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-        resolve({
+    return Promise.resolve().then(function () {
+        return {
             "media-endpoint": "https://eddiehinkle.com/micropub/media"
-        });
+        };
     });
 }
