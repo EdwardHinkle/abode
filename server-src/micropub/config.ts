@@ -21,10 +21,13 @@ let dataDir = __dirname + "/../../jekyll/_source/";
 let imageDir = `${dataDir}/images`;
 let entryImageDirName = `entry-images`;
 
-export function getMicropubConfig(req): Promise<any> {
+export function getMicropubConfig(queryType, req): Promise<any> {
     return Promise.resolve().then(function () {
-        return {
-            "media-endpoint": "https://eddiehinkle.com/micropub/media"
-        };
+        switch(queryType) {
+            case 'config':
+                return {
+                    "media-endpoint": "https://eddiehinkle.com/micropub/media"
+                };
+        }
     });
 }
