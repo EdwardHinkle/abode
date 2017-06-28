@@ -157,7 +157,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             yamlDocument.featured = true;
                             
                             // Add duration estimate
-                            yamlDocument.duration = readingTime(micropubContent);
+                            yamlDocument.duration = Math.round(readingTime(micropubContent).minutes);
                         }
 
                         // Loop through all properties
