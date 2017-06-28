@@ -5,6 +5,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { convertSavedJsonToMarkdown } from './convert';
 import { convertMicropubToJekyll } from './handle';
+import { getMicropubConfig } from './config';
 
 var config = require('../../abodeConfig.json');
 
@@ -17,7 +18,8 @@ micropubRouter.use('/', micropub({
 		me: config.micropub.authenticationEndpoint,
 		endpoint: config.micropub.tokenEndpoint
 	},
-	handler: convertMicropubToJekyll
+	handler: convertMicropubToJekyll,
+	queryHandler: getMicropubConfig
 }));
 
 // Support Functions
