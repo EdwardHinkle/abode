@@ -9,7 +9,7 @@ import { getMicropubConfig } from './config';
 import { getMediaEndpointRequest } from './mediaEndpoint';
 
 var config = require('../../abodeConfig.json');
-let dataDir = __dirname + "/../../jekyll/_source/";
+let dataDir = __dirname + "/../../jekyll/_source";
 let imageDir = `${dataDir}/images`;
 let entryImageDirName = `entry-images`;
 

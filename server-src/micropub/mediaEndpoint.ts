@@ -10,11 +10,13 @@ import * as mfTypes from '../mf2';
 import * as yaml from 'js-yaml';
 import * as toMarkdown from 'to-markdown';
 import * as mfo from 'mf-obj';
+import * as mime from 'mime-types';
 
 let config = require('../../abodeConfig.json');
-let dataDir = __dirname + "/../../jekyll/_source/";
-let imageDir = `${dataDir}/images`;
-let entryImageDirName = `entry-images`;
+let dataDirPath = __dirname + "/../../jekyll/_source";
+let imageDirPath = `images`;
+let imageDir = `${dataDirPath}/${imageDirPath}`;
+let entryImagePath = `entry-images`;
 
 let imageType = require('image-type');
 let readingTime = require('reading-time');
@@ -23,29 +25,15 @@ export function getMediaEndpointRequest(req, res) {
 
     console.log("Reached Endpoint");
 
-    // output the headers
-    console.log(req.headers);
-    console.log(req.body);
-    console.log(req.file);
+    // Get file path with filename
+    let filePath = req.file.path;
+    let fileExt = mime.extension(req.file.mimetype);
+    let fileName = `${req.file.path}.${fileExt}`;
 
-    // capture the encoded form data
-    // req.on('data', (data) => {
-    //     console.log(data.toString());
-    // });
+    // Rename file with correct extension
+    fs.renameSync(filePath, `${filePath}.${fileExt}`);
 
-    // send a response when finished reading
-    // the encoded form data
-    req.on('end', () => {
-        res.status(201).send("ok");
-    });
+    // Send Response
+    res.location(`${config.server}/${imageDirPath}/${entryImagePath}/${fileName}`).status(201).send("ok");
 
-    // return new Promise((resolve, reject) => {
-    //
-    //
-    //     console.log(req);
-    //     resolve();
-    //
-    // }).then(() => {
-    //
-    // });
 }
