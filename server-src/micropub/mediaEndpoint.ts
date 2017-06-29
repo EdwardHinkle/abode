@@ -28,7 +28,7 @@ export function getMediaEndpointRequest(req, res) {
     // Get file path with filename
     let filePath = req.file.path;
     let fileExt = mime.extension(req.file.mimetype);
-    let fileName = `${req.file.path}.${fileExt}`;
+    let fileName = `${req.file.filename}.${fileExt}`;
 
     // Rename file with correct extension
     fs.renameSync(filePath, `${filePath}.${fileExt}`);
