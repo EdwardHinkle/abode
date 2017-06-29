@@ -66,3 +66,15 @@ Ben:
   lastName: Hegler
   representitiveUrl: facebook
   facebook: https://www.facebook.com/profile.php?id=7028461
+Marty:
+  nickname: Marty
+  firstName: Marty
+  lastName: McGuire
+  representitiveUrl: url
+  url: https://martymcgui.re/
+Jonathan:
+  nickname: Jonathan
+  firstName: Jonathan
+  lastName: Prozzi
+  representitiveUrl: url
+  url: https://jonathanprozzi.net/
