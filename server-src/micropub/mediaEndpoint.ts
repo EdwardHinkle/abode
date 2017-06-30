@@ -32,7 +32,7 @@ export function getMediaEndpointRequest(req, res) {
         }
 
         // If false ERROR
-        if (data.statusCode != 200 || data.body.me != config.server) {
+        if (data.statusCode != 200 || data.body.me.indexOf(config.server) == -1) {
             console.log(data.statusCode);
             console.log(data.body);
             res.status(401).send({error: "unauthorized"});
