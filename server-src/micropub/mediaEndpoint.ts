@@ -12,6 +12,7 @@ export function getMediaEndpointRequest(req, res) {
 
     if (req.headers.authorization === undefined || req.headers.authorization.indexOf('Bearer') == -1) {
         // ERROR no auth bearer token
+        console.log(req.headers);
         res.status(401).send({error: "unauthorized"});
         return;
     }
@@ -32,6 +33,8 @@ export function getMediaEndpointRequest(req, res) {
 
         // If false ERROR
         if (data.statusCode != 200 || data.body.me != config.server) {
+            console.log(data.statusCode);
+            console.log(data.body);
             res.status(401).send({error: "unauthorized"});
             return;
         }
