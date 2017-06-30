@@ -2,6 +2,7 @@
 /abodeConfig.json
 /server-build
 /node_modules
+/media-server-storage
 /jekyll/_build
 /jekyll/.sass-cache
 /jekyll/_source

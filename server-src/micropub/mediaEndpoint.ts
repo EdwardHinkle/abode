@@ -4,14 +4,11 @@ import * as request from 'request';
 
 let config = require('../../abodeConfig.json');
 let dataDirPath = __dirname + "/../../jekyll/_source";
-let imageDirPath = `images`;
-let entryImagePath = `entry-images`;
+let imageDirPath = `${__dirname}/../../media-server-storage/`;
 
 let imageType = require('image-type');
 
 export function getMediaEndpointRequest(req, res) {
-
-    console.log("Reached Endpoint");
 
     if (req.headers.authorization === undefined || req.headers.authorization.indexOf('Bearer') == -1) {
         // ERROR no auth bearer token
@@ -46,7 +43,7 @@ export function getMediaEndpointRequest(req, res) {
         }
 
         // Everything is fine lets do the actual work
-        
+
         // Get file path with filename
         let filePath = req.file.path;
         let fileExt = mime.extension(req.file.mimetype);
@@ -56,7 +53,7 @@ export function getMediaEndpointRequest(req, res) {
         fs.renameSync(filePath, `${filePath}.${fileExt}`);
 
         // Send Response
-        res.location(`${config.server}/${imageDirPath}/${entryImagePath}/${fileName}`).status(201).send("ok");
+        res.location(`${config.server}/media/${fileName}`).status(201).send("ok");
     });
 
 }

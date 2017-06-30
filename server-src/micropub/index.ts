@@ -16,7 +16,7 @@ let entryImageDirName = `entry-images`;
 export let micropubRouter = express.Router();
 
 var multer  = require('multer');
-var upload = multer({ dest: `${imageDir}/${entryImageDirName}` });
+var upload = multer({ dest: `${__dirname}/../../media-server-storage/` });
 
 // Routes
 // micropubRouter.get('/local', convertSavedJsonToMarkdown);
