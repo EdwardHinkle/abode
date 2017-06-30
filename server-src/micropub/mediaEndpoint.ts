@@ -15,7 +15,8 @@ export function getMediaEndpointRequest(req, res) {
 
     if (req.headers.authorization === undefined || req.headers.authorization.indexOf('Bearer') == -1) {
         // ERROR no auth bearer token
-        console.log("NO TOKEN");
+        res.status(401).send({error: "unauthorized"});
+        return;
     }
 
     // Need to check that the access token is valid
@@ -28,15 +29,24 @@ export function getMediaEndpointRequest(req, res) {
     }, (err, data) => {
         if (err != undefined) {
             console.log(`ERROR: ${err}`);
+            res.status(400).send({error: "invalid_request"});
+            return;
         }
-        console.log("Token Verification Response");
-        console.log(data);
 
         // If false ERROR
-        if (true) {
-            return console.log("WRONG TOKEN");
+        if (data.statusCode != 200 || data.body.me != config.server) {
+            res.status(401).send({error: "unauthorized"});
+            return;
         }
 
+        // Make sure the right scope is there
+        if (data.body.scope.indexOf("create") == -1 && data.body.scope.indexOf("post") == -1) {
+            res.status(401).send({error: "insufficient_scope"});
+            return;
+        }
+
+        // Everything is fine lets do the actual work
+        
         // Get file path with filename
         let filePath = req.file.path;
         let fileExt = mime.extension(req.file.mimetype);
