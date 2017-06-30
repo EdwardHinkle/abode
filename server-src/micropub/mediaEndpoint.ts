@@ -23,7 +23,8 @@ export function getMediaEndpointRequest(req, res) {
         'url': config.micropub.tokenEndpoint,
         'auth': {
             'bearer': req.headers.authorization.split(" ").pop("Bearer ")
-        }
+        },
+        json: true
     }, (err, data) => {
         if (err != undefined) {
             console.log(`ERROR: ${err}`);
@@ -33,11 +34,11 @@ export function getMediaEndpointRequest(req, res) {
 
         // If false ERROR
         if (true) {
-            console.log("WRONG TOKEN");
+            return console.log("WRONG TOKEN");
         }
 
         // Get file path with filename
-            let filePath = req.file.path;
+        let filePath = req.file.path;
         let fileExt = mime.extension(req.file.mimetype);
         let fileName = `${req.file.filename}.${fileExt}`;
 
