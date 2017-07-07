@@ -1,0 +1,13 @@
+<h1 class="greeting">Hi! My name is Eddie</h1>
+<p class="intro">
+  I am a <em>software developer</em> and a <em>user interface designer</em>. This website is my home on the internet, I use it track and share things
+  like that I last ate <a href="/ate">{{lastAte ? lastAte.properties.ate.properties.name : ''}}</a> and drank
+  <a href="/drank">{{lastDrank ? lastDrank.properties.drank.properties.name : ''}}</a>. I also use it to post <a href="/thoughts">thoughts</a> and
+  <a href="/photos">photos</a>, and write <a href="/articles">articles</a>.
+</p>
+
+Last Seen: {{lastSeen ? lastSeen.properties.checkin.properties.name : ''}}
+
+<section class="stage">
+  <figure class="ball" [style.background]="getMapImage()"></figure>
+</section>

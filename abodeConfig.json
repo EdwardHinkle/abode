@@ -1,0 +1,16 @@
+{
+    "server": "http://eddie2.dev",
+    "PORT": 7021,
+    "micropub": {
+        "authenticationEndpoint": "https://eddiehinkle.com",
+        "tokenEndpoint": "https://tokens.indieauth.com/token"
+    },
+    "goodreads": {
+        "key": "KSXzo3GFar32jnjtiVlQjw",
+        "secret": "hP7UPqEHVGUlDEdAd5JiRsiCwBj5OMDqPwe5rZz9o",
+        "userid": 22018436
+    },
+    "webmention": {
+        "token": "rP0doMN2q937ZVzForcEzQ"
+    }
+}
