@@ -1,14 +1,13 @@
-import * as goodreads from 'goodreads';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as Promise from 'bluebird';
 import * as _ from 'lodash';
 import { Goodreads } from 'bookmark';
 
-var config = require('../../abodeConfig.json');
+const config = require('../../abodeConfig.json');
 
-var gr = new Goodreads({ key: config.goodreads.key, secret: config.goodreads.secret });
-var username = "eddiehinkle";
+const gr = new Goodreads({ key: config.goodreads.key, secret: config.goodreads.secret });
+const username = 'eddiehinkle';
 
 export function getGoodreadsData(): Promise<any> {
 
@@ -16,7 +15,6 @@ export function getGoodreadsData(): Promise<any> {
         getCurrentlyReadingBooks(),
         getRecentlyReadBooks()
     ]).spread((currently_reading: any, recently_read: any) => {
-        
         return Promise.all([
             processCurrentlyReadingBooks(currently_reading),
             processRecentlyReadBooks(recently_read)
