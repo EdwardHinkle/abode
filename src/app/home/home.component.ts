@@ -3,7 +3,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { DataService, IPost } from '../data.service';
 
 @Component({
-  selector: 'app-home',
+  selector: 'abode-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
   constructor(meta: Meta, title: Title, private _dataService: DataService) {
 
     this._dataService.getPosts({
-      count: 1,
+      limit: 1,
       types: ['Ate']
     }).subscribe(
         posts => {this.lastAte = posts[0]},
@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
     );
 
     this._dataService.getPosts({
-      count: 1,
+      limit: 1,
       types: ['Drank']
     }).subscribe(
         posts => {this.lastDrank = posts[0]},
@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
     );
 
     this._dataService.getPosts({
-      count: 1,
+      limit: 1,
       types: ['Checkin']
     }).subscribe(
         posts => {

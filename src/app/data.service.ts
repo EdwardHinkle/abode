@@ -15,12 +15,14 @@ export class DataService {
   getPosts(settings: IGetPostSettings): Observable<IPost[]> {
     const queryArray = [];
 
-    if (settings.count !== undefined) {
-      queryArray.push(`count=${settings.count}`);
+    if (settings.limit !== undefined) {
+      queryArray.push(`count=${settings.limit}`);
     }
 
     if (settings.types !== undefined) {
-      queryArray.push(`types=${settings.types.join(',')}`);
+      if (settings.types !== 'all') {
+        queryArray.push(`types=${settings.types.join(',')}`);
+      }
     }
 
     return this._http
@@ -44,6 +46,6 @@ export interface IPost {
 }
 
 interface IGetPostSettings {
-  count?: number;
-  types: mf2.postType[];
+  limit?: number;
+  types: mf2.postType[] | 'all';
 }

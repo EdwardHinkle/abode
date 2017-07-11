@@ -1,13 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { IPost, DataService } from '../data.service';
+import * as mf2 from '../../api/mf2';
 
 
 @Component({
-  selector: 'app-post-stream',
+  selector: 'abode-post-stream',
   templateUrl: './post-stream.component.html',
   styleUrls: ['./post-stream.component.scss']
 })
 export class PostStreamComponent implements OnInit {
+
+  @Input() postType: mf2.postType[] | 'all';
 
   posts: IPost[];
   errorMessage: string;
@@ -20,8 +23,8 @@ export class PostStreamComponent implements OnInit {
 
   getPosts() {
     this._dataService.getPosts({
-      count: 5,
-      types: ['Article']
+      limit: 5,
+      types: this.postType
     })
       .subscribe(
         posts => {console.log(posts); this.posts = posts},
