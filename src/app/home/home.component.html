@@ -10,7 +10,7 @@
   <a href="/photos">photos</a>, and write <a href="/articles">articles</a>.
 </p>
 
-<abode-world-map *ngIf="lastSeen != undefined" [lat]="39.325627" [lng]="-77.348933" [name]="'McDonalds'" [style]="'oldStyle'"></abode-world-map>
+<abode-world-map *ngIf="lastSeen != undefined" [lat]="lastSeen.properties.checkin.properties.latitude" [lng]="lastSeen.properties.checkin.properties.longitude" [name]="lastSeen.properties.checkin.properties.name" [style]="'oldStyle'"></abode-world-map>
 
 <abode-post-stream [postType]="['Article']"></abode-post-stream>
 </div>
