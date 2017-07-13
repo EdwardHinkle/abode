@@ -17,6 +17,7 @@ import { PostStreamComponent } from './post-stream/post-stream.component';
 import { PostPageComponent } from './post-page/post-page.component';
 import { PostPreviewComponent } from './post-preview/post-preview.component';
 import { WorldMapComponent } from './world-map/world-map.component';
+import { PolaroidProfileComponent } from './polaroid-profile/polaroid-profile.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { WorldMapComponent } from './world-map/world-map.component';
     PostStreamComponent,
     PostPageComponent,
     PostPreviewComponent,
-    WorldMapComponent
+    WorldMapComponent,
+    PolaroidProfileComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'abode'}),
