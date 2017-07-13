@@ -13,6 +13,11 @@ export class WorldMapComponent implements AfterViewInit, OnInit {
   @Input() style: 'oldStyle' | 'streets' | 'night' | 'satellite' | 'northStar' | 'oldDark' | 'random';
   mapUrl: string;
   activeMapStyle: string;
+  zoom: number;
+  pitch: number;
+  height: number;
+  width: number;
+  token: string;
 
   styles: {[key: string]: string};
   randomStyleChoices: [string];
@@ -27,6 +32,11 @@ export class WorldMapComponent implements AfterViewInit, OnInit {
       oldDark: 'eddiehinkle/cj52ibxzy2ahv2rp4icp5va3a'
     };
     this.randomStyleChoices = ['oldStyle', 'oldDark', 'satellite'];
+    this.zoom = 3;
+    this.pitch = 0;
+    this.height = 700;
+    this.width = 700;
+    this.token = 'pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg';
   }
 
   ngOnInit() {
@@ -39,8 +49,25 @@ export class WorldMapComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit() {
-    this.mapUrl = `https://api.mapbox.com/styles/v1/${this.activeMapStyle}/static/pin-m+24b1f3(${this.lng},${this.lat})/${this.lng},${this.lat},3,0,60/700x650@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false`;
+    this.updateMapImage();
+  }
+
+  updateMapImage() {
+    this.mapUrl = this.getMapUrl();
     this._renderer.setElementStyle(this._el.nativeElement.children[0].children[1], 'background-image', `url('${this.mapUrl}')`);
+  }
+
+  getMapUrl() {
+    return `https://api.mapbox.com/styles/v1/${this.activeMapStyle}/static/pin-m+24b1f3(${this.lng},${this.lat})/${this.lng},${this.lat},${this.zoom},0,${this.pitch}/${this.width}x${this.height}@2x?access_token=${this.token}&attribution=false&logo=false`;
+  }
+
+  changeZoomLevel() {
+    if (this.zoom === 3) {
+      this.zoom = 16;
+    } else {
+      this.zoom = 3;
+    }
+    this.updateMapImage();
   }
 
 }
