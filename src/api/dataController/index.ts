@@ -49,13 +49,31 @@ function sortPosts(req, posts) {
     return sortedPosts;
 }
 
-function filterAndSortPosts(req, posts) {
-    const filteredPosts = filterPosts(req, posts);
-    const sortedPosts = sortPosts(req, filteredPosts);
-    return sortedPosts;
+function formatPosts(req, posts) {
+    let formattedPosts;
+
+    formattedPosts = _.map(posts, (post) => {
+        post.date = moment(post.date, 'YYYY-MM-DD HH:mm:ss ZZ');
+        return post;
+    });
+
+    return formattedPosts;
 }
 
-function getLatestPosts(req, res) {
+function filterSortFormatPosts(req, posts) {
+    let confirmedArray;
+    if (posts.constructor !== Array) {
+            confirmedArray = [posts];
+    } else {
+        confirmedArray = posts;
+    }
+    const filteredPosts = filterPosts(req, confirmedArray);
+    const sortedPosts = sortPosts(req, filteredPosts);
+    const formattedPosts = formatPosts(req, sortedPosts);
+    return formattedPosts;
+}
+
+export function getLatestPosts(req, res) {
 
     let postsReturned = [];
     const postCount = req.query.count;
@@ -68,7 +86,7 @@ function getLatestPosts(req, res) {
         const day = date.format('DD');
 
         const directoryToSearch = `${dataDir}/${year}/${month}/${day}`;
-        postsReturned = postsReturned.concat(filterAndSortPosts(req, getFilesFromDir(directoryToSearch)));
+        postsReturned = postsReturned.concat(filterSortFormatPosts(req, getFilesFromDir(directoryToSearch)));
 
         // Decrement by 1 day
         date.subtract(1, 'day');
@@ -77,6 +95,12 @@ function getLatestPosts(req, res) {
         }
     }
     res.send(postsReturned.slice(0, postCount));
+}
+
+export function getPostsByDate(req, dateSegments): IPost[] {
+    const dataReturned = filterSortFormatPosts(req, getFilesFromDir(dataDir + '/' + dateSegments.join('/')));
+
+    return dataReturned;
 }
 
 function apiCall(req, res) {
@@ -99,12 +123,10 @@ function apiCall(req, res) {
         dataPath.push(req.params.index);
     }
 
-    const dataReturned = filterAndSortPosts(req, getFilesFromDir(dataDir + '/' + dataPath.join('/')));
-
-    res.send(dataReturned);
+    res.send(getPostsByDate(req, dataPath));
 }
 
-function getFilesFromDir(dirName: string): any[] {
+function getFilesFromDir(dirName: string): IPost[] {
     const dataArray = [];
 
     if (fs.existsSync(dirName)) {
@@ -137,4 +159,17 @@ function getFilesFromDir(dirName: string): any[] {
     } else {
         return [];
     }
+}
+
+export interface IPost {
+    'date': string,
+    'layout': string,
+    'title': string,
+    'visibility': 'public' | 'private',
+    'tags': string[],
+    'properties': any,
+    'slug': string,
+    'permalink': string,
+    'content-type': 'text/markdown' | 'text/plain' | 'text/html',
+    'content': string
 }

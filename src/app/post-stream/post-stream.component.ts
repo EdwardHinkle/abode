@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IPost, DataService } from '../data.service';
+import { DataService } from '../data.service';
+import { IPost } from '../../api/dataController';
 import * as mf2 from '../../api/mf2';
-
 
 @Component({
   selector: 'abode-post-stream',

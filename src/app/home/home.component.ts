@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { DataService, IPost } from '../data.service';
+import { DataService } from '../data.service';
+import { IPost } from '../../api/dataController';
 
 @Component({
   selector: 'abode-home',
@@ -12,7 +13,6 @@ export class HomeComponent implements OnInit {
   lastAte: IPost;
   lastDrank: IPost;
   lastSeen: IPost;
-  lastSeenMapUrl: String;
 
   constructor(meta: Meta, title: Title, private _dataService: DataService) {
 
@@ -37,8 +37,9 @@ export class HomeComponent implements OnInit {
       types: ['Checkin']
     }).subscribe(
         posts => {
+          console.log('Fetched Checkin');
+          console.log(posts[0]);
           this.lastSeen = posts[0];
-          this.lastSeenMapUrl = `https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/pin-m+24b1f3(${this.lastSeen.properties.checkin.properties.longitude},${this.lastSeen.properties.checkin.properties.latitude})/${this.lastSeen.properties.checkin.properties.longitude},${this.lastSeen.properties.checkin.properties.latitude},1,0,60/592x211@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false`;
         },
         error => {console.log(error)}
     );
@@ -54,10 +55,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
-
-  getMapImage() {
-    return this.lastSeenMapUrl;
   }
 
 }
