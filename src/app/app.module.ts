@@ -18,6 +18,8 @@ import { PostPageComponent } from './post-page/post-page.component';
 import { PostPreviewComponent } from './post-preview/post-preview.component';
 import { WorldMapComponent } from './world-map/world-map.component';
 import { PolaroidProfileComponent } from './polaroid-profile/polaroid-profile.component';
+import { ChannelPageComponent } from './channel-page/channel-page.component';
+import { OnThisDayComponent } from './on-this-day/on-this-day.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { PolaroidProfileComponent } from './polaroid-profile/polaroid-profile.co
     PostPageComponent,
     PostPreviewComponent,
     WorldMapComponent,
-    PolaroidProfileComponent
+    PolaroidProfileComponent,
+    ChannelPageComponent,
+    OnThisDayComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'abode'}),

@@ -37,6 +37,12 @@ export class DataService {
         .map((response: Response) => <IPost[]> response.json());
   }
 
+  getPostOnThisDay(year: number, month: number, day: number) {
+    return this._http
+        .get(`${config.server}/api/posts/onthisday/${year}/${month}/${day}/`)
+        .map((response: Response) => <IPost[]> response.json());
+  }
+
 }
 
 interface IGetPostSettings {

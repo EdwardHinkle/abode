@@ -10,13 +10,14 @@ const dataDir = __dirname + '/../../../data';
 export let dataRouter = express.Router();
 
 dataRouter.get('/posts/latest', getLatestPosts);
+dataRouter.get('/posts/onthisday/:year/:month/:day', onThisDayApiCall);
 dataRouter.get('/:year', apiCall);
 dataRouter.get('/:year/:month', apiCall);
 dataRouter.get('/:year/:month/:day', apiCall);
 dataRouter.get('/:year/:month/:day/:index', apiCall);
 dataRouter.get('/:year/:month/:day/:index/:type', apiCall);
 
-function filterPosts(req, posts) {
+function filterPosts(req, posts: IPost[]) {
     let filteredPosts;
 
     // todo: apply ?filter as needed
@@ -38,7 +39,7 @@ function filterPosts(req, posts) {
     return filteredPosts;
 }
 
-function sortPosts(req, posts) {
+function sortPosts(req, posts: IPost[]) {
     let sortedPosts;
 
     // todo: eventually add sorting options
@@ -49,18 +50,19 @@ function sortPosts(req, posts) {
     return sortedPosts;
 }
 
-function formatPosts(req, posts) {
+function formatPosts(req, posts: IPost[]) {
     let formattedPosts;
 
     formattedPosts = _.map(posts, (post) => {
-        post.date = moment(post.date, 'YYYY-MM-DD HH:mm:ss ZZ');
+        post.date = moment(post.date, 'YYYY-MM-DD HH:mm:ss ZZ').toISOString();
+        post.postType = mf2.getPostType(post);
         return post;
     });
 
     return formattedPosts;
 }
 
-function filterSortFormatPosts(req, posts) {
+function filterSortFormatPosts(req, posts: IPost[]) {
     let confirmedArray;
     if (posts.constructor !== Array) {
             confirmedArray = [posts];
@@ -86,7 +88,8 @@ export function getLatestPosts(req, res) {
         const day = date.format('DD');
 
         const directoryToSearch = `${dataDir}/${year}/${month}/${day}`;
-        postsReturned = postsReturned.concat(filterSortFormatPosts(req, getFilesFromDir(directoryToSearch)));
+        const postsFromDay = getFilesFromDir(directoryToSearch);
+        postsReturned = postsReturned.concat(filterSortFormatPosts(req, postsFromDay));
 
         // Decrement by 1 day
         date.subtract(1, 'day');
@@ -97,10 +100,65 @@ export function getLatestPosts(req, res) {
     res.send(postsReturned.slice(0, postCount));
 }
 
+export function getPostsOnThisDay(req, dateSegments) {
+
+    let postsReturned = [];
+    const postCount = req.query.limit;
+
+    // Months are 0 indexed
+    dateSegments.month--;
+
+    // Create date based on request
+    const date = moment(dateSegments).subtract(1, 'year');
+
+    while (postCount === undefined || postsReturned.length <= postCount) {
+        const year = date.format('YYYY');
+        const month = date.format('MM');
+        const day = date.format('DD');
+
+        const directoryToSearch = `${dataDir}/${year}/${month}/${day}`;
+        console.log(`Fetching posts from ${year}/${month}/${day}`);
+        postsReturned = postsReturned.concat(filterSortFormatPosts(req, getFilesFromDir(directoryToSearch)));
+
+        // Decrement by 1 year
+        date.subtract(1, 'year');
+        if (date.isBefore('1987-06-01', 'year')) {
+            break;
+        }
+    }
+    return postsReturned.slice(0, postCount);
+}
+
 export function getPostsByDate(req, dateSegments): IPost[] {
     const dataReturned = filterSortFormatPosts(req, getFilesFromDir(dataDir + '/' + dateSegments.join('/')));
 
     return dataReturned;
+}
+
+function onThisDayApiCall(req, res) {
+
+    if (req.params.year === undefined) {
+        res.status('400').send('Missing Year');
+        return;
+    }
+
+    if (req.params.month === undefined) {
+        res.status('400').send('Missing Month');
+        return;
+    }
+
+    if (req.params.day === undefined) {
+        res.status('400').send('Missing Day');
+        return;
+    }
+
+    const dataPath = {
+        year: req.params.year,
+        month: req.params.month,
+        day: req.params.day,
+    };
+
+    res.send(getPostsOnThisDay(req, dataPath));
 }
 
 function apiCall(req, res) {
@@ -164,6 +222,7 @@ function getFilesFromDir(dirName: string): IPost[] {
 export interface IPost {
     'date': string,
     'layout': string,
+    'postType': mf2.postType,
     'title': string,
     'visibility': 'public' | 'private',
     'tags': string[],

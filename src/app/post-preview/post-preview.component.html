@@ -1,3 +1,10 @@
-<p>
-  post-preview works!
-</p>
+<div class="post type-{{post.postType}}">
+
+<a routerLink="{{ post.date | date:'yyyy' }}/{{ post.date | date:'MM' }}/{{ post.date | date:'dd' }}/{{post.slug}}">
+<span *ngIf="post.title">{{post.title}}</span>
+<img *ngIf="post.properties.photo" [src]="post.properties.photo" width="300px">
+<span *ngIf="post.title === '' && post.properties.photo === undefined">{{post.content}}</span>
+</a>
+<span class="post-time">{{ post.date | date:'MMM d yyyy, h:mm a' }}</span>
+
+</div>

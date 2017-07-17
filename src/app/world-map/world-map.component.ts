@@ -1,9 +1,10 @@
 import { Component, AfterViewInit, OnInit, Input, Renderer, ElementRef } from '@angular/core';
+import {DomSanitizer, SafeStyle, SafeUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'abode-world-map',
   templateUrl: './world-map.component.html',
-  styleUrls: ['./world-map.component.scss']
+  styleUrls: ['./world-map.component.css']
 })
 export class WorldMapComponent implements AfterViewInit, OnInit {
 
@@ -11,7 +12,8 @@ export class WorldMapComponent implements AfterViewInit, OnInit {
   @Input() lng: number;
   @Input() name: string;
   @Input() style: 'oldStyle' | 'streets' | 'night' | 'satellite' | 'northStar' | 'oldDark' | 'random';
-  mapUrl: string;
+  mapUrl: SafeUrl;
+  mapBackgroundStyle: SafeStyle;
   activeMapStyle: string;
   zoom: number;
   pitch: number;
@@ -22,7 +24,7 @@ export class WorldMapComponent implements AfterViewInit, OnInit {
   styles: {[key: string]: string};
   randomStyleChoices: [string];
 
-  constructor(private _renderer: Renderer, private _el: ElementRef) {
+  constructor(private _renderer: Renderer, private _el: ElementRef, private sanitizer: DomSanitizer) {
     this.styles = {
       oldStyle: 'eddiehinkle/cj52i94ja2aq62srwvdjq7rw1',
       night: 'mapbox/traffic-night-v2',
@@ -53,8 +55,8 @@ export class WorldMapComponent implements AfterViewInit, OnInit {
   }
 
   updateMapImage() {
-    this.mapUrl = this.getMapUrl();
-    this._renderer.setElementStyle(this._el.nativeElement.children[0].children[1], 'background-image', `url('${this.mapUrl}')`);
+    this.mapUrl = this.sanitizer.bypassSecurityTrustUrl(this.getMapUrl());
+    this.mapBackgroundStyle = this.sanitizer.bypassSecurityTrustStyle(`url('${this.getMapUrl()}')`);
   }
 
   getMapUrl() {

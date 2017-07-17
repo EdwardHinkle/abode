@@ -10,7 +10,7 @@
   -webkit-transition: -webkit-transform .15s linear;
   -moz-transform: rotate(-10deg);
 
-  img {
+  .polaroid-photo {
     width: 300px;
   }
 
@@ -19,11 +19,11 @@
     font-family: 'Shadows Into Light', cursive;
     font-size: 20px;
 
-    p {
+    .content-text {
       margin: 5px;
     }
 
-    i {
+    .fa {
       margin-left: 5px;
       margin-right: 5px;
       color: rgba(51, 179, 241, 1);

@@ -12,5 +12,8 @@
 
 <abode-world-map *ngIf="lastSeen != undefined" [lat]="lastSeen.properties.checkin.properties.latitude" [lng]="lastSeen.properties.checkin.properties.longitude" [name]="lastSeen.properties.checkin.properties.name" [style]="'oldStyle'"></abode-world-map>
 
-<abode-post-stream [postType]="['Article']"></abode-post-stream>
+<abode-post-stream class="recent-photos" [title]="'Recent Photos'" [postType]="['Photo']" [limit]="4"></abode-post-stream>
+<abode-post-stream class="recent-articles" [title]="'Recent Articles'" [postType]="['Article']" [limit]="5"></abode-post-stream>
+<abode-post-stream class="recent-thoughts" [title]="'Recent Thoughts'" [postType]="['Note']" [limit]="5"></abode-post-stream>
+
 </div>

@@ -13,19 +13,29 @@ export type postType =
     'Audio' |
     'Invitation' |
     'Ate' |
-    'Drank';
+    'Drank' |
+    'Listen' |
+    'Watch' |
+    'Read' |
+    'Bookmark' |
+    'Trip';
 
 const typeInference = {
     'rsvp': 'RSVP',
     'in-reply-to': 'Reply',
     'repost-of': 'Repost',
+    'bookmark-of': 'Bookmark',
     'like-of': 'Like',
     'checkin': 'Checkin',
     'ate': 'Ate',
     'drank': 'Drank',
     'video': 'Video',
-    'photo': 'Photo'
-}
+    'photo': 'Photo',
+    'watch-of': 'Watch',
+    'listen-of': 'Listen',
+    'read-of': 'Read',
+    'abode-trip': 'Trip'
+};
 
 export type Visibility = 'public' | 'private';
 

@@ -6,7 +6,7 @@ import { IPost } from '../../api/dataController';
 @Component({
   selector: 'abode-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
 

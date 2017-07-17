@@ -8,7 +8,7 @@ import * as mf2 from '../../api/mf2';
 @Component({
   selector: 'abode-post-page',
   templateUrl: './post-page.component.html',
-  styleUrls: ['./post-page.component.scss']
+  styleUrls: ['./post-page.component.css']
 })
 export class PostPageComponent implements OnInit {
 
