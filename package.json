@@ -5,7 +5,7 @@
   "scripts": {
     "prestart": "ng build --prod && ngc",
     "start": "ts-node src/server.ts",
-    "foreverStart": "node run prestart; forever start -c ts-node src/server.ts",
+    "foreverStart": "npm run prestart; forever start -c ts-node src/server.ts",
     "ng": "ng",
     "serve": "ng serve --proxy-config proxy.config.json",
     "build": "ng build",
