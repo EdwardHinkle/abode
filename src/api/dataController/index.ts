@@ -78,7 +78,7 @@ function filterSortFormatPosts(req, posts: IPost[]) {
 export function getLatestPosts(req, res) {
 
     let postsReturned = [];
-    const postCount = req.query.count;
+    const postCount = req.query.limit;
 
     const date = moment();
 
