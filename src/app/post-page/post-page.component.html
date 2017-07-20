@@ -1,0 +1,12 @@
+<div *ngIf="post != undefined; else postNotFound">
+  <img [src]="post.properties.photo">
+  {{post.content}}
+</div>
+
+<ng-template #postNotFound>
+  Post not found
+</ng-template>
+
+<div *ngIf="errorMessage != undefined">
+  {{errorMessage}}
+</div>

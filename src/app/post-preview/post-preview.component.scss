@@ -1,0 +1,10 @@
+.type-Photo {
+    display: inline-block;
+    position: relative;
+
+    .post-time {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+}

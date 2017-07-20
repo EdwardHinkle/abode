@@ -1,0 +1,19 @@
+<div class="container">
+<h1 class="greeting">Hi! My name is Eddie</h1>
+
+<abode-polaroid-profile [photo]="'assets/profile.jpg'"></abode-polaroid-profile>
+
+<p class="intro">
+  I am a <em>software developer</em> and a <em>user interface designer</em>. This website is my home on the internet, I use it track and share things
+  like that I last ate <a href="/ate">{{lastAte ? lastAte.properties.ate.properties.name : ''}}</a> and drank
+  <a href="/drank">{{lastDrank ? lastDrank.properties.drank.properties.name : ''}}</a>. I also use it to post <a href="/thoughts">thoughts</a> and
+  <a href="/photos">photos</a>, and write <a href="/articles">articles</a>.
+</p>
+
+<abode-world-map *ngIf="lastSeen != undefined" [lat]="lastSeen.properties.checkin.properties.latitude" [lng]="lastSeen.properties.checkin.properties.longitude" [name]="lastSeen.properties.checkin.properties.name" [style]="'oldStyle'"></abode-world-map>
+
+<abode-post-stream class="recent-photos" [title]="'Recent Photos'" [postType]="['Photo']" [limit]="4"></abode-post-stream>
+<abode-post-stream class="recent-articles" [title]="'Recent Articles'" [postType]="['Article']" [limit]="5"></abode-post-stream>
+<abode-post-stream class="recent-thoughts" [title]="'Recent Thoughts'" [postType]="['Note']" [limit]="5"></abode-post-stream>
+
+</div>

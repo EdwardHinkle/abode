@@ -1,0 +1,6 @@
+<div class="post-stream">
+  <div class="year-stream" *ngFor="let yearOfPosts of posts" >
+    <h1>Today, {{this.currentYear-yearOfPosts.year}} Years Ago</h1>
+    <abode-post-preview *ngFor="let post of yearOfPosts.posts" [post]="post"></abode-post-preview>
+  </div>
+</div>

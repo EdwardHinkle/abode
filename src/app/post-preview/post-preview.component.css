@@ -1,0 +1,9 @@
+.type-Photo {
+  display: inline-block;
+  position: relative; }
+  .type-Photo .post-time {
+    position: absolute;
+    bottom: 0;
+    left: 0; }
+
+/*# sourceMappingURL=post-preview.component.css.map */

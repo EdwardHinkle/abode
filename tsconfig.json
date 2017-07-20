@@ -1,16 +1,25 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es5",
-        "noImplicitAny": false,
-        "sourceMap": true,
-        "outDir": "server-build"
-    },
-    "include": [
-        "server-src/**/*"
+  "compileOnSave": false,
+  "compilerOptions": {
+    "outDir": "./dist/out-tsc",
+    "baseUrl": "src",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "module": "commonjs",
+    "typeRoots": [
+      "node_modules/@types"
     ],
-    "exclude": [
-        "node_modules",
-        "**/*.spec.ts"
+    "lib": [
+      "es2016",
+      "dom"
     ]
+  },
+  "angularCompilerOptions": {
+      "genDir": "./dist/ngfactory",
+      "entryModule": "./src/app/app.module#AppModule"
+  }  
 }

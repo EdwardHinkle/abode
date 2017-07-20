@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,WAAY;EACR,OAAO,EAAE,YAAY;EACrB,QAAQ,EAAE,QAAQ;EAElB,sBAAW;IACT,QAAQ,EAAE,QAAQ;IAClB,MAAM,EAAE,CAAC;IACT,IAAI,EAAE,CAAC",
+"sources": ["post-preview.component.scss"],
+"names": [],
+"file": "post-preview.component.css"
+}

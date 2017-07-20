@@ -1,0 +1,31 @@
+.container {
+  min-height: 800px;
+  display: block; }
+
+.intro {
+  font-size: 40px;
+  line-height: 120%;
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: justify;
+  margin-bottom: 150px;
+  z-index: 10; }
+  .intro em {
+    background-color: rgba(51, 179, 241, 0.2); }
+  .intro a {
+    text-decoration: none;
+    border-bottom: dotted 2px rgba(51, 179, 241, 0.5);
+    color: #24b1f3; }
+
+.greeting {
+  margin-left: auto;
+  margin-right: auto;
+  width: 1000px;
+  font-family: 'Shadows Into Light', cursive; }
+
+.recent-articles, .recent-thoughts {
+  display: inline-block;
+  width: 49.5%; }
+
+/*# sourceMappingURL=home.component.css.map */

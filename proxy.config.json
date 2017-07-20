@@ -1,0 +1,8 @@
+{
+    "/api/*": {
+        "target": "http://eddie2.dev/",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true
+    }
+}
