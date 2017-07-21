@@ -47,11 +47,15 @@ export function getMicropubConfig(queryType, req): Promise<any> {
                     "syndicate-to": [
                         {
                             "uid": "https://twitter.com/eddiehinkle",
-                            "name": "Twitter"
+                            "name": "twitter.com/eddiehinkle"
                         },
                         {
                             "uid": "https://www.facebook.com/EdwardTHinkle",
-                            "name": "Facebook"
+                            "name": "facebook.com/edwardthinkle"
+                        },
+                        {
+                            "uid": "https://twitter.com/edwardhinkle",
+                            "name": "twitter.com/edwardhinkle"
                         },
                         {
                             "uid": "https://news.indieweb.org/en",
@@ -59,6 +63,10 @@ export function getMicropubConfig(queryType, req): Promise<any> {
                         }
                     ]
                 };
+            // case 'source':
+                //
+                // req.query.url
+                // return {};
         }
     });
 }
