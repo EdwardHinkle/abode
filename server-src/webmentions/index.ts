@@ -163,8 +163,10 @@ export function getWebmentionData(): Promise<any> {
                             }
                             break;
                         case 'reply':
-                            if (tryAddEmojiReaction(webmentions[targetPage].reactions, mention) == false) {
-                                addReplaceOrIgnoreWebMention(webmentions[targetPage].replies, mention);
+                            if (mention.data.content !== null) {
+                                if (tryAddEmojiReaction(webmentions[targetPage].reactions, mention) == false) {
+                                    addReplaceOrIgnoreWebMention(webmentions[targetPage].replies, mention);
+                                }
                             }
                             break;
                     }
