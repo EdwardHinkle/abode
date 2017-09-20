@@ -149,7 +149,7 @@ export function getWebmentionData(): Promise<any> {
                 } else {
 
                     if (webmentions[targetPage] === undefined) {
-                        webmentions[targetPage] = { likes: [], replies: [], reactions: [], mentions: [] }
+                        webmentions[targetPage] = { likes: [], replies: [], reactions: [], mentions: [], rsvps: [] }
                     }
 
                     switch(mention.activity.type) {
@@ -161,6 +161,9 @@ export function getWebmentionData(): Promise<any> {
                             if (tryAddEmojiReaction(webmentions[targetPage].reactions, mention) == false) {
                                 addReplaceOrIgnoreWebMention(webmentions[targetPage].mentions, mention);
                             }
+                            break;
+                        case 'rsvp':
+                            addReplaceOrIgnoreWebMention(webmentions[targetPage].rsvps, mention);
                             break;
                         case 'reply':
                             if (mention.data.content !== null) {

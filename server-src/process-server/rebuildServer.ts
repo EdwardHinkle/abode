@@ -6,39 +6,31 @@ import * as jekyll from '../jekyll';
 import * as git from '../git';
 import * as request from 'request';
 
-export function rebuildServer(req?, res?) {
-    git.runGitStageAll()
-        .then(() => { return git.runGitCommit(); })
-        .then(() => { return git.runGitPull() })
+export function rebuildServer(req?, res?) {    
+
+    Promise.all([
+        goodreads.getGoodreadsData(),
+        webmentions.getWebmentionData(),
+        configTools.importPeopleData()
+    ]).then((results) => {
+        // All tasks are done, we can restart the jekyll server, etc.
+        console.log("Rebuild ready...");
+
+        return jekyll.runJekyllBuild()
         .then(() => {
-
-            return Promise.all([
-                goodreads.getGoodreadsData(),
-                webmentions.getWebmentionData(),
-                configTools.importPeopleData()
-            ]).then((results) => {
-                // All tasks are done, we can restart the jekyll server, etc.
-                console.log("Rebuild ready...");
-
-                return jekyll.runJekyllBuild()
-                .then(() => { return git.runGitStageAll(); })
-                .then(() => { return git.runGitCommit(); })
-                .then(() => { return git.runGitPush(); })
-                .then(() => {
-                    if (res != undefined) {
-                        res.status(202).send('Site Rebuilt');
-                    }
-                }).catch((error) => {
-                    console.log("Caught Error");
-                    console.log(error);
-                    if (error != undefined && res != undefined) {
-                        res.status(202).send(error);
-                    }
-                });
-                
-            });
-
+            if (res != undefined) {
+                res.status(202).send('Site Rebuilt');
+            }
+        }).catch((error) => {
+            console.log("Caught Error");
+            console.log(error);
+            if (error != undefined && res != undefined) {
+                res.status(202).send(error);
+            }
+        });
+        
     });
+
 }
 
 export function rebuildServerFromSlack(req?, res?) {
