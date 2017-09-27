@@ -19,6 +19,7 @@ import { People } from '../people';
 let config = require('../../abodeConfig.json');
 let dataDir = __dirname + "/../../jekyll/_source/";
 let imageDir = `${dataDir}/images`;
+let mediaStorageDir = `${__dirname}/../../media-server-storage`;
 let entryImageDirName = `entry-images`;
 
 let formatter = new MicropubFormatter();
@@ -509,6 +510,32 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                                     fs.writeFileSync(`${imageDir}/${entryImageDirName}/${year}-${month}-${day}_${yamlDocument.slug}_${count}.${imageExt}`, imageBuffer);
                                     yamlDocument.properties.photo.push(`https://eddiehinkle.com/images/${entryImageDirName}/${year}-${month}-${day}_${yamlDocument.slug}_${count}.${imageExt}`)
+                                    count++;
+                                }
+                            }
+                            
+                            if (micropubDocument.files != undefined && micropubDocument.files.audio != undefined && micropubDocument.files.audio.length > 0) {
+
+                                if (yamlDocument.properties.audio == undefined) {
+                                    yamlDocument.properties.audio = [];
+                                }
+
+                                let count = 1;
+                                let date = moment(yamlDocument.date, "YYYY-MM-DD HH:mm:ss ZZ");
+                                let year = date.format("YYYY");
+                                let month = date.format("MM");
+                                let day = date.format("DD");
+
+                                for (let audio of micropubDocument.files.audio) {
+                                    let audioBuffer = Buffer.from(audio.buffer);
+                                    let audioExt = 'mp3'; // for now we will just assume all audio is mp3
+
+                                    while(fs.existsSync(`${mediaStorageDir}/${year}-${month}-${day}_${count}.${audioExt}`)) {
+                                        count++;
+                                    }
+
+                                    fs.writeFileSync(`${mediaStorageDir}/${year}-${month}-${day}_${count}.${audioExt}`, audioBuffer);
+                                    yamlDocument.properties.audio.push(`https://eddiehinkle.com/media/${year}-${month}-${day}_${count}.${audioExt}`)
                                     count++;
                                 }
                             }

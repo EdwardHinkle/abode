@@ -44,6 +44,9 @@ collections:
   note:
     output: true
     permalink: /social/:year/:month/:title/
+  podcasts:
+    output: true
+    permalink: /podcasts/:title/
   media:
     output: true
     permalink: /:path/:title/
