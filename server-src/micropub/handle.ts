@@ -590,7 +590,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         // return;
                         
                     })
-                    .then(() => { return jekyll.runJekyllBuild(); })
+                    //.then(() => { return jekyll.runJekyllBuild(); })
                     .catch((error) => {
                         console.log("Caught Error");
                         console.log(error);
