@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 
 app.use(function(req, res, next) {
     if (/.*\.json/.test(req.path)) {
-        res.charset = "utf-8";
+        res.header("Content-Type", "application/json; charset=utf-8");
     }
     next();
 });
