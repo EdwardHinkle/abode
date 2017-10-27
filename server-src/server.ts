@@ -21,6 +21,13 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+app.use(function(req, res, next) {
+    if (/.*\.json/.test(req.path)) {
+        res.charset = "utf-8";
+    }
+    next();
+});
+
 // App Routes
 app.use('/', router);
 
