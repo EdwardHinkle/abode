@@ -15,7 +15,8 @@ export type postType =
     'Audio' |
     'Invitation' |
     'Ate' |
-    'Drank';
+    'Drank' |
+    'Listen';
 
 let typeInference = {
     "rsvp": 'RSVP',
@@ -26,7 +27,8 @@ let typeInference = {
     "ate": 'Ate',
     "drank": 'Drank',
     "video": 'Video',
-    "photo": 'Photo'
+    "photo": 'Photo',
+    'listen-of': 'Listen'
 }
 
 export type Visibility = 'public' | 'private';

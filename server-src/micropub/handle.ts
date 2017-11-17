@@ -48,7 +48,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
         "Reply",
         "Article",
         "Photo",
-        "Repost"
+        "Repost",
+        "Listen"
     ];
 
     let tagsForPostType = {
@@ -541,6 +542,49 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             }
 
                         }));
+                        
+                        if (micropubDocument.properties['listen-of'] !== undefined) {
+                            
+                            yamlDocumentReady.push(new Promise((resolve, reject) => {
+                                var podcastUrl = micropubDocument.properties['listen-of'][0];
+                                
+                                console.log("Checking listen post");
+                                console.log(podcastUrl);
+                                
+                                if (podcastUrl.indexOf("overcast.fm") > -1) {
+                                    console.log("Podcast URL is from overcast.fm");
+                                    request(podcastUrl, function(error, response, html){
+                                        if(!error){
+                                            var $ = cheerio.load(html);
+                                            
+                                            var podcastData = {
+                                                name: $("head title").text().split(" — ")[0],
+                                                url: $("#speedcontrols + div a:first-child").attr("href"),
+                                                audio: $("#audioplayer source").attr("src").split("#")[0],
+                                                photo: decodeURIComponent($(".fullart").attr("src").split("u=").pop())
+                                            }
+                            
+                                            yamlDocument.properties['listen-of'] = {
+                                                'type': 'h-cite',
+                                                'properties': podcastData
+                                            };
+                                            if (yamlDocument.properties['task-status'] === undefined) {
+                                                yamlDocument.properties['task-status'] = 'finished'
+                                            }
+                                            resolve();
+
+                                        }
+                                    });
+                                    return;
+                                } else {
+                                    // todo: Need to find out how to use podcastUrl to get normal podcast info
+                                    console.log('Tried to add a listen post not from overcast');
+                                    resolve();        
+                                }
+                                
+                            }));
+                            
+                        }
 
                         Promise.all(yamlDocumentReady).then(() => {
                             console.log("Yaml Document Complete");
