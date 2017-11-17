@@ -28,8 +28,9 @@ let typeInference = {
     "drank": 'Drank',
     "video": 'Video',
     "photo": 'Photo',
+    "audio": "Audio",
     'listen-of': 'Listen'
-}
+};
 
 export type Visibility = 'public' | 'private';
 

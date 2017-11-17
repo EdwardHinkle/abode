@@ -10,6 +10,8 @@ import * as mfTypes from '../mf2';
 import * as yaml from 'js-yaml';
 import * as toMarkdown from 'to-markdown';
 import * as mfo from 'mf-obj';
+import * as request from 'request';
+import * as cheerio from 'cheerio';
 
 let imageType = require('image-type');
 let readingTime = require('reading-time');
