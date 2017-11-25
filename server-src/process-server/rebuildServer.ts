@@ -58,6 +58,7 @@ export function rebuildServerFromSlack(req?, res?) {
                 request.post({
                     url: req.body.response_url,
                     json: {
+                        "response_type": "in_channel",
                         "text": "Imports finished, running jekyll"
                     }
                 }, (err, data) => {
@@ -80,6 +81,7 @@ export function rebuildServerFromSlack(req?, res?) {
                     request.post({
                         url: req.body.response_url,
                         json: {
+                            "response_type": "in_channel",
                             "text": "Rebuild Complete"
                         }
                     }, (err, data) => {
@@ -100,6 +102,7 @@ export function rebuildServerFromSlack(req?, res?) {
                         request.post({
                             url: req.body.response_url,
                             json: {
+                                "response_type": "in_channel",
                                 "text": "Uh, oh! There was an error: " + error
                             }
                         }, (err, data) => {
@@ -109,7 +112,7 @@ export function rebuildServerFromSlack(req?, res?) {
                             if (data.statusCode != 200) {
                                 console.log("oops Slack Error");
                             } else {
-                                console.log("Successfull sent Slack Message");
+                                console.log("Successfully sent Slack Message");
                             }
 
                         });
