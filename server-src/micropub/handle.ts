@@ -456,14 +456,30 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             yamlDocument.content = yamlDocument.content.replace(`#${tag}`, '');
                         }
 
+                        // todo: detect @mb for microblog syndication, @fb for facebook syndication, @t for twitter syndication
+                        // if () {
+                        //     micropubDocument.properties['mp-syndicate-to'].push("micro.blog/EddieHinkle");
+                        // }
+
                         // Check if there are any person tags within the content
                         yamlDocumentReady.push(People.getPeople().then((people) => {
 
-                            let regExNicknameToken = /@(\w*)/g
+                            // Detect person tags such as +ash
+                            let regExNicknameToken = /\+(\w*)/g
                             let match = null;
                             let foundIdentities = [];
                             while(match = regExNicknameToken.exec(micropubContent)) {
                                 foundIdentities.push(match[1]);
+                            }
+
+                            for (let nickname of foundIdentities) {
+                                console.log(nickname);
+                                let taggedPerson = people.getPersonByNickname(nickname);
+                                console.log(taggedPerson);
+                                if (taggedPerson != undefined) {
+                                    yamlDocument.tags.push(taggedPerson.getRepresentitiveUrl());
+                                    yamlDocument.content = yamlDocument.content.replace(`+${nickname}`, '');
+                                }
                             }
                             
                             // Set slug number to post index
@@ -475,16 +491,24 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             // Create Permalink
                             yamlDocument.permalink = `/:year/:month/:day/:slug/${typeSlug}/`;
 
-                            for (let nickname of foundIdentities) {
+                            // Detect person mentions such as @manton
+                            let regExNicknameTokenMention = /@(\w*)/g
+                            let matchMention = null;
+                            let foundIdentitiesMention = [];
+                            while(matchMention = regExNicknameTokenMention.exec(micropubContent)) {
+                                foundIdentitiesMention.push(matchMention[1]);
+                            }
+
+                            for (let nickname of foundIdentitiesMention) {
                                 console.log(nickname);
                                 let taggedPerson = people.getPersonByNickname(nickname);
                                 console.log(taggedPerson);
                                 if (taggedPerson != undefined) {
-                                    yamlDocument.tags.push(taggedPerson.getRepresentitiveUrl());
-                                    yamlDocument.content = yamlDocument.content.replace(`@${nickname}`, '');
+                                    yamlDocument.content = yamlDocument.content.replace(`@${nickname}`, `[@${nickname}](${taggedPerson.getRepresentitiveUrl()})`);
                                 }
                             }
 
+                            // Trim content
                             yamlDocument.content = yamlDocument.content.trim();
 
                             if (_.keys(yamlDocument.properties).length == 0) {
