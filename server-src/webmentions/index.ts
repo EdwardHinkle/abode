@@ -200,7 +200,7 @@ export function getWebmentionData(): Promise<any> {
 }
 
 function tryAddEmojiReaction(reactionsArray, mention) {
-    var emoji = getEmojiReaction(mention)
+    var emoji = getEmojiReaction(mention);
     if (emoji == undefined) {
         return false;
     } else {
@@ -228,15 +228,18 @@ function addOrCreateEmojiArray(emoji, reactionsArray, mention) {
 
 function getEmojiReaction(mention) {
     var emojiFound = undefined;
-    var stripContent = mention.data.content.replace(/<\/?[^>]+(>|$)/g, "").replace(/\n/g, "");
-    
-    emojiData.scan(stripContent).forEach(
-        function(ec) {
-            if (stripContent.length < 5) {
-                emojiFound = {shortName: ec.short_name, display: stripContent};
+
+    if (mention.data.content !== null) {
+        var stripContent = mention.data.content.replace(/<\/?[^>]+(>|$)/g, "").replace(/\n/g, "");
+
+        emojiData.scan(stripContent).forEach(
+            function (ec) {
+                if (stripContent.length < 5) {
+                    emojiFound = {shortName: ec.short_name, display: stripContent};
+                }
             }
-        }
-    );
+        );
+    }
 
     return emojiFound;
 
