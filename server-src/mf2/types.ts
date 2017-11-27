@@ -47,7 +47,7 @@ export function getPostType(postObject): postType {
     }
 
     // If name exists and it is not a prefix of the content, this is an article
-    if (postObject.properties.name != undefined && postObject.properties.content.indexOf(postObject.properties.name) != 0) {
+    if (postObject.properties.name != undefined && postObject.properties.name != '' && postObject.properties.content.indexOf(postObject.properties.name) != 0) {
         return 'Article';
     }
 
