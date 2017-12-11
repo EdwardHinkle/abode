@@ -51,14 +51,15 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
         "Article",
         "Photo",
         "Repost",
-        "Listen"
+        "Listen",
+        "RSVP"
     ];
 
     let tagsForPostType = {
         "Checkin": ["checkin"],
         "Ate": ["ate"],
         "Drank": ["drank"]
-    }
+    };
 
     let micropubPropertiesToIgnore = [
         "published",
@@ -69,13 +70,13 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
         "post-status",
         "mp-slug",
         "place_name"
-    ]
+    ];
 
     let micropubPropertiesToExpand = [
         "like-of",
         "repost-of",
         "in-reply-to"
-    ]
+    ];
 
     console.log("Post Type Check");
     let micropubPostType = mfTypes.getPostType(micropubDocument);
