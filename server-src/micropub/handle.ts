@@ -423,6 +423,12 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             yamlDocument.content = "";
                         }
 
+                        // Check if ^_^ and change to a private post
+                        if (yamlDocument.content.indexOf('^_^') > 0) {
+                            yamlDocument.content = yamlDocument.content.replace(`^_^`, '');
+                            yamlDocument.visibility = 'private';
+                        }
+
                         // Convert categories to tags
                         yamlDocument.tags = micropubDocument.categories;
 
