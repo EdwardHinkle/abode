@@ -29,15 +29,23 @@ export function getMicropubConfig(queryType, req): Promise<any> {
                     "syndicate-to": [
                         {
                             "uid": "https://twitter.com/eddiehinkle",
-                            "name": "Twitter"
+                            "name": "twitter.com/eddiehinkle"
                         },
                         {
                             "uid": "https://www.facebook.com/EdwardTHinkle",
-                            "name": "Facebook"
+                            "name": "facebook.com/edwardthinkle"
+                        },
+                        {
+                            "uid": "https://twitter.com/edwardhinkle",
+                            "name": "twitter.com/edwardhinkle"
                         },
                         {
                             "uid": "https://news.indieweb.org/en",
                             "name": "IndieNews"
+                        },
+                        {
+                            "uid": "https://micro.blog/EddieHinkle",
+                            "name": "Micro.blog"
                         }
                     ]
                 };
@@ -60,6 +68,10 @@ export function getMicropubConfig(queryType, req): Promise<any> {
                         {
                             "uid": "https://news.indieweb.org/en",
                             "name": "IndieNews"
+                        },
+                        {
+                            "uid": "https://micro.blog/EddieHinkle",
+                            "name": "Micro.blog"
                         }
                     ]
                 };

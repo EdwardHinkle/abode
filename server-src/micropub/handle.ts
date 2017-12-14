@@ -243,7 +243,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                         console.log('checking for special behavior of client_id');
                         if (micropubDocument.client_id === 'https://micro.blog/') {
-                            micropubDocument.properties['mp-syndicate-to'].push("micro.blog/EddieHinkle");
+                            micropubDocument.properties['mp-syndicate-to'].push("https://micro.blog/EddieHinkle");
                         }
 
                         console.log("About to deal with expanded context");
@@ -441,19 +441,32 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             yamlDocument.visibility = 'private';
                         }
 
-                        if (micropubDocument.properties['mp-syndicate-to'].indexOf('micro.blog/EddieHinkle') > -1) {
+                        // If syndicate-to micro.blog is set, we should create a syndication entry to allow the feed to display it
+                        if (micropubDocument.properties['mp-syndicate-to'].indexOf('https://micro.blog/EddieHinkle') > -1) {
                             yamlDocument.properties.syndication.push({
                                 name: "micro.blog",
                                 icon: "fa-globe",
-                                url: 'micro.blog/EddieHinkle'
+                                url: 'https://micro.blog/EddieHinkle'
                             });
 
                             // todo: This shouldn't be needed when I move away from using Jekyll/liquid
                             if (yamlDocument.visibility === 'public') {
                                 yamlDocument['feed-syndication'] = true;
                             }
-                            let mblogIndex = micropubDocument.properties['mp-syndicate-to'].indexOf('micro.blog/EddieHinkle');
+                            let mblogIndex = micropubDocument.properties['mp-syndicate-to'].indexOf('https://micro.blog/EddieHinkle');
                             micropubDocument.properties['mp-syndicate-to'].splice(mblogIndex, 1);
+                        }
+
+                        // If syndicate-to has IndieNews, add syndication link to post
+                        if (micropubDocument.properties['mp-syndicate-to'].indexOf('https://news.indieweb.org/en') > -1) {
+                            yamlDocument.properties.syndication.push({
+                                name: "IndieNews",
+                                image: "images/indiewebcamp.svg",
+                                url: 'https://news.indieweb.org/en'
+                            });
+
+                            let syndicateIndex = micropubDocument.properties['mp-syndicate-to'].indexOf('https://news.indieweb.org/en');
+                            micropubDocument.properties['mp-syndicate-to'].splice(syndicateIndex, 1);
                         }
 
                         // Convert categories to tags
@@ -492,7 +505,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                         // todo: detect @mb for microblog syndication, @fb for facebook syndication, @t for twitter syndication
                         // if () {
-                        //     micropubDocument.properties['mp-syndicate-to'].push("micro.blog/EddieHinkle");
+                        //     micropubDocument.properties['mp-syndicate-to'].push("https://micro.blog/EddieHinkle");
                         // }
 
                         // Check if there are any person tags within the content
