@@ -435,18 +435,12 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                             let locationQueryUrl = undefined;
 
-                            console.log('checking yaml date?');
-                            console.log(yamlDocument.date);
-
-                            if (yamlDocument.date) {
-                                let postTimestamp = moment(yamlDocument, 'YYYY-MM-DD HH:mm:ss ZZ');
+                            if (yamlDocument.date !== undefined) {
+                                let postTimestamp = moment(yamlDocument.date, 'YYYY-MM-DD HH:mm:ss ZZ');
                                 locationQueryUrl = `${config.compass.url}api/last?before=${postTimestamp.format('YYYY-MM-DDTHH:mm:ssZZ')}&geocode=true&token=${config.compass.token.read}`;
                             } else {
                                 locationQueryUrl = `${config.compass.url}api/last?geocode=true&token=${config.compass.token.read}`;
                             }
-
-                            console.log('query location url');
-                            console.log(locationQueryUrl);
 
                             request(locationQueryUrl, function(error, response, body) {
                                 if (error !== null) {
