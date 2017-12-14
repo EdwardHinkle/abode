@@ -99,6 +99,11 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         
                         // Take Micropub Document and Modify to Output Structure to match YAML
 
+                        // check to see if mp-syndicate-to exists, if not create it
+                        if (micropubDocument.properties['mp-syndicate-to'] === undefined) {
+                            micropubDocument.properties['mp-syndicate-to'] = [];
+                        }
+
                         console.log("Before date");
 
                         // For posts the date needs to be in the root object
@@ -233,6 +238,11 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                                 console.log(yamlDocument.properties[propertyName]);
                             }
+                        }
+
+                        console.log('checking for special behavior of client_id');
+                        if (micropubDocument.client_id === 'https://micro.blog/') {
+                            micropubDocument.properties['mp-syndicate-to'].push("micro.blog/EddieHinkle");
                         }
 
                         console.log("About to deal with expanded context");
@@ -413,6 +423,16 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                 yamlDocument.properties.syndication.push(syndicatedObject);
 
                             };
+                        }
+
+                        if (micropubDocument.properties['mp-syndicate-to'].indexOf('micro.blog/EddieHinkle') > -1) {
+                            yamlDocument.properties.syndication.push({
+                                name: "micro.blog",
+                                icon: "fa-globe",
+                                url: 'micro.blog/EddieHinkle'
+                            });
+                            let mblogIndex = micropubDocument.properties['mp-syndicate-to'].indexOf('micro.blog/EddieHinkle');
+                            micropubDocument.properties['mp-syndicate-to'].splice(mblogIndex, 1);
                         }
 
                         console.log("About to deal with categories");
