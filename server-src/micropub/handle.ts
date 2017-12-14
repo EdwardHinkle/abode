@@ -400,9 +400,10 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                         console.log("About to deal with syndication");
 
+                        yamlDocument.properties.syndication = [];
+
                         // Set up syndication
                         if (micropubDocument.properties.syndication != undefined && micropubDocument.properties.syndication.length > 0) {
-                            yamlDocument.properties.syndication = [];
                             for (let syndicated of micropubDocument.properties.syndication) {
                                 
                                 let syndicatedObject;
