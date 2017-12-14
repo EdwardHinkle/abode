@@ -431,100 +431,122 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                             console.log("About to deal with location");
 
-                            request(`${config.compass.url}api/last?geocode=true&token=${config.compass.token.read}`, function(error, response, body) {
-                                if (error !== undefined) {
+                            let locationInfo = undefined;
+
+                            let locationQueryUrl = undefined;
+
+                            if (yamlDocument.date) {
+                                let postTimestamp = moment(yamlDocument, 'YYYY-MM-DD HH:mm:ss ZZ');
+                                locationQueryUrl = `${config.compass.url}api/last?before=${postTimestamp.format('YYYY-MM-DDTHH:mm:ssZZ')}&geocode=true&token=${config.compass.token.read}`;
+                            } else {
+                                locationQueryUrl = `${config.compass.url}api/last?geocode=true&token=${config.compass.token.read}`;
+                            }
+
+                            request(locationQueryUrl, function(error, response, body) {
+                                if (error !== null) {
                                     console.log('error getting location');
                                     console.log(error);
+                                } else {
+                                    locationInfo = JSON.parse(body);
                                 }
 
-                                console.log('dynamic location?');
-                                console.log(body);
-                                console.log(JSON.parse(body));
+                                if (locationInfo) {
+                                    yamlDocument.properties.location = {
+                                        type: 'h-adr',
+                                        properties: {
+                                            'latitude': locationInfo.geocode.latitude,
+                                            'longitude': locationInfo.geocode.longitude,
+                                            'altitude': locationInfo.data.properties.altitude,
+                                            'locality': locationInfo.geocode.locality,
+                                            'region': locationInfo.geocode.region,
+                                            'country-name': locationInfo.geocode.country,
+                                        }
+                                    }
+                                } else {
+                                    // Only activate these if there is no iPhone powered location
+                                    // Set up location
+                                    if (micropubDocument.properties.location != undefined && micropubDocument.properties.location.length > 0) {
+                                        // Only use 1 location
+                                        let loc = micropubDocument.properties.location[0];
+
+                                        if (typeof loc == "string") {
+                                            let locationObject = {
+                                                type: 'h-adr',
+                                                properties: {}
+                                            };
+
+                                            var geoInfo = loc.split("geo:").pop();
+                                            var locInfo: string[];
+                                            if (geoInfo.indexOf(";")) {
+                                                locInfo = geoInfo.split(";");
+                                            } else {
+                                                locInfo = [geoInfo];
+                                            }
+                                            var locArray = locInfo[0].split(",");
+                                            if (locArray.length > 0) {
+                                                let locObject = {
+                                                    latitude: parseFloat(locArray[0]),
+                                                    longitude: parseFloat(locArray[1])
+                                                } as LocationObject;
+
+                                                if (locInfo.length > 1) {
+                                                    locObject.uncertainty = parseFloat(locInfo[1].split("=").pop());
+                                                }
+                                                locationObject.properties = locObject;
+                                            }
+                                            yamlDocument.properties.location = locationObject;
+                                        } else {
+                                            yamlDocument.properties.location = loc;
+                                        }
+                                    }
+
+                                    if (micropubDocument.properties.place_name != undefined && micropubDocument.properties.place_name.length > 0) {
+
+                                        let placeName = micropubDocument.properties.place_name[0];
+                                        let placeSegments: string[];
+                                        if (placeName.indexOf(" - ") > -1) {
+                                            placeSegments = placeName.split(" - ");
+                                        } else {
+                                            if (placeName.indexOf(", ") > -1) {
+                                                placeSegments = [undefined, placeName];
+                                            } else {
+                                                placeSegments = [placeName];
+                                            }
+                                        }
+                                        let name = placeSegments[0];
+                                        if (placeSegments.length > 1 && placeSegments[1].indexOf(", ")) {
+                                            placeSegments = placeSegments[1].split(", ");
+                                        } else {
+                                            placeSegments = [placeSegments[1]];
+                                        }
+                                        let locality = placeSegments[0];
+                                        let region = placeSegments[1];
+
+                                        if (yamlDocument.properties.location == undefined) {
+                                            yamlDocument.properties.location = {
+                                                type: 'h-adr',
+                                                properties: {}
+                                            };
+                                        }
+
+                                        if (name != undefined) {
+                                            yamlDocument.properties.location.type = "h-card";
+                                            yamlDocument.properties.location.properties.name = name;
+                                        }
+
+                                        if (locality != undefined) {
+                                            yamlDocument.properties.location.properties.locality = locality;
+                                        }
+                                        if (region != undefined) {
+                                            yamlDocument.properties.location.properties.region = region;
+                                            yamlDocument.properties.location.properties['country-name'] = "USA";
+                                        }
+
+                                    }
+                                }
+
                                 resolve();
                             });
-
-                            // Only activate these if there is no iPhone powered location
-                            // if (false) {
-                                // Set up location
-                                // if (micropubDocument.properties.location != undefined && micropubDocument.properties.location.length > 0) {
-                                //     // Only use 1 location
-                                //     let loc = micropubDocument.properties.location[0];
-                                //
-                                //     if (typeof loc == "string") {
-                                //         let locationObject = {
-                                //             type: 'h-adr',
-                                //             properties: {}
-                                //         };
-                                //
-                                //         var geoInfo = loc.split("geo:").pop();
-                                //         var locInfo: string[];
-                                //         if (geoInfo.indexOf(";")) {
-                                //             locInfo = geoInfo.split(";");
-                                //         } else {
-                                //             locInfo = [geoInfo];
-                                //         }
-                                //         var locArray = locInfo[0].split(",");
-                                //         if (locArray.length > 0) {
-                                //             let locObject = {
-                                //                 latitude: parseFloat(locArray[0]),
-                                //                 longitude: parseFloat(locArray[1])
-                                //             } as LocationObject;
-                                //
-                                //             if (locInfo.length > 1) {
-                                //                 locObject.uncertainty = parseFloat(locInfo[1].split("=").pop());
-                                //             }
-                                //             locationObject.properties = locObject;
-                                //         }
-                                //         yamlDocument.properties.location = locationObject;
-                                //     } else {
-                                //         yamlDocument.properties.location = loc;
-                                //     }
-                                // }
-                                //
-                                // if (micropubDocument.properties.place_name != undefined && micropubDocument.properties.place_name.length > 0) {
-                                //
-                                //     let placeName = micropubDocument.properties.place_name[0];
-                                //     let placeSegments: string[];
-                                //     if (placeName.indexOf(" - ") > -1) {
-                                //         placeSegments = placeName.split(" - ");
-                                //     } else {
-                                //         if (placeName.indexOf(", ") > -1) {
-                                //             placeSegments = [undefined, placeName];
-                                //         } else {
-                                //             placeSegments = [placeName];
-                                //         }
-                                //     }
-                                //     let name = placeSegments[0];
-                                //     if (placeSegments.length > 1 && placeSegments[1].indexOf(", ")) {
-                                //         placeSegments = placeSegments[1].split(", ");
-                                //     } else {
-                                //         placeSegments = [placeSegments[1]];
-                                //     }
-                                //     let locality = placeSegments[0];
-                                //     let region = placeSegments[1];
-                                //
-                                //     if (yamlDocument.properties.location == undefined) {
-                                //         yamlDocument.properties.location = {
-                                //             type: 'h-adr',
-                                //             properties: {}
-                                //         };
-                                //     }
-                                //
-                                //     if (name != undefined) {
-                                //         yamlDocument.properties.location.type = "h-card"
-                                //         yamlDocument.properties.location.properties.name = name;
-                                //     }
-                                //
-                                //     if (locality != undefined) {
-                                //         yamlDocument.properties.location.properties.locality = locality;
-                                //     }
-                                //     if (region != undefined) {
-                                //         yamlDocument.properties.location.properties.region = region;
-                                //         yamlDocument.properties.location.properties['country-name'] = "USA";
-                                //     }
-                                //
-                                // }
-                            // }
 
                         }));
 
