@@ -432,7 +432,6 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             console.log("About to deal with location");
 
                             let locationInfo = undefined;
-
                             let locationQueryUrl = undefined;
 
                             if (yamlDocument.date !== undefined) {
@@ -450,7 +449,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                     locationInfo = JSON.parse(body);
                                 }
 
-                                if (locationInfo) {
+                                if (locationInfo !== undefined && locationInfo.data !== null) {
                                     yamlDocument.properties.location = {
                                         type: 'h-adr',
                                         properties: {
