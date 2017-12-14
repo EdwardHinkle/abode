@@ -442,6 +442,9 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                 locationQueryUrl = `${config.compass.url}api/last?geocode=true&token=${config.compass.token.read}`;
                             }
 
+                            console.log('query location url');
+                            console.log(locationQueryUrl);
+
                             request(locationQueryUrl, function(error, response, body) {
                                 if (error !== null) {
                                     console.log('error getting location');
