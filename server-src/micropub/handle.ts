@@ -427,16 +427,6 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             };
                         }
 
-                        if (micropubDocument.properties['mp-syndicate-to'].indexOf('micro.blog/EddieHinkle') > -1) {
-                            yamlDocument.properties.syndication.push({
-                                name: "micro.blog",
-                                icon: "fa-globe",
-                                url: 'micro.blog/EddieHinkle'
-                            });
-                            let mblogIndex = micropubDocument.properties['mp-syndicate-to'].indexOf('micro.blog/EddieHinkle');
-                            micropubDocument.properties['mp-syndicate-to'].splice(mblogIndex, 1);
-                        }
-
                         console.log("About to deal with categories");
 
                         if (micropubContent != undefined) {
@@ -449,6 +439,21 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         if (yamlDocument.content.indexOf('^_^') > 0) {
                             yamlDocument.content = yamlDocument.content.replace(`^_^`, '');
                             yamlDocument.visibility = 'private';
+                        }
+
+                        if (micropubDocument.properties['mp-syndicate-to'].indexOf('micro.blog/EddieHinkle') > -1) {
+                            yamlDocument.properties.syndication.push({
+                                name: "micro.blog",
+                                icon: "fa-globe",
+                                url: 'micro.blog/EddieHinkle'
+                            });
+
+                            // todo: This shouldn't be needed when I move away from using Jekyll/liquid
+                            if (yamlDocument.visibility === 'public') {
+                                yamlDocument['feed-syndication'] = true;
+                            }
+                            let mblogIndex = micropubDocument.properties['mp-syndicate-to'].indexOf('micro.blog/EddieHinkle');
+                            micropubDocument.properties['mp-syndicate-to'].splice(mblogIndex, 1);
                         }
 
                         // Convert categories to tags
