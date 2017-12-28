@@ -539,24 +539,23 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                     if (weatherInfo !== undefined && weatherInfo.currently !== null) {
                                         yamlDocument.properties.weather = {
                                             type: 'h-entry',
-                                            properties: {
-                                                "summary": weatherInfo.currently.summary,
-                                                "icon": weatherInfo.currently.icon,
-                                                "precipIntensity": weatherInfo.currently.precipIntensity,
-                                                "precipProbability": weatherInfo.currently.precipProbability,
-                                                "precipType": weatherInfo.currently.precipType,
-                                                "temperature": weatherInfo.currently.temperature,
-                                                "apparentTemperature": weatherInfo.currently.apparentTemperature,
-                                                "dewPoint": weatherInfo.currently.dewPoint,
-                                                "humidity": weatherInfo.currently.humidity,
-                                                "pressure": weatherInfo.currently.pressure,
-                                                "windSpeed": weatherInfo.currently.windSpeed,
-                                                "windBearing": weatherInfo.currently.windBearing,
-                                                "visibility": weatherInfo.currently.visibility,
-                                                "sunriseTime": weatherInfo.daily.data[0].sunriseTime,
-                                                "sunsetTime": weatherInfo.daily.data[0].sunsetTime,
-                                                "moonPhase": weatherInfo.daily.data[0].moonPhase,
-                                            }
+                                            properties: weatherInfo.currently
+                                        };
+
+                                        yamlDocument.properties.weather.sightVisibility = yamlDocument.properties.weather.visibility;
+                                        delete yamlDocument.properties.weather.visibility;
+                                        delete yamlDocument.properties.weather.time;
+
+                                        if (weatherInfo.daily.data[0].sunriseTime) {
+                                            yamlDocument.properties.weather.sunriseTime = weatherInfo.daily.data[0].sunriseTime;
+                                        }
+
+                                        if (weatherInfo.daily.data[0].sunsetTime) {
+                                            yamlDocument.properties.weather.sunsetTime = weatherInfo.daily.data[0].sunsetTime;
+                                        }
+
+                                        if (weatherInfo.daily.data[0].moonPhase) {
+                                            yamlDocument.properties.weather.moonPhase = weatherInfo.daily.data[0].moonPhase;
                                         }
                                     }
 
@@ -740,9 +739,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             delete yamlDocument.tags;
                         }
 
-                        console.log("Testing YAML Data");
-                        console.log(yamlDocument);
-                        console.log(yamlDocument.properties);
+                        // console.log("Testing YAML Data");
+                        // console.log(yamlDocument);
 
                         // Save YAML File
                         var fileData = "---\n" + yaml.safeDump(yamlDocument, { lineWidth: 800 }) + "---\n" + postContents;
