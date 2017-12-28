@@ -9,7 +9,6 @@ import * as request from 'request';
 export function rebuildServer(req?, res?) {    
 
     Promise.all([
-        goodreads.getGoodreadsData(),
         webmentions.getWebmentionData(),
         configTools.importPeopleData()
     ]).then((results) => {
@@ -49,7 +48,6 @@ export function rebuildServerFromSlack(req?, res?) {
         .then(() => {
 
             return Promise.all([
-                goodreads.getGoodreadsData(),
                 webmentions.getWebmentionData(),
                 configTools.importPeopleData()
             ]).then((results) => {
@@ -126,7 +124,6 @@ export function rebuildServerFromSlack(req?, res?) {
 
 export function refreshServer(req?, res?) {
     return Promise.all([
-        goodreads.getGoodreadsData(),
         webmentions.getWebmentionData()
     ]).then((results) => {
         // All tasks are done, we can restart the jekyll server, etc.
@@ -150,7 +147,6 @@ export function refreshServer(req?, res?) {
 
 export function refreshServerWithDrafts(req?, res?) {
     return Promise.all([
-        goodreads.getGoodreadsData(),
         webmentions.getWebmentionData()
     ]).then((results) => {
         // All tasks are done, we can restart the jekyll server, etc.

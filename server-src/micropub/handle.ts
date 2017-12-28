@@ -76,7 +76,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
     let micropubPropertiesToExpand = [
         "like-of",
         "repost-of",
-        "in-reply-to"
+        "in-reply-to",
+        "bookmark-of"
     ];
 
     console.log("Post Type Check");
@@ -252,67 +253,31 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             let getContextProperty = yamlDocument.properties[propertyToExpand];
                             if (typeof getContextProperty === 'string') {
                                 console.log("Finding context for: " + propertyToExpand);
-                                yamlDocumentReady.push(mfo.getEntry(getContextProperty)
-                                .then((entry) => {
-
-                                    if (entry.name == undefined) {
-                                        console.log("No name found: ");
-                                        console.log(entry);
-                                        throw new Error("No name found");
-                                    }
+                                
+                                yamlDocumentReady.push(new Promise((resolve, reject) => {
+                                    let replyContext = undefined;
+                                    let replyContextUrl = undefined;
+        
+                                    replyContextUrl = `${config.xray.url}parse?url=${getContextProperty}`;
                                     
-                                    let entryPropertiesToAdd: any = {};
-                                    
-                                    entryPropertiesToAdd.name = entry.name;
-
-                                    if (entry.url != undefined) {
-                                        entryPropertiesToAdd.url = entry.url;
-                                    }
-
-                                    if (entry.summary != undefined) {
-                                        entryPropertiesToAdd.summary = entry.summary;
-                                    }
-
-                                    if (entry.author != undefined) {
-                                        entryPropertiesToAdd.author = {
-                                            type: "h-card",
-                                            properties: {
-                                                name: entry.author.name,
-                                                photo: entry.author.photo,
-                                                url: entry.author.url,
-                                                uid: entry.author.uid
-                                            }
+                                    console.log('parse url for context');
+                                    console.log(replyContextUrl);
+        
+                                    request(replyContextUrl, function(error, response, body) {
+                                        if (error !== null) {
+                                            console.log('error getting location');
+                                            console.log(error);
+                                        } else {
+                                            replyContext = JSON.parse(body);
                                         }
-                                    }
-
-                                    if (entry.photo != undefined) {
-                                        entryPropertiesToAdd.photo = entry.photo;
-                                    }
-
-                                    yamlDocument.properties[propertyToExpand] = {
-                                        type: "h-cite",
-                                        properties: entryPropertiesToAdd
-                                    }
-                                }).catch((err) => {
-                                    if (err.message == "All strategies failed: Error: Multiple h-entries found") {
-                                        return mfo.getCard(getContextProperty).then((card) => {
-                                            
-                                            yamlDocument.properties[propertyToExpand] = {
-                                                type: "h-card",
-                                                properties: card
-                                            }
-
-                                        }).catch((err) => {
-                                            console.log("Error trying to get card");
-                                            console.log(err);
-                                            return;
-                                        });
-                                    } else {
-                                        console.log("Error trying to get entry");
-                                        console.log(err);
-                                        return;
-                                    }
-                                    
+        
+                                        if (replyContext !== undefined && replyContext.data !== null) {
+                                            console.log(replyContext.data);
+                                        }
+        
+                                        resolve();
+                                    });
+        
                                 }));
                             }
                         }
