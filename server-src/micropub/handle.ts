@@ -736,6 +736,10 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             postContents = "";
                         }
 
+                        if (yamlDocument.tags !== undefined && yamlDocument.tags.length === 0) {
+                            delete yamlDocument.tags;
+                        }
+
                         console.log("Testing YAML Data");
                         console.log(yamlDocument);
 
