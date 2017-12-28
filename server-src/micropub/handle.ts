@@ -542,20 +542,22 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                             properties: weatherInfo.currently
                                         };
 
-                                        yamlDocument.properties.weather.sightVisibility = yamlDocument.properties.weather.visibility;
-                                        delete yamlDocument.properties.weather.visibility;
-                                        delete yamlDocument.properties.weather.time;
+                                        if (yamlDocument.properties.weather.properties.visibility !== undefined) {
+                                            yamlDocument.properties.weather.properties.sightVisibility = yamlDocument.properties.weather.properties.visibility;
+                                            delete yamlDocument.properties.weather.properties.visibility;
+                                        }
+                                        delete yamlDocument.properties.weather.properties.time;
 
                                         if (weatherInfo.daily.data[0].sunriseTime) {
-                                            yamlDocument.properties.weather.sunriseTime = weatherInfo.daily.data[0].sunriseTime;
+                                            yamlDocument.properties.weather.properties.sunriseTime = weatherInfo.daily.data[0].sunriseTime;
                                         }
 
                                         if (weatherInfo.daily.data[0].sunsetTime) {
-                                            yamlDocument.properties.weather.sunsetTime = weatherInfo.daily.data[0].sunsetTime;
+                                            yamlDocument.properties.weather.properties.sunsetTime = weatherInfo.daily.data[0].sunsetTime;
                                         }
 
                                         if (weatherInfo.daily.data[0].moonPhase) {
-                                            yamlDocument.properties.weather.moonPhase = weatherInfo.daily.data[0].moonPhase;
+                                            yamlDocument.properties.weather.properties.moonPhase = weatherInfo.daily.data[0].moonPhase;
                                         }
                                     }
 
