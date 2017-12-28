@@ -544,6 +544,54 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                     }
                                 }
 
+                                // Now that the location is fetched, we can fetch the weather
+                                yamlDocumentReady.push(new Promise((resolve, reject) => {
+
+                                    let weatherInfo;
+                                    let weatherQueryUrl = `https://api.darksky.net/forecast/${config.darksky.token}/${yamlDocument.properties.location.properties.latitude},${yamlDocument.properties.location.properties.longitude}`;
+
+                                    if (yamlDocument.date !== undefined) {
+                                        let postTimestamp = moment(yamlDocument.date, 'YYYY-MM-DD HH:mm:ss ZZ');
+                                        weatherQueryUrl += `,${postTimestamp.format('YYYY-MM-DDTHH:mm:ssZZ')}`;
+                                    }
+
+                                    request(weatherQueryUrl, function(error, response, body) {
+                                        if (error !== null) {
+                                            console.log('error getting weather');
+                                            console.log(error);
+                                        } else {
+                                            weatherInfo = JSON.parse(body);
+                                        }
+
+                                        if (weatherInfo !== undefined && weatherInfo.currently !== null) {
+                                            yamlDocument.properties.weather = {
+                                                type: 'h-entry',
+                                                properties: {
+                                                    "summary": weatherInfo.currently.summary,
+                                                    "icon": weatherInfo.currently.icon,
+                                                    "precipIntensity": weatherInfo.currently.precipIntensity,
+                                                    "precipProbability": weatherInfo.currently.precipProbability,
+                                                    "precipType": weatherInfo.currently.precipType,
+                                                    "temperature": weatherInfo.currently.temperature,
+                                                    "apparentTemperature": weatherInfo.currently.apparentTemperature,
+                                                    "dewPoint": weatherInfo.currently.dewPoint,
+                                                    "humidity": weatherInfo.currently.humidity,
+                                                    "pressure": weatherInfo.currently.pressure,
+                                                    "windSpeed": weatherInfo.currently.windSpeed,
+                                                    "windBearing": weatherInfo.currently.windBearing,
+                                                    "visibility": weatherInfo.currently.visibility,
+                                                    "sunriseTime": weatherInfo.daily.data[0].sunriseTime,
+                                                    "sunsetTime": weatherInfo.daily.data[0].sunsetTime,
+                                                    "moonPhase": weatherInfo.daily.data[0].moonPhase,
+                                                }
+                                            }
+                                        }
+
+                                        resolve()
+                                    });
+
+                                }));
+
                                 resolve();
                             });
 
