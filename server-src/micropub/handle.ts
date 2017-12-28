@@ -517,7 +517,6 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         yamlDocumentReady.push(new Promise((resolve, reject) => {
                             console.log("Weather promise set to wait for location");
                             locationPromise.then(() => {
-                                console.log("location promise returned");
                                 // Now that the location is fetched, we can fetch the weather
                                 console.log("About to deal with weather");
 
@@ -536,9 +535,6 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                     } else {
                                         weatherInfo = JSON.parse(body);
                                     }
-
-                                    console.log("retrieved weather");
-                                    console.log(weatherInfo);
 
                                     if (weatherInfo !== undefined && weatherInfo.currently !== null) {
                                         yamlDocument.properties.weather = {
@@ -563,6 +559,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                             }
                                         }
                                     }
+
+                                    console.log("adding weather properties");
 
                                     resolve()
                                 });
