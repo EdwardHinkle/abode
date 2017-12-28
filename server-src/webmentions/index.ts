@@ -37,7 +37,7 @@ function webmentionAlert(req, res) {
         "channel": "#website",
         "username": receivedWebmention.post.author.name,
         "icon_url": receivedWebmention.post.author.photo,
-        "text": (receivedWebmention.post.content ? receivedWebmention.post.content.value : undefined),
+        "text": (receivedWebmention.post.name ? receivedWebmention.post.name : (receivedWebmention.post.content ? receivedWebmention.post.content.value : undefined)),
         "attachments": undefined
     }
 
