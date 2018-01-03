@@ -754,6 +754,27 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             }
 
                             console.log(`Finished saving: ${fileName}`);
+
+                            request.post({
+                                url: `https://hooks.slack.com/services/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`,
+                                json: {
+                                    "channel": "#website",
+                                    "username": "website-bot",
+                                    "text": `Micropub request finished saving: ${fileName}`,
+                                    "attachments": undefined
+                                }
+                            }, (err, data) => {
+                                if (err != undefined) {
+                                    console.log(`ERROR: ${err}`);
+                                }
+                                if (data.statusCode != 200) {
+                                    console.log("oops Slack Error");
+                                } else {
+                                    console.log("Successfull sent Slack Message");
+                                }
+
+
+                            });
                         }); 
 
                         return;
