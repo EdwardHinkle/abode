@@ -306,6 +306,27 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                     yamlDocument.visibility = 'private';
                 }
 
+                // Detect syndicate shortcodes such as +mb
+                let regExSyndicateToken = /\+(\w*)/g;
+                let syndicateMatch = null;
+                let foundSyndications = [];
+                while(syndicateMatch = regExSyndicateToken.exec(micropubContent)) {
+                    foundSyndications.push(syndicateMatch[1]);
+                }
+
+                for (let shortcode of foundSyndications) {
+                    console.log(shortcode);
+                    let syndicateTarget = syndicateByShortcodes[shortcode];
+                    console.log(syndicateTarget);
+                    if (syndicateTarget != undefined) {
+                        micropubDocument.properties["mp-syndicate-to"].push(syndicateTarget.uid);
+                        yamlDocument.content = yamlDocument.content.replace(`+${shortcode}`, '');
+                    }
+                }
+
+                console.log('syndicate targets');
+                console.log(micropubDocument.properties["mp-syndicate-to"]);
+
                 // If syndicate-to micro.blog is set, we should create a syndication entry to allow the feed to display it
                 if (micropubDocument.properties['mp-syndicate-to'].indexOf('https://micro.blog/EddieHinkle') > -1) {
                     yamlDocument.properties.syndication.push({
@@ -367,11 +388,6 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                     }
                     yamlDocument.content = yamlDocument.content.replace(`#${tag}`, '');
                 }
-
-                // todo: detect @mb for microblog syndication, @fb for facebook syndication, @t for twitter syndication
-                // if () {
-                //     micropubDocument.properties['mp-syndicate-to'].push("https://micro.blog/EddieHinkle");
-                // }
 
                 let locationPromise = new Promise((resolve, reject) => {
 
@@ -569,26 +585,6 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             yamlDocument.content = yamlDocument.content.replace(`+${nickname}`, '');
                         }
                     }
-
-                    // Detect syndicate shortcodes such as +mb
-                    match = null;
-                    let foundSyndications = [];
-                    while(match = regExNicknameToken.exec(micropubContent)) {
-                        foundSyndications.push(match[1]);
-                    }
-
-                    for (let shortcode of foundSyndications) {
-                        console.log(shortcode);
-                        let syndicateTarget = syndicateByShortcodes[shortcode];
-                        console.log(syndicateTarget);
-                        if (syndicateTarget != undefined) {
-                            micropubDocument.properties["mp-syndicate-to"].push(syndicateTarget.uid);
-                            yamlDocument.content = yamlDocument.content.replace(`+${shortcode}`, '');
-                        }
-                    }
-
-                    console.log('syndicate targets');
-                    console.log(micropubDocument.properties["mp-syndicate-to"]);
 
                     // Set slug number to post index
                     yamlDocument.slug = '' + postInfo.postIndex;
