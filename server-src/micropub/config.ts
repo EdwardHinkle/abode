@@ -6,7 +6,7 @@ let dataDir = __dirname + "/../../jekyll/_source/";
 let imageDir = `${dataDir}/images`;
 let entryImageDirName = `entry-images`;
 
-let syndicateData = fs.readFileSync('../../config/syndicate.yaml', 'utf8');
+let syndicateData = fs.readFileSync(__dirname + '../../config/syndicate.yaml', 'utf8');
 let syndicateTargets = yaml.safeLoad(syndicateData);
 
 export function getMicropubConfig(queryType, req): Promise<any> {
