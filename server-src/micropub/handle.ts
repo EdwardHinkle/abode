@@ -519,6 +519,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             locationPromise.then(() => {
                                 // Now that the location is fetched, we can fetch the weather
                                 console.log("About to deal with weather");
+                                console.log("location info being used for weather");
+                                console.log(yamlDocument.properties.location);
 
                                 let weatherInfo;
                                 let weatherQueryUrl = `https://api.darksky.net/forecast/${config.darksky.token}/${yamlDocument.properties.location.properties.latitude},${yamlDocument.properties.location.properties.longitude}`;
