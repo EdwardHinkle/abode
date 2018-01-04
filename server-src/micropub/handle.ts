@@ -744,7 +744,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         }
 
                         console.log("Testing YAML Data");
-                        console.log(yamlDocument);
+                        console.log(JSON.stringify(yamlDocument, null, 2));
 
                         // Save YAML File
                         var fileData = "---\n" + yaml.safeDump(yamlDocument, { lineWidth: 800 }) + "---\n" + postContents;
