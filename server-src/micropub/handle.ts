@@ -563,6 +563,9 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                         }
                                     }
 
+                                    console.log("Final weather info");
+                                    console.log(yamlDocument.properties.weather);
+
                                     resolve()
                                 });
 
