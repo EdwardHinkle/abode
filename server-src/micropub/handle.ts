@@ -24,7 +24,7 @@ let imageDir = `${dataDir}/images`;
 let mediaStorageDir = `${__dirname}/../../media-server-storage`;
 let entryImageDirName = `entry-images`;
 
-let syndicateData = fs.readFileSync(__dirname + '../../config/syndicate.yaml', 'utf8');
+let syndicateData = fs.readFileSync(__dirname + '/../../config/syndicate.yaml', 'utf8');
 let syndicateTargets = yaml.safeLoad(syndicateData);
 let syndicateByShortcodes = {};
 syndicateTargets.forEach(target => {
