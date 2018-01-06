@@ -1,0 +1,148 @@
+.authorization-title {
+    text-align: center;
+}
+
+.request-details {
+
+}
+
+.request-header {
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.app-request {
+    margin: 0;
+    margin-left: 10px;
+    display: inline-block;
+}
+
+.app-logo {
+    display: inline-block;
+    vertical-align: middle;
+    height: 75px;
+}
+
+.scope-requests {
+    margin-bottom: 10px;
+}
+
+.scope-description {
+    padding: 8px 10px;
+    font-size: 16px;
+    background-color: #ececec;
+    margin-bottom: 10px;
+    border-radius: 2px;
+}
+
+.scope-description:last-of-type {
+    border-bottom: none;
+}
+
+.scope-checkbox {
+    cursor: pointer;
+}
+
+.scope-label {
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.response-buttons {
+    margin-top: 10px;
+}
+
+.response-buttons form {
+    display: inline-block;
+    width: 25%;
+    margin-left: 12.5%;
+    margin-right: 12.5%;
+}
+
+.response-buttons form input {
+    width: 100%;
+    background-color: #2a7ae2;
+    color: #fff;
+    border: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
+}
+
+.request-panel {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 500px;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+@media (max-width: 600px) {
+
+    .request-details {
+        display: block;
+    }
+
+    .app-request {
+        margin: 0;
+    }
+
+    .app-logo {
+        display: block;
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        height: fit-content;
+    }
+
+    .scope-checkbox {
+        cursor: pointer;
+    }
+
+    .scope-label {
+        cursor: pointer;
+        margin-left: 10px;
+    }
+
+    .response-buttons {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .response-buttons form {
+        display: block;
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .response-buttons form input {
+        width: 100%;
+        background-color: #2a7ae2;
+        color: #fff;
+        border: none;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        cursor: pointer;
+    }
+
+    .request-panel {
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 600px;
+    }
+
+}

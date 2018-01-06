@@ -1,0 +1,1 @@
+export type ResponseType = 'id' | 'code';

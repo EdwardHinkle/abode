@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import * as fs from 'fs';
 import * as cron from 'cron';
 import * as path from 'path';
+import * as session from 'express-session';
 import { router } from './routes';
 import { rebuildServer } from './process-server/rebuildServer';
 
@@ -12,9 +13,26 @@ var config = require('../abodeConfig.json');
 
 var app = express();
 
+app.set('views', './views');
+app.set('view engine', 'pug');
+
 app.listen(config.PORT, function() {
 	console.log("Abode API running on " + config.PORT);
 });
+
+let sessionInfo = {
+    secret: '31oYwcDP3TbhNqXLIYEAeIzwEbk=',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {}
+};
+
+if (config.ENV === "production") {
+    app.set('trust proxy', 1);
+    sessionInfo.cookie = { secure: true };
+}
+
+app.use(session(sessionInfo));
 
 app.use(bodyParser.urlencoded({
   extended: true

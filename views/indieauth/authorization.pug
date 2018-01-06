@@ -1,0 +1,36 @@
+html
+    head
+        title EddieHinkle.com Authorization Endpoint
+        style
+            include authorization.css
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    body
+        h1.authorization-title Abode Authorization
+        if error
+            p.error=error
+        div.authorization-request
+            div.request-panel
+                div
+                    div.request-details
+                        div.request-header
+                            if app.logo
+                                img(src=client_id + app.logo).app-logo
+                            h2.app-request
+                                if app.name
+                                    a(href=client_id) #{app.name}
+                                else
+                                    a(href=client_id) #{client_id}
+                                span=' would like to:'
+                        div.scope-requests
+                            each scope in scopes
+                                div.scope-description
+                                    input(type="checkbox", id=scope.id, name="scope", value=scope.id, checked, disabled=scope.id=="id").scope-checkbox
+                                    label(for=scope.id).scope-label.noselect
+                                        span=scope.name
+                                        if scope.id !== 'id'
+                                            strong=' (' + scope.id + ')'
+                div.response-buttons
+                    form(action="/auth/deny", method="post")
+                        input(type="submit", value="Deny")
+                    form(action="/auth/approve", method="post")
+                        input(type="submit", value="Approve")

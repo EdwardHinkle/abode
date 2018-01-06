@@ -1,0 +1,13 @@
+html
+    head
+        title Log In to EddieHinkle.com
+        style
+            include global.css
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    body
+        h1.page-title Abode Log In
+        if error
+            p.error=error
+        form(action="", method="post")
+            input(type="password", name="password", placeholder="password", autofocus="autofocus", onfocus="this.select()").password-input
+            input(type="submit", value="Log In").button
