@@ -89,9 +89,28 @@ export function rebuildServerFromSlack(req?, res?) {
                         if (data.statusCode != 200) {
                             console.log("oops Slack Error");
                         } else {
-                            console.log("Successfull sent Slack Message");
+                            console.log("Successfully sent Slack Message");
                         }
 
+                    });
+                    jekyll.runJekyllPrivateBuild().then(() => {
+                        request.post({
+                        url: req.body.response_url,
+                        json: {
+                            "response_type": "in_channel",
+                            "text": "Private Rebuild Complete"
+                        }
+                    }, (err, data) => {
+                        if (err != undefined) {
+                            console.log(`ERROR: ${err}`);
+                        }
+                        if (data.statusCode != 200) {
+                            console.log("oops Slack Error");
+                        } else {
+                            console.log("Successfully sent Slack Message");
+                        }
+
+                    });
                     });
                 }).catch((error) => {
                     console.log("Caught Error");

@@ -6,6 +6,7 @@
 /jekyll/_build
 /jekyll/.sass-cache
 /jekyll/_source
+/jekyll/_private_build
 /.idea
 /log-files
 /_storage

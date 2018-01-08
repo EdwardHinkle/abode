@@ -28,6 +28,7 @@ let sessionInfo = {
 };
 
 if (config.ENV === "production") {
+    console.log('Production build trust proxy');
     app.set('trust proxy', 1);
     sessionInfo.cookie = { secure: true };
 }
