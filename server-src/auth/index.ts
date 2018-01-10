@@ -48,9 +48,19 @@ authRouter.post('/login', requireUnauth, (req, res, next) => {
 
 });
 
-
 // Routes that require authentication
 authRouter.get('/', requireAuth, indieAuth.authenticationEndpoint, indieAuth.authorizationEndpoint);
+
+authRouter.get('/logout', (req, res, next) => {
+    if (req.session.username === undefined) {
+        res.send('Already logged out');
+        return;
+    }
+    
+    req.session.destroy((err) => {
+        res.redirect('/');
+    });
+});
 
 authRouter.get('/newPassword', requireAuth, (req, res, next) => {
     res.render('newPassword');
