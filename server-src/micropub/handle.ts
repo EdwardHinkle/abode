@@ -609,6 +609,9 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         console.log(taggedPerson);
                         if (taggedPerson != undefined) {
                             yamlDocument.content = yamlDocument.content.replace(`@${nickname}`, `[@${nickname}](${taggedPerson.getRepresentitiveUrl()})`);
+                        } else if (yamlDocument.properties.syndication.find(syndication => syndication.name === 'micro.blog') !== undefined) {
+                            // if no one found in nickname cache, and syndication exists to micro.blog, auto-link to micro.blog account
+                            yamlDocument.content = yamlDocument.content.replace(`@${nickname}`, `[@${nickname}](https://micro.blog/${nickname})`);
                         }
                     }
 
