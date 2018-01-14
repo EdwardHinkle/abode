@@ -89,8 +89,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                 // Take Micropub Document and Modify to Output Structure to match YAML
 
                 // check to see if mp-syndicate-to exists, if not create it
-                if (micropubDocument.properties['mp-syndicate-to'] === undefined) {
-                    micropubDocument.properties['mp-syndicate-to'] = [];
+                if (micropubDocument.mp['syndicate-to'] === undefined) {
+                    micropubDocument.mp['syndicate-to'] = [];
                 }
 
                 // For posts the date needs to be in the root object
@@ -226,7 +226,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                 }
 
                 if (micropubDocument.client_id === 'https://micro.blog/') {
-                    micropubDocument.properties['mp-syndicate-to'].push("https://micro.blog/EddieHinkle");
+                    micropubDocument.mp['syndicate-to'].push("https://micro.blog/EddieHinkle");
                 }
 
                 console.log("About to deal with expanded context");
@@ -319,16 +319,16 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                     let syndicateTarget = syndicateByShortcodes[shortcode];
                     console.log(syndicateTarget);
                     if (syndicateTarget != undefined) {
-                        micropubDocument.properties["mp-syndicate-to"].push(syndicateTarget.uid);
+                        micropubDocument.mp['syndicate-to'].push(syndicateTarget.uid);
                         yamlDocument.content = yamlDocument.content.replace(`+${shortcode}`, '');
                     }
                 }
 
                 console.log('syndicate targets');
-                console.log(micropubDocument.properties["mp-syndicate-to"]);
+                console.log(micropubDocument.mp['syndicate-to']);
 
                 // If syndicate-to micro.blog is set, we should create a syndication entry to allow the feed to display it
-                if (micropubDocument.properties['mp-syndicate-to'].indexOf('https://micro.blog/EddieHinkle') > -1) {
+                if (micropubDocument.mp['syndicate-to'].indexOf('https://micro.blog/EddieHinkle') > -1) {
                     yamlDocument.properties.syndication.push({
                         name: "micro.blog",
                         icon: "fa-globe",
@@ -339,20 +339,20 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                     if (yamlDocument.visibility === 'public') {
                         yamlDocument['feed-syndication'] = true;
                     }
-                    let mblogIndex = micropubDocument.properties['mp-syndicate-to'].indexOf('https://micro.blog/EddieHinkle');
-                    micropubDocument.properties['mp-syndicate-to'].splice(mblogIndex, 1);
+                    let mblogIndex = micropubDocument.mp['syndicate-to'].indexOf('https://micro.blog/EddieHinkle');
+                    micropubDocument.mp['syndicate-to'].splice(mblogIndex, 1);
                 }
 
                 // If syndicate-to has IndieNews, add syndication link to post
-                if (micropubDocument.properties['mp-syndicate-to'].indexOf('https://news.indieweb.org/en') > -1) {
+                if (micropubDocument.mp['syndicate-to'].indexOf('https://news.indieweb.org/en') > -1) {
                     yamlDocument.properties.syndication.push({
                         name: "IndieNews",
                         image: "images/indiewebcamp.svg",
                         url: 'https://news.indieweb.org/en'
                     });
 
-                    let syndicateIndex = micropubDocument.properties['mp-syndicate-to'].indexOf('https://news.indieweb.org/en');
-                    micropubDocument.properties['mp-syndicate-to'].splice(syndicateIndex, 1);
+                    let syndicateIndex = micropubDocument.mp['syndicate-to'].indexOf('https://news.indieweb.org/en');
+                    micropubDocument.mp['syndicate-to'].splice(syndicateIndex, 1);
                 }
 
                 // Convert categories to tags
