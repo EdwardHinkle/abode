@@ -85,6 +85,10 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                 let yamlDocument: any = {};
                 let yamlDocumentReady = [];
+                
+                if (micropubDocument.mp === undefined) {
+                	micropubDocument.mp = {};
+                }
 
                 // Take Micropub Document and Modify to Output Structure to match YAML
 
