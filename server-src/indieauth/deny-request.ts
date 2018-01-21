@@ -8,12 +8,12 @@ import * as request from 'request';
 
 export let denyRequest = (req, res, next) => {
 
-    let requestInfo = req.session.indieAuth;
+    let requestInfo = req.session.indieAuthRequest;
 
     console.log("request session");
     console.log(requestInfo);
 
-    if (requestInfo.indieAuthRequest === undefined || requestInfo.indieAuthRequest.redirect_uri === undefined) {
+    if (requestInfo === undefined || requestInfo.redirect_uri === undefined) {
         console.log('Either no IndieAuth Request or no Redirect URI');
         next()
     }

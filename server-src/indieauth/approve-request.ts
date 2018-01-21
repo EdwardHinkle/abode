@@ -4,7 +4,7 @@ var config = require('../../abodeConfig.json');
 
 export let approveRequest = (req, res, next) => {
 
-    let requestInfo = req.session.indieAuth;
+    let requestInfo = req.session.indieAuthRequest;
 
     if (requestInfo === undefined || requestInfo.redirect_uri === undefined) {
         console.log('Either no IndieAuth Request or no Redirect URI');
