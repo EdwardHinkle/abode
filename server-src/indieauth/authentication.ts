@@ -87,7 +87,7 @@ export let authenticationEndpoint = (req, res, next) => {
         let scopes = [
             {
                 id: 'id',
-                name: `Identify you as <a href="${req.session.username}">Eddie Hinkle</a> (${req.session.username})`
+                name: `Identify you as Eddie Hinkle (${req.session.username})`
             }
         ];
 
