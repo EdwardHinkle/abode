@@ -27,8 +27,8 @@ remoteUrl: https://eddiehinkle.com
 localUrl: https://eddiehinkle.com
 
 endpoints:
-  authorization_endpoint: https://eddiehinkle.com/auth/
-  token_endpoint: https://tokens.indieauth.com/token
+  authorization_endpoint: https://eddiehinkle.com/auth
+  token_endpoint: https://eddiehinkle.com/auth/token
   micropub: https://eddiehinkle.com/micropub
   webmention: https://webmention.io/eddiehinkle.com/webmention
   microsub: https://monocle.eddiehinkle.com/microsub/1
