@@ -4,11 +4,11 @@ import * as Cheerio from "cheerio";
 import * as request from "request";
 import * as jwt from "jsonwebtoken";
 
-var config = require('../../abodeConfig.json');
-
 import {scopeDefinitions} from "./scopes.model";
 
 export let verificationEndpoint = (req, res, next) => {
+
+    let config = req.app.get('config');
 
     if (req.session.username === undefined) {
         console.log("ERROR!");

@@ -15,6 +15,7 @@ var app = express();
 
 app.set('views', './views');
 app.set('view engine', 'pug');
+app.set('config', config);
 
 app.listen(config.PORT, function() {
 	console.log("Abode API running on " + config.PORT);

@@ -1,8 +1,8 @@
 import * as jwt from "jsonwebtoken";
 
-var config = require('../../abodeConfig.json');
-
 export let approveRequest = (req, res, next) => {
+
+    let config = req.app.get('config');
 
     let requestInfo = req.session.indieAuthRequest;
 
