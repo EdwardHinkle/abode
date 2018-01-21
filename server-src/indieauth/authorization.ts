@@ -61,7 +61,7 @@ export let authorizationEndpoint = (req, res, next) => {
         let clientApp = {};
 
         console.log("check for app");
-        console.log(appInfo.html());
+        console.log(appInfo);
 
         if (appInfo == null) {
             appInfo = $(".h-x-app");
