@@ -11,12 +11,15 @@ export let approveRequest = (req, res, next) => {
         next()
     }
 
+    console.log("Request Info");
+    console.log(requestInfo);
+
     const payload = {
         client_id: requestInfo.client_id,
         redirect_uri: requestInfo.redirect_uri,
         me: requestInfo.me,
         state: requestInfo.state,
-        id: new Date().toString(),
+        id: new Date().getTime(),
         scope: undefined
     };
 
