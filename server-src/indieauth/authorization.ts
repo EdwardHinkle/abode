@@ -69,13 +69,15 @@ export let authorizationEndpoint = (req, res, next) => {
 
         if (appInfo != null) {
             console.log("app info?");
-            console.log(appInfo.find('.u-url').attr('href'));
-            console.log(appInfo.find('.p-name').text());
-            console.log(appInfo.find('.u-logo').attr('src'));
+            console.log(appInfo.find('.p-name').html());
             if (appInfo.find('.u-url').attr('href') === '' || appInfo.find('.u-url').attr('href') === '/') {
-                console.log("should be all set");
+                let appName = appInfo.find('.p-name').text();
+                if (appName == '') {
+                    appName = appInfo.find('.p-name').parent().text();
+                }
+
                 clientApp = {
-                    name: appInfo.find('.p-name').text(),
+                    name: appName,
                     logo: appInfo.find('.u-logo').attr('src')
                 };
             }
