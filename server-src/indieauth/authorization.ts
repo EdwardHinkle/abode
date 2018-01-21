@@ -58,14 +58,19 @@ export let authorizationEndpoint = (req, res, next) => {
         let $ = Cheerio.load(body);
 
         let appInfo = $(".h-app");
-        let clientApp;
+        let clientApp = {};
 
         if (appInfo === undefined) {
             appInfo = $(".h-x-app");
         }
 
         if (appInfo !== undefined) {
+            console.log("app info?");
+            console.log(appInfo.find('u-url').attr('href'));
+            console.log(appInfo.find('p-name').text());
+            console.log(appInfo.find('u-logo').attr('src'));
             if (appInfo.find('u-url').attr('href') === '' || appInfo.find('u-url').attr('href') === '/') {
+                console.log("should be all set");
                 clientApp = {
                     name: appInfo.find('p-name').text(),
                     logo: appInfo.find('u-logo').attr('src')
