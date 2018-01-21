@@ -55,61 +55,61 @@ export let authorizationEndpoint = (req, res, next) => {
             return;
         }
 
-        let mfOptions = {
-            node: Cheerio.load(body)
+        let $ = Cheerio.load(body);
+
+        let appInfo = $(".h-app");
+        let clientApp;
+
+        console.log(appInfo);
+
+        if (appInfo === undefined) {
+            appInfo = $(".h-x-app");
+        }
+
+        console.log(appInfo);
+
+        if (appInfo !== undefined) {
+            clientApp = {
+                // name:
+                // logo:
+            };
         };
 
-        mf.get(mfOptions, (err, data) => {
-            if (err) {
-                // todo: Figure out how to gracefully handle client mf2 error
-                console.log("client mf2 error");
-                return;
-            }
+        // todo: We need to use Cheerio to find the redirect_uri rel
+        // todo: Check to see if redirect_uri is part of the client_id's domain
+        // todo: If redirect_uri is NOT part of the client_id's domain, check if it is in the redirect array
+        // let redirectUris = data.rels.redirect_uri;
+        // todo: if redirect_uri is not official, reject it
 
-            let clientApp;
+        let scopes = [
+            {
+                id: 'id',
+                name: `Identify you as Eddie Hinkle (${req.session.username})`
+            },
+        ];
 
-            if (data !== undefined && data.items !== undefined) {
-                clientApp = data.items.find(item => (item.type[0] === "h-x-app" || item.type[0] === "h-app")).properties;
-            }
-
-            // todo: Check to see if redirect_uri is part of the client_id's domain
-            // todo: If redirect_uri is NOT part of the client_id's domain, check if it is in the redirect array
-            let redirectUris = data.rels.redirect_uri;
-            // todo: if redirect_uri is not official, reject it
-
-            let scopes = [
-                {
-                    id: 'id',
-                    name: `Identify you as Eddie Hinkle (${req.session.username})`
-                },
-            ];
-
-            console.log('check scope');
-            console.log(scope);
-
-            let scopeArray = scope.split(" ");
-            scopes = scopes.concat(scopeArray.map(scopeValue => {
-                return {
-                    id: scopeValue,
-                    name: scopeDefinitions[scopeValue]
-                };
-            }));
-
-            req.session.indieAuthRequest = {
-                response_type: response_type,
-                me: me,
-                client_id: client_id,
-                redirect_uri: redirect_uri,
-                state: state,
-                scopes: scopes
+        let scopeArray = scope.split(" ");
+        scopes = scopes.concat(scopeArray.map(scopeValue => {
+            return {
+                id: scopeValue,
+                name: scopeDefinitions[scopeValue]
             };
+        }));
 
-            res.render("indieauth/authorization", {
-                app: clientApp,
-                me: req.session.username,
-                client_id: client_id,
-                scopes: scopes
-            });
+        req.session.indieAuthRequest = {
+            response_type: response_type,
+            me: me,
+            client_id: client_id,
+            redirect_uri: redirect_uri,
+            state: state,
+            scopes: scopes
+        };
+
+        res.render("indieauth/authorization", {
+            app: clientApp,
+            me: req.session.username,
+            client_id: client_id,
+            scopes: scopes
         });
 
     });
