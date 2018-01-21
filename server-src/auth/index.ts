@@ -49,7 +49,9 @@ authRouter.post('/login', requireUnauth, (req, res, next) => {
 });
 
 // Routes that require authentication
-authRouter.get('/', requireAuth, indieAuth.authenticationEndpoint, indieAuth.authorizationEndpoint);
+authRouter.get('/', requireAuth, indieAuth.verificationEndpoint, indieAuth.authenticationEndpoint, indieAuth.authorizationEndpoint);
+authRouter.post('/deny', requireAuth, indieAuth.denyRequest);
+authRouter.post('/approve', requireAuth, indieAuth.approveRequest);
 
 authRouter.get('/logout', (req, res, next) => {
     if (req.session.username === undefined) {

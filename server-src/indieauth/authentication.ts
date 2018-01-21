@@ -78,6 +78,15 @@ export let authenticationEndpoint = (req, res, next) => {
                 }
             ];
 
+            req.session.indieAuthRequest = {
+                responseType: response_type,
+                me: me,
+                client_id: client_id,
+                redirect_uri: redirect_uri,
+                state: state,
+                scopes: scopes
+            };
+
             res.render("indieauth/authorization", {
                 app: clientApp,
                 me: req.session.username,
@@ -87,7 +96,5 @@ export let authenticationEndpoint = (req, res, next) => {
         });
 
     });
-
-
 
 };

@@ -2,6 +2,7 @@ import {ResponseType} from "./response-type.model";
 import * as mf from 'microformat-node';
 import * as Cheerio from "cheerio";
 import * as request from "request";
+
 import {scopeDefinitions} from "./scopes.model";
 
 export let authorizationEndpoint = (req, res, next) => {
@@ -90,6 +91,15 @@ export let authorizationEndpoint = (req, res, next) => {
                 };
             }));
 
+            req.session.indieAuthRequest = {
+                responseType: response_type,
+                me: me,
+                client_id: client_id,
+                redirect_uri: redirect_uri,
+                state: state,
+                scopes: scopes
+            };
+
             res.render("indieauth/authorization", {
                 app: clientApp,
                 me: req.session.username,
@@ -99,7 +109,5 @@ export let authorizationEndpoint = (req, res, next) => {
         });
 
     });
-
-
 
 };

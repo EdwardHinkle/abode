@@ -1,12 +1,11 @@
-private_posts: true
-remoteUrl: http://eddie.dev
-localUrl: http://eddie.dev
-url: http://eddie.dev
+remoteUrl: http://eddie2.test
+localUrl: http://eddie2.test
+url: http://eddie2.test
 
 endpoints:
-  authorization_endpoint: https://indieauth.com/auth
+  authorization_endpoint: http://eddie2.test/auth/
   token_endpoint: https://tokens.indieauth.com/token
-  micropub: https://eddie.dev/micropub
+  micropub: https://eddie2.test/micropub
   webmention: https://webmention.io/eddie.dev/webmention
   microsub: http://influx.abode/eddie.dev/microsub
   pingback: https://webmention.io/eddie.dev/xmlrpc
