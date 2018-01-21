@@ -62,7 +62,7 @@ export let tokenVerification = (req, res, next) => {
 
     console.log(req.headers.authorization);
 
-    let access_token = req.headers.authorization;
+    let access_token = req.headers.authorization.split("Bearer ");
 
     console.log("IndieAuth Token Verification Endpoint");
 
