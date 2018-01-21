@@ -1,5 +1,4 @@
 import {ResponseType} from "./response-type.model";
-import * as mf from 'microformat-node';
 import * as Cheerio from "cheerio";
 import * as request from "request";
 
@@ -64,12 +63,7 @@ export let authorizationEndpoint = (req, res, next) => {
             appInfo = $(".h-x-app");
         }
 
-        console.log("check for app 2");
-        console.log(appInfo.html());
-
         if (appInfo != null) {
-            console.log("app info?");
-            console.log(appInfo.find('.p-name').html());
             if (appInfo.find('.u-url').attr('href') === '' || appInfo.find('.u-url').attr('href') === '/') {
                 let appName = appInfo.find('.p-name').text();
                 if (appName == '') {
