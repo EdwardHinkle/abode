@@ -60,7 +60,7 @@ export let tokenVerification = (req, res, next) => {
 
     let config = req.app.get('config');
 
-    console.log(req.headers.authorization);
+    console.log(req.headers.authorization.split("Bearer "));
 
     let access_token = req.headers.authorization.split("Bearer ");
 
