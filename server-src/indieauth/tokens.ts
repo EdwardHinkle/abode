@@ -1,9 +1,16 @@
 import * as jwt from "jsonwebtoken";
+import * as fs from 'fs';
+import * as readline from 'readline';
+
+const TOKEN_FILE_PATH = `${__dirname}/../../_storage/token`;
 
 export let tokenProvision = (req, res, next) => {
 
-    let config = req.app.get('config');
+    if (req.body.grant_type === undefined) {
+        next();
+    }
 
+    let config = req.app.get('config');
 
     let grant_type = req.body.grant_type;
     let authorization_code = req.body.code;
@@ -65,8 +72,31 @@ export let tokenVerification = (req, res, next) => {
     console.log("IndieAuth Token Verification Endpoint");
 
     jwt.verify(access_token, config.jwt_secret, (err, requestInfo) => {
+
         if (err) {
             console.log("Error verifying JWT");
+            res.status(403).send("Forbidden");
+            return;
+        }
+
+        let token_revoked = false;
+        if (fs.existsSync(TOKEN_FILE_PATH)) {
+            const rl = readline.createInterface({
+                input: fs.createReadStream(TOKEN_FILE_PATH)
+            });
+
+            rl.on('line', function (line) {
+                console.log('new line');
+                console.log(line);
+                console.log(requestInfo.id);
+                if (line == requestInfo.id) {
+                    token_revoked = true;
+                }
+            });
+        }
+
+        if (token_revoked) {
+            console.log("Token has been revoked");
             res.status(403).send("Forbidden");
             return;
         }
@@ -77,6 +107,36 @@ export let tokenVerification = (req, res, next) => {
             "scope": requestInfo.scope.join(" ")
         });
 
+    });
+
+};
+
+export let tokenRevocation = (req, res, next) => {
+
+    let config = req.app.get('config');
+
+    if (req.body.action !== 'revoke') {
+        next();
+    }
+
+    console.log("Reached token revocation endpoint");
+
+    let access_token = req.body.token;
+
+    jwt.verify(access_token, config.jwt_secret, (err, requestInfo) => {
+        if (err) {
+            console.log("Error verifying JWT");
+            res.status(403).send("Forbidden");
+            return;
+        }
+
+        if (!fs.existsSync(TOKEN_FILE_PATH)) {
+            fs.closeSync(fs.openSync(TOKEN_FILE_PATH, 'w'));
+        }
+
+        fs.appendFileSync(TOKEN_FILE_PATH, `${requestInfo.id}\n`);
+
+        res.status(200).send('ok');
     });
 
 };
