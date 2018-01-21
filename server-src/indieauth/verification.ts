@@ -10,14 +10,15 @@ export let verificationEndpoint = (req, res, next) => {
 
     let config = req.app.get('config');
 
-    if (req.query.code === undefined) {
+    if (req.body.code === undefined) {
+        console.log("no query code");
         next();
         return;
     }
 
-    let code = req.query.code;
-    let client_id = req.query.client_id;
-    let redirect_uri = req.query.redirect_uri;
+    let code = req.body.code;
+    let client_id = req.body.client_id;
+    let redirect_uri = req.body.redirect_uri;
 
     console.log("IndieAuth Verification Endpoint");
 
