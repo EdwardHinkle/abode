@@ -24,7 +24,7 @@ export let approveRequest = (req, res, next) => {
     };
 
     if (requestInfo.response_type == 'code' && requestInfo.scopes.length > 1) {
-        payload.scope = requestInfo.scopes.map(scope => scope.id).reject(scope => scope == 'id')
+        payload.scope = requestInfo.scopes.map(scope => scope.id).filter(scope => scope !== 'id')
     }
 
     console.log('jwt payload');
