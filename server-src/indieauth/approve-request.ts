@@ -17,7 +17,7 @@ export let approveRequest = (req, res, next) => {
     const payload = {
         client_id: requestInfo.client_id,
         redirect_uri: requestInfo.redirect_uri,
-        me: requestInfo.me,
+        me: req.session.username,
         state: requestInfo.state,
         id: new Date().getTime(),
         scope: undefined

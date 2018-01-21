@@ -10,13 +10,6 @@ export let verificationEndpoint = (req, res, next) => {
 
     let config = req.app.get('config');
 
-    if (req.session.username === undefined) {
-        console.log("ERROR!");
-        console.log("Not logged in");
-        next();
-        return;
-    }
-
     if (req.query.code === undefined) {
         next();
         return;
@@ -47,11 +40,11 @@ export let verificationEndpoint = (req, res, next) => {
 
         console.log("sending json");
         console.log({
-            "me": req.session.username
+            "me": requestInfo.me
         });
 
         res.json({
-            "me": req.session.username
+            "me": requestInfo.me
         });
 
     });
