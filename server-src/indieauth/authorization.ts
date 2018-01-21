@@ -69,10 +69,12 @@ export let authorizationEndpoint = (req, res, next) => {
         console.log(appInfo);
 
         if (appInfo !== undefined) {
-            clientApp = {
-                // name:
-                // logo:
-            };
+            if (appInfo.find('u-url').attr('href') === '' || appInfo.find('u-url').attr('href') === '/') {
+                clientApp = {
+                    name: appInfo.find('p-name').text(),
+                    logo: appInfo.find('u-logo').attr('src')
+                };
+            }
         };
 
         // todo: We need to use Cheerio to find the redirect_uri rel
