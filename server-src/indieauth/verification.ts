@@ -45,6 +45,11 @@ export let verificationEndpoint = (req, res, next) => {
             return;
         }
 
+        console.log("sending json");
+        console.log({
+            "me": req.session.username
+        });
+
         res.json({
             "me": req.session.username
         });

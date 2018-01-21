@@ -19,7 +19,7 @@ export let denyRequest = (req, res, next) => {
     }
 
 
-    let redirectUrl = requestInfo.redirect_uri + (requestInfo.redirect_uri.indexOf('?') > -1 ? '?' : '&') + 'error=access_denied';
+    let redirectUrl = requestInfo.redirect_uri + (requestInfo.redirect_uri.indexOf('?') === -1 ? '?' : '&') + 'error=access_denied';
 
     res.redirect(redirectUrl);
 
