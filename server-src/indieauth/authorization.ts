@@ -63,14 +63,14 @@ export let authorizationEndpoint = (req, res, next) => {
         console.log("check for app");
         console.log(appInfo.html());
 
-        if (appInfo === null) {
+        if (appInfo == null) {
             appInfo = $(".h-x-app");
         }
 
         console.log("check for app 2");
         console.log(appInfo.html());
 
-        if (appInfo !== undefined) {
+        if (appInfo != null) {
             console.log("app info?");
             console.log(appInfo.find('.u-url').attr('href'));
             console.log(appInfo.find('.p-name').text());
