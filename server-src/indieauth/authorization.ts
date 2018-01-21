@@ -66,7 +66,11 @@ export let authorizationEndpoint = (req, res, next) => {
                 return;
             }
 
-            let clientApp = data.items.find(item => (item.type[0] === "h-x-app" || item.type[0] === "h-app")).properties;
+            let clientApp;
+
+            if (data !== undefined && data.items !== undefined) {
+                clientApp = data.items.find(item => (item.type[0] === "h-x-app" || item.type[0] === "h-app")).properties;
+            }
 
             // todo: Check to see if redirect_uri is part of the client_id's domain
             // todo: If redirect_uri is NOT part of the client_id's domain, check if it is in the redirect array
