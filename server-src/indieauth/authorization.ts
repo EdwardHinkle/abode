@@ -92,7 +92,7 @@ export let authorizationEndpoint = (req, res, next) => {
             }));
 
             req.session.indieAuthRequest = {
-                responseType: response_type,
+                response_type: response_type,
                 me: me,
                 client_id: client_id,
                 redirect_uri: redirect_uri,
