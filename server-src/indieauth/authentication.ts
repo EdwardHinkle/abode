@@ -87,6 +87,9 @@ export let authenticationEndpoint = (req, res, next) => {
                 scopes: scopes
             };
 
+            console.log("session");
+            console.log(req.session);
+
             res.render("indieauth/authorization", {
                 app: clientApp,
                 me: req.session.username,
