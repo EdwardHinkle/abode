@@ -48,9 +48,10 @@ authRouter.post('/login', requireUnauth, (req, res, next) => {
 
 });
 
+authRouter.post('/', requireUnauth, indieAuth.verificationEndpoint);
+
 // Routes that require authentication
 authRouter.get('/', requireAuth, indieAuth.authenticationEndpoint, indieAuth.authorizationEndpoint);
-authRouter.post('/', requireAuth, indieAuth.verificationEndpoint);
 authRouter.post('/deny', requireAuth, indieAuth.denyRequest);
 authRouter.post('/approve', requireAuth, indieAuth.approveRequest);
 
