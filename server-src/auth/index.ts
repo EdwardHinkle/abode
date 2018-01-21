@@ -28,6 +28,8 @@ let requireUnauth = (req, res, next) => {
 
 // Routes that don't care about authentication
 authRouter.post('/', indieAuth.verificationEndpoint);
+authRouter.post('/token', indieAuth.tokenProvision);
+authRouter.get('/token', indieAuth.tokenVerification);
 
 // Routes that require unauthentication
 authRouter.get('/login', requireUnauth, (req, res, next) => {
