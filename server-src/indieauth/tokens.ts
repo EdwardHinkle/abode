@@ -60,8 +60,6 @@ export let tokenVerification = (req, res, next) => {
 
     let config = req.app.get('config');
 
-    console.log(req.headers.authorization.split("Bearer ").pop());
-
     let access_token = req.headers.authorization.split("Bearer ").pop();
 
     console.log("IndieAuth Token Verification Endpoint");
@@ -69,7 +67,7 @@ export let tokenVerification = (req, res, next) => {
     jwt.verify(access_token, config.jwt_secret, (err, requestInfo) => {
         if (err) {
             console.log("Error verifying JWT");
-            res.status(403);
+            res.status(403).send("Forbidden");
             return;
         }
 
