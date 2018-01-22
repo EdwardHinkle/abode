@@ -34,7 +34,7 @@ export let approveRequest = (req, res, next) => {
         expiresIn: 120 // expires in 2 minutes
     }, null);
 
-    let redirectUrl = requestInfo.redirect_uri + (requestInfo.redirect_uri.indexOf('?') === -1 ? '?' : '&') + `code=${token}`;
+    let redirectUrl = requestInfo.redirect_uri + (requestInfo.redirect_uri.indexOf('?') === -1 ? '?' : '&') + `code=${token}&me=${req.session.username}`;
     if (requestInfo.state !== undefined) {
         redirectUrl += `&state=${requestInfo.state}`;
     }
