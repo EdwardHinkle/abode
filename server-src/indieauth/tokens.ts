@@ -8,6 +8,7 @@ export let tokenProvision = (req, res, next) => {
 
     if (req.body.grant_type === undefined) {
         next();
+        return;
     }
 
     let config = req.app.get('config');
@@ -85,27 +86,33 @@ export let tokenVerification = (req, res, next) => {
                 input: fs.createReadStream(TOKEN_FILE_PATH)
             });
 
-            rl.on('line', function (line) {
-                console.log('new line');
-                console.log(line);
-                console.log(requestInfo.id);
+            rl.on('line', (line) => {
                 if (line == requestInfo.id) {
                     token_revoked = true;
+                    rl.close();
                 }
             });
-        }
 
-        if (token_revoked) {
-            console.log("Token has been revoked");
-            res.status(403).send("Forbidden");
-            return;
-        }
+            rl.on('close', () => {
+                if (token_revoked) {
+                    console.log("Token has been revoked");
+                    res.status(403).send("Forbidden");
+                    return;
+                }
 
-        res.json({
-            "me": requestInfo.me,
-            "client_id": requestInfo.client_id,
-            "scope": requestInfo.scope.join(" ")
-        });
+                res.json({
+                    "me": requestInfo.me,
+                    "client_id": requestInfo.client_id,
+                    "scope": requestInfo.scope.join(" ")
+                });
+            });
+        } else {
+            res.json({
+                "me": requestInfo.me,
+                "client_id": requestInfo.client_id,
+                "scope": requestInfo.scope.join(" ")
+            });
+        }
 
     });
 
