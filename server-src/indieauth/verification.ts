@@ -34,7 +34,7 @@ export let verificationEndpoint = (req, res, next) => {
 
     jwt.verify(code, config.jwt_secret, (err, requestInfo) => {
         if (err || client_id != requestInfo.client_id || redirect_uri != requestInfo.redirect_uri) {
-            console.log("Error verifying JWT");
+            console.log("Error verifying JWT for Auth Code");
             res.redirect(requestInfo.redirect_uri + (requestInfo.redirect_uri.indexOf('?') > -1 ? '?' : '&') + 'error=invalid_request');
             return;
         }
