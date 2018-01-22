@@ -2,7 +2,8 @@ import * as jwt from "jsonwebtoken";
 import * as fs from 'fs';
 import * as readline from 'readline';
 
-const TOKEN_FILE_PATH = `${__dirname}/../../_storage/token`;
+const EXPIRED_TOKEN_FILE_PATH = `${__dirname}/../../_storage/expired_tokens`;
+const TOKEN_FILE_PATH = `${__dirname}/../../_storage/tokens`;
 
 export let tokenProvision = (req, res, next) => {
 
@@ -53,6 +54,15 @@ export let tokenProvision = (req, res, next) => {
 
         let access_token = jwt.sign(payload, config.jwt_secret,null);
 
+        if (!fs.existsSync(TOKEN_FILE_PATH)) {
+            fs.closeSync(fs.openSync(TOKEN_FILE_PATH, 'w'));
+        }
+
+        fs.appendFileSync(TOKEN_FILE_PATH, `${access_token}\n`);
+
+        res.setHeader('Cache-Control', 'no-store');
+        res.setHeader('Pragma', 'no-cache');
+
         res.json({
             "access_token": access_token,
             "token_type": "Bearer",
@@ -81,9 +91,9 @@ export let tokenVerification = (req, res, next) => {
         }
 
         let token_revoked = false;
-        if (fs.existsSync(TOKEN_FILE_PATH)) {
+        if (fs.existsSync(EXPIRED_TOKEN_FILE_PATH)) {
             const rl = readline.createInterface({
-                input: fs.createReadStream(TOKEN_FILE_PATH)
+                input: fs.createReadStream(EXPIRED_TOKEN_FILE_PATH)
             });
 
             rl.on('line', (line) => {
@@ -137,11 +147,11 @@ export let tokenRevocation = (req, res, next) => {
             return;
         }
 
-        if (!fs.existsSync(TOKEN_FILE_PATH)) {
-            fs.closeSync(fs.openSync(TOKEN_FILE_PATH, 'w'));
+        if (!fs.existsSync(EXPIRED_TOKEN_FILE_PATH)) {
+            fs.closeSync(fs.openSync(EXPIRED_TOKEN_FILE_PATH, 'w'));
         }
 
-        fs.appendFileSync(TOKEN_FILE_PATH, `${requestInfo.id}\n`);
+        fs.appendFileSync(EXPIRED_TOKEN_FILE_PATH, `${requestInfo.id}\n`);
 
         res.status(200).send('ok');
     });
