@@ -106,7 +106,7 @@ export let tokenVerification = (req, res, next) => {
             rl.on('close', () => {
                 if (token_revoked) {
                     console.log("Token has been revoked");
-                    res.status(403).send("Forbidden");
+                    res.status(400).send("Forbidden");
                     return;
                 }
 
