@@ -48,6 +48,7 @@ export let authenticationEndpoint = (req, res, next) => {
         if (error) {
             // todo: Figure out how to gracefully handle client_id error
             console.log("client id error!");
+            console.log(error);
             return;
         }
 
