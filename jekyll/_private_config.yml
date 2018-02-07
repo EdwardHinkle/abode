@@ -31,7 +31,7 @@ endpoints:
   token_endpoint: https://tokens.indieauth.com/token
   micropub: https://eddiehinkle.com/micropub
   webmention: https://webmention.io/eddiehinkle.com/webmention
-  microsub: https://monocle.eddiehinkle.com/microsub/1
+  microsub: https://aperture.eddiehinkle.com/microsub/1
   pingback: https://webmention.io/eddiehinkle.com/xmlrpc
 
 source: _source
