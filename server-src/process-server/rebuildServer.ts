@@ -51,7 +51,14 @@ export function rebuildServerFromSlack(req?, res?) {
             type: ['h-entry'],
             properties: {
                 content: [`Site rebuild process...`],
-                published: [moment().format()]
+                published: [moment().format()],
+                author: [{
+                    type: ['h-card'],
+                    properties: {
+                        name: ['eddiehinkle.com'],
+                        url: ['https://eddiehinkle.com']
+                    }
+                }]
             }
         },
         json: true
@@ -103,7 +110,14 @@ export function rebuildServerFromSlack(req?, res?) {
                         type: ['h-entry'],
                         properties: {
                             content: [`Imports finished, running jekyll`],
-                            published: [moment().format()]
+                            published: [moment().format()],
+                            author: [{
+                                type: ['h-card'],
+                                properties: {
+                                    name: ['eddiehinkle.com'],
+                                    url: ['https://eddiehinkle.com']
+                                }
+                            }]
                         }
                     },
                     json: true
@@ -148,7 +162,14 @@ export function rebuildServerFromSlack(req?, res?) {
                             type: ['h-entry'],
                             properties: {
                                 content: [`Rebuild Complete`],
-                                published: [moment().format()]
+                                published: [moment().format()],
+                                author: [{
+                                    type: ['h-card'],
+                                    properties: {
+                                        name: ['eddiehinkle.com'],
+                                        url: ['https://eddiehinkle.com']
+                                    }
+                                }]
                             }
                         },
                         json: true
@@ -188,7 +209,14 @@ export function rebuildServerFromSlack(req?, res?) {
                                 type: ['h-entry'],
                                 properties: {
                                     content: [`Private Rebuild Complete`],
-                                    published: [moment().format()]
+                                    published: [moment().format()],
+                                    author: [{
+                                        type: ['h-card'],
+                                        properties: {
+                                            name: ['eddiehinkle.com'],
+                                            url: ['https://eddiehinkle.com']
+                                        }
+                                    }]
                                 }
                             },
                             json: true
@@ -232,7 +260,14 @@ export function rebuildServerFromSlack(req?, res?) {
                                 type: ['h-entry'],
                                 properties: {
                                     content: [`Uh, oh! There was an error: ${error}`],
-                                    published: [moment().format()]
+                                    published: [moment().format()],
+                                    author: [{
+                                        type: ['h-card'],
+                                        properties: {
+                                            name: ['eddiehinkle.com'],
+                                            url: ['https://eddiehinkle.com']
+                                        }
+                                    }]
                                 }
                             },
                             json: true

@@ -797,7 +797,14 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                 properties: {
                                     content: [`Micropub request finished saving: ${fileName}`],
                                     url: [returnUrl],
-                                    published: [moment().format()]
+                                    published: [moment().format()],
+                                    author: [{
+                                        type: ['h-card'],
+                                        properties: {
+                                            name: ['eddiehinkle.com'],
+                                            url: ['https://eddiehinkle.com']
+                                        }
+                                    }]
                                 }
                             },
                             json: true
