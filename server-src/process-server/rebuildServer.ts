@@ -1,4 +1,5 @@
 import * as Promise from 'bluebird';
+import * as moment from 'moment';
 import * as goodreads from '../goodreads';
 import * as webmentions from '../webmentions';
 import * as configTools from '../config';
@@ -50,7 +51,7 @@ export function rebuildServerFromSlack(req?, res?) {
             type: ['h-entry'],
             properties: {
                 content: [`Site rebuild process...`],
-                published: [new Date().toISOString()]
+                published: [moment().format()]
             }
         },
         json: true
@@ -102,7 +103,7 @@ export function rebuildServerFromSlack(req?, res?) {
                         type: ['h-entry'],
                         properties: {
                             content: [`Imports finished, running jekyll`],
-                            published: [new Date().toISOString()]
+                            published: [moment().format()]
                         }
                     },
                     json: true
@@ -147,7 +148,7 @@ export function rebuildServerFromSlack(req?, res?) {
                             type: ['h-entry'],
                             properties: {
                                 content: [`Rebuild Complete`],
-                                published: [new Date().toISOString()]
+                                published: [moment().format()]
                             }
                         },
                         json: true
@@ -187,7 +188,7 @@ export function rebuildServerFromSlack(req?, res?) {
                                 type: ['h-entry'],
                                 properties: {
                                     content: [`Private Rebuild Complete`],
-                                    published: [new Date().toISOString()]
+                                    published: [moment().format()]
                                 }
                             },
                             json: true
@@ -231,7 +232,7 @@ export function rebuildServerFromSlack(req?, res?) {
                                 type: ['h-entry'],
                                 properties: {
                                     content: [`Uh, oh! There was an error: ${error}`],
-                                    published: [new Date().toISOString()]
+                                    published: [moment().format()]
                                 }
                             },
                             json: true
