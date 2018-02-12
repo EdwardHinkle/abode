@@ -33,6 +33,23 @@ function webmentionAlert(req, res) {
         }
     });
 
+    let micropubNotification = {
+        type: ['h-entry'],
+        properties: {
+            content: [receivedWebmention.post.name ? receivedWebmention.post.name : (receivedWebmention.post.content ? receivedWebmention.post.content.value : "")],
+            url: [receivedWebmention.post.url],
+            published: [receivedWebmention.post.published],
+            author: [{
+                type: ['h-card'],
+                properties: {
+                    name: [receivedWebmention.post.author.name],
+                    url: [receivedWebmention.post.author.url],
+                    photo: [receivedWebmention.post.author.photo]
+                }
+            }]
+        }
+    };
+
     var slackMessage = {
         "channel": "#website",
         "username": receivedWebmention.post.author.name,
@@ -49,8 +66,10 @@ function webmentionAlert(req, res) {
          finishedProcessing.push(mfo.getEntry(likeOfUrl)
         .then(entry => {
             slackMessage.text = `<${receivedWebmention.post.url}|liked> <${likeOfUrl}|'${entry.name}'>`;
+            micropubNotification.properties.content = [slackMessage.text];
         }).catch((error) => {
             slackMessage.text = `<${receivedWebmention.post.url}|liked> ${likeOfUrl}`;
+            micropubNotification.properties.content = [slackMessage.text];
         }));
     }
     // If it is in reply to
@@ -59,8 +78,10 @@ function webmentionAlert(req, res) {
         finishedProcessing.push(mfo.getEntry(replyToUrl)
         .then(entry => {
             slackMessage.text = `${receivedWebmention.post.content.value} (<${receivedWebmention.post.url}|in reply to>: <${replyToUrl}|${entry.name}>)`;
+            micropubNotification.properties.content = [slackMessage.text];
         }).catch((error) => {
             slackMessage.text = `${receivedWebmention.post.content.value} (<${receivedWebmention.post.url}|in reply to>: ${replyToUrl})`;
+            micropubNotification.properties.content = [slackMessage.text];
         }));
 
         if (receivedWebmention.post['swarm-coins'] != undefined) {
@@ -76,7 +97,8 @@ function webmentionAlert(req, res) {
                         }
                     ],
                 }
-            ]
+            ];
+            micropubNotification.properties.content = [`${micropubNotification.properties.content} (${receivedWebmention.post['swarm-coins']} Coins Awarded)`];
         }
     }
     // We don't know what it is, act generically
@@ -109,10 +131,27 @@ function webmentionAlert(req, res) {
             if (data.statusCode != 200) {
                 console.log("oops Slack Error");
             } else {
-                console.log("Successfull sent Slack Message");
+                console.log("Successfully sent Slack Message");
             }
 
 
+        });
+
+        request.post(`https://aperture.eddiehinkle.com/micropub/`, {
+            'auth': {
+                'bearer': `8GCm4q5QXID3WcZLB8pPVKMnCv74gZMC`
+            },
+            body: micropubNotification,
+            json: true
+        }, (err, data) => {
+            if (err != undefined) {
+                console.log(`ERROR: ${err}`);
+            }
+            if (data.statusCode != 200) {
+                console.log("oops Microsub Notification Error");
+            } else {
+                console.log("Successfully sent Microsub Notification");
+            }
         });
     });
 

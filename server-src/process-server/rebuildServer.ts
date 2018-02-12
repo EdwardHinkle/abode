@@ -42,6 +42,29 @@ export function rebuildServerFromSlack(req?, res?) {
 
     res.status(200).send("Site rebuild process...");
 
+    request.post(`https://aperture.eddiehinkle.com/micropub/`, {
+        'auth': {
+            'bearer': `my7XNxxxB9EYoyDCLBQppcqD7Hsqz45R`
+        },
+        body: {
+            type: ['h-entry'],
+            properties: {
+                content: [`Site rebuild process...`],
+                published: [new Date().toISOString()]
+            }
+        },
+        json: true
+    }, (err, data) => {
+        if (err != undefined) {
+            console.log(`ERROR: ${err}`);
+        }
+        if (data.statusCode != 200) {
+            console.log("oops Microsub Notification Error");
+        } else {
+            console.log("Successfully sent Microsub Notification");
+        }
+    });
+
     git.runGitStageAll()
         .then(() => { return git.runGitCommit(); })
         .then(() => { return git.runGitPull() })
@@ -71,6 +94,29 @@ export function rebuildServerFromSlack(req?, res?) {
 
                 });
 
+                request.post(`https://aperture.eddiehinkle.com/micropub/`, {
+                    'auth': {
+                        'bearer': `my7XNxxxB9EYoyDCLBQppcqD7Hsqz45R`
+                    },
+                    body: {
+                        type: ['h-entry'],
+                        properties: {
+                            content: [`Imports finished, running jekyll`],
+                            published: [new Date().toISOString()]
+                        }
+                    },
+                    json: true
+                }, (err, data) => {
+                    if (err != undefined) {
+                        console.log(`ERROR: ${err}`);
+                    }
+                    if (data.statusCode != 200) {
+                        console.log("oops Microsub Notification Error");
+                    } else {
+                        console.log("Successfully sent Microsub Notification");
+                    }
+                });
+
                 return jekyll.runJekyllBuild()
                 .then(() => { return git.runGitStageAll(); })
                 .then(() => { return git.runGitCommit(); })
@@ -93,24 +139,68 @@ export function rebuildServerFromSlack(req?, res?) {
                         }
 
                     });
-                    jekyll.runJekyllPrivateBuild().then(() => {
-                        request.post({
-                        url: req.body.response_url,
-                        json: {
-                            "response_type": "in_channel",
-                            "text": "Private Rebuild Complete"
-                        }
+                    request.post(`https://aperture.eddiehinkle.com/micropub/`, {
+                        'auth': {
+                            'bearer': `my7XNxxxB9EYoyDCLBQppcqD7Hsqz45R`
+                        },
+                        body: {
+                            type: ['h-entry'],
+                            properties: {
+                                content: [`Rebuild Complete`],
+                                published: [new Date().toISOString()]
+                            }
+                        },
+                        json: true
                     }, (err, data) => {
                         if (err != undefined) {
                             console.log(`ERROR: ${err}`);
                         }
                         if (data.statusCode != 200) {
-                            console.log("oops Slack Error");
+                            console.log("oops Microsub Notification Error");
                         } else {
-                            console.log("Successfully sent Slack Message");
+                            console.log("Successfully sent Microsub Notification");
                         }
-
                     });
+                    jekyll.runJekyllPrivateBuild().then(() => {
+                        request.post({
+                            url: req.body.response_url,
+                            json: {
+                                "response_type": "in_channel",
+                                "text": "Private Rebuild Complete"
+                            }
+                        }, (err, data) => {
+                            if (err != undefined) {
+                                console.log(`ERROR: ${err}`);
+                            }
+                            if (data.statusCode != 200) {
+                                console.log("oops Slack Error");
+                            } else {
+                                console.log("Successfully sent Slack Message");
+                            }
+
+                        });
+                        request.post(`https://aperture.eddiehinkle.com/micropub/`, {
+                            'auth': {
+                                'bearer': `my7XNxxxB9EYoyDCLBQppcqD7Hsqz45R`
+                            },
+                            body: {
+                                type: ['h-entry'],
+                                properties: {
+                                    content: [`Private Rebuild Complete`],
+                                    published: [new Date().toISOString()]
+                                }
+                            },
+                            json: true
+                        }, (err, data) => {
+                            if (err != undefined) {
+                                console.log(`ERROR: ${err}`);
+                            }
+                            if (data.statusCode != 200) {
+                                console.log("oops Microsub Notification Error");
+                            } else {
+                                console.log("Successfully sent Microsub Notification");
+                            }
+                        });
                     });
                 }).catch((error) => {
                     console.log("Caught Error");
@@ -132,6 +222,28 @@ export function rebuildServerFromSlack(req?, res?) {
                                 console.log("Successfully sent Slack Message");
                             }
 
+                        });
+                        request.post(`https://aperture.eddiehinkle.com/micropub/`, {
+                            'auth': {
+                                'bearer': `my7XNxxxB9EYoyDCLBQppcqD7Hsqz45R`
+                            },
+                            body: {
+                                type: ['h-entry'],
+                                properties: {
+                                    content: [`Uh, oh! There was an error: ${error}`],
+                                    published: [new Date().toISOString()]
+                                }
+                            },
+                            json: true
+                        }, (err, data) => {
+                            if (err != undefined) {
+                                console.log(`ERROR: ${err}`);
+                            }
+                            if (data.statusCode != 200) {
+                                console.log("oops Microsub Notification Error");
+                            } else {
+                                console.log("Successfully sent Microsub Notification");
+                            }
                         });
                     }
                 });

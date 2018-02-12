@@ -81,6 +81,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
     return preparePostInfo(micropubDocument).then(function(postInfo: any){
 
+            let infoForUrl = _.clone(micropubDocument);
+
             new Promise((resolve, reject) => {
 
                 let yamlDocument: any = {};
@@ -778,6 +780,37 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             console.log("Successfull sent Slack Message");
                         }
 
+
+                    });
+
+                    // Make sure the document has the post index
+                    infoForUrl.postInfo = postInfo;
+
+                    // Return the URL
+                    formatUrl(micropubInfoForUrl).then(function(returnUrl) {
+                        request.post(`https://aperture.eddiehinkle.com/micropub/`, {
+                            'auth': {
+                                'bearer': `my7XNxxxB9EYoyDCLBQppcqD7Hsqz45R`
+                            },
+                            body: {
+                                type: ['h-entry'],
+                                properties: {
+                                    content: [`Micropub request finished saving: ${fileName}`],
+                                    url: [returnUrl],
+                                    published: [new Date().toISOString()]
+                                }
+                            },
+                            json: true
+                        }, (err, data) => {
+                            if (err != undefined) {
+                                console.log(`ERROR: ${err}`);
+                            }
+                            if (data.statusCode != 200) {
+                                console.log("oops Microsub Notification Error");
+                            } else {
+                                console.log("Successfully sent Microsub Notification");
+                            }
+                        });
 
                     });
                 });
