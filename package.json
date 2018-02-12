@@ -8,7 +8,7 @@
     "start": "node ./server-build/server.js --harmony_array_includes",
     "build": "tsc",
     "freshbuild": "npm run build; npm start",
-    "startServer": "npm run build; forever start ./server-build/server.js",
+    "startServer": "npm run build; forever --uid 'personal abode' start ./server-build/server.js",
     "restartServer": "npm run build; forever restart ./server-build/server.js",
     "updateServer": "git pull; npm run restartServer",
     "rebuildJekyll": "cd jekyll; jekyll build",
