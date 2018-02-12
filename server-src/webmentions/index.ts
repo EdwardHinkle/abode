@@ -147,7 +147,7 @@ function webmentionAlert(req, res) {
             if (err != undefined) {
                 console.log(`ERROR: ${err}`);
             }
-            if (data.statusCode != 200) {
+            if (data.statusCode !== 201 && data.statusCode !== 202) {
                 console.log("oops Microsub Notification Error");
             } else {
                 console.log("Successfully sent Microsub Notification");
