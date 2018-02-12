@@ -84,24 +84,6 @@ export function rebuildServerFromSlack(req?, res?) {
             ]).then((results) => {
                 // All tasks are done, we can restart the jekyll server, etc.
                 console.log("Rebuild ready...");
-                request.post({
-                    url: req.body.response_url,
-                    json: {
-                        "response_type": "in_channel",
-                        "text": "Imports finished, running jekyll"
-                    }
-                }, (err, data) => {
-                    if (err != undefined) {
-                        console.log(`ERROR: ${err}`);
-                    }
-                    if (data.statusCode != 200) {
-                        console.log("oops Slack Error");
-                    } else {
-                        console.log("Successfull sent Slack Message");
-                    }
-
-                });
-
                 request.post(`https://aperture.eddiehinkle.com/micropub/`, {
                     'auth': {
                         'bearer': `my7XNxxxB9EYoyDCLBQppcqD7Hsqz45R`
@@ -137,23 +119,6 @@ export function rebuildServerFromSlack(req?, res?) {
                 .then(() => { return git.runGitCommit(); })
                 .then(() => { return git.runGitPush(); })
                 .then(() => {
-                    request.post({
-                        url: req.body.response_url,
-                        json: {
-                            "response_type": "in_channel",
-                            "text": "Rebuild Complete"
-                        }
-                    }, (err, data) => {
-                        if (err != undefined) {
-                            console.log(`ERROR: ${err}`);
-                        }
-                        if (data.statusCode != 200) {
-                            console.log("oops Slack Error");
-                        } else {
-                            console.log("Successfully sent Slack Message");
-                        }
-
-                    });
                     request.post(`https://aperture.eddiehinkle.com/micropub/`, {
                         'auth': {
                             'bearer': `my7XNxxxB9EYoyDCLBQppcqD7Hsqz45R`
@@ -184,23 +149,6 @@ export function rebuildServerFromSlack(req?, res?) {
                         }
                     });
                     jekyll.runJekyllPrivateBuild().then(() => {
-                        request.post({
-                            url: req.body.response_url,
-                            json: {
-                                "response_type": "in_channel",
-                                "text": "Private Rebuild Complete"
-                            }
-                        }, (err, data) => {
-                            if (err != undefined) {
-                                console.log(`ERROR: ${err}`);
-                            }
-                            if (data.statusCode != 200) {
-                                console.log("oops Slack Error");
-                            } else {
-                                console.log("Successfully sent Slack Message");
-                            }
-
-                        });
                         request.post(`https://aperture.eddiehinkle.com/micropub/`, {
                             'auth': {
                                 'bearer': `my7XNxxxB9EYoyDCLBQppcqD7Hsqz45R`
@@ -235,23 +183,6 @@ export function rebuildServerFromSlack(req?, res?) {
                     console.log("Caught Error");
                     console.log(error);
                     if (error != undefined) {
-                        request.post({
-                            url: req.body.response_url,
-                            json: {
-                                "response_type": "in_channel",
-                                "text": "Uh, oh! There was an error: " + error
-                            }
-                        }, (err, data) => {
-                            if (err != undefined) {
-                                console.log(`ERROR: ${err}`);
-                            }
-                            if (data.statusCode != 200) {
-                                console.log("oops Slack Error");
-                            } else {
-                                console.log("Successfully sent Slack Message");
-                            }
-
-                        });
                         request.post(`https://aperture.eddiehinkle.com/micropub/`, {
                             'auth': {
                                 'bearer': `my7XNxxxB9EYoyDCLBQppcqD7Hsqz45R`
