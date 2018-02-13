@@ -217,7 +217,9 @@ export function getWebmentionData(): Promise<any> {
             }).then(() => {
 
                 var json = JSON.stringify(webmentions);
-                fs.writeFile(path.join(__dirname, '../../jekyll/_source/_data/webmentions.json'), json, 'utf8', function(error){
+                fs.writeFile(path.join(__dirname, '../../jekyll/_source/_data/webmentions.json'), json, {
+                    encoding: 'utf8'
+                }, function(error){
                     if (error != undefined) {
                         reject(error);
                     }
@@ -225,7 +227,9 @@ export function getWebmentionData(): Promise<any> {
                     resolve();
                 }); 
                 var linksJson = JSON.stringify(webmentionsOfLinks);
-                fs.writeFile(path.join(__dirname, '../../jekyll/_source/_data/webmentions_of_links.json'), linksJson, 'utf8', function(error){
+                fs.writeFile(path.join(__dirname, '../../jekyll/_source/_data/webmentions_of_links.json'), linksJson, {
+                    encoding: 'utf8'
+                }, function(error){
                     if (error != undefined) {
                         reject(error);
                     }

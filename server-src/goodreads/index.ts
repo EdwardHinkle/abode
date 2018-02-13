@@ -122,7 +122,9 @@ export function processCurrentlyReadingBooks(currently_reading): Promise<any> {
         });
 
         var json = JSON.stringify(currently_reading_books);
-        fs.writeFile(path.join(__dirname, '../../jekyll/_source/_data/currently_reading.json'), json, 'utf8', function(error){
+        fs.writeFile(path.join(__dirname, '../../jekyll/_source/_data/currently_reading.json'), json, {
+            encoding: 'utf8'
+        }, function(error){
             if (error != undefined) {
                 reject(error);
             }
@@ -150,7 +152,9 @@ export function processRecentlyReadBooks(recently_read): Promise<any> {
         });
 
         var json = JSON.stringify(recently_read_books);
-        fs.writeFile(path.join(__dirname, '../../jekyll/_source/_data/recently_read.json'), json, 'utf8', function(error){
+        fs.writeFile(path.join(__dirname, '../../jekyll/_source/_data/recently_read.json'), json, {
+            encoding: 'utf8'
+        }, function(error){
             if (error != undefined) {
                 reject(error);
             }
