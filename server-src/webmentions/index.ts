@@ -83,35 +83,22 @@ function webmentionAlert(req, res) {
         let replyToUrl = receivedWebmention.post[receivedWebmention.post['wm-property']];
         finishedProcessing.push(mfo.getEntry(replyToUrl)
         .then(entry => {
-            slackMessage.text = `${receivedWebmention.post.content.value} (<${receivedWebmention.post.url}|in reply to>: <${replyToUrl}|${entry.name}>)`;
+            slackMessage.text = `<${receivedWebmention.post.url}|New Reply>: <${replyToUrl}|${entry.name}>`;
             let htmlContent = (receivedWebmention.post.content.html ? receivedWebmention.post.content.html : receivedWebmention.post.content.value);
             micropubNotification.properties.content = [{
                 html: `${htmlContent} (<a href="${receivedWebmention.post.url}">in reply to</a>: <a href="${replyToUrl}">${entry.name}</a>)`,
                 value: `${receivedWebmention.post.content.value} (in reply to: ${entry.name} [${replyToUrl}])`,
             }];
         }).catch((error) => {
-            slackMessage.text = `${receivedWebmention.post.content.value} (<${receivedWebmention.post.url}|in reply to>: ${replyToUrl})`;
-                let htmlContent = (receivedWebmention.post.content.html ? receivedWebmention.post.content.html : receivedWebmention.post.content.value);
-                micropubNotification.properties.content = [{
-                    html: `${htmlContent} (<a href="${receivedWebmention.post.url}">in reply to</a>: ${replyToUrl})`,
-                    value: `${receivedWebmention.post.content.value} (in reply to: ${replyToUrl})`,
-                }];
+            slackMessage.text = `<${receivedWebmention.post.url}|New Reply>: ${replyToUrl})`;
+            let htmlContent = (receivedWebmention.post.content.html ? receivedWebmention.post.content.html : receivedWebmention.post.content.value);
+            micropubNotification.properties.content = [{
+                html: `${htmlContent} (<a href="${receivedWebmention.post.url}">in reply to</a>: ${replyToUrl})`,
+                value: `${receivedWebmention.post.content.value} (in reply to: ${replyToUrl})`,
+            }];
         }));
 
         if (receivedWebmention.post['swarm-coins'] != undefined) {
-            slackMessage.attachments = [
-                {
-                    "fallback": `Coins Awarded: ${receivedWebmention.post['swarm-coins']}`,
-                    "color": "#36a64f",
-                    "fields": [
-                        {
-                            "title": "Coins Awarded",
-                            "value": receivedWebmention.post['swarm-coins'],
-                            "short": false
-                        }
-                    ],
-                }
-            ];
             micropubNotification.properties.content = [`${micropubNotification.properties.content} (${receivedWebmention.post['swarm-coins']} Coins Awarded)`];
         }
     }
@@ -130,26 +117,25 @@ function webmentionAlert(req, res) {
         ]
     }
 
-    // If it has swarm coins
-    
-
     Promise.all(finishedProcessing).then(() => {
-        // Slack Incoming Webhook
-        request.post({
-            url: `https://hooks.slack.com/services/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`,
-            json: slackMessage
-        }, (err, data) => {
-            if (err != undefined) {
-                console.log(`ERROR: ${err}`);
-            }
-            if (data.statusCode != 200) {
-                console.log("oops Slack Error");
-            } else {
-                console.log("Successfully sent Slack Message");
-            }
 
+        if (receivedWebmention.post.author.name !== 'Swarm') {
+            // Slack Incoming Webhook
+            request.post({
+                url: `https://hooks.slack.com/services/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`,
+                json: slackMessage
+            }, (err, data) => {
+                if (err != undefined) {
+                    console.log(`ERROR: ${err}`);
+                }
+                if (data.statusCode != 200) {
+                    console.log("oops Slack Error");
+                } else {
+                    console.log("Successfully sent Slack Message");
+                }
 
-        });
+            });
+        }
 
         request.post(`https://aperture.eddiehinkle.com/micropub/`, {
             'auth': {
