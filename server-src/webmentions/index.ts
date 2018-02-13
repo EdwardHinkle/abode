@@ -66,10 +66,16 @@ function webmentionAlert(req, res) {
          finishedProcessing.push(mfo.getEntry(likeOfUrl)
         .then(entry => {
             slackMessage.text = `<${receivedWebmention.post.url}|liked> <${likeOfUrl}|'${entry.name}'>`;
-            micropubNotification.properties.content = [slackMessage.text];
+            micropubNotification.properties.content = [{
+                html: `<a href="${receivedWebmention.post.url}">liked</a> <a href="${likeOfUrl}">${entry.name}</a>`,
+                value: `liked ${entry.name} (${likeOfUrl})`,
+            }];
         }).catch((error) => {
             slackMessage.text = `<${receivedWebmention.post.url}|liked> ${likeOfUrl}`;
-            micropubNotification.properties.content = [slackMessage.text];
+             micropubNotification.properties.content = [{
+                 html: `<a href="${receivedWebmention.post.url}">liked</a> <a href="${likeOfUrl}">${likeOfUrl}</a>`,
+                 value: `liked ${likeOfUrl}`,
+             }];
         }));
     }
     // If it is in reply to
@@ -78,10 +84,18 @@ function webmentionAlert(req, res) {
         finishedProcessing.push(mfo.getEntry(replyToUrl)
         .then(entry => {
             slackMessage.text = `${receivedWebmention.post.content.value} (<${receivedWebmention.post.url}|in reply to>: <${replyToUrl}|${entry.name}>)`;
-            micropubNotification.properties.content = [slackMessage.text];
+            let htmlContent = (receivedWebmention.post.content.html ? receivedWebmention.post.content.html : receivedWebmention.post.content.value);
+            micropubNotification.properties.content = [{
+                html: `${htmlContent} (<a href="${receivedWebmention.post.url}">in reply to</a>: <a href="${replyToUrl}">${entry.name}</a>)`,
+                value: `${receivedWebmention.post.content.value} (in reply to: ${entry.name} [${replyToUrl}])`,
+            }];
         }).catch((error) => {
             slackMessage.text = `${receivedWebmention.post.content.value} (<${receivedWebmention.post.url}|in reply to>: ${replyToUrl})`;
-            micropubNotification.properties.content = [slackMessage.text];
+                let htmlContent = (receivedWebmention.post.content.html ? receivedWebmention.post.content.html : receivedWebmention.post.content.value);
+                micropubNotification.properties.content = [{
+                    html: `${htmlContent} (<a href="${receivedWebmention.post.url}">in reply to</a>: ${replyToUrl})`,
+                    value: `${receivedWebmention.post.content.value} (in reply to: ${replyToUrl})`,
+                }];
         }));
 
         if (receivedWebmention.post['swarm-coins'] != undefined) {
