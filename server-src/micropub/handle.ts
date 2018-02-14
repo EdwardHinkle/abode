@@ -50,8 +50,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
     let tagsForPostType = {
         "Checkin": ["checkin"],
-        "Ate": ["ate"],
-        "Drank": ["drank"]
+        "Ate": ["ate", "health"],
+        "Drank": ["drank", "health"]
     };
 
     let micropubPropertiesToIgnore = [
