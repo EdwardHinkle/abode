@@ -139,7 +139,7 @@ function webmentionAlert(req, res) {
 
         request.post(`https://aperture.eddiehinkle.com/micropub/`, {
             'auth': {
-                'bearer': `8GCm4q5QXID3WcZLB8pPVKMnCv74gZMC`
+                'bearer': `UI75OpITDk8Dd2J33JRhjsYHgsbNNVcY`
             },
             body: micropubNotification,
             json: true
