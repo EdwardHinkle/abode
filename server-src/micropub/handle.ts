@@ -154,8 +154,10 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                 }
 
                 if (yamlDocument.title > "" && micropubContent > "") {
-                    // Add featured if there is a title and content
-                    yamlDocument.featured = true;
+                    if (yamlDocument.properties['in-reply-to'] === undefined) {
+                        // Add featured if there is a title and content
+                        yamlDocument.featured = true;
+                    }
 
                     // Add duration estimate
                     yamlDocument.duration = Math.round(readingTime(micropubContent).minutes);
