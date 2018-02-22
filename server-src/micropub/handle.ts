@@ -154,7 +154,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                 }
 
                 if (yamlDocument.title > "" && micropubContent > "") {
-                    if (yamlDocument.properties['in-reply-to'] === undefined) {
+                    if (micropubDocument.properties['in-reply-to'] === undefined) {
                         // Add featured if there is a title and content
                         yamlDocument.featured = true;
                     }
