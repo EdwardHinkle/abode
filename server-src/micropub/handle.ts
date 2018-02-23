@@ -420,15 +420,26 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         }
 
                         if (locationInfo !== undefined && locationInfo.data !== null) {
-                            yamlDocument.properties.location = {
-                                type: 'h-adr',
-                                properties: {
-                                    'latitude': locationInfo.geocode.latitude,
-                                    'longitude': locationInfo.geocode.longitude,
-                                    'altitude': locationInfo.data.properties.altitude,
-                                    'locality': locationInfo.geocode.locality,
-                                    'region': locationInfo.geocode.region,
-                                    'country-name': locationInfo.geocode.country,
+                            if (locationInfo.geocode != undefined) {
+                                yamlDocument.properties.location = {
+                                    type: 'h-adr',
+                                    properties: {
+                                        'latitude': locationInfo.geocode.latitude,
+                                        'longitude': locationInfo.geocode.longitude,
+                                        'altitude': locationInfo.data.properties.altitude,
+                                        'locality': locationInfo.geocode.locality,
+                                        'region': locationInfo.geocode.region,
+                                        'country-name': locationInfo.geocode.country,
+                                    }
+                                }
+                            } else {
+                                yamlDocument.properties.location = {
+                                    type: 'h-adr',
+                                    properties: {
+                                        'latitude': locationInfo.data.geometry.coordinates[1],
+                                        'longitude': locationInfo.data.geometry.coordinates[0],
+                                        'altitude': locationInfo.data.properties.altitude
+                                    }
                                 }
                             }
                         } else {
