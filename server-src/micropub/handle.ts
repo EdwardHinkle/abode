@@ -604,7 +604,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                     yamlDocument.permalink = `/:year/:month/:day/:slug/${typeSlug}/`;
 
                     // Detect person mentions such as @manton
-                    let regExNicknameTokenMention = /@(\w*)/g
+                    let regExNicknameTokenMention = /^|\s@(\w*)/g
                     let matchMention = null;
                     let foundIdentitiesMention = [];
                     while(matchMention = regExNicknameTokenMention.exec(micropubContent)) {
