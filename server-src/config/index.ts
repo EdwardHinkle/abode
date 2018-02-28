@@ -12,8 +12,6 @@ export function importPeopleData(): Promise<any> {
         // console.log(`${__dirname}/../../jekyll/_source/_data/person_tag_by_url.json`);
         let originalData = fs.readFileSync(`${__dirname}/../../config/people.yaml`, 'utf8');
         var personData = yaml.safeLoad(originalData);
-        console.log("Test yaml");
-        console.log(personData);
 
         let dataByName = JSON.stringify(personData);
         let personByUrl = {};
