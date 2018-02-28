@@ -17,6 +17,18 @@ Dad:
   lastName: Hinkle
   representitiveUrl: facebook
   facebook: https://www.facebook.com/dean.hinkle
+Jasmine:
+  nickname: Jasmine
+  firstName: Jasmine
+  lastName: Hinkle
+  representitiveUrl: url
+  url: https://jasmine.hinkle.pet
+Fiona:
+  nickname: Fiona
+  firstName: Fiona
+  lastName: Hinkle
+  representitiveUrl: url
+  url: https://fiona.hinkle.pet
 Eli:
   nickname: Eli
   firstName: Eli
