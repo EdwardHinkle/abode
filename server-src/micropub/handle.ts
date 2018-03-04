@@ -63,7 +63,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
         "post-status",
         "mp-slug",
         "place_name",
-        "mp-syndicate-to"
+        "mp-syndicate-to",
+        "uid"
     ];
 
     let micropubPropertiesToExpand = [
