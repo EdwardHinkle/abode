@@ -450,6 +450,42 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                 }
                             }
                         } else {
+
+                            let postedDate = moment(yamlDocument.date, 'YYYY-MM-DD HH:mm:ss ZZ');
+
+                            if (postedDate.year() >= 2017) {
+                                // Let me know compass isn't returning locations if post is 2017 or later
+                                request.post(`https://aperture.eddiehinkle.com/micropub/`, {
+                                    'auth': {
+                                        'bearer': `my7XNxxxB9EYoyDCLBQppcqD7Hsqz45R`
+                                    },
+                                    body: {
+                                        type: ['h-entry'],
+                                        properties: {
+                                            content: [`Compass did not return a location for the micropub request`],
+                                            published: [moment().format()],
+                                            author: [{
+                                                type: ['h-card'],
+                                                properties: {
+                                                    name: ['eddiehinkle.com'],
+                                                    url: ['https://eddiehinkle.com']
+                                                }
+                                            }]
+                                        }
+                                    },
+                                    json: true
+                                }, (err, data) => {
+                                    if (err != undefined) {
+                                        console.log(`ERROR: ${err}`);
+                                    }
+                                    if (data.statusCode !== 201 && data.statusCode !== 202) {
+                                        console.log("oops Microsub Notification Error");
+                                    } else {
+                                        console.log("Successfully sent Microsub Notification");
+                                    }
+                                });
+                            }
+
                             // Only activate these if there is no iPhone powered location
                             // Set up location
                             if (micropubDocument.properties.location != undefined && micropubDocument.properties.location.length > 0) {
