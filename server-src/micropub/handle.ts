@@ -295,6 +295,13 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                 url: syndicated
                             }
                         }
+                        if (syndicated.indexOf("facebook.com") > -1) {
+                            syndicatedObject = {
+                                name: "Facebook",
+                                icon: "fa-facebook",
+                                url: syndicated
+                            }
+                        }
                         yamlDocument.properties.syndication.push(syndicatedObject);
 
                     };
