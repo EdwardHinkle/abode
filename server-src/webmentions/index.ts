@@ -179,7 +179,7 @@ export function getWebmentionData(): Promise<any> {
                     return;
                 }
                 
-                if (mention.activity.sentence.indexOf("on a post that linked to") > -1 ||
+                if (mention.activity.sentence !== undefined && mention.activity.sentence.indexOf("on a post that linked to") > -1 ||
                     (mention.activity.type == "like" && mention.activity.sentence.indexOf("favorited a tweet") > -1)) {
                     if (webmentionsOfLinks[targetPage] === undefined) {
                         webmentionsOfLinks[targetPage] = [];
