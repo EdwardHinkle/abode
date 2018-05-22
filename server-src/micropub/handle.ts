@@ -756,8 +756,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                         if (podcastUrl.indexOf("overcast.fm") > -1) {
                             console.log("Podcast URL is from overcast.fm");
-                            request(podcastUrl, function(error, response, html){
-                                if(!error){
+                            request(podcastUrl, function (error, response, html) {
+                                if (!error) {
                                     var $ = cheerio.load(html);
 
                                     var podcastData = {
@@ -765,6 +765,31 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                         url: $("#speedcontrols + div a:first-child").attr("href"),
                                         audio: $("#audioplayer source").attr("src").split("#")[0],
                                         photo: decodeURIComponent($(".fullart").attr("src").split("u=").pop())
+                                    }
+
+                                    yamlDocument.properties['listen-of'] = {
+                                        'type': 'h-cite',
+                                        'properties': podcastData
+                                    };
+                                    if (yamlDocument.properties['task-status'] === undefined) {
+                                        yamlDocument.properties['task-status'] = 'finished'
+                                    }
+                                    resolve();
+
+                                }
+                            });
+                            return;
+                        } else if (podcastUrl.indexOf("castro.fm") > -1) {
+                            console.log("Podcast URL is from castro.fm");
+                            request(podcastUrl, function(error, response, html){
+                                if(!error){
+                                    var $ = cheerio.load(html);
+
+                                    var podcastData = {
+                                        name: $("#co-supertop-castro-metadata h1").text(),
+                                        url: $("footer a").first().attr("href"),
+                                        audio: $("#co-supertop-castro-episode source").attr("src"),
+                                        photo: decodeURIComponent($("#artwork-container img").attr("src"))
                                     }
 
                                     yamlDocument.properties['listen-of'] = {
