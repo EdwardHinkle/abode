@@ -403,7 +403,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         yamlDocument.tags.push(tag);
                     }
                     
-                    yamlDocument.content = yamlDocument.content.replace(`#${tag}`, '[#' + tag + '](https://eddiehinkle.com/tag/' + tag + '/)');
+                    yamlDocument.content = yamlDocument.content.replace(`#${tag}`, '[#' + tag + '](https://eddiehinkle.com/tag/' + tag.toLowerCase() + '/)');
                 }
 
                 let locationPromise = new Promise((resolve, reject) => {
