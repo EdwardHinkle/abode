@@ -70,6 +70,3 @@ app.use(function(req, res, next){
   res.type('txt').send('Not found');
 });
 
-new cron.CronJob('0 0 2 * * *', function() {
-	rebuildServer();
-}, null, true, 'America/New_York');
