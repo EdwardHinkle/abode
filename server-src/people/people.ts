@@ -47,7 +47,7 @@ export class People {
     getPersonByUrl(url: String) {
         return this.getPersonBy((person) => {
             // At some point this should actually be expanded to look at ALL url fields
-            return person.url == url;
+            return (person.url == url || person[person.representitiveUrl] == url);
         });
     }
 

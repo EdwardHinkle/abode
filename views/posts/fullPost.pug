@@ -1,0 +1,88 @@
+html
+    head
+        title EddieHinkle.com
+        style
+            include post.css
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    body.h-entry
+        h1 Sorry for the look. Site is rebuilding.
+        a(href="/").u-author
+        div.meta
+            if properties.category.length > 0
+                each tag, index in properties.category
+                    span.p-category #{tag}
+                        if index <= properties.category.length - 2
+                            | ,
+                            |
+                        else
+                            |
+                            |
+            time(datetime=date).dt-published #{date}
+        if properties['in-reply-to']
+            div ↪ In Reply To:
+                |
+                |
+                a(href=properties['in-reply-to']).u-in-reply-to #{properties['in-reply-to']}
+        if properties['like-of']
+            div 👍 Liked:
+                |
+                |
+                a(href=properties['like-of']).u-like-of #{properties['like-of']}
+        if properties['bookmark-of']
+            div 🔖 Bookmarked:
+                |
+                |
+                a(href=properties['bookmark-of']).u-bookmark-of #{properties['bookmark-of']}
+        if properties['listen-of'] && properties['listen-of'].type === "h-cite"
+            div.p-summary.u-listen-of.h-cite 🎧 Listened to
+                |
+                a(href=properties['listen-of'].properties.url).u-url #{properties['listen-of'].properties.name}
+        if properties['drank']
+            div.p-summary.p-drank Drank
+                |
+                | #{properties['drank'].properties.name}
+        if properties['ate']
+            div.p-summary.p-ate Ate
+                |
+                | #{properties['ate'].properties.name}
+        if title
+            h1.page-title.p-name #{title}
+        if properties.checkin && properties.checkin.type === "h-card"
+            img(src="https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/pin-m+24b1f3(" + properties.checkin.properties.longitude + "," + properties.checkin.properties.latitude + ")/" + properties.checkin.properties.longitude + "," + properties.checkin.properties.latitude + ",13,0,60/1280x350@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false", width='600px').u-photo
+        if properties.photo
+            each photoUrl in properties.photo
+                img(src=photoUrl, width='300px').u-photo
+        div.e-content.p-summary
+            if properties.content
+                | !{properties.content}
+                |
+            else if properties.checkin && properties.checkin.type === "h-card"
+                | Checked in
+                |
+            if properties.checkin && properties.checkin.type === "h-card"
+                |  at
+                |
+                a(href=properties.checkin.properties.url) #{properties.checkin.properties.name}
+                |
+                |
+            if properties.personTags.length > 0
+                | with
+                |
+                each person, index in properties.personTags
+                    a(href=person[person.representitiveUrl]).u-category #{person.nickname}
+                    if index <= properties.personTags.length - 3
+                        | ,
+                        |
+                    else if index === properties.personTags.length - 2
+                        |
+                        | and
+                        |
+                    else
+                        | .
+                        |
+        div
+            each syndication in properties.syndication
+                a(href=syndication.url).u-syndication #{syndication.name}
+        div(style="display: none")
+            a(href="https://brid.gy/publish/twitter")
+            a(href="https://brid.gy/publish/github")
