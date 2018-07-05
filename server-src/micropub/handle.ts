@@ -908,6 +908,12 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             }
                         });
 
+                        // TODO: Add Twitter and GitHub syndication webmentions
+
+                        // TODO: Add Bookmark Webmentions
+
+                        // TODO: Add Webmentions that aren't listed as anything in particular
+
                         // Send like webmentions
                         let likeOfUrl;
                         if (yamlDocument.properties['like-of'] != undefined) {
