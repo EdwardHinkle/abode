@@ -923,9 +923,10 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                 if (err) throw err;
 
                                 if (obj.success) {
-                                    obj.res.pipe(function(buf) {
-                                        console.log('Success! Got back response:', buf.toString());
-                                    });
+                                    console.log(obj.res.headers);
+                                    // obj.res.pipe(function(buf) {
+                                    //     console.log('Success! Got back response:', buf.toString());
+                                    // });
                                 } else {
                                     console.log('Failure :(');
                                 }
