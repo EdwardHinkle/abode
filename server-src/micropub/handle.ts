@@ -906,6 +906,33 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             }
                         });
 
+                        let replyToUrl;
+                        if (yamlDocument.properties['in-reply-to'] != undefined) {
+                            if (yamlDocument.properties['in-reply-to'].type != undefined) {
+                                replyToUrl = yamlDocument.properties['in-reply-to'].properties.url;
+                            } else {
+                                replyToUrl = yamlDocument.properties['in-reply-to'];
+                            }
+                        }
+
+                        if (replyToUrl) {
+                            request.post('https://micro.blog/webmention', {
+                                form: {
+                                    source: returnUrl,
+                                    target: replyToUrl
+                                }
+                            }, (err, data) => {
+                                if (err != undefined) {
+                                    console.log(`ERROR: ${err}`);
+                                }
+                                if (data.statusCode !== 201 && data.statusCode !== 202) {
+                                    console.log("oops micro.blog webmention error");
+                                } else {
+                                    console.log("Successfully sent micro.blog webmention");
+                                }
+                            });
+                        }
+
                     });
                 });
 
