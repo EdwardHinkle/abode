@@ -64,6 +64,7 @@
     "pug": "^2.0.0-rc.4",
     "reading-time": "^1.1.0",
     "request": "^2.81.0",
+    "send-webmention": "^1.0.2",
     "to-markdown": "^3.0.4"
   }
 }

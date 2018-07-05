@@ -12,6 +12,7 @@ import * as toMarkdown from 'to-markdown';
 import * as mfo from 'mf-obj';
 import * as request from 'request';
 import * as cheerio from 'cheerio';
+import * as webmention from 'send-webmention';
 
 let imageType = require('image-type');
 let readingTime = require('reading-time');
@@ -906,6 +907,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             }
                         });
 
+                        // Send reply webmentions
                         let replyToUrl;
                         if (yamlDocument.properties['in-reply-to'] != undefined) {
                             if (yamlDocument.properties['in-reply-to'].type != undefined) {
@@ -916,21 +918,33 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         }
 
                         if (replyToUrl) {
-                            request.post('https://micro.blog/webmention', {
-                                form: {
-                                    source: returnUrl,
-                                    target: replyToUrl
-                                }
-                            }, (err, data) => {
-                                if (err != undefined) {
-                                    console.log(`ERROR: ${err}`);
-                                }
-                                if (data.statusCode !== 201 && data.statusCode !== 202) {
-                                    console.log("oops micro.blog webmention error");
+                            webmention(returnUrl, replyToUrl, function(err, obj) {
+                                if (err) throw err;
+
+                                if (obj.success) {
+                                    obj.res.pipe(function(buf) {
+                                        console.log('Success! Got back response:', buf.toString());
+                                    });
                                 } else {
-                                    console.log("Successfully sent micro.blog webmention");
+                                    console.log('Failure :(');
                                 }
                             });
+
+                            // request.post('https://micro.blog/webmention', {
+                            //     form: {
+                            //         source: returnUrl,
+                            //         target: replyToUrl
+                            //     }
+                            // }, (err, data) => {
+                            //     if (err != undefined) {
+                            //         console.log(`ERROR: ${err}`);
+                            //     }
+                            //     if (data.statusCode !== 201 && data.statusCode !== 202) {
+                            //         console.log("oops micro.blog webmention error");
+                            //     } else {
+                            //         console.log("Successfully sent micro.blog webmention");
+                            //     }
+                            // });
                         }
 
                     });
