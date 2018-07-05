@@ -13,6 +13,7 @@ import * as mfo from 'mf-obj';
 import * as request from 'request';
 import * as cheerio from 'cheerio';
 import * as webmention from 'send-webmention';
+import * as concat from 'concat-stream';
 
 let imageType = require('image-type');
 let readingTime = require('reading-time');
