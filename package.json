@@ -50,6 +50,7 @@
     "express": "^4.15.2",
     "express-session": "^1.15.6",
     "format-microformat": "^0.9.1",
+    "get-webmention-url": "^2.0.0",
     "goodreads": "^0.1.0",
     "image-type": "^3.0.0",
     "js-yaml": "^3.8.4",

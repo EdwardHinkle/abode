@@ -13,7 +13,7 @@ import * as mfo from 'mf-obj';
 import * as request from 'request';
 import * as cheerio from 'cheerio';
 import * as webmention from 'send-webmention';
-import * as concat from 'concat-stream';
+import * as getWebmentionUrl from 'get-webmention-url';
 
 let imageType = require('image-type');
 let readingTime = require('reading-time');
@@ -919,34 +919,44 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         }
 
                         if (replyToUrl) {
-                            webmention(returnUrl, replyToUrl, function(err, obj) {
+                            getWebmentionUrl(replyToUrl, function(err, webmentionUrl) {
                                 if (err) throw err;
 
-                                if (obj.success) {
-                                    console.log(obj.res.url);
-                                    // obj.res.pipe(function(buf) {
-                                    //     console.log('Success! Got back response:', buf.toString());
-                                    // });
-                                } else {
-                                    console.log('Failure :(');
-                                }
-                            });
+                                console.log('webmention receiver is ', webmentionUrl);
 
-                            // request.post('https://micro.blog/webmention', {
-                            //     form: {
-                            //         source: returnUrl,
-                            //         target: replyToUrl
-                            //     }
-                            // }, (err, data) => {
-                            //     if (err != undefined) {
-                            //         console.log(`ERROR: ${err}`);
-                            //     }
-                            //     if (data.statusCode !== 201 && data.statusCode !== 202) {
-                            //         console.log("oops micro.blog webmention error");
-                            //     } else {
-                            //         console.log("Successfully sent micro.blog webmention");
-                            //     }
-                            // });
+                                // If post's webmention receiver is not micro.blog, then send a copy to micro.blog
+                                if (webmentionUrl !== 'https://micro.blog/webmention') {
+                                    request.post('https://micro.blog/webmention', {
+                                        form: {
+                                            source: returnUrl,
+                                            target: replyToUrl
+                                        }
+                                    }, (err, data) => {
+                                        if (err != undefined) {
+                                            console.log(`ERROR: ${err}`);
+                                        }
+                                        if (data.statusCode !== 201 && data.statusCode !== 202) {
+                                            console.log("oops micro.blog webmention error");
+                                        } else {
+                                            console.log("Successfully sent micro.blog webmention");
+                                        }
+                                    });
+                                }
+
+                                webmention(returnUrl, replyToUrl, function(err, obj) {
+                                    if (err) throw err;
+
+                                    if (obj.success) {
+                                        console.log(obj.res.body);
+                                        // obj.res.pipe(function(buf) {
+                                        //     console.log('Success! Got back response:', buf.toString());
+                                        // });
+                                    } else {
+                                        console.log('Failure :(');
+                                    }
+                                });
+
+                            });
                         }
 
                     });
