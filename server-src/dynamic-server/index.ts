@@ -53,8 +53,6 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postTy
         doc.properties.personTags = [];
         doc.properties.category = [];
 
-        console.log('people data', peopleData.collection);
-
         if (doc.tags) {
             doc.tags.forEach(tag => {
                 if (tag.indexOf('http') > -1) {
@@ -67,8 +65,8 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postTy
             });
         }
 
-        console.log('json document', doc);
-        console.log('json properties', doc.properties);
+        // console.log('json document', doc);
+        // console.log('json properties', doc.properties);
 
         // Now we need to display the post
         res.render("posts/fullPost", doc);
