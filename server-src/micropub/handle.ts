@@ -908,6 +908,31 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             }
                         });
 
+                        // Send like webmentions
+                        let likeOfUrl;
+                        if (yamlDocument.properties['like-of'] != undefined) {
+                            if (yamlDocument.properties['like-of'].type != undefined) {
+                                likeOfUrl = yamlDocument.properties['like-of'].properties.url;
+                            } else {
+                                likeOfUrl = yamlDocument.properties['like-of'];
+                            }
+                        }
+
+                        if (likeOfUrl) {
+                            webmention(returnUrl, likeOfUrl, function(err, obj) {
+                                if (err) throw err;
+
+                                if (obj.success) {
+                                    console.log(obj.res.body);
+                                    // obj.res.pipe(function(buf) {
+                                    //     console.log('Success! Got back response:', buf.toString());
+                                    // });
+                                } else {
+                                    console.log('Failure :(');
+                                }
+                            });
+                        }
+
                         // Send reply webmentions
                         let replyToUrl;
                         if (yamlDocument.properties['in-reply-to'] != undefined) {
