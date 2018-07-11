@@ -9,16 +9,21 @@ export class Posts {
 
     }
 
-    public static getPost(postInfo: PostInfo, callback: (post?: Post, error?: string) => void) {
-        let postFilepath = `${dataDir}/_note/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`;
-        if (fs.existsSync(postFilepath)) {
-            let fileInfo = fs.readFileSync(`${dataDir}/_note/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`, 'utf8');
-            Post.createFromJekyllFile(fileInfo, (post: Post) => {
-                callback(post);
-            });
-        } else {
-            callback(null, "File does not exist");
-        }
+    public static getPost(postInfo: PostInfo): Promise<Post> {
+
+        return new Promise((resolve, reject) => {
+
+            let postFilepath = `${dataDir}/_note/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`;
+            if (fs.existsSync(postFilepath)) {
+                let fileInfo = fs.readFileSync(`${dataDir}/_note/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`, 'utf8');
+                Post.createFromJekyllFile(fileInfo).then(post => {
+                    resolve(post);
+                });
+            } else {
+                reject("File does not exist");
+            }
+
+        });
     }
 }
 

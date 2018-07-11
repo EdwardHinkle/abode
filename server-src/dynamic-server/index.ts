@@ -46,12 +46,7 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postTy
         month: month,
         day: day,
         postIndex: postIndex
-    }, (post?: Post, error?: string) => {
-
-        if (error !== undefined) {
-            res.render("posts/notAvailable");
-            return;
-        }
+    }).then(post => {
 
         // Check if the post path is the official permalink path.
         if (!post.verifyPostPermalink(req)) {
@@ -63,6 +58,11 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postTy
         // Now we need to display the post
         res.render("posts/fullPost", post);
         return;
+    }).catch(error => {
+        if (error !== undefined) {
+            res.render("posts/postUnavailable");
+            return;
+        }
     });
 
 });

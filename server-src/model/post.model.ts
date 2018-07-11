@@ -15,36 +15,40 @@ export class Post {
 
     }
 
-    public static createFromJekyllFile(fileData, callback: (post: Post) => void) {
-        let fileArray = fileData.split("---\n");
-        let doc = yaml.safeLoad(fileArray[1]);
-        let post = new Post();
+    public static createFromJekyllFile(fileData): Promise<Post> {
 
-        // Import all initial properties
-        post.properties = new PostProperties(doc.properties);
+        return new Promise((resolve, reject) => {
 
-        // Custom properties and attribute overrides
-        post.permalink = doc.permalink;
-        post.properties.date = moment(doc.date, 'YYYY-MM-DD h:mm:ss ZZ');
-        post.properties.postIndex = doc.slug;
+            let fileArray = fileData.split("---\n");
+            let doc = yaml.safeLoad(fileArray[1]);
+            let post = new Post();
 
-        People.getPeople().then(peopleData => {
+            // Import all initial properties
+            post.properties = new PostProperties(doc.properties);
 
-            post.properties.content = marked(fileArray[2]).replace(/^<p>/, '').replace(/<\/p>\n$/, '');
-            post.properties.personTags = [];
-            post.properties.category = [];
+            // Custom properties and attribute overrides
+            post.permalink = doc.permalink;
+            post.properties.date = moment(doc.date, 'YYYY-MM-DD h:mm:ss ZZ');
+            post.properties.postIndex = doc.slug;
 
-            if (doc.tags) {
-                doc.tags.forEach(tag => {
-                    if (tag.indexOf('http') > -1) {
-                        post.properties.personTags.push(peopleData.getPersonByUrl(tag));
-                    } else {
-                        post.properties.category.push(tag);
-                    }
-                });
-            }
+            People.getPeople().then(peopleData => {
 
-            callback(post);
+                post.properties.content = marked(fileArray[2]).replace(/^<p>/, '').replace(/<\/p>\n$/, '');
+                post.properties.personTags = [];
+                post.properties.category = [];
+
+                if (doc.tags) {
+                    doc.tags.forEach(tag => {
+                        if (tag.indexOf('http') > -1) {
+                            post.properties.personTags.push(peopleData.getPersonByUrl(tag));
+                        } else {
+                            post.properties.category.push(tag);
+                        }
+                    });
+                }
+
+                resolve(post);
+            });
         });
     }
 
