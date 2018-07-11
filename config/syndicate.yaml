@@ -19,3 +19,6 @@
  - name: "github.com/EdwardHinkle"
    uid: "https://github.com/EdwardHinkle"
    shortcode: "gh"
+ - name: "xyz/en/cats"
+   uid: "https://indieweb.xyz/en/cats"
+   shortcode: "xyz/cats" 
