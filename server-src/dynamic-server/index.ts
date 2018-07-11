@@ -4,10 +4,17 @@ import * as fs from "fs";
 import * as yaml from 'js-yaml';
 import * as marked from 'marked';
 import { People } from '../people';
+import {Posts} from "../model/posts.model";
+import {Post} from "../model/post.model";
 
 let dataDir = __dirname + "/../../jekyll/_source";
 
 export let dynamicRouter = express.Router();
+
+dynamicRouter.get('', (req, res, next) => {
+    res.render("homepage/homepage");
+    return;
+});
 
 // dynamicRouter.get('/:year(\\d+)/', (req, res, next) => {
 //     res.send(`Year: ${req.params.year}`);
@@ -34,42 +41,28 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postTy
     let day = req.params.day;
     let postIndex = req.params.postIndex;
 
-    let fileInfo = fs.readFileSync(`${dataDir}/_note/${year}/${month}/${day}/${postIndex}/post.md`, 'utf8');
-    let fileArray = fileInfo.split("---\n");
-    let doc = yaml.safeLoad(fileArray[1]);
-    let officialPostPath = doc.permalink.replace(':year', year).replace(':month', month).replace(':day', day).replace(':slug', postIndex);
+    Posts.getPost({
+        year: year,
+        month: month,
+        day: day,
+        postIndex: postIndex
+    }, (post?: Post, error?: string) => {
 
-    // Check if the post path is the official permalink path.
-    if (officialPostPath !== req.path) {
-        // Redirect to the official permalink path
-        res.redirect(302, officialPostPath);
-        return;
-    }
-
-    // Start prepping post
-    People.getPeople().then(peopleData => {
-
-        doc.properties.content = marked(fileArray[2]).replace(/^<p>/, '').replace(/<\/p>\n$/, '');
-        doc.properties.personTags = [];
-        doc.properties.category = [];
-
-        if (doc.tags) {
-            doc.tags.forEach(tag => {
-                if (tag.indexOf('http') > -1) {
-                    console.log(tag);
-                    console.log(peopleData.getPersonByUrl(tag));
-                    doc.properties.personTags.push(peopleData.getPersonByUrl(tag));
-                } else {
-                    doc.properties.category.push(tag);
-                }
-            });
+        if (error !== undefined) {
+            res.render("posts/notAvailable");
+            return;
         }
 
-        // console.log('json document', doc);
-        // console.log('json properties', doc.properties);
+        // Check if the post path is the official permalink path.
+        if (!post.verifyPostPermalink(req)) {
+            // Redirect to the official permalink path
+            res.redirect(302, post.getOfficialPermalink());
+            return;
+        }
 
         // Now we need to display the post
-        res.render("posts/fullPost", doc);
+        res.render("posts/fullPost", post);
         return;
     });
+
 });
