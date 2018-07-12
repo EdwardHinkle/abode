@@ -1,0 +1,19 @@
+html
+    head
+        title EddieHinkle.com
+        style
+            include post.css
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="webmention", href="https://webmention.io/eddiehinkle.com/webmention")
+    body
+        h1 Post List
+        ul
+            each post in posts
+                li
+                    a(href=post.getOfficialPermalink()) #{post.getPostType()}
+        ul.h-card
+            li
+                img(src="/images/profile.jpg", alt="Eddie Hinkle", style="display: none;").u-photo
+                a(rel="me", href="https://eddiehinkle.com/").u-url.p-name Eddie Hinkle
+                p.p-note Believer, Husband, Software Engineer.
+                    a(href="https://eddiehinkle.com/about") Read More

@@ -9,10 +9,76 @@ export class Posts {
 
     }
 
-    public static getPost(postInfo: PostInfo): Promise<Post> {
+    public static getPosts(postsInfo: PostsInfo): Promise<Post[]> {
+
+        return new Promise((resolve, reject) => {
+            let postFilepath = `${dataDir}/_note`;
+
+            if (postsInfo.year !== undefined) {
+                postFilepath += `/${postsInfo.year}`;
+            }
+
+            if (postsInfo.month !== undefined) {
+                postFilepath += `/${postsInfo.month}`;
+            }
+
+            if (postsInfo.day !== undefined) {
+                postFilepath += `/${postsInfo.day}`;
+            }
+
+            if (fs.existsSync(postFilepath)) {
+                this.getPostsInDir(postFilepath, true).then(posts => {
+                    console.log('total fetched posts', posts.length);
+                    resolve(posts);
+                })
+            } else {
+                reject(`Path does not exist: ${postFilepath}`);
+            }
+        });
+    }
+
+    private static getPostsInDir(dirPath, recursive: boolean = false): Promise<Post[]> {
 
         return new Promise((resolve, reject) => {
 
+            let postPromises: Promise<Post[]>[] = [];
+
+            fs.readdirSync(dirPath).filter((filename) => {
+                return filename.indexOf(".") != 0;
+            }).forEach((filename) => {
+
+                console.log(`Checking ${filename}`);
+
+                let fileStat = fs.statSync(`${dirPath}/${filename}`);
+                if (fileStat.isDirectory()) {
+                    // console.log(`Directory Found: ${dirToConvert}/${filename}`);
+                    if (recursive) {
+                        postPromises.push(this.getPostsInDir(`${dirPath}/${filename}`, recursive));
+                        // .then(posts => {
+                        //     // combinedPosts = combinedPosts.concat([...posts]);
+                        // });
+                    }
+                } else {
+                    console.log(`Fetching: ${dirPath}/${filename}`);
+                    // Return post info
+                    let fileInfo = fs.readFileSync(`${dirPath}/${filename}`, 'utf8');
+                    postPromises.push(Post.createFromJekyllFile(fileInfo).then(post => {
+                        return [post]
+                    }));
+                }
+
+            });
+
+            Promise.all(postPromises).then(arrayOfPosts => {
+                console.log(`Returning Posts ${dirPath}`);
+                resolve([].concat.apply([], arrayOfPosts));
+            });
+        });
+    }
+
+    public static getPost(postInfo: PostInfo): Promise<Post> {
+
+        return new Promise((resolve, reject) => {
             let postFilepath = `${dataDir}/_note/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`;
             if (fs.existsSync(postFilepath)) {
                 let fileInfo = fs.readFileSync(`${dataDir}/_note/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`, 'utf8');
@@ -22,14 +88,19 @@ export class Posts {
             } else {
                 reject("File does not exist");
             }
-
         });
     }
 }
 
 export interface PostInfo {
-    year: number;
-    month: number;
-    day: number;
-    postIndex: number;
+    year: string;
+    month: string;
+    day: string;
+    postIndex: string;
+}
+
+export interface PostsInfo {
+    year?: string;
+    month?: string;
+    day?: string;
 }
