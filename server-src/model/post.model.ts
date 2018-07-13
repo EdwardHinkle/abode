@@ -43,6 +43,9 @@ export class Post {
                 post.properties.photo.push(doc.photo);
             }
 
+            // Convert the jekyll title into a h-entry name
+            post.properties.name = doc.title;
+
             // TV Show Watch Post
             post.properties['task-status'] = doc['task-status'];
             post.properties['show_name'] = doc['show_name'];
