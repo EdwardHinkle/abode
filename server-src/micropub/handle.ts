@@ -925,18 +925,49 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         }
 
                         if (likeOfUrl) {
-                            webmention(returnUrl, likeOfUrl, function(err, obj) {
-                                if (err) throw err;
+                            // Special webmentions if twitter or github, else send normal webmention
+                            if (likeOfUrl.indexOf('twitter.com') > -1) {
+                                // Send to Bridgy Twitter
+                                webmention(returnUrl, 'https://brid.gy/publish/twitter', function(err, obj) {
+                                    if (err) throw err;
 
-                                if (obj.success) {
-                                    console.log(obj.res.body);
-                                    // obj.res.pipe(function(buf) {
-                                    //     console.log('Success! Got back response:', buf.toString());
-                                    // });
-                                } else {
-                                    console.log('Failure :(');
-                                }
-                            });
+                                    if (obj.success) {
+                                        console.log(obj.res.body);
+                                        // obj.res.pipe(function(buf) {
+                                        //     console.log('Success! Got back response:', buf.toString());
+                                        // });
+                                    } else {
+                                        console.log('Failure :(');
+                                    }
+                                });
+                            } else if (likeOfUrl.indexOf('github.com') > -1) {
+                                webmention(returnUrl, 'https://brid.gy/publish/github', function(err, obj) {
+                                    if (err) throw err;
+
+                                    if (obj.success) {
+                                        console.log(obj.res.body);
+                                        // obj.res.pipe(function(buf) {
+                                        //     console.log('Success! Got back response:', buf.toString());
+                                        // });
+                                    } else {
+                                        console.log('Failure :(');
+                                    }
+                                });
+                            } else {
+                                // Send a normal webmention
+                                webmention(returnUrl, likeOfUrl, function (err, obj) {
+                                    if (err) throw err;
+
+                                    if (obj.success) {
+                                        console.log(obj.res.body);
+                                        // obj.res.pipe(function(buf) {
+                                        //     console.log('Success! Got back response:', buf.toString());
+                                        // });
+                                    } else {
+                                        console.log('Failure :(');
+                                    }
+                                });
+                            }
                         }
 
                         // Send reply webmentions
@@ -950,31 +981,10 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         }
 
                         if (replyToUrl) {
-                            getWebmentionUrl(replyToUrl, function(err, webmentionUrl) {
-                                if (err) throw err;
-
-                                console.log('webmention receiver is ', webmentionUrl);
-
-                                // If post's webmention receiver is not micro.blog, then send a copy to micro.blog
-                                if (webmentionUrl !== 'https://micro.blog/webmention') {
-                                    request.post('https://micro.blog/webmention', {
-                                        form: {
-                                            source: returnUrl,
-                                            target: replyToUrl
-                                        }
-                                    }, (err, data) => {
-                                        if (err != undefined) {
-                                            console.log(`ERROR: ${err}`);
-                                        }
-                                        if (data.statusCode !== 201 && data.statusCode !== 202) {
-                                            console.log("oops micro.blog webmention error");
-                                        } else {
-                                            console.log("Successfully sent micro.blog webmention");
-                                        }
-                                    });
-                                }
-
-                                webmention(returnUrl, replyToUrl, function(err, obj) {
+                            // Special webmentions if twitter or github, else send normal webmention
+                            if (replyToUrl.indexOf('twitter.com') > -1) {
+                                // Send to Bridgy Twitter
+                                webmention(returnUrl, 'https://brid.gy/publish/twitter', function(err, obj) {
                                     if (err) throw err;
 
                                     if (obj.success) {
@@ -986,8 +996,60 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                         console.log('Failure :(');
                                     }
                                 });
+                            } else if (replyToUrl.indexOf('github.com') > -1) {
+                                webmention(returnUrl, 'https://brid.gy/publish/github', function(err, obj) {
+                                    if (err) throw err;
 
-                            });
+                                    if (obj.success) {
+                                        console.log(obj.res.body);
+                                        // obj.res.pipe(function(buf) {
+                                        //     console.log('Success! Got back response:', buf.toString());
+                                        // });
+                                    } else {
+                                        console.log('Failure :(');
+                                    }
+                                });
+                            } else {
+                                // Send normal webmention process
+                                getWebmentionUrl(replyToUrl, function (err, webmentionUrl) {
+                                    if (err) throw err;
+
+                                    console.log('webmention receiver is ', webmentionUrl);
+
+                                    // If post's webmention receiver is not micro.blog, then send a copy to micro.blog
+                                    if (webmentionUrl !== 'https://micro.blog/webmention') {
+                                        request.post('https://micro.blog/webmention', {
+                                            form: {
+                                                source: returnUrl,
+                                                target: replyToUrl
+                                            }
+                                        }, (err, data) => {
+                                            if (err != undefined) {
+                                                console.log(`ERROR: ${err}`);
+                                            }
+                                            if (data.statusCode !== 201 && data.statusCode !== 202) {
+                                                console.log("oops micro.blog webmention error");
+                                            } else {
+                                                console.log("Successfully sent micro.blog webmention");
+                                            }
+                                        });
+                                    }
+
+                                    webmention(returnUrl, replyToUrl, function (err, obj) {
+                                        if (err) throw err;
+
+                                        if (obj.success) {
+                                            console.log(obj.res.body);
+                                            // obj.res.pipe(function(buf) {
+                                            //     console.log('Success! Got back response:', buf.toString());
+                                            // });
+                                        } else {
+                                            console.log('Failure :(');
+                                        }
+                                    });
+
+                                });
+                            }
                         }
 
                     });
