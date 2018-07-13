@@ -9,12 +9,12 @@ html
         div.stats
             div.drank
                 h4 Last Drank
-                p  #{latestDrank.properties.drank.properties.name}
+                a(href=latestDrank.getOfficialPermalink()) #{latestDrank.properties.drank.properties.name}
             div.ate
                 h4 Last Ate
                 p
                     each post, index in latestAte
-                        | #{post.properties.ate.properties.name}
+                        a(href=post.getOfficialPermalink()) #{post.properties.ate.properties.name}
                         if index <= latestAte.length - 3
                             | ,
                             |
@@ -27,32 +27,38 @@ html
                             |
             div.checkin
                 h4 Last Seen
-                p  #{latestCheckin.properties.checkin.properties.name}
+                a(href=latestCheckin.getOfficialPermalink()) #{latestCheckin.properties.checkin.properties.name}
             div.listen
                 h4 Recently Listened
                 each post in latestListen
-                    img(src=post.properties['listen-of'].properties.photo, width="100")
+                    a(href=post.getOfficialPermalink())
+                        img(src=post.properties['listen-of'].properties.photo, width="100")
             if latestWatch
                 div.watch
                     h4 Recently Watched
                     if latestWatch.properties.show_image
-                        img(src=latestWatch.properties.show_image, width="100")
+                        a(href=latestWatch.getOfficialPermalink())
+                            img(src=latestWatch.properties.show_image, width="100")
                     else
-                        img(src=latestWatch.properties.movie_image, width="100")
+                        a(href=latestWatch.getOfficialPermalink())
+                            img(src=latestWatch.properties.movie_image, width="100")
             div.photos
                 h4 Latest Photos
                 each post in latestPhoto
                     each photo in post.properties.photo
                         if photo.url !== undefined
-                            img(src=photo.url, width="100")
+                            a(href=photo.getOfficialPermalink())
+                                img(src=photo.url, width="100")
                         else
-                            img(src=photo, width="100")
+                            a(href=photo.getOfficialPermalink())
+                                img(src=photo, width="100")
         if latestPodcast
             div.podcast
                 h4 Latest Podcast
                 div
                     h6 #{latestPodcast.properties.name}
-                    img(src=latestPodcast.properties.photo[0], width="300")
+                    a(href=latestPodcast.getOfficialPermalink())
+                        img(src=latestPodcast.properties.photo[0], width="300")
                     audio(src=latestPodcast.properties.audio, controls=true)
         div.notes
             h4 Latest Thoughts
@@ -66,13 +72,13 @@ html
             p
                 each post in latestSocial
                     if post.getPostType() === "bookmark"
-                        | 🔖
+                        a(href=post.getOfficialPermalink()) 🔖
                         |
                     else if post.getPostType() === "like"
-                        | 👍
+                        a(href=post.getOfficialPermalink()) 👍
                         |
                     else if post.getPostType() === "reply"
-                        | ↪️
+                        a(href=post.getOfficialPermalink()) ↪️
                         |
         ul.h-card
             li
