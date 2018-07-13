@@ -43,6 +43,22 @@ export class Post {
                 post.properties.photo.push(doc.photo);
             }
 
+            // TV Show Watch Post
+            post.properties['task-status'] = doc['task-status'];
+            post.properties['show_name'] = doc['show_name'];
+            post.properties['show_season'] = doc['show_seson'];
+            post.properties['show_episode'] = doc['show_episode'];
+            post.properties['episode_name'] = doc['episode_name'];
+            post.properties['imdb_id'] = doc['imdb_id'];
+            post.properties['show_url'] = doc['show_url'];
+            post.properties['show_image'] = doc['show_image'];
+            post.properties['episode_image'] = doc['episode_image'];
+            post.properties['season_finale'] = doc['season_finale'];
+
+            // Movie Watch Post
+
+
+            // Fetch extra data
             People.getPeople().then(peopleData => {
 
                 post.properties.content = marked(fileArray[2]).replace(/^<p>/, '').replace(/<\/p>\n$/, '');

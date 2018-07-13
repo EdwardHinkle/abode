@@ -5,35 +5,48 @@ html
             include homepage.css
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
     body
-        div.drank
-            h4 Last Drank
-            p  #{latestDrank.properties.drank.properties.name}
-        div.ate
-            h4 Last Ate
-            p
-                each post, index in latestAte
-                    | #{post.properties.ate.properties.name}
-                    if index <= latestAte.length - 3
-                        | ,
-                        |
-                    else if index === latestAte.length - 2
-                        |
-                        | and
-                        |
+        h4 Eddie Hinkle
+        div.stats
+            div.drank
+                h4 Last Drank
+                p  #{latestDrank.properties.drank.properties.name}
+            div.ate
+                h4 Last Ate
+                p
+                    each post, index in latestAte
+                        | #{post.properties.ate.properties.name}
+                        if index <= latestAte.length - 3
+                            | ,
+                            |
+                        else if index === latestAte.length - 2
+                            |
+                            | and
+                            |
+                        else
+                            |
+                            |
+            div.checkin
+                h4 Last Seen
+                p  #{latestCheckin.properties.checkin.properties.name}
+            div.listen
+                h4 Recently Listened
+                each post in latestListen
+                    img(src=post.properties['listen-of'].properties.photo, width="100")
+            if latestWatch
+                div.watch
+                    h4 Recently Watched
+                    if latestWatch.properties.show_image
+                        img(src=latestWatch.properties.show_image, width="100")
                     else
-                        |
-                        |
-        div.checkin
-            h4 Last Seen
-            p  #{latestCheckin.properties.checkin.properties.name}
-        div.photos
-            h4 Latest Photos
-            each post in latestPhoto
-                each photo in post.properties.photo
-                    if photo.url !== undefined
-                        img(src=photo.url, width="100")
-                    else
-                        img(src=photo, width="100")
+                        img(src=latestWatch.properties.movie_image, width="100")
+            div.photos
+                h4 Latest Photos
+                each post in latestPhoto
+                    each photo in post.properties.photo
+                        if photo.url !== undefined
+                            img(src=photo.url, width="100")
+                        else
+                            img(src=photo, width="100")
         div.notes
             h4 Latest Thoughts
             each post in latestNotes

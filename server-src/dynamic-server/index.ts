@@ -48,6 +48,8 @@ dynamicRouter.get('/overview', (req, res, next) => {
         let latestDrank: Post;
         let latestAte: Post[] = [];
         let latestCheckin: Post;
+        let latestListen: Post[] = [];
+        let latestWatch: Post;
         let latestPhoto: Post[] = [];
         let latestPhotoCount: number = 0;
         let latestNotes: Post[] = [];
@@ -83,6 +85,16 @@ dynamicRouter.get('/overview', (req, res, next) => {
                         latestCheckin = post;
                     }
                     break;
+                case PostType.Watch:
+                    if (latestWatch === undefined && (post.properties.show_name !== undefined || post.properties.movie_name !== undefined)) {
+                        latestWatch = post;
+                    }
+                    break;
+                case PostType.Listen:
+                    if (latestListen.length < 3) {
+                        latestListen.push(post);
+                    }
+                    break;
                 case PostType.Photo:
                     console.log('latestPhotoCount', latestPhotoCount);
                     if (latestPhotoCount < 4) {
@@ -109,13 +121,15 @@ dynamicRouter.get('/overview', (req, res, next) => {
             }
         });
 
-        console.log('latestPhotos');
-        console.log(latestPhoto);
+        console.log('latestWatch');
+        console.log(latestWatch);
 
         res.render("homepage/homepage", {
             latestDrank: latestDrank,
             latestAte: latestAte.reverse(),
             latestCheckin: latestCheckin,
+            latestListen: latestListen,
+            latestWatch: latestWatch,
             latestPhoto: latestPhoto,
             latestNotes: latestNotes,
             latestArticles: latestArticles,
