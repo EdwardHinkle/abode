@@ -45,12 +45,11 @@ html
             div.photos
                 h4 Latest Photos
                 each post in latestPhoto
-                    each photo in post.properties.photo
-                        if photo.url !== undefined
-                            a(href=photo.getOfficialPermalink())
+                    a(href=post.getOfficialPermalink())
+                        each photo in post.properties.photo
+                            if photo.url !== undefined
                                 img(src=photo.url, width="100")
-                        else
-                            a(href=photo.getOfficialPermalink())
+                            else
                                 img(src=photo, width="100")
         if latestPodcast
             div.podcast
