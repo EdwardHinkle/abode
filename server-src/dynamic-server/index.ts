@@ -55,6 +55,7 @@ dynamicRouter.get('/overview', (req, res, next) => {
         let latestNotes: Post[] = [];
         let latestArticles: Post[] = [];
         let latestSocial: Post[] = [];
+        let latestPodcast: Post;
 
         console.log('total posts', posts.length);
 
@@ -68,6 +69,11 @@ dynamicRouter.get('/overview', (req, res, next) => {
             let postType = post.getPostType();
 
             switch(postType) {
+                case PostType.Audio:
+                    if (latestPodcast === undefined) {
+                        latestPodcast = post;
+                    }
+                    break;
                 case PostType.Drank:
                     if (latestDrank === undefined) {
                         latestDrank = post;
@@ -121,8 +127,8 @@ dynamicRouter.get('/overview', (req, res, next) => {
             }
         });
 
-        console.log('latestWatch');
-        console.log(latestWatch);
+        console.log('latestPodcast');
+        console.log(latestPodcast);
 
         res.render("homepage/homepage", {
             latestDrank: latestDrank,
@@ -133,7 +139,8 @@ dynamicRouter.get('/overview', (req, res, next) => {
             latestPhoto: latestPhoto,
             latestNotes: latestNotes,
             latestArticles: latestArticles,
-            latestSocial: latestSocial
+            latestSocial: latestSocial,
+            latestPodcast: latestPodcast
         });
     });
 });

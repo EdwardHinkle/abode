@@ -47,6 +47,12 @@ html
                             img(src=photo.url, width="100")
                         else
                             img(src=photo, width="100")
+        if latestPodcast
+            div.podcast
+                h4 Latest Podcast
+                div
+                    img(src=latestPodcast.properties.photo, width="100")
+                    audio(src=latestPodcast.properties.audio)
         div.notes
             h4 Latest Thoughts
             each post in latestNotes

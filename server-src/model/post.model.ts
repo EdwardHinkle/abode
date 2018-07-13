@@ -56,7 +56,9 @@ export class Post {
             post.properties['season_finale'] = doc['season_finale'];
 
             // Movie Watch Post
-
+            post.properties['movie_name'] = doc['movie_name'];
+            post.properties['movie_url'] = doc['movie_url'];
+            post.properties['movie_image'] = doc['movie_image'];
 
             // Fetch extra data
             People.getPeople().then(peopleData => {
