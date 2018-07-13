@@ -21,3 +21,9 @@ body {
     display: flex;
     flex-direction: column;
 }
+
+.podcast img {
+    width: 250px;
+    border-radius: 2px;
+    margin-bottom: -8px;
+}
