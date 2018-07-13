@@ -51,8 +51,8 @@ html
             div.podcast
                 h4 Latest Podcast
                 div
-                    img(src=latestPodcast.properties.photo, width="100")
-                    audio(src=latestPodcast.properties.audio)
+                    img(src=latestPodcast.properties.photo[0], width="300")
+                    audio(src=latestPodcast.properties.audio, controls=true)
         div.notes
             h4 Latest Thoughts
             each post in latestNotes
