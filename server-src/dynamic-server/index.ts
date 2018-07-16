@@ -12,7 +12,7 @@ let dataDir = __dirname + "/../../jekyll/_source";
 
 export let dynamicRouter = express.Router();
 
-dynamicRouter.get('/overview', (req, res, next) => {
+dynamicRouter.get('/', (req, res, next) => {
 
     let numberOfPreviousDays = 5;
 
