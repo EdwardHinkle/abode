@@ -7,23 +7,59 @@ body {
     flex-wrap: wrap;
 }
 
-.ate, .drank, .checkin, .photos, .listen, .watch {
+.ate, .drank, .checkin, .photos, .listen, .watch, .bio, .podcast {
     flex: 1 1 160px;
 
 }
 
-.note {
-    font-size: 18px;
-    margin-bottom: 10px;
+.notes, .social {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.podcast > div {
-    display: flex;
-    flex-direction: column;
+.social {
+    margin-top: 50px;
+}
+
+.social a {
+    display: inline-block;
+    font-size: 30px;
+    padding: 5px;
+    text-decoration: none;
+}
+
+.note {
+    font-size: 20px;
+    line-height: 25px;
+    margin-bottom: 20px;
 }
 
 .podcast img {
-    width: 250px;
+    width: 200px;
     border-radius: 2px;
     margin-bottom: -8px;
+}
+
+.podcast audio {
+    width: 200px;
+}
+
+.checkin img {
+    display: block;
+}
+
+.watch img {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 900px) {
+    .stats {
+        display: block;
+    }
+
+    /*.stats > div {*/
+        /*display: block;*/
+    /*}*/
 }

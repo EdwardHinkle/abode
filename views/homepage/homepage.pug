@@ -5,43 +5,57 @@ html
             include homepage.css
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
     body
-        h1 Eddie Hinkle
         div.stats
-            div.drank
-                h4 Last Drank
-                a(href=latestDrank.getOfficialPermalink()) #{latestDrank.properties.drank.properties.name}
-            div.ate
-                h4 Last Ate
-                p
+            div.bio.h-card
+                img(src="/images/profile.jpg", alt="Eddie Hinkle", style="display: none;").u-photo
+                h2.p-note
+                    a(rel="me", href="https://eddiehinkle.com/").u-url.p-name Eddie Hinkle
+                    |
+                    | is a UI Engineer that lives in Frederick, MD.
+                h2
+                    | He last ate
+                    |
                     each post, index in latestAte
                         a(href=post.getOfficialPermalink()) #{post.properties.ate.properties.name}
                         if index <= latestAte.length - 3
-                            | ,
+                            |,
                             |
                         else if index === latestAte.length - 2
                             |
                             | and
                             |
                         else
+                            |.
                             |
-                            |
+                    | He last drank
+                    |
+                    a(href=latestDrank.getOfficialPermalink()) #{latestDrank.properties.drank.properties.name}
+                    |.
+            if latestPodcast
+                div.podcast
+                    h4 Latest Podcast
+                    a(href=latestPodcast.getOfficialPermalink())
+                        img(src=latestPodcast.properties.photo[0], width="200")
+                    audio(src=latestPodcast.properties.audio, controls=true)
+                    p #{latestPodcast.properties.name}
             div.checkin
                 h4 Last Seen
+                img(src="https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/pin-m+24b1f3(" + latestCheckin.properties.checkin.properties.longitude + "," + latestCheckin.properties.checkin.properties.latitude + ")/" + latestCheckin.properties.checkin.properties.longitude + "," + latestCheckin.properties.checkin.properties.latitude + ",13,0,60/400x400@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false", width='200px')
                 a(href=latestCheckin.getOfficialPermalink()) #{latestCheckin.properties.checkin.properties.name}
-            div.listen
-                h4 Recently Listened
-                each post in latestListen
-                    a(href=post.getOfficialPermalink())
-                        img(src=post.properties['listen-of'].properties.photo, width="100")
             if latestWatch
                 div.watch
                     h4 Recently Watched
                     if latestWatch.properties.show_image
                         a(href=latestWatch.getOfficialPermalink())
-                            img(src=latestWatch.properties.show_image, width="100")
+                            img(src=latestWatch.properties.show_image, width="150")
                     else
                         a(href=latestWatch.getOfficialPermalink())
-                            img(src=latestWatch.properties.movie_image, width="100")
+                            img(src=latestWatch.properties.movie_image, width="150")
+            div.listen
+                h4 Recently Listened
+                each post in latestListen
+                    a(href=post.getOfficialPermalink())
+                        img(src=post.properties['listen-of'].properties.photo, width="100")
             div.photos
                 h4 Latest Photos
                 each post in latestPhoto
@@ -51,37 +65,27 @@ html
                                 img(src=photo.url, width="100")
                             else
                                 img(src=photo, width="100")
-        if latestPodcast
-            div.podcast
-                h4 Latest Podcast
-                div
-                    h6 #{latestPodcast.properties.name}
-                    a(href=latestPodcast.getOfficialPermalink())
-                        img(src=latestPodcast.properties.photo[0], width="300")
-                    audio(src=latestPodcast.properties.audio, controls=true)
-        div.notes
-            h4 Latest Thoughts
-            each post in latestNotes
-                div.note !{post.properties.content}
-
-        //latestArticles: latestArticles,
-        //latestSocial: latestSocial
-        div.social
-            h4 Latest Social Interactions
-            p
-                each post in latestSocial
-                    if post.getPostType() === "bookmark"
-                        a(href=post.getOfficialPermalink()) 🔖
-                        |
-                    else if post.getPostType() === "like"
-                        a(href=post.getOfficialPermalink()) 👍
-                        |
-                    else if post.getPostType() === "reply"
-                        a(href=post.getOfficialPermalink()) ↪️
-                        |
-        ul.h-card
-            li
-                img(src="/images/profile.jpg", alt="Eddie Hinkle", style="display: none;").u-photo
-                a(rel="me", href="https://eddiehinkle.com/").u-url.p-name Eddie Hinkle
-                p.p-note Believer, Husband, Software Engineer.
-                    a(href="https://eddiehinkle.com/about") Read More
+        if latestArticles.length > 0
+            div.articles
+                h4 Latest Articles
+                each post in latestArticles
+                    div.article !{post.properties.name}
+        if latestNotes.length > 0
+            div.notes
+                h4 Latest Thoughts
+                each post in latestNotes
+                    div.note !{post.properties.content}
+        if latestSocial.length > 0
+            div.social
+                h4 Latest Social Interactions
+                p
+                    each post in latestSocial
+                        if post.getPostType() === "bookmark"
+                            a(href=post.getOfficialPermalink()) 🔖
+                            |
+                        else if post.getPostType() === "like"
+                            a(href=post.getOfficialPermalink()) 👍
+                            |
+                        else if post.getPostType() === "reply"
+                            a(href=post.getOfficialPermalink()) ↪️
+                            |

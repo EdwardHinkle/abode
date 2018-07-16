@@ -14,13 +14,15 @@ export let dynamicRouter = express.Router();
 
 dynamicRouter.get('/overview', (req, res, next) => {
 
+    let numberOfPreviousDays = 5;
+
     let combinedPromises: Promise<Post[]>[] = [];
 
     let thisYear = moment().format("YYYY");
     let thisMonth = moment().format("MM");
     let thisDate = moment().format("DD");
 
-    for (let date = parseInt(thisDate); date >= parseInt(moment().format("DD")) - 3; date--) {
+    for (let date = parseInt(thisDate); date >= parseInt(moment().format("DD")) - numberOfPreviousDays; date--) {
         let dateString = (date <= 9 ? "0" + date : "" + date);
 
         combinedPromises.push(Posts.getPosts({
@@ -97,7 +99,7 @@ dynamicRouter.get('/overview', (req, res, next) => {
                     }
                     break;
                 case PostType.Listen:
-                    if (latestListen.length < 3) {
+                    if (latestListen.length < 4) {
                         latestListen.push(post);
                     }
                     break;
