@@ -40,8 +40,34 @@ html
                     p #{latestPodcast.properties.name}
             div.checkin
                 h4 Last Seen
-                img(src="https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/pin-m+24b1f3(" + latestCheckin.properties.checkin.properties.longitude + "," + latestCheckin.properties.checkin.properties.latitude + ")/" + latestCheckin.properties.checkin.properties.longitude + "," + latestCheckin.properties.checkin.properties.latitude + ",13,0,60/400x400@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false", width='200px')
+                a(href=latestCheckin.getOfficialPermalink())
+                    img(src="https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/pin-m+24b1f3(" + latestCheckin.properties.checkin.properties.longitude + "," + latestCheckin.properties.checkin.properties.latitude + ")/" + latestCheckin.properties.checkin.properties.longitude + "," + latestCheckin.properties.checkin.properties.latitude + ",13,0,60/400x400@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false", width='200px')
+                if latestCheckin.properties.content
+                    | !{latestCheckin.properties.content}
+                    |
+                else
+                    | Checked in
+                    |
+                |  at
+                |
                 a(href=latestCheckin.getOfficialPermalink()) #{latestCheckin.properties.checkin.properties.name}
+                |
+                |
+                if latestCheckin.properties.personTags.length > 0
+                    | with
+                    |
+                    each person, index in latestCheckin.properties.personTags
+                        a(href=person[person.representitiveUrl]).u-category #{person.nickname}
+                        if index <= latestCheckin.properties.personTags.length - 3
+                            | ,
+                            |
+                        else if index === latestCheckin.properties.personTags.length - 2
+                            |
+                            | and
+                            |
+                        else
+                            | .
+                            |
             if latestWatch
                 div.watch
                     h4 Recently Watched
