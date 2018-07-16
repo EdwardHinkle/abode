@@ -106,6 +106,19 @@ export class Post {
             .replace(':slug', this.properties.postIndex.toString());
     }
 
+    public semiRelativeDateFormat(): string {
+        if (moment().diff(this.properties.date, 'days') > 0) {
+            return this.properties.date.format("MMM DD, YYYY");
+        } else {
+            return 'Today';
+        }
+    }
+
+    public semiRelativeDateTimeFormat(): string {
+        let date = this.semiRelativeDateFormat();
+        return this.properties.date.format("h:mma") + ' ' + date;
+    }
+
     public getPostType(): PostType {
 
         if (this.properties.start) {

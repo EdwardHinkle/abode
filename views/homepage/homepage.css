@@ -35,6 +35,14 @@ body {
     margin-bottom: 20px;
 }
 
+.note .note-date {
+    font-size: 12px;
+    color: #aaa;
+    margin-left: 10px;
+    display: inline-block;
+    text-decoration: none;
+}
+
 .podcast img {
     width: 200px;
     border-radius: 2px;

@@ -75,6 +75,8 @@ html
                 h4 Latest Thoughts
                 each post in latestNotes
                     div.note !{post.properties.content}
+                        |
+                        a(href=post.getOfficialPermalink()).note-date #{post.semiRelativeDateTimeFormat()}
         if latestSocial.length > 0
             div.social
                 h4 Latest Social Interactions
