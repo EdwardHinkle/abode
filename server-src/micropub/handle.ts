@@ -373,6 +373,23 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                     micropubDocument.mp['syndicate-to'].splice(syndicateIndex, 1);
                 }
 
+                // If syndicate-to has indieweb.xyz, add syndication link to post
+                // Loop through all the syndication targets
+                for (let syndicateTargetIndex in micropubDocument.mp['syndicate-to']) {
+                    // Check if the syndication target starts with indieweb.xyz
+                    if (micropubDocument.mp['syndicate-to'][syndicateTargetIndex] !== undefined &&
+                        micropubDocument.mp['syndicate-to'][syndicateTargetIndex].indexOf('https://indieweb.xyz/en') > -1) {
+                        yamlDocument.properties.syndication.push({
+                            name: "IndieWeb XYZ",
+                            icon: "globe",
+                            url: micropubDocument.mp['syndicate-to'][syndicateTargetIndex]
+                        });
+
+                        // TODO: Do we actually need to remove the data from this?
+                        // micropubDocument.mp['syndicate-to'].splice(syndicateTargetIndex, 1);
+                    }
+                }
+
                 // Convert categories to tags
                 yamlDocument.tags = micropubDocument.categories;
 
@@ -909,6 +926,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         });
 
                         // TODO: Add Twitter and GitHub syndication webmentions
+
 
                         // TODO: Add Bookmark Webmentions
 
