@@ -35,12 +35,12 @@ h2 {
 h1 a, h2 a, h3 a, h4 a, h5 a, .note a:not(.note-date) {
     text-decoration: none;
     color: black;
-    background-color: #24b1f3;
+    background-color: rgba(83, 176, 237, 0.3);
     padding: 2.5px 5px;
 }
 
 h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, .note a:not(.note-date):hover {
-    background-color: #2a7ae2;
+    background-color: rgba(83, 176, 237, 0.7);
 }
 
 .bio {
