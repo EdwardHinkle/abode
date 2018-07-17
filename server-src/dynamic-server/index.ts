@@ -22,7 +22,7 @@ dynamicRouter.get('/', (req, res, next) => {
     let thisMonth = moment().format("MM");
     let thisDate = moment().format("DD");
 
-    for (let date = parseInt(thisDate)-1; date >= parseInt(moment().format("DD")) - numberOfPreviousDays; date--) {
+    for (let date = parseInt(thisDate); date >= parseInt(moment().format("DD")) - numberOfPreviousDays; date--) {
         let dateString = (date <= 9 ? "0" + date : "" + date);
 
         combinedPromises.push(Posts.getPosts({
