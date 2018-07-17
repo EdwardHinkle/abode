@@ -22,7 +22,7 @@ dynamicRouter.get('/', (req, res, next) => {
     let thisMonth = moment().format("MM");
     let thisDate = moment().format("DD");
 
-    for (let date = parseInt(thisDate); date >= parseInt(moment().format("DD")) - numberOfPreviousDays; date--) {
+    for (let date = parseInt(thisDate)-1; date >= parseInt(moment().format("DD")) - numberOfPreviousDays; date--) {
         let dateString = (date <= 9 ? "0" + date : "" + date);
 
         combinedPromises.push(Posts.getPosts({
@@ -42,10 +42,6 @@ dynamicRouter.get('/', (req, res, next) => {
 
     Promise.all(combinedPromises).then(arrayOfPosts => {
 
-        arrayOfPosts.forEach(posts => {
-            console.log("array post length", posts.length);
-        });
-
         let posts = [].concat.apply([], arrayOfPosts);
         let latestDrank: Post;
         let latestAte: Post[] = [];
@@ -59,13 +55,9 @@ dynamicRouter.get('/', (req, res, next) => {
         let latestSocial: Post[] = [];
         let latestPodcast: Post;
 
-        console.log('total posts', posts.length);
-
         posts.sort((a: Post, b: Post) => {
             return b.properties.date.diff(a.properties.date);
         });
-
-        console.log('total posts', posts.length);
 
         posts.forEach(post => {
             let postType = post.getPostType();
@@ -104,7 +96,6 @@ dynamicRouter.get('/', (req, res, next) => {
                     }
                     break;
                 case PostType.Photo:
-                    console.log('latestPhotoCount', latestPhotoCount);
                     if (latestPhotoCount < 4) {
                         latestPhotoCount += post.properties.photo.length;
                         latestPhoto.push(post);
@@ -128,9 +119,6 @@ dynamicRouter.get('/', (req, res, next) => {
                 default:
             }
         });
-
-        console.log('latestPodcast');
-        console.log(latestPodcast);
 
         res.render("homepage/homepage", {
             latestDrank: latestDrank,

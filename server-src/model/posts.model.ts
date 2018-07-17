@@ -28,7 +28,6 @@ export class Posts {
 
             if (fs.existsSync(postFilepath)) {
                 this.getPostsInDir(postFilepath, true).then(posts => {
-                    console.log('total fetched posts', posts.length);
                     resolve(posts);
                 })
             } else {
@@ -47,11 +46,8 @@ export class Posts {
                 return filename.indexOf(".") != 0;
             }).forEach((filename) => {
 
-                console.log(`Checking ${filename}`);
-
                 let fileStat = fs.statSync(`${dirPath}/${filename}`);
                 if (fileStat.isDirectory()) {
-                    // console.log(`Directory Found: ${dirToConvert}/${filename}`);
                     if (recursive) {
                         postPromises.push(this.getPostsInDir(`${dirPath}/${filename}`, recursive));
                         // .then(posts => {
@@ -59,7 +55,6 @@ export class Posts {
                         // });
                     }
                 } else {
-                    console.log(`Fetching: ${dirPath}/${filename}`);
                     // Return post info
                     let fileInfo = fs.readFileSync(`${dirPath}/${filename}`, 'utf8');
                     postPromises.push(Post.createFromJekyllFile(fileInfo).then(post => {
@@ -70,7 +65,6 @@ export class Posts {
             });
 
             Promise.all(postPromises).then(arrayOfPosts => {
-                console.log(`Returning Posts ${dirPath}`);
                 resolve([].concat.apply([], arrayOfPosts));
             });
         });

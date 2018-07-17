@@ -7,6 +7,9 @@ import * as jwt from "jsonwebtoken";
 import {scopeDefinitions} from "./scopes.model";
 
 export let verificationEndpoint = (req, res, next) => {
+	
+	console.log('ATTEMPTING TO VERIFY CODE');
+	console.log(req.body);
 
     let config = req.app.get('config');
 
