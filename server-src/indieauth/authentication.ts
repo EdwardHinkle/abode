@@ -6,6 +6,8 @@ import * as request from 'request';
 
 export let authenticationEndpoint = (req, res, next) => {
 
+    console.log('STARTING AUTHENTICATION');
+
     if (req.session.username === undefined) {
         console.log("ERROR!");
         console.log("Not logged in");
@@ -16,6 +18,7 @@ export let authenticationEndpoint = (req, res, next) => {
     let response_type: ResponseType = req.query.response_type || 'id';
 
     if (response_type !== 'id') {
+        console.log('RESPONSE TYPE IS NOT ID');
         next();
         return;
     }
