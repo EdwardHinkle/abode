@@ -1,7 +1,7 @@
  - name: "Micro.blog"
    uid: "https://micro.blog/EddieHinkle"
    shortcode: "mb"
- - name: "twitter.com/eddiehinkle"
+ - name: "twitter/@eddiehinkle"
    uid: "https://twitter.com/eddiehinkle"
    shortcode: "t"
  - name: "Luke's Site"
