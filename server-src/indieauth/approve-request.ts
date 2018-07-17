@@ -41,6 +41,8 @@ export let approveRequest = (req, res, next) => {
 
     delete req.session.indieAuth;
 
+    console.log("approval redirectUrl", redirectUrl);
+
     res.redirect(302, redirectUrl);
 
 };
