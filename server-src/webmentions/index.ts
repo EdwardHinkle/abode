@@ -76,6 +76,9 @@ function webmentionCallback(req, res, next) {
                 newSyndication.url = testSyndicationUrl;
                 post.properties.syndication.push(newSyndication);
             }
+
+            console.log('post properties');
+            console.log(post.properties);
         });
 
         if (req.body.http_code === 200 || req.body.http_code === 201 || req.body.http_code === 202) {
