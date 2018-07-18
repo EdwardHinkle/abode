@@ -11,6 +11,7 @@
     "startServer": "npm run build; forever --uid personal-abode --append start ./server-build/server.js",
     "restartServer": "npm run build; forever restart personal-abode",
     "updateServer": "git pull; npm run restartServer",
+    "followLogs": "tail -f ~/.forever/personal-abode.log",
     "rebuildJekyll": "cd jekyll; jekyll build",
     "rebuildJekyllLocal": "cd jekyll; jekyll build --config=_config.yml,_local_config.yml",
     "rebuildJekyllPrivate": "cd jekyll; jekyll build --config=_config.yml,_private_config.yml"
