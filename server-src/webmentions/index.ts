@@ -25,11 +25,11 @@ function webmentionCallback(req, res, next) {
         console.log('JSON BODY');
         console.log(jsonBody);
 
+        let filePathSegments = req.body.source.split("/");
+        console.log(filePathSegments);
+
         if (req.body.http_code === 200 || req.body.http_code === 201 || req.body.http_code === 202) {
             console.log('WEBMENTION SUCCESS');
-
-            let filePathSegments = req.body.source.split("/");
-            console.log(filePathSegments);
 
         } else {
             console.log('WEBMENTION FAILURE');
