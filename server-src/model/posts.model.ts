@@ -31,7 +31,12 @@ export class Posts {
                     resolve(posts);
                 })
             } else {
-                reject(`Path does not exist: ${postFilepath}`);
+            	if (postsInfo.required) {
+                	reject(`Path does not exist: ${postFilepath}`);
+                } else {
+				    console.log(`Path does not exist: ${postFilepath}`);
+				    resolve([]);
+				}
             }
         });
     }
@@ -97,4 +102,5 @@ export interface PostsInfo {
     year?: string;
     month?: string;
     day?: string;
+    required?: boolean;
 }

@@ -40,7 +40,12 @@ dynamicRouter.get('/', (req, res, next) => {
         }
     }
 
-    Promise.all(combinedPromises).then(arrayOfPosts => {
+    Promise.all(combinedPromises)
+    .catch(error => {
+        console.log("error loading homepage", error);
+        return combinedPromises;
+    })
+    .then(arrayOfPosts => {
 
         let posts = [].concat.apply([], arrayOfPosts);
         let latestDrank: Post;
