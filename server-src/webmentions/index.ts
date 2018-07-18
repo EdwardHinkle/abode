@@ -8,13 +8,14 @@ import * as mfo from 'mf-obj';
 import * as Bluebird from 'bluebird';
 import * as multer from 'multer';
 
+let upload = multer();
 var emojiData = require('emoji-data');
 var config = require('../../abodeConfig.json');
 
 export let webmentionRouter = express.Router();
 
 // Routes
-webmentionRouter.post('/callback', multer.array(), webmentionCallback);
+webmentionRouter.post('/callback', upload.array(), webmentionCallback);
 
 function webmentionCallback(req, res, next) {
     console.log('WEBMENTION CALLBACK');
