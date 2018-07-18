@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import * as mfo from 'mf-obj';
 import * as Bluebird from 'bluebird';
 import * as multer from 'multer';
+import {Posts} from "../model/posts.model";
 
 let upload = multer();
 var emojiData = require('emoji-data');
@@ -27,6 +28,55 @@ function webmentionCallback(req, res, next) {
 
         let filePathSegments = req.body.source.split("/");
         console.log(filePathSegments);
+
+        let postYear = filePathSegments[3];
+        let postMonth = filePathSegments[4];
+        let postDay = filePathSegments[5];
+        let postIndex = filePathSegments[6];
+
+        let testSyndicationUrl = "https://twitter.com/jgmac1106/status/1019577386873049088";
+        let syndicationDomain = testSyndicationUrl.split("/")[2];
+
+        console.log('test syndication domain');
+        console.log(syndicationDomain);
+
+        Posts.getPost({
+            year: postYear,
+            month: postMonth,
+            day: postDay,
+            postIndex: postIndex
+        }).then(post => {
+            if (post.properties.syndication === undefined) {
+                post.properties.syndication = [];
+            }
+            let syndicationIndex = post.properties.syndication.indexOf(syndication => syndication.url.indexOf(syndicationDomain) > -1);
+            if (syndicationIndex > -1) {
+                post.properties.syndication[syndicationIndex].url = testSyndicationUrl;
+            } else {
+                let newSyndication: any = {};
+
+                switch (syndicationDomain) {
+                    case 'twitter.com':
+                        newSyndication.name = "Twitter";
+                        newSyndication.icon = "fa-twitter";
+                        break;
+                    case 'github.com':
+                        newSyndication.name = "GitHub";
+                        newSyndication.icon = "fa-github";
+                        break;
+                    case 'www.facebook.com':
+                        newSyndication.name = "Facebook";
+                        newSyndication.icon = "fa-facebook";
+                        break;
+                    default:
+                        newSyndication.name = syndicationDomain;
+                        newSyndication.icon = "fa-globe";
+                }
+
+                newSyndication.url = testSyndicationUrl;
+                post.properties.syndication.push(newSyndication);
+            }
+        });
 
         if (req.body.http_code === 200 || req.body.http_code === 201 || req.body.http_code === 202) {
             console.log('WEBMENTION SUCCESS');
