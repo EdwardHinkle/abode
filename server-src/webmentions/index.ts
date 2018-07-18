@@ -6,6 +6,7 @@ import * as express from 'express';
 import * as moment from 'moment';
 import * as mfo from 'mf-obj';
 import * as Bluebird from 'bluebird';
+import * as multer from 'multer';
 
 var emojiData = require('emoji-data');
 var config = require('../../abodeConfig.json');
@@ -13,7 +14,7 @@ var config = require('../../abodeConfig.json');
 export let webmentionRouter = express.Router();
 
 // Routes
-webmentionRouter.post('/callback', webmentionCallback);
+webmentionRouter.post('/callback', multer.array(), webmentionCallback);
 
 function webmentionCallback(req, res, next) {
     console.log('WEBMENTION CALLBACK');
