@@ -13,6 +13,14 @@ var config = require('../../abodeConfig.json');
 export let webmentionRouter = express.Router();
 
 // Routes
+webmentionRouter.get('/callback', webmentionCallback);
+
+function webmentionCallback(req, res, next) {
+    console.log('WEBMENTION CALLBACK');
+    console.log(req.body);
+}
+
+
 webmentionRouter.post('/alert', webmentionAlert);
 
 function webmentionAlert(req, res) {
