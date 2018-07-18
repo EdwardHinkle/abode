@@ -19,7 +19,22 @@ webmentionRouter.post('/callback', upload.array(), webmentionCallback);
 
 function webmentionCallback(req, res, next) {
     console.log('WEBMENTION CALLBACK');
-    console.log(req.body);
+    console.log(req.body.source);
+    if (req.body.http_body !== undefined) {
+        let jsonBody = JSON.parse(req.body.http_body);
+        console.log('JSON BODY');
+        console.log(jsonBody);
+
+        if (req.body.http_code === 200 || req.body.http_code === 201 || req.body.http_code === 202) {
+            console.log('WEBMENTION SUCCESS');
+
+            let filePathSegments = req.body.source.split("/");
+            console.log(filePathSegments);
+
+        } else {
+            console.log('WEBMENTION FAILURE');
+        }
+    }
     res.status(200);
 }
 
