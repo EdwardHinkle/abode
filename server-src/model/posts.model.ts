@@ -89,6 +89,21 @@ export class Posts {
             }
         });
     }
+
+    public static getPostData(postInfo: PostInfo): any {
+
+        let postFilepath = `${dataDir}/_note/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`;
+        if (fs.existsSync(postFilepath)) {
+            return fs.readFileSync(`${dataDir}/_note/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`, 'utf8');
+        } else {
+            return undefined;
+        }
+    }
+
+    public static savePost(post: Post) {
+
+
+    }
 }
 
 export interface PostInfo {

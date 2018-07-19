@@ -1,0 +1,12 @@
+html
+    head
+        title EddieHinkle.com
+        style
+            include debugPost.css
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="webmention", href="https://webmention.io/eddiehinkle.com/webmention")
+    body
+        h1 Debug View
+        div.preview
+            pre #{fileData}
+            pre #{postData}

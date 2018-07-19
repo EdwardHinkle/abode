@@ -3,7 +3,11 @@ import {PostInfo} from "./posts.model";
 import * as marked from 'marked';
 import * as moment from 'moment'; // Actual Library
 import { Moment } from "moment";
-import {People} from "../people"; // TypeScript Type
+import {People, Person} from "../people";
+import * as fs from "fs"; // TypeScript Type
+
+const JEKYLL_DATE_FORMAT = 'YYYY-MM-DD h:mm:ss ZZ';
+let dataDir = __dirname + "/../../jekyll/_source";
 
 export class Post {
 
@@ -28,7 +32,7 @@ export class Post {
 
             // Custom properties and attribute overrides
             post.permalink = doc.permalink;
-            post.properties.date = moment(doc.date, 'YYYY-MM-DD h:mm:ss ZZ');
+            post.properties.date = moment(doc.date, JEKYLL_DATE_FORMAT);
             post.properties.postIndex = doc.slug;
 
             // TODO: These need to be cleaned up in the actual data
@@ -49,7 +53,7 @@ export class Post {
             // TV Show Watch Post
             post.properties['task-status'] = doc['task-status'];
             post.properties['show_name'] = doc['show_name'];
-            post.properties['show_season'] = doc['show_seson'];
+            post.properties['show_season'] = doc['show_season'];
             post.properties['show_episode'] = doc['show_episode'];
             post.properties['episode_name'] = doc['episode_name'];
             post.properties['imdb_id'] = doc['imdb_id'];
@@ -119,6 +123,143 @@ export class Post {
         return this.properties.date.format("h:mma") + ' ' + date;
     }
 
+    public save() {
+        // Duplicate post object so we don't modify the original
+        let postObject = JSON.parse(JSON.stringify(this));
+
+        // Remove content from the post object properties
+        let postContents = postObject.properties.content;
+        delete postObject.properties.content;
+
+        // If there was no content, we should set it to be an empty string
+        if (postContents == undefined ) {
+            postContents = "";
+        }
+
+        // Reverse alterations during Post import phase
+        postObject.date = this.properties.date.format(JEKYLL_DATE_FORMAT);
+        postObject.slug = postObject.properties.postIndex;
+        postObject.title = postObject.properties.name;
+
+        delete postObject.properties.date;
+        delete postObject.properties.postIndex;
+        delete postObject.properties.name;
+
+        if (postObject.properties['task-status'] !== undefined) {
+            postObject.properties['task-status'] = postObject['task-status'];
+        }
+
+        if (postObject.properties['show_name'] !== undefined) {
+            postObject.properties['show_name'] = postObject['show_name'];
+        }
+
+        if (postObject.properties['show_season'] !== undefined) {
+            postObject.properties['show_season'] = postObject['show_season'];
+        }
+
+        if (postObject.properties['show_episode'] !== undefined) {
+            postObject.properties['show_episode'] = postObject['show_episode'];
+        }
+
+        if (postObject.properties['episode_name'] !== undefined) {
+            postObject.properties['episode_name'] = postObject['episode_name'];
+        }
+
+        if (postObject.properties['imdb_id'] !== undefined) {
+            postObject.properties['imdb_id'] = postObject['imdb_id'];
+        }
+
+        if (postObject.properties['show_url'] !== undefined) {
+            postObject.properties['show_url'] = postObject['show_url'];
+        }
+
+        if (postObject.properties['show_image'] !== undefined) {
+            postObject.properties['show_image'] = postObject['show_image'];
+        }
+
+        if (postObject.properties['episode_image'] !== undefined) {
+            postObject.properties['episode_image'] = postObject['episode_image'];
+        }
+
+        if (postObject.properties['season_finale'] !== undefined) {
+            postObject.properties['season_finale'] = postObject['season_finale'];
+        }
+
+        if (postObject.properties['movie_name'] !== undefined) {
+            postObject.properties['movie_name'] = postObject['movie_name'];
+        }
+
+        if (postObject.properties['movie_url'] !== undefined) {
+            postObject.properties['movie_url'] = postObject['movie_url'];
+        }
+
+        if (postObject.properties['movie_image'] !== undefined) {
+            postObject.properties['movie_image'] = postObject['movie_image'];
+        }
+
+        // If there are no syndications, we should remove it
+        if (postObject.properties.syndication !== undefined && postObject.properties.syndication.length === 0) {
+            delete postObject.properties.syndication;
+        }
+
+        // Convert person tags and categories back into tags
+        if (postObject.tags === undefined) {
+            postObject.tags = [];
+        }
+
+        postObject.properties.category.forEach(category => {
+            postObject.tags.push(category);
+        });
+
+        postObject.properties.personTags.forEach(person => {
+            postObject.tags.push(person.getRepresentitiveUrl());
+        });
+
+        // If there are no tags on the post object, we should remove it
+        if (postObject.tags !== undefined && postObject.tags.length === 0) {
+            delete postObject.tags;
+        }
+
+        // Save YAML File
+        let fileData = "---\n" + yaml.safeDump(postObject, { lineWidth: 800, skipInvalid: true }) + "---\n" + postContents;
+        let fileName = this.getFilename();
+
+        console.log(`Test Fileoutput for ${fileName}`);
+        console.log(fileData);
+
+        fs.writeFile(fileName, fileData, function(err) {
+            if (err) {
+                console.log('Error saving post');
+                return console.log(err);
+            }
+
+            console.log("Saving Finished");
+        });
+    }
+
+    getPostDir(): string {
+        let year = this.properties.date.format("YYYY");
+        let month = this.properties.date.format("MM");
+        let day = this.properties.date.format("DD");
+
+        let yearDir = `${dataDir}/_note/${year}`;
+        let monthDir = `${yearDir}/${month}`;
+        let dayDir = `${monthDir}/${day}`;
+
+        let postDir = `${dayDir}/${this.properties.postIndex}`;
+        if (!fs.existsSync(postDir)) {
+            fs.mkdirSync(postDir);
+            console.log(postDir + " created");
+        }
+
+        return postDir;
+    }
+
+    getFilename(): string {
+        console.log("Formatting Post Filename");
+        return `${this.getPostDir()}/post.md`;
+    }
+
     public getPostType(): PostType {
 
         if (this.properties.start) {
@@ -185,6 +326,7 @@ export class Post {
 
 export class PostProperties {
     date: Moment;
+    personTags: Person[];
     postIndex: number;
     [key: string]: any;
 

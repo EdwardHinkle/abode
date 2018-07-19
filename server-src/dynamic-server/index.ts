@@ -197,6 +197,49 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/', (req, res, next) => {
     });
 });
 
+dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/debug/', (req, res, next) => {
+
+    console.log('DEBUG Post');
+
+    let year = req.params.year;
+    let month = req.params.month;
+    let day = req.params.day;
+    let postIndex = req.params.postIndex;
+
+    let promises = [];
+    let postInfo = {
+        year: year,
+        month: month,
+        day: day,
+        postIndex: postIndex
+    };
+
+    promises.push(Posts.getPostData(postInfo));
+    promises.push(Posts.getPost(postInfo));
+
+    Promise.all(promises).then(postArray => {
+
+        let yamlFileArray = postArray[0].split("---\n");
+        let yamlData = yaml.safeLoad(yamlFileArray[0]);
+
+        // Now we need to display the post
+        res.render("posts/debugPost", {
+            fileData: JSON.stringify(yamlData, null, 2),
+            postData: JSON.stringify(postArray[1], null, 2)
+        });
+        return;
+
+    }).catch(error => {
+        if (error !== undefined) {
+            console.log('url failed');
+            console.log(error);
+            res.render("posts/postUnavailable");
+            return;
+        }
+    });
+
+});
+
 dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postType?/', (req, res, next) => {
 
     let year = req.params.year;

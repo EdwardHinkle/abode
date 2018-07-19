@@ -1,0 +1,8 @@
+.preview {
+    display: flex;
+    flex-direction: row;
+}
+
+.preview pre {
+    flex: 1;
+}
