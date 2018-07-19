@@ -971,6 +971,10 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                         }
                                         if (data.statusCode !== 201 && data.statusCode !== 202) {
                                             console.log("oops twitter syndication error");
+                                            console.log(data);
+                                            console.log(config.telegraph.url);
+                                            console.log(config.telegraph.token);
+                                            console.log(config);
                                         } else {
                                             console.log("Successfully sent twitter syndication webmention");
                                         }
