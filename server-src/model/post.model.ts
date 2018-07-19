@@ -127,6 +127,27 @@ export class Post {
     }
 
     public save() {
+        let postObject = this.getSaveObject();
+        let postContents = this.properties.content;
+
+        // Save YAML File
+        let fileData = "---\n" + yaml.safeDump(postObject, { lineWidth: 800, skipInvalid: true }) + "---\n" + postContents;
+        let fileName = this.getFilename();
+
+        console.log(`Test Fileoutput for ${fileName}`);
+        console.log(fileData);
+
+        fs.writeFile(fileName, fileData, function(err) {
+            if (err) {
+                console.log('Error saving post');
+                return console.log(err);
+            }
+
+            console.log("Saving Finished");
+        });
+    }
+
+    public getSaveObject(): any {
         // Duplicate post object so we don't modify the original
         let postObject = JSON.parse(JSON.stringify(this));
 
@@ -223,21 +244,7 @@ export class Post {
             delete postObject.tags;
         }
 
-        // Save YAML File
-        let fileData = "---\n" + yaml.safeDump(postObject, { lineWidth: 800, skipInvalid: true }) + "---\n" + postContents;
-        let fileName = this.getFilename();
-
-        console.log(`Test Fileoutput for ${fileName}`);
-        console.log(fileData);
-
-        fs.writeFile(fileName, fileData, function(err) {
-            if (err) {
-                console.log('Error saving post');
-                return console.log(err);
-            }
-
-            console.log("Saving Finished");
-        });
+        return postObject;
     }
 
     getPostDir(): string {

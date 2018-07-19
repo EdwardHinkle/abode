@@ -86,7 +86,7 @@ dynamicRouter.get('/microblog-syndication.json', (req, res, next) => {
                 }
 
             });
-            
+
             res.json(jsonFeed);
 
         });
@@ -300,12 +300,14 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/debug/'
     Promise.all(promises).then(postArray => {
 
         let yamlFileArray = postArray[0].split("---\n");
-        let yamlData = yaml.safeLoad(yamlFileArray[0]);
+        let yamlData = yaml.safeLoad(yamlFileArray[1]);
+
+        let saveData = postArray[1].getSaveObject();
 
         // Now we need to display the post
         res.render("posts/debugPost", {
             fileData: JSON.stringify(yamlData, null, 2),
-            postData: JSON.stringify(postArray[1], null, 2)
+            postData: JSON.stringify(saveData, null, 2)
         });
         return;
 

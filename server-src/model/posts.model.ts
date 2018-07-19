@@ -90,14 +90,16 @@ export class Posts {
         });
     }
 
-    public static getPostData(postInfo: PostInfo): any {
+    public static getPostData(postInfo: PostInfo): Promise<any> {
 
-        let postFilepath = `${dataDir}/_note/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`;
-        if (fs.existsSync(postFilepath)) {
-            return fs.readFileSync(`${dataDir}/_note/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`, 'utf8');
-        } else {
-            return undefined;
-        }
+        return new Promise((resolve, reject) => {
+            let postFilepath = `${dataDir}/_note/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`;
+            if (fs.existsSync(postFilepath)) {
+                resolve(fs.readFileSync(`${dataDir}/_note/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`, 'utf8'));
+            } else {
+                reject("file does not exist");
+            }
+        })
     }
 
     public static savePost(post: Post) {
