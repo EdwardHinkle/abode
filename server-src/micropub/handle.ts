@@ -974,7 +974,6 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                             console.log(data);
                                             console.log(config.telegraph.url);
                                             console.log(config.telegraph.token);
-                                            console.log(config);
                                         } else {
                                             console.log("Successfully sent twitter syndication webmention");
                                         }
