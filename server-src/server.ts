@@ -13,6 +13,8 @@ var config = require('../abodeConfig.json');
 
 var app = express();
 
+config.app_root = path.resolve(__dirname);
+
 app.set('views', './views');
 app.set('view engine', 'pug');
 app.set('config', config);

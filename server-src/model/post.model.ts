@@ -67,13 +67,16 @@ export class Post {
             post.properties['movie_url'] = doc['movie_url'];
             post.properties['movie_image'] = doc['movie_image'];
 
+            if (post.properties.syndication === undefined) {
+                post.properties.syndication = [];
+            }
+
             // Fetch extra data
             People.getPeople().then(peopleData => {
 
                 post.properties.content = marked(fileArray[2]).replace(/^<p>/, '').replace(/<\/p>\n$/, '');
                 post.properties.personTags = [];
                 post.properties.category = [];
-                post.properties.syndication = [];
 
                 if (doc.tags) {
                     doc.tags.forEach(tag => {

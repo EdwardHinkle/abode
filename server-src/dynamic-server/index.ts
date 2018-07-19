@@ -7,10 +7,91 @@ import { People } from '../people';
 import {Posts} from "../model/posts.model";
 import {Post, PostType} from "../model/post.model";
 import moment = require("moment");
+import * as pug from 'pug';
 
 let dataDir = __dirname + "/../../jekyll/_source";
 
 export let dynamicRouter = express.Router();
+
+dynamicRouter.get('/microblog-syndication.json', (req, res, next) => {
+    let numberOfPreviousDays = 3;
+
+    let combinedPromises: Promise<Post[]>[] = [];
+
+    let thisYear = moment().format("YYYY");
+    let thisMonth = moment().format("MM");
+    let thisDate = moment().format("DD");
+
+    for (let date = parseInt(thisDate); date >= parseInt(moment().format("DD")) - numberOfPreviousDays; date--) {
+        let dateString = (date <= 9 ? "0" + date : "" + date);
+
+        combinedPromises.push(Posts.getPosts({
+            year: thisYear,
+            month: thisMonth,
+            day: dateString
+        }));
+
+        if (date === 1) {
+            if (thisMonth === "1") {
+                thisYear = "" + (parseInt(thisYear) - 1);
+            }
+
+            thisMonth = "" + (parseInt(thisMonth) - 1);
+        }
+    }
+
+    Promise.all(combinedPromises)
+        .catch(error => {
+            console.log("error loading homepage", error);
+            return combinedPromises;
+        })
+        .then(arrayOfPosts => {
+
+            let posts = [].concat.apply([], arrayOfPosts);
+
+            let jsonFeed = {
+                "version": "https://jsonfeed.org/version/1",
+                "title": "@EddieHinkle feed",
+                "home_page_url": "https://eddiehinkle.com/",
+                "feed_url": "https://eddiehinkle.com/microblog-syndication.json",
+                "author": {
+                    "name": "Eddie Hinkle",
+                    "url": "https://eddiehinkle.com/",
+                    "avatar": "https://eddiehinkle.com/images/profile.jpg"
+                },
+                "items": []
+            };
+
+            posts.forEach(post => {
+
+                if (post.properties.syndication !== undefined &&
+                    post.properties.syndication.length > 0 &&
+                    post.properties.syndication[0].url === 'https://micro.blog/EddieHinkle') {
+
+                    let feedItem: any = {
+                        "id": `https://eddiehinkle.com${post.getOfficialPermalink()}`,
+                        "url": `https://eddiehinkle.com${post.getOfficialPermalink()}`,
+                        "date_published": post.properties.date.format()
+                    };
+
+                    if (post.properties.name !== undefined && post.properties.name > "") {
+                        feedItem.title = post.properties.name;
+                    }
+
+                    feedItem.content_html = pug.renderFile(`${req.app.get('config').app_root}/../views/posts/microblog-syndication.pug`, {
+                        post: post
+                    });
+
+                    jsonFeed.items.push(feedItem);
+                }
+
+            });
+
+            console.log('returning data');
+            res.json(jsonFeed);
+
+        });
+});
 
 dynamicRouter.get('/', (req, res, next) => {
 
