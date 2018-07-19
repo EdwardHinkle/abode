@@ -20,7 +20,7 @@ let readingTime = require('reading-time');
 
 import { People } from '../people';
 
-let config = require('../../abodeConfig.json');
+// let config = require('../../abodeConfig.json');
 let dataDir = __dirname + "/../../jekyll/_source/";
 let imageDir = `${dataDir}/images`;
 let mediaStorageDir = `${__dirname}/../../media-server-storage`;
@@ -37,6 +37,9 @@ let formatter = new MicropubFormatter();
 
 // Support Functions
 export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
+
+    let config = req.app.get('config');
+
 	console.log("Micropub Retrieved");
     console.log(micropubDocument);
 
@@ -387,6 +390,26 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                         // TODO: Do we actually need to remove the data from this?
                         // micropubDocument.mp['syndicate-to'].splice(syndicateTargetIndex, 1);
+                    }
+
+                    // Check if the syndication target starts with twitter.com
+                    if (micropubDocument.mp['syndicate-to'][syndicateTargetIndex] !== undefined &&
+                        micropubDocument.mp['syndicate-to'][syndicateTargetIndex].indexOf('twitter.com') > -1) {
+                        yamlDocument.properties.syndication.push({
+                            name: "Twitter",
+                            icon: "fa-twitter",
+                            url: micropubDocument.mp['syndicate-to'][syndicateTargetIndex]
+                        });
+                    }
+
+                    // Check if the syndication target starts with github.com
+                    if (micropubDocument.mp['syndicate-to'][syndicateTargetIndex] !== undefined &&
+                        micropubDocument.mp['syndicate-to'][syndicateTargetIndex].indexOf('github.com') > -1) {
+                        yamlDocument.properties.syndication.push({
+                            name: "GitHub",
+                            icon: "fa-github",
+                            url: micropubDocument.mp['syndicate-to'][syndicateTargetIndex]
+                        });
                     }
                 }
 
@@ -925,11 +948,61 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             }
                         });
 
-                        // TODO: Add Twitter and GitHub syndication webmentions
+                        let syndicateData = fs.readFileSync(`${config.app_root}/../config/syndicate.yaml`, 'utf8');
+                        let syndicateTargets = yaml.safeLoad(syndicateData);
+                        let twitterSyndicationTargets = syndicateTargets.filter(target => target.uid.indexOf("twitter.com") > -1);
+                        let githubSyndicationTargets = syndicateTargets.filter(target => target.uid.indexOf("github.com") > -1);
 
+                        // Loop through syndications
+                        yamlDocument.properties.syndication.forEach(syndication => {
+                            // Check to see if any syndications are actually a twitter syndication target
+                            twitterSyndicationTargets.forEach(twitterTarget => {
+                                if (syndication.url.indexOf(twitterTarget.uid) > -1) {
+                                    request.post(config.telegraph.url, {
+                                        form: {
+                                            token: config.telegraph.token,
+                                            source: returnUrl,
+                                            target: "https://brid.gy/publish/twitter",
+                                            callback: "https://eddiehinkle.com/webmention/callback"
+                                        }
+                                    }, (err, data) => {
+                                        if (err != undefined) {
+                                            console.log(`ERROR: ${err}`);
+                                        }
+                                        if (data.statusCode !== 201 && data.statusCode !== 202) {
+                                            console.log("oops twitter syndication error");
+                                        } else {
+                                            console.log("Successfully sent twitter syndication webmention");
+                                        }
+                                    });
+                                }
+                            });
+
+                            // Check to see if any syndications are actually a github syndication target
+                            githubSyndicationTargets.forEach(githubTarget => {
+                                if (syndication.url.indexOf(githubTarget.uid) > -1) {
+                                    request.post(config.telegraph.url, {
+                                        form: {
+                                            token: config.telegraph.token,
+                                            source: returnUrl,
+                                            target: "https://brid.gy/publish/github",
+                                            callback: "https://eddiehinkle.com/webmention/callback"
+                                        }
+                                    }, (err, data) => {
+                                        if (err != undefined) {
+                                            console.log(`ERROR: ${err}`);
+                                        }
+                                        if (data.statusCode !== 201 && data.statusCode !== 202) {
+                                            console.log("oops github syndication error");
+                                        } else {
+                                            console.log("Successfully sent github syndication webmention");
+                                        }
+                                    });
+                                }
+                            });
+                        });
 
                         // TODO: Add Bookmark Webmentions
-
                         // TODO: Add Webmentions that aren't listed as anything in particular
 
                         // Send like webmentions
@@ -946,43 +1019,58 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             // Special webmentions if twitter or github, else send normal webmention
                             if (likeOfUrl.indexOf('twitter.com') > -1) {
                                 // Send to Bridgy Twitter
-                                webmention(returnUrl, 'https://brid.gy/publish/twitter', function(err, obj) {
-                                    if (err) throw err;
-
-                                    if (obj.success) {
-                                        console.log(obj.res.body);
-                                        // obj.res.pipe(function(buf) {
-                                        //     console.log('Success! Got back response:', buf.toString());
-                                        // });
+                                request.post(config.telegraph.url, {
+                                    form: {
+                                        token: config.telegraph.token,
+                                        source: returnUrl,
+                                        target: "https://brid.gy/publish/twitter",
+                                        callback: "https://eddiehinkle.com/webmention/callback"
+                                    }
+                                }, (err, data) => {
+                                    if (err != undefined) {
+                                        console.log(`ERROR: ${err}`);
+                                    }
+                                    if (data.statusCode !== 201 && data.statusCode !== 202) {
+                                        console.log("oops twitter like syndication error");
                                     } else {
-                                        console.log('Failure :(');
+                                        console.log("Successfully sent twitter like syndication webmention");
                                     }
                                 });
                             } else if (likeOfUrl.indexOf('github.com') > -1) {
-                                webmention(returnUrl, 'https://brid.gy/publish/github', function(err, obj) {
-                                    if (err) throw err;
-
-                                    if (obj.success) {
-                                        console.log(obj.res.body);
-                                        // obj.res.pipe(function(buf) {
-                                        //     console.log('Success! Got back response:', buf.toString());
-                                        // });
+                                request.post(config.telegraph.url, {
+                                    form: {
+                                        token: config.telegraph.token,
+                                        source: returnUrl,
+                                        target: "https://brid.gy/publish/github",
+                                        callback: "https://eddiehinkle.com/webmention/callback"
+                                    }
+                                }, (err, data) => {
+                                    if (err != undefined) {
+                                        console.log(`ERROR: ${err}`);
+                                    }
+                                    if (data.statusCode !== 201 && data.statusCode !== 202) {
+                                        console.log("oops github like syndication error");
                                     } else {
-                                        console.log('Failure :(');
+                                        console.log("Successfully sent github like syndication webmention");
                                     }
                                 });
                             } else {
                                 // Send a normal webmention
-                                webmention(returnUrl, likeOfUrl, function (err, obj) {
-                                    if (err) throw err;
-
-                                    if (obj.success) {
-                                        console.log(obj.res.body);
-                                        obj.res.pipe(function(buf) {
-                                            console.log('Success! Got back response:', buf.toString());
-                                        });
+                                request.post(config.telegraph.url, {
+                                    form: {
+                                        token: config.telegraph.token,
+                                        source: returnUrl,
+                                        target: likeOfUrl,
+                                        callback: "https://eddiehinkle.com/webmention/callback"
+                                    }
+                                }, (err, data) => {
+                                    if (err != undefined) {
+                                        console.log(`ERROR: ${err}`);
+                                    }
+                                    if (data.statusCode !== 201 && data.statusCode !== 202) {
+                                        console.log("oops like of webmention error");
                                     } else {
-                                        console.log('Failure :(');
+                                        console.log("Successfully sent like of webmention");
                                     }
                                 });
                             }
@@ -1002,37 +1090,45 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             // Special webmentions if twitter or github, else send normal webmention
                             if (replyToUrl.indexOf('twitter.com') > -1) {
                                 // Send to Bridgy Twitter
-                                webmention(returnUrl, 'https://brid.gy/publish/twitter', function(err, obj) {
-                                    if (err) throw err;
-
-                                    if (obj.success) {
-                                        console.log(obj.res.body);
-                                        // obj.res.pipe(function(buf) {
-                                        //     console.log('Success! Got back response:', buf.toString());
-                                        // });
+                                request.post(config.telegraph.url, {
+                                    form: {
+                                        token: config.telegraph.token,
+                                        source: returnUrl,
+                                        target: "https://brid.gy/publish/twitter",
+                                        callback: "https://eddiehinkle.com/webmention/callback"
+                                    }
+                                }, (err, data) => {
+                                    if (err != undefined) {
+                                        console.log(`ERROR: ${err}`);
+                                    }
+                                    if (data.statusCode !== 201 && data.statusCode !== 202) {
+                                        console.log("oops twitter reply syndication error");
                                     } else {
-                                        console.log('Failure :(');
+                                        console.log("Successfully sent twitter reply syndication webmention");
                                     }
                                 });
                             } else if (replyToUrl.indexOf('github.com') > -1) {
-                                webmention(returnUrl, 'https://brid.gy/publish/github', function(err, obj) {
-                                    if (err) throw err;
-
-                                    if (obj.success) {
-                                        console.log(obj.res.body);
-                                        // obj.res.pipe(function(buf) {
-                                        //     console.log('Success! Got back response:', buf.toString());
-                                        // });
+                                request.post(config.telegraph.url, {
+                                    form: {
+                                        token: config.telegraph.token,
+                                        source: returnUrl,
+                                        target: "https://brid.gy/publish/github",
+                                        callback: "https://eddiehinkle.com/webmention/callback"
+                                    }
+                                }, (err, data) => {
+                                    if (err != undefined) {
+                                        console.log(`ERROR: ${err}`);
+                                    }
+                                    if (data.statusCode !== 201 && data.statusCode !== 202) {
+                                        console.log("oops github reply syndication error");
                                     } else {
-                                        console.log('Failure :(');
+                                        console.log("Successfully sent github reply syndication webmention");
                                     }
                                 });
                             } else {
                                 // Send normal webmention process
                                 getWebmentionUrl(replyToUrl, function (err, webmentionUrl) {
                                     if (err) throw err;
-
-                                    console.log('webmention receiver is ', webmentionUrl);
 
                                     // If post's webmention receiver is not micro.blog, then send a copy to micro.blog
                                     if (webmentionUrl !== 'https://micro.blog/webmention') {
@@ -1053,16 +1149,21 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                         });
                                     }
 
-                                    webmention(returnUrl, replyToUrl, function (err, obj) {
-                                        if (err) throw err;
-
-                                        if (obj.success) {
-                                            console.log(obj.res.body);
-                                            // obj.res.pipe(function(buf) {
-                                            //     console.log('Success! Got back response:', buf.toString());
-                                            // });
+                                    request.post(config.telegraph.url, {
+                                        form: {
+                                            token: config.telegraph.token,
+                                            source: returnUrl,
+                                            target: replyToUrl,
+                                            callback: "https://eddiehinkle.com/webmention/callback"
+                                        }
+                                    }, (err, data) => {
+                                        if (err != undefined) {
+                                            console.log(`ERROR: ${err}`);
+                                        }
+                                        if (data.statusCode !== 201 && data.statusCode !== 202) {
+                                            console.log("oops reply of webmention error");
                                         } else {
-                                            console.log('Failure :(');
+                                            console.log("Successfully sent reply of webmention");
                                         }
                                     });
 
