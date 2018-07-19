@@ -126,7 +126,8 @@ html
             div.articles
                 h4 Latest Articles
                 each post in latestArticles
-                    div.article !{post.properties.name}
+                    div.article
+                        a(href=post.getOfficialPermalink()) !{post.properties.name}
         if latestNotes.length > 0
             div.notes
                 h4 Latest Thoughts

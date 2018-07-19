@@ -70,13 +70,13 @@ h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, .note a:not(.note-da
     position: relative;
 }
 
-.notes, .social {
+.articles, .notes, .social {
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
 }
 
-.notes {
+.articles, .notes {
     margin-top: 100px;
 }
 
