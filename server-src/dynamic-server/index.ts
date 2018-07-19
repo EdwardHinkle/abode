@@ -86,8 +86,7 @@ dynamicRouter.get('/microblog-syndication.json', (req, res, next) => {
                 }
 
             });
-
-            console.log('returning data');
+            
             res.json(jsonFeed);
 
         });
