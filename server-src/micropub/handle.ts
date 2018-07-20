@@ -902,8 +902,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         if (micropubDocument.mp['syndicate-to'].indexOf('https://luke.hinkle.life') > -1) {
                             let copyYamlDocument = JSON.parse(JSON.stringify(yamlDocument));
                             copyYamlDocument.canonical = returnUrl;
-                            let fileData = "---\n" + yaml.safeDump(yamlDocument, { lineWidth: 800, skipInvalid: true }) + "---\n" + postContents;
-                            let fileName = formatFilenameForLukeSyndication(yamlDocument);
+                            let fileData = "---\n" + yaml.safeDump(copyYamlDocument, { lineWidth: 800, skipInvalid: true }) + "---\n" + postContents;
+                            let fileName = formatFilenameForLukeSyndication(copyYamlDocument);
 
                             console.log(`Saved ${fileName} `);
 
