@@ -1358,6 +1358,11 @@ function formatFilenameForLukeSyndication(data) {
 
     let postDir = dayDir + postIndex + "/";
 
+    if (!fs.existsSync(postDir)) {
+        fs.mkdirSync(postDir);
+        console.log(postDir + " created");
+    }
+
     return `${postDir}post.md`;
 }
 
