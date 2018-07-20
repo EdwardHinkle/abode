@@ -4,10 +4,11 @@ body {
 
 .e-content {
     font-size: 20px;
-    line-height: 25px;
+    line-height: 30px;
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
+    text-align: justify;
 }
 
 .e-content a {
