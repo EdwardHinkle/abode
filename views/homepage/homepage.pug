@@ -14,6 +14,7 @@ html
         link(rel="pingback", href="{{ site.endpoints.pingback }}")
         link(rel="webmention", href="https://webmention.io/eddiehinkle.com/webmention")
         link(rel="microsub", href="https://aperture.eddiehinkle.com/microsub/1")
+        link(rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-xyMU7RufUdPGVOZRrc2z2nRWVWBONzqa0NFctWglHmt5q5ukL22+lvHAqhqsIm3h" crossorigin="anonymous")
         script(src="/js/confetti.js")
         script
             include ga.js
@@ -156,4 +157,21 @@ html
             | An IndieWeb Webring 🕸💍
             |
             a(href="https://xn--sr8hvo.ws/🏻/next") ⏩
+        ul.social-media-list
+            li
+                a(href="https://github.com/edwardhinkle" rel="me")
+                    i(class="fa fa-github fa-2x" aria-hidden="true")
+            li
+                a(href="https://twitter.com/eddiehinkle" rel="me")
+                    i(class="fa fa-twitter fa-2x" aria-hidden="true")
+            li
+                a(href="https://instagram.com/eddiehinkle" rel="me")
+                    i(class="fa fa-2x fa-instagram" aria-hidden="true")
+            li
+                a(class="microblog-icon" href="https://micro.blog/eddiehinkle" rel="me")
+                    include microblog-icon.svg
+            li
+                a(href="https://apple.news/TlUsl76dFRNCfv54V0xuVJQ")
+                    span(class="icon-follow-news")
+                        img(src="/images/apple-news-icon.png")
         div.footer &copy; 2007-2018 Eddie Hinkle.

@@ -143,6 +143,32 @@ h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, .note a:not(.note-da
     text-decoration: none;
 }
 
+.social-media-list {
+    list-style: none;
+    margin-left: 0;
+    text-align: center;
+}
+
+.social-media-list li {
+    display: inline-block;
+    padding: 0px 8px;
+}
+
+.social-media-list .microblog-icon svg {
+    height: 23px;
+}
+
+.social-media-list .microblog-icon path {
+    fill: #24b1f3;
+}
+
+.social-media-list .icon-follow-news img {
+    height: 26px;
+    display: inline-block;
+    vertical-align: text-bottom;
+}
+
+
 @media (max-width: 900px) {
     .stats {
         display: block;
