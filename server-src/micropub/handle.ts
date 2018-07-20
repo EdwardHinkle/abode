@@ -22,6 +22,7 @@ import { People } from '../people';
 
 // let config = require('../../abodeConfig.json');
 let dataDir = __dirname + "/../../jekyll/_source/";
+let lukeDataDir = __dirname + "/../../../production/luke.hinkle.life/storage/";
 let imageDir = `${dataDir}/images`;
 let mediaStorageDir = `${__dirname}/../../media-server-storage`;
 let entryImageDirName = `entry-images`;
@@ -884,7 +885,6 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                 var fileName = formatFilename(yamlDocument);
 
                 console.log(`Test Fileoutput for ${fileName}`);
-                console.log(fileData);
 
                 fs.writeFile(fileName, fileData, function(err) {
                     if(err) {
@@ -898,6 +898,24 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                     // Return the URL
                     formatUrl(micropubInfoForUrl).then(function(returnUrl) {
+
+                        if (micropubDocument.mp['syndicate-to'].indexOf('https://luke.hinkle.life') > -1) {
+                            let copyYamlDocument = JSON.parse(JSON.stringify(yamlDocument));
+                            copyYamlDocument.canonical = returnUrl;
+                            let fileData = "---\n" + yaml.safeDump(yamlDocument, { lineWidth: 800, skipInvalid: true }) + "---\n" + postContents;
+                            let fileName = formatFilenameForLukeSyndication(yamlDocument);
+
+                            console.log(`Saved ${fileName} `);
+
+                            fs.writeFile(fileName, fileData, function(err) {
+                                if (err) {
+                                    return console.log(err);
+                                }
+
+                                console.log(`Finished saving: ${fileName}`);
+                            });
+                        }
+
                         request.post({
                             url: `https://hooks.slack.com/services/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`,
                             json: {
@@ -1300,6 +1318,47 @@ function formatFilename(data) {
         }
 
         return `${postDir}post.md`;
+}
+
+function formatFilenameForLukeSyndication(data) {
+    console.log("Formatting Filename");
+    let date = moment(data.date, "YYYY-MM-DD HH:mm:ss ZZ");
+    let year = date.format("YYYY");
+    let month = date.format("MM");
+    let day = date.format("DD");
+
+    let yearDir = lukeDataDir + year + "/";
+    if (!fs.existsSync(yearDir)) {
+        fs.mkdirSync(yearDir);
+        console.log(yearDir + " created");
+    }
+
+    let monthDir = yearDir + month + "/";
+    if (!fs.existsSync(monthDir)) {
+        fs.mkdirSync(monthDir);
+        console.log(monthDir + " created");
+    }
+
+    let dayDir = monthDir + day + "/";
+    let postIndex = 1;
+    if (!fs.existsSync(dayDir)) {
+        fs.mkdirSync(dayDir);
+        console.log(dayDir + " created");
+    } else {
+        let dirContents = fs.readdirSync(dayDir);
+        dirContents = _.filter(dirContents, (filename) => {
+            return (fs.statSync(dayDir + "/" + filename).isDirectory() && fs.existsSync(`${dayDir}${filename}/post.md`));
+        });
+        postIndex = dirContents.length + 1;
+    }
+
+    while(fs.existsSync(`${dayDir}/${postIndex}/post.md`)) {
+        postIndex++;
+    }
+
+    let postDir = dayDir + postIndex + "/";
+
+    return `${postDir}post.md`;
 }
 
 function preparePostInfo(preformattedData) {
