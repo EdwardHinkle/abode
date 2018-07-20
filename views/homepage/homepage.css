@@ -43,6 +43,14 @@ h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, .note a:not(.note-da
     background-color: rgba(83, 176, 237, 0.7);
 }
 
+.social-media-list a {
+    color: rgba(83, 176, 237, 0.7);
+}
+
+.social-media-list a:hover {
+    color: rgba(83, 176, 237, 0.3);
+}
+
 .bio {
     display: block;
     width: 100%;
@@ -147,6 +155,7 @@ h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, .note a:not(.note-da
     list-style: none;
     margin-left: 0;
     text-align: center;
+    padding-left: 0;
 }
 
 .social-media-list li {
@@ -159,7 +168,11 @@ h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, .note a:not(.note-da
 }
 
 .social-media-list .microblog-icon path {
-    fill: #24b1f3;
+    fill: rgba(83, 176, 237, 0.7);
+}
+
+.social-media-list .microblog-icon:hover path {
+    fill: rgba(83, 176, 237, 0.3);
 }
 
 .social-media-list .icon-follow-news img {
