@@ -49,6 +49,10 @@ dynamicRouter.get('/microblog-syndication.json', (req, res, next) => {
 
             let posts = [].concat.apply([], arrayOfPosts);
 
+            posts.sort((a: Post, b: Post) => {
+                return b.properties.date.diff(a.properties.date);
+            });
+
             let jsonFeed = {
                 "version": "https://jsonfeed.org/version/1",
                 "title": "@EddieHinkle feed",
@@ -65,24 +69,29 @@ dynamicRouter.get('/microblog-syndication.json', (req, res, next) => {
             posts.forEach(post => {
 
                 if (post.properties.syndication !== undefined &&
-                    post.properties.syndication.length > 0 &&
-                    post.properties.syndication[0].url === 'https://micro.blog/EddieHinkle') {
+                    post.properties.syndication.length > 0) {
 
-                    let feedItem: any = {
-                        "id": `https://eddiehinkle.com${post.getOfficialPermalink()}`,
-                        "url": `https://eddiehinkle.com${post.getOfficialPermalink()}`,
-                        "date_published": post.properties.date.format()
-                    };
+                    post.properties.syndication.forEach(syndication => {
 
-                    if (post.properties.name !== undefined && post.properties.name > "") {
-                        feedItem.title = post.properties.name;
-                    }
+                        if (syndication.url === 'https://micro.blog/EddieHinkle') {
+                            let feedItem: any = {
+                                "id": `https://eddiehinkle.com${post.getOfficialPermalink()}`,
+                                "url": `https://eddiehinkle.com${post.getOfficialPermalink()}`,
+                                "date_published": post.properties.date.format()
+                            };
 
-                    feedItem.content_html = pug.renderFile(`${req.app.get('config').app_root}/../views/posts/microblog-syndication.pug`, {
-                        post: post
+                            if (post.properties.name !== undefined && post.properties.name > "") {
+                                feedItem.title = post.properties.name;
+                            }
+
+                            feedItem.content_html = pug.renderFile(`${req.app.get('config').app_root}/../views/posts/microblog-syndication.pug`, {
+                                post: post
+                            });
+
+                            jsonFeed.items.push(feedItem);
+                        }
+
                     });
-
-                    jsonFeed.items.push(feedItem);
                 }
 
             });
