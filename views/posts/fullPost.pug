@@ -48,8 +48,8 @@ html
                 div.p-summary.p-ate Ate
                     |
                     | #{properties['ate'].properties.name}
-            if title
-                h1.page-title.p-name #{title}
+            if properties.name
+                h1.page-title.p-name #{properties.name}
             if properties.checkin && properties.checkin.type === "h-card"
                 img(src="https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/pin-m+24b1f3(" + properties.checkin.properties.longitude + "," + properties.checkin.properties.latitude + ")/" + properties.checkin.properties.longitude + "," + properties.checkin.properties.latitude + ",13,0,60/1280x350@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false", width='600px').u-photo
             if properties.photo
