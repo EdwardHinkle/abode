@@ -27,7 +27,7 @@ html
                         div ↪ Created a new issue for:
                             |
                             |
-                            a(href=properties['in-reply-to']).u-in-reply-to #{properties['in-reply-to']}
+                            a(href=properties['in-reply-to']).u-in-reply-to #{properties['in-reply-to'].split('/').pop()}
                     else
                         div ↪ Commented on an issue:
                             |
