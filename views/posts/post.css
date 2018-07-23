@@ -27,16 +27,15 @@ body {
     border-left-color: rgba(83, 176, 237, 0.3);
     border-left-style: solid;
     border-left-width: 2px;
-    margin-left: 30px;
+    margin-left: 0;
     margin-right: 30px;
-    padding-left: 30px;
+    padding-left: 20px;
     padding-right: 30px;
-    padding-bottom: 1px;
-    padding-top: 1px;
     color: rgba(83, 176, 237, 0.8);
     font-style: italic;
-    font-weight: bold;
-    line-height: 1.5rem;
+    line-height: 2rem;
+    margin-top: 40px;
+    margin-bottom: 40px;
 }
 
 h1.page-title {
