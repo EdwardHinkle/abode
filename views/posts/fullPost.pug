@@ -22,10 +22,22 @@ html
                                 |
                 time(datetime=date).dt-published #{date}
             if properties['in-reply-to']
-                div ↪ In Reply To:
-                    |
-                    |
-                    a(href=properties['in-reply-to']).u-in-reply-to #{properties['in-reply-to']}
+                if properties['in-reply-to'].indexOf('github.com') > -1
+                    if properties.name !== undefined && properties.name > ''
+                        div ↪ Created a new issue for:
+                            |
+                            |
+                            a(href=properties['in-reply-to']).u-in-reply-to #{properties['in-reply-to']}
+                    else
+                        div ↪ Commented on an issue:
+                            |
+                            |
+                            a(href=properties['in-reply-to']).u-in-reply-to #{properties['in-reply-to']}
+                else
+                    div ↪ In Reply To:
+                        |
+                        |
+                        a(href=properties['in-reply-to']).u-in-reply-to #{properties['in-reply-to']}
             if properties['like-of']
                 div 👍 Liked:
                     |
