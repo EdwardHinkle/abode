@@ -25,7 +25,7 @@ html
                 if properties['in-reply-to'].indexOf('github.com') > -1
                     if properties.name !== undefined && properties.name > ''
                         - var repoInfo = properties['in-reply-to'].split('/')
-                        - var userUrlParts = "" + repoInfo
+                        - var userUrlParts = properties['in-reply-to'].split('/')
                         - userUrlParts.pop()
                         - userUrl = userUrlParts.join('/')
                         div 🐛 New issue for
