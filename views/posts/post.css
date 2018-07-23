@@ -18,6 +18,10 @@ body {
     padding: 2.5px 5px;
 }
 
+.e-content img {
+    width: 100%;
+}
+
 h1.page-title {
     line-height: 2.5rem;
     max-width: 900px;
