@@ -23,7 +23,7 @@ body {
 }
 
 .e-content blockquote {
-    background-color: rgba(83, 176, 237, 0.1);
+    /*background-color: rgba(83, 176, 237, 0.1);*/
     border-left-color: rgba(83, 176, 237, 0.3);
     border-left-style: solid;
     border-left-width: 2px;
@@ -33,6 +33,10 @@ body {
     padding-right: 30px;
     padding-bottom: 1px;
     padding-top: 1px;
+    color: rgba(83, 176, 237, 0.8);
+    font-style: italic;
+    font-weight: bold;
+    line-height: 1.5rem;
 }
 
 h1.page-title {
