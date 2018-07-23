@@ -24,10 +24,11 @@ html
             if properties['in-reply-to']
                 if properties['in-reply-to'].indexOf('github.com') > -1
                     if properties.name !== undefined && properties.name > ''
-                        div ↪ Created a new issue for:
+                        - var repoInfo = properties['in-reply-to'].split('/')
+                        div 🐛 New issue for
                             |
                             |
-                            a(href=properties['in-reply-to']).u-in-reply-to #{properties['in-reply-to'].split('/').pop()}
+                            a(href=properties['in-reply-to']).u-in-reply-to #{repoInfo.pop()} by #{repoInfo.pop()}
                     else
                         div ↪ Commented on an issue:
                             |
