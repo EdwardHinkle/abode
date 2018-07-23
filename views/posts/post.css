@@ -22,6 +22,19 @@ body {
     width: 100%;
 }
 
+.e-content blockquote {
+    background-color: rgba(83, 176, 237, 0.1);
+    border-left-color: rgba(83, 176, 237, 0.3);
+    border-left-style: solid;
+    border-left-width: 2px;
+    margin-left: 30px;
+    margin-right: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 1px;
+    padding-top: 1px;
+}
+
 h1.page-title {
     line-height: 2.5rem;
     max-width: 900px;
