@@ -132,7 +132,9 @@ dynamicRouter.get('/photos/:year(\\d+)?/:month(\\d+)?/:day(\\d+)?/', (req, res, 
                 return b.properties.date.diff(a.properties.date);
             });
 
-            posts = posts.filter(post => post.properties.photo !== undefined && post.properties.photo.length > 0);
+            posts = posts.filter(post => post.properties.photo !== undefined &&
+                                         post.properties.photo.length > 0 &&
+                                         post.getPostType() !== PostType.Listen);
 
             res.render("posts/photos", {
                 posts: posts
@@ -228,12 +230,6 @@ dynamicRouter.get('/', (req, res, next) => {
                         latestListen.push(post);
                     }
                     break;
-                case PostType.Photo:
-                    if (latestPhotoCount < 4) {
-                        latestPhotoCount += post.properties.photo.length;
-                        latestPhoto.push(post);
-                    }
-                    break;
                 case PostType.Note:
                     if (latestNotes.length < 10) {
                         latestNotes.push(post);
@@ -250,6 +246,16 @@ dynamicRouter.get('/', (req, res, next) => {
                     latestSocial.push(post);
                     break;
                 default:
+            }
+
+            if (latestPhotoCount < 4) {
+                if (post.properties.photo !== undefined &&
+                    post.properties.photo.length > 0 &&
+                    post.getPostType() !== PostType.Listen) {
+
+                    latestPhotoCount += post.properties.photo.length;
+                    latestPhoto.push(post);
+                }
             }
         });
 
