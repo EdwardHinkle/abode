@@ -101,6 +101,45 @@ dynamicRouter.get('/microblog-syndication.json', (req, res, next) => {
         });
 });
 
+dynamicRouter.get('/photos/:year(\\d+)?/:month(\\d+)?/:day(\\d+)?/', (req, res, next) => {
+
+    let combinedPromises: Promise<Post[]>[] = [];
+
+    let queryYear, queryMonth, queryDay;
+
+    if (req.params.year === undefined) {
+        queryYear = moment().format("YYYY");
+        queryMonth = moment().format("MM");
+    } else {
+        queryYear = req.params.year;
+        queryMonth = req.params.month;
+        queryDay = req.params.day;
+    }
+
+    Posts.getPosts({
+        year: queryYear,
+        month: queryMonth,
+        day: queryDay
+    }).catch(error => {
+            console.log("error loading homepage", error);
+            return combinedPromises;
+        })
+        .then(arrayOfPosts => {
+
+            let posts = [].concat.apply([], arrayOfPosts);
+
+            posts.sort((a: Post, b: Post) => {
+                return b.properties.date.diff(a.properties.date);
+            });
+
+            posts = posts.filter(post => post.properties.photo !== undefined && post.properties.photo.length > 0);
+
+            res.render("posts/photos", {
+                posts: posts
+            });
+        });
+});
+
 dynamicRouter.get('/', (req, res, next) => {
 
     let numberOfPreviousDays = 5;

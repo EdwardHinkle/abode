@@ -9,6 +9,22 @@ export class Posts {
 
     }
 
+    public static getAllPosts(): Promise<Post[]> {
+
+        return new Promise((resolve, reject) => {
+            let postFilepath = `${dataDir}/_note`;
+
+            if (fs.existsSync(postFilepath)) {
+                this.getPostsInDir(postFilepath, true).then(posts => {
+                    resolve(posts);
+                })
+            } else {
+                console.log(`Path does not exist: ${postFilepath}`);
+                resolve([]);
+            }
+        });
+    }
+
     public static getPosts(postsInfo: PostsInfo): Promise<Post[]> {
 
         return new Promise((resolve, reject) => {
