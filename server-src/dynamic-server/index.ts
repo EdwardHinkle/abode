@@ -135,7 +135,8 @@ dynamicRouter.get('/photos/:year(\\d+)?/:month(\\d+)?/:day(\\d+)?/', (req, res, 
             posts = posts.filter(post => post.properties.photo !== undefined &&
                                          post.properties.photo.length > 0 &&
                                          post.getPostType() !== PostType.Listen &&
-                                         post.getPostType() !== PostType.Watch);
+                                         post.getPostType() !== PostType.Watch &&
+                                         post.getPostType() !== PostType.Audio);
 
             res.render("posts/photos", {
                 posts: posts
@@ -253,7 +254,8 @@ dynamicRouter.get('/', (req, res, next) => {
                 if (post.properties.photo !== undefined &&
                     post.properties.photo.length > 0 &&
                     post.getPostType() !== PostType.Listen &&
-                    post.getPostType() !== PostType.Watch) {
+                    post.getPostType() !== PostType.Watch &&
+                    post.getPostType() !== PostType.Audio) {
 
                     latestPhotoCount += post.properties.photo.length;
                     latestPhoto.push(post);
