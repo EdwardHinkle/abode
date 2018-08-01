@@ -1,6 +1,7 @@
 .DS_Store
 /abodeConfig.json
 /server-build
+/old_node_modules
 /node_modules
 /media-server-storage
 /jekyll/_build

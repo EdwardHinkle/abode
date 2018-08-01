@@ -58,6 +58,10 @@ dynamicRouter.get('/microblog-syndication.json', (req, res, next) => {
                 "title": "@EddieHinkle feed",
                 "home_page_url": "https://eddiehinkle.com/",
                 "feed_url": "https://eddiehinkle.com/microblog-syndication.json",
+                "hubs": [
+                    "type": "WebSub",
+                    "url": "https://switchboard.p3k.io/"
+                ],
                 "author": {
                     "name": "Eddie Hinkle",
                     "url": "https://eddiehinkle.com/",
@@ -146,7 +150,7 @@ dynamicRouter.get('/photos/:year(\\d+)?/:month(\\d+)?/:day(\\d+)?/', (req, res, 
 
 dynamicRouter.get('/', (req, res, next) => {
 
-    let numberOfPreviousDays = 5;
+    let numberOfPreviousDays = 10;
 
     let combinedPromises: Promise<Post[]>[] = [];
 
@@ -170,6 +174,8 @@ dynamicRouter.get('/', (req, res, next) => {
 
             thisMonth = "" + (parseInt(thisMonth) - 1);
         }
+        
+        console.log("adding date to homepage", thisYear, thisMonth, dateString);
     }
 
     Promise.all(combinedPromises)

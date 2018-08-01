@@ -38,24 +38,29 @@ html
                 |
                 a(href="/about") Read More
             h2
-                | He last drank
-                |
-                a(href=latestDrank.getOfficialPermalink()) #{latestDrank.properties.drank.properties.name}
-                |
-                | and last ate
-                |
-                each post, index in latestAte
-                    a(href=post.getOfficialPermalink()) #{post.properties.ate.properties.name}
-                    if index <= latestAte.length - 3
-                        | ,
-                        |
-                    else if index === latestAte.length - 2
-                        |
+                | He
+                if latestDrank
+                    | last drank
+                    |
+                    a(href=latestDrank.getOfficialPermalink()) #{latestDrank.properties.drank.properties.name}
+                    |
+                    if latestAte
                         | and
-                        |
-                    else
-                        | .
-                        |
+                if latestAte
+                    | last ate
+                    |
+                    each post, index in latestAte
+                         a(href=post.getOfficialPermalink()) #{post.properties.ate.properties.name}
+                         if index <= latestAte.length - 3
+                            | ,
+                            |
+                         else if index === latestAte.length - 2
+                            |
+                            | and
+                            |
+                         else
+                            | .
+                            |
 
         div.stats
             if latestPodcast
@@ -67,37 +72,38 @@ html
                     p
                         a(href=latestPodcast.getOfficialPermalink()) #{latestPodcast.properties.name}
                     a(href="/tag/podcast/").more-button More Podcasts
-            div.checkin
-                h4 Last Seen
-                a(href=latestCheckin.getOfficialPermalink())
-                    img(src="https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/pin-m+24b1f3(" + latestCheckin.properties.checkin.properties.longitude + "," + latestCheckin.properties.checkin.properties.latitude + ")/" + latestCheckin.properties.checkin.properties.longitude + "," + latestCheckin.properties.checkin.properties.latitude + ",13,0,60/400x400@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false", width='200px')
-                if latestCheckin.properties.content
-                    | !{latestCheckin.properties.content}
+            if latestCheckin
+                div.checkin
+                    h4 Last Seen
+                    a(href=latestCheckin.getOfficialPermalink())
+                        img(src="https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/pin-m+24b1f3(" + latestCheckin.properties.checkin.properties.longitude + "," + latestCheckin.properties.checkin.properties.latitude + ")/" + latestCheckin.properties.checkin.properties.longitude + "," + latestCheckin.properties.checkin.properties.latitude + ",13,0,60/400x400@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false", width='200px')
+                    if latestCheckin.properties.content
+                        | !{latestCheckin.properties.content}
+                        |
+                    else
+                        | Checked in
+                        |
+                    |  at
                     |
-                else
-                    | Checked in
+                    a(href=latestCheckin.getOfficialPermalink()) #{latestCheckin.properties.checkin.properties.name}
                     |
-                |  at
-                |
-                a(href=latestCheckin.getOfficialPermalink()) #{latestCheckin.properties.checkin.properties.name}
-                |
-                |
-                if latestCheckin.properties.personTags.length > 0
-                    | with
                     |
-                    each person, index in latestCheckin.properties.personTags
-                        a(href=person[person.representitiveUrl]).u-category #{person.nickname}
-                        if index <= latestCheckin.properties.personTags.length - 3
-                            | ,
-                            |
-                        else if index === latestCheckin.properties.personTags.length - 2
-                            |
-                            | and
-                            |
-                        else
-                            | .
-                            |
-                a(href="/tag/checkin/").more-button More Checkins
+                    if latestCheckin.properties.personTags.length > 0
+                        | with
+                        |
+                        each person, index in latestCheckin.properties.personTags
+                            a(href=person[person.representitiveUrl]).u-category #{person.nickname}
+                            if index <= latestCheckin.properties.personTags.length - 3
+                                | ,
+                                |
+                            else if index === latestCheckin.properties.personTags.length - 2
+                                |
+                                | and
+                                |
+                            else
+                                | .
+                                |
+                    a(href="/tag/checkin/").more-button More Checkins
             if latestWatch
                 div.watch
                     h4 Recently Watched
