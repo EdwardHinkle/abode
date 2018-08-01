@@ -154,28 +154,15 @@ dynamicRouter.get('/', (req, res, next) => {
 
     let combinedPromises: Promise<Post[]>[] = [];
 
-    let thisYear = moment().format("YYYY");
-    let thisMonth = moment().format("MM");
-    let thisDate = moment().format("DD");
-
-    for (let date = parseInt(thisDate); date >= parseInt(moment().format("DD")) - numberOfPreviousDays; date--) {
-        let dateString = (date <= 9 ? "0" + date : "" + date);
+    for (let date = moment(); moment().diff(date, "days") < numberOfPreviousDays; date.subtract(1, "day")) {
 
         combinedPromises.push(Posts.getPosts({
-            year: thisYear,
-            month: thisMonth,
-            day: dateString
+            year: date.format("YYYY"),
+            month: date.format("MM"),
+            day: date.format("DD")
         }));
-
-        if (date === 1) {
-            if (thisMonth === "1") {
-                thisYear = "" + (parseInt(thisYear) - 1);
-            }
-
-            thisMonth = "" + (parseInt(thisMonth) - 1);
-        }
         
-        console.log("adding date to homepage", thisYear, thisMonth, dateString);
+        console.log("days before today", moment().diff(date, "days"));
     }
 
     Promise.all(combinedPromises)
