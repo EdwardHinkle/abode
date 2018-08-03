@@ -40,13 +40,16 @@ html
             h2
                 | He
                 if latestDrank
+                    |
                     | last drank
                     |
                     a(href=latestDrank.getOfficialPermalink()) #{latestDrank.properties.drank.properties.name}
                     |
                     if latestAte
+                        | 
                         | and
                 if latestAte
+                    |
                     | last ate
                     |
                     each post, index in latestAte
