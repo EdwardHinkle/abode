@@ -20,10 +20,10 @@ body {
 }
 
 .e-content a {
-    text-decoration: none;
-    color: black;
-    background-color: rgba(83, 176, 237, 0.3);
-    padding: 2.5px 5px;
+    /*text-decoration: none;*/
+    /*color: black;*/
+    /*background-color: rgba(83, 176, 237, 0.3);*/
+    /*padding: 2.5px 5px;*/
 }
 
 .e-content img {
@@ -48,7 +48,47 @@ body {
 
 h1.page-title {
     line-height: 2.5rem;
-    max-width: 900px;
+    max-width: 800px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.published-date {
+    color: rgba(0,0,0,0.3);
+    margin-right: 20px;
+}
+
+.map-image {
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.watch-image-container, .listen-image-container {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.photos-container.photos-1 img {
+    width: 100%;
+}
+
+.photos-container.photos-2 img {
+    width: 50%;
+}
+
+.photos-container.photos-3 img {
+    width: 33.33%;
+}
+
+.weather-info .temperature {
+    margin-right: 10px;
+}
+
+.weather-info .weather-icon {
+    margin-right: 20px;
+}
+
+.client-display {
+    margin-left: 20px;
 }

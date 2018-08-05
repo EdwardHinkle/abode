@@ -14,6 +14,7 @@ export class Post {
     public permalink: string;
     public type: 'entry' | 'event';
     public properties: PostProperties;
+    public client_id: string;
 
     public constructor() {
 
@@ -32,8 +33,11 @@ export class Post {
 
             // Custom properties and attribute overrides
             post.permalink = doc.permalink;
+            post.client_id = doc.client_id;
             post.properties.date = moment(doc.date, JEKYLL_DATE_FORMAT);
             post.properties.postIndex = doc.slug;
+            post.properties.duration = doc.duration;
+            post.properties.visibility = doc.visibility;
 
             // TODO: These need to be cleaned up in the actual data
             if (typeof post.properties.photo === "string") {
@@ -61,6 +65,9 @@ export class Post {
             post.properties['show_image'] = doc['show_image'];
             post.properties['episode_image'] = doc['episode_image'];
             post.properties['season_finale'] = doc['season_finale'];
+            post.properties['season_premiere'] = doc['season_premiere'];
+            post.properties['show_premiere'] = doc['show_premiere'];
+            post.properties['show_finale'] = doc['show_finale'];
 
             // Movie Watch Post
             post.properties['movie_name'] = doc['movie_name'];

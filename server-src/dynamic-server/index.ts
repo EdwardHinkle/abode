@@ -161,8 +161,7 @@ dynamicRouter.get('/', (req, res, next) => {
             month: date.format("MM"),
             day: date.format("DD")
         }));
-        
-        console.log("days before today", moment().diff(date, "days"));
+
     }
 
     Promise.all(combinedPromises)
@@ -395,7 +394,9 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postTy
         }
 
         // Now we need to display the post
-        res.render("posts/fullPost", post);
+        res.render("posts/fullPost", {
+            post: post
+        });
         return;
     }).catch(error => {
         if (error !== undefined) {

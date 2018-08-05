@@ -2,6 +2,7 @@ html
     head
         title EddieHinkle
         style
+            include ../global.css
             include homepage.css
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
@@ -21,7 +22,7 @@ html
         script
             include sfx.js
     body
-        div.inprogress Please note: This site is in an active redesign. Some things might be a little off 🧐
+        include ../includes/header.pug
         div.bio.h-card
             img(src="/images/profile.jpg", alt="Eddie Hinkle", style="display: none;").u-photo
             h2.p-note
@@ -46,7 +47,7 @@ html
                     a(href=latestDrank.getOfficialPermalink()) #{latestDrank.properties.drank.properties.name}
                     |
                     if latestAte
-                        | 
+                        |
                         | and
                 if latestAte
                     |
@@ -74,7 +75,7 @@ html
                     //audio(src=latestPodcast.properties.audio, controls=true)
                     p
                         a(href=latestPodcast.getOfficialPermalink()) #{latestPodcast.properties.name}
-                    a(href="/tag/podcast/").more-button More Podcasts
+                    a(href="/tag/podcast/").more-button.no-underline More Podcasts
             if latestCheckin
                 div.checkin
                     h4 Last Seen
@@ -106,7 +107,7 @@ html
                             else
                                 | .
                                 |
-                    a(href="/tag/checkin/").more-button More Checkins
+                    a(href="/tag/checkin/").more-button.no-underline More Checkins
             if latestWatch
                 div.watch
                     h4 Recently Watched
@@ -116,13 +117,13 @@ html
                     else
                         a(href=latestWatch.getOfficialPermalink())
                             img(src=latestWatch.properties.movie_image, width="150")
-                    a(href="/media/").more-button More Media
+                    a(href="/media/").more-button.no-underline More Media
             div.listen
                 h4 Recently Listened
                 each post in latestListen
                     a(href=post.getOfficialPermalink())
                         img(src=post.properties['listen-of'].properties.photo, width="100")
-                a(href="/media/").more-button More Media
+                a(href="/media/").more-button.no-underline More Media
             div.photos
                 h4 Latest Photos
                 each post in latestPhoto
@@ -132,14 +133,14 @@ html
                                 img(src=photo.url, width="100")
                             else
                                 img(src=photo, width="100")
-                a(href="/photos/").more-button More Photos
+                a(href="/photos/").more-button.no-underline More Photos
         if latestArticles.length > 0
             div.articles
                 h4 Latest Articles
                 each post in latestArticles
                     div.article
                         a(href=post.getOfficialPermalink()) !{post.properties.name}
-                a(href="/articles/").link-button View All Articles
+                a(href="/articles/").link-button.no-underline View All Articles
         if latestNotes.length > 0
             div.notes
                 h4 Latest Thoughts
@@ -147,41 +148,24 @@ html
                     div.note !{post.properties.content}
                         |
                         a(href=post.getOfficialPermalink()).note-date #{post.semiRelativeDateTimeFormat()}
-                a(href="/timeline/").link-button View Full Timeline
+                a(href="/timeline/").link-button.no-underline View Full Timeline
         if latestSocial.length > 0
             div.social
                 h4 Latest Social Interactions
                 p
                     each post in latestSocial
                         if post.getPostType() === "bookmark"
-                            a(href=post.getOfficialPermalink()) 🔖
+                            a(href=post.getOfficialPermalink()).no-underline 🔖
                             |
                         else if post.getPostType() === "like"
-                            a(href=post.getOfficialPermalink()) 👍
+                            a(href=post.getOfficialPermalink()).no-underline 👍
                             |
                         else if post.getPostType() === "reply"
-                            a(href=post.getOfficialPermalink()) ↪️
+                            a(href=post.getOfficialPermalink()).no-underline ↪️
                             |
         div.webring
             a(href="https://xn--sr8hvo.ws/🏻/previous") ⏪
             | An IndieWeb Webring 🕸💍
             |
             a(href="https://xn--sr8hvo.ws/🏻/next") ⏩
-        ul.social-media-list
-            li
-                a(href="https://github.com/edwardhinkle" rel="me")
-                    i(class="fab fa-github fa-2x" aria-hidden="true")
-            li
-                a(href="https://twitter.com/eddiehinkle" rel="me")
-                    i(class="fab fa-twitter fa-2x" aria-hidden="true")
-            li
-                a(href="https://instagram.com/eddiehinkle" rel="me")
-                    i(class="fab fa-2x fa-instagram" aria-hidden="true")
-            li
-                a(class="microblog-icon" href="https://micro.blog/eddiehinkle" rel="me")
-                    include ../resources/microblog-icon.svg
-            //li
-            //    a(href="https://apple.news/TlUsl76dFRNCfv54V0xuVJQ")
-            //        span(class="icon-follow-news")
-            //            img(src="/images/apple-news-icon.png")
-        div.footer &copy; 2007-2018 Eddie Hinkle.
+        include ../includes/footer.pug

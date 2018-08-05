@@ -11,10 +11,10 @@ import { dynamicRouter } from './dynamic-server';
 
 export let router = express.Router();
 
-router.use('/', staticSiteRouter);
 router.use('/', dynamicRouter);
 router.use('/abode', processRouter);
 router.use('/micropub', micropubRouter);
 router.use('/webmention', webmentionRouter);
 router.use('/media', mediaServerRouter);
 router.use('/auth', authRouter);
+router.use('/', staticSiteRouter);
