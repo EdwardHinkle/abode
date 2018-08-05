@@ -1,19 +1,13 @@
 import * as express from 'express';
-import * as path from 'path';
-import * as fs from "fs";
 import * as yaml from 'js-yaml';
-import * as marked from 'marked';
-import { People } from '../people';
 import {Posts} from "../model/posts.model";
 import {Post, PostType} from "../model/post.model";
 import moment = require("moment");
 import * as pug from 'pug';
 
-let dataDir = __dirname + "/../../jekyll/_source";
-
 export let dynamicRouter = express.Router();
 
-dynamicRouter.get('/microblog-syndication.json', (req, res, next) => {
+dynamicRouter.get('/microblog-syndication.json', (req, res) => {
     let numberOfPreviousDays = 3;
 
     let combinedPromises: Promise<Post[]>[] = [];
@@ -59,8 +53,10 @@ dynamicRouter.get('/microblog-syndication.json', (req, res, next) => {
                 "home_page_url": "https://eddiehinkle.com/",
                 "feed_url": "https://eddiehinkle.com/microblog-syndication.json",
                 "hubs": [
-                    "type": "WebSub",
-                    "url": "https://switchboard.p3k.io/"
+                    {
+                        "type": "WebSub",
+                        "url": "https://switchboard.p3k.io/"
+                    }
                 ],
                 "author": {
                     "name": "Eddie Hinkle",
@@ -105,7 +101,7 @@ dynamicRouter.get('/microblog-syndication.json', (req, res, next) => {
         });
 });
 
-dynamicRouter.get('/photos/:year(\\d+)?/:month(\\d+)?/:day(\\d+)?/', (req, res, next) => {
+dynamicRouter.get('/photos/:year(\\d+)?/:month(\\d+)?/:day(\\d+)?/', (req, res) => {
 
     let combinedPromises: Promise<Post[]>[] = [];
 
@@ -148,7 +144,7 @@ dynamicRouter.get('/photos/:year(\\d+)?/:month(\\d+)?/:day(\\d+)?/', (req, res, 
         });
 });
 
-dynamicRouter.get('/', (req, res, next) => {
+dynamicRouter.get('/', (req, res) => {
 
     let numberOfPreviousDays = 10;
 
@@ -327,7 +323,7 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/', (req, res, next) => {
     });
 });
 
-dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/debug/', (req, res, next) => {
+dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/debug/', (req, res) => {
 
     console.log('DEBUG Post');
 
@@ -372,7 +368,7 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/debug/'
 
 });
 
-dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postType?/', (req, res, next) => {
+dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postType?/', (req, res) => {
 
     let year = req.params.year;
     let month = req.params.month;

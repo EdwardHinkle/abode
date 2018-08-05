@@ -2,17 +2,12 @@ import * as MicropubFormatter from 'format-microformat';
 import * as moment from 'moment';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as http from 'http';
-import * as git from '../git';
-import * as jekyll from '../jekyll';
 import * as _ from 'lodash';
 import * as mfTypes from '../mf2';
 import * as yaml from 'js-yaml';
 import * as toMarkdown from 'to-markdown';
-import * as mfo from 'mf-obj';
 import * as request from 'request';
 import * as cheerio from 'cheerio';
-import * as webmention from 'send-webmention';
 import * as getWebmentionUrl from 'get-webmention-url';
 
 let imageType = require('image-type');
@@ -1116,26 +1111,25 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                 }
                             });
 
-                            if ((likeOfUrl.indexOf('twitter.com') === -1) && (likeOfUrl.indexOf('github.com') === -1)) {
-                                // Send a normal webmention
-                                request.post(config.telegraph.url, {
-                                    form: {
-                                        token: config.telegraph.token,
-                                        source: returnUrl,
-                                        target: likeOfUrl,
-                                        callback: "https://eddiehinkle.com/webmention/callback"
-                                    }
-                                }, (err, data) => {
-                                    if (err != undefined) {
-                                        console.log(`ERROR: ${err}`);
-                                    }
-                                    if (data.statusCode !== 201 && data.statusCode !== 202) {
-                                        console.log("oops like of webmention error");
-                                    } else {
-                                        console.log("Successfully sent like of webmention");
-                                    }
-                                });
-                            }
+
+                            // Send a normal webmention
+                            request.post(config.telegraph.url, {
+                                form: {
+                                    token: config.telegraph.token,
+                                    source: returnUrl,
+                                    target: likeOfUrl,
+                                    callback: "https://eddiehinkle.com/webmention/callback"
+                                }
+                            }, (err, data) => {
+                                if (err != undefined) {
+                                    console.log(`ERROR: ${err}`);
+                                }
+                                if (data.statusCode !== 201 && data.statusCode !== 202) {
+                                    console.log("oops like of webmention error");
+                                } else {
+                                    console.log("Successfully sent like of webmention");
+                                }
+                            });
                         }
 
                         // Send reply webmentions
@@ -1188,50 +1182,48 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                 }
                             });
 
-                            if ((likeOfUrl.indexOf('twitter.com') === -1) && (likeOfUrl.indexOf('github.com') === -1)) {
-                                // Send normal webmention process
-                                getWebmentionUrl(replyToUrl, function (err, webmentionUrl) {
-                                    if (err) throw err;
+                            // Send normal webmention process
+                            getWebmentionUrl(replyToUrl, function (err, webmentionUrl) {
+                                if (err) throw err;
 
-                                    // If post's webmention receiver is not micro.blog, then send a copy to micro.blog
-                                    if (webmentionUrl !== 'https://micro.blog/webmention') {
-                                        request.post('https://micro.blog/webmention', {
-                                            form: {
-                                                source: returnUrl,
-                                                target: replyToUrl
-                                            }
-                                        }, (err, data) => {
-                                            if (err != undefined) {
-                                                console.log(`ERROR: ${err}`);
-                                            }
-                                            if (data.statusCode !== 201 && data.statusCode !== 202) {
-                                                console.log("oops micro.blog webmention error");
-                                            } else {
-                                                console.log("Successfully sent micro.blog webmention");
-                                            }
-                                        });
-                                    }
-
-                                    request.post(config.telegraph.url, {
+                                // If post's webmention receiver is not micro.blog, then send a copy to micro.blog
+                                if (webmentionUrl !== 'https://micro.blog/webmention') {
+                                    request.post('https://micro.blog/webmention', {
                                         form: {
-                                            token: config.telegraph.token,
                                             source: returnUrl,
-                                            target: replyToUrl,
-                                            callback: "https://eddiehinkle.com/webmention/callback"
+                                            target: replyToUrl
                                         }
                                     }, (err, data) => {
                                         if (err != undefined) {
                                             console.log(`ERROR: ${err}`);
                                         }
                                         if (data.statusCode !== 201 && data.statusCode !== 202) {
-                                            console.log("oops reply of webmention error");
+                                            console.log("oops micro.blog webmention error");
                                         } else {
-                                            console.log("Successfully sent reply of webmention");
+                                            console.log("Successfully sent micro.blog webmention");
                                         }
                                     });
+                                }
 
+                                request.post(config.telegraph.url, {
+                                    form: {
+                                        token: config.telegraph.token,
+                                        source: returnUrl,
+                                        target: replyToUrl,
+                                        callback: "https://eddiehinkle.com/webmention/callback"
+                                    }
+                                }, (err, data) => {
+                                    if (err != undefined) {
+                                        console.log(`ERROR: ${err}`);
+                                    }
+                                    if (data.statusCode !== 201 && data.statusCode !== 202) {
+                                        console.log("oops reply of webmention error");
+                                    } else {
+                                        console.log("Successfully sent reply of webmention");
+                                    }
                                 });
-                            }
+
+                            });
                         }
 
                     });
