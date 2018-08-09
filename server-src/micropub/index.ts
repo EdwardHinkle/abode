@@ -36,7 +36,7 @@ micropubRouter.get('/', (req, res, next) => {
         year: thisYear,
         month: thisMonth
     }).then(posts => {
-        res.json({ "items": posts });
+        res.json({ "items": posts.map(post => post.toMf2()) });
 	});
 });
 

@@ -339,6 +339,13 @@ export class Post {
 
         return PostType.Note;
     }
+
+    public toMf2(): any {
+        return {
+            "type": `h-${this.type}`,
+            "properties": this.properties.toMf2()
+        }
+    }
 }
 
 export class PostProperties {
@@ -363,6 +370,16 @@ export class PostProperties {
 
     public getDayString(): string {
         return this.date.format("DD");
+    }
+
+    public toMf2(): any {
+        let propertiesToReturn: any = {};
+        for (let key in this) {
+            if (key !== "date" && key !== "personTags" && key !== "postIndex") {
+                propertiesToReturn[key] = this[key];
+            }
+        }
+        return propertiesToReturn;
     }
 }
 
