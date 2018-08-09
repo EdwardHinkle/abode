@@ -397,7 +397,8 @@ export class PostProperties {
                 key !== "personTags" &&
                 key !== "postIndex" &&
                 key !== "weather") ||
-                properties.indexOf(key) > -1) {
+                (properties !== undefined &&
+                properties.indexOf(key) > -1)) {
 
                 if (key === "syndication") {
                     propertiesToReturn[key] = this[key].map(syndication => syndication.url);
