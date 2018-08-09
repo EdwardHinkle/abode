@@ -382,7 +382,12 @@ export class PostProperties {
                 key !== "personTags" &&
                 key !== "postIndex" &&
                 key !== "weather") {
-                propertiesToReturn[key] = this[key];
+
+                if (key === "syndication") {
+                    propertiesToReturn[key] = this[key].map(syndication => syndication.url);
+                } else {
+                    propertiesToReturn[key] = this[key];
+                }
             }
         }
         return propertiesToReturn;
