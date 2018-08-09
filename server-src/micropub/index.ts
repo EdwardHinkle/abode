@@ -7,6 +7,7 @@ import { convertSavedJsonToMarkdown } from './convert';
 import { convertMicropubToJekyll } from './handle';
 import { getMicropubConfig } from './config';
 import { getMediaEndpointRequest } from './mediaEndpoint';
+import {Posts} from "../model/posts.model";
 
 var config = require('../../abodeConfig.json');
 let dataDir = __dirname + "/../../jekyll/_source";
@@ -28,7 +29,15 @@ micropubRouter.get('/', (req, res, next) => {
 		return;
 	}
 
-	res.json({ "testing": "yes" });
+    let thisYear = moment().format("YYYY");
+    let thisMonth = moment().format("MM");
+
+    Posts.getPosts({
+        year: thisYear,
+        month: thisMonth
+    }).then(posts => {
+        res.json({ "items": posts });
+	});
 });
 
 micropubRouter.use('/', micropub({
