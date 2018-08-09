@@ -129,92 +129,100 @@ function webmentionAlert(req, res) {
         }
     };
 
-    var slackMessage = {
-        "channel": "#website",
-        "username": receivedWebmention.post.author.name,
-        "icon_url": receivedWebmention.post.author.photo,
-        "text": (receivedWebmention.post.name ? receivedWebmention.post.name : (receivedWebmention.post.content ? receivedWebmention.post.content.value : undefined)),
-        "attachments": undefined
-    }
+    // var slackMessage = {
+    //     "channel": "#website",
+    //     "username": receivedWebmention.post.author.name,
+    //     "icon_url": receivedWebmention.post.author.photo,
+    //     "text": (receivedWebmention.post.name ? receivedWebmention.post.name : (receivedWebmention.post.content ? receivedWebmention.post.content.value : undefined)),
+    //     "attachments": undefined
+    // }
 
-    var finishedProcessing: Promise<any>[] = [];
+    // var finishedProcessing: Promise<any>[] = [];
 
     // If it is a like
     if (receivedWebmention.post["wm-property"] == "like-of") {
         let likeOfUrl = receivedWebmention.post[receivedWebmention.post['wm-property']];
-         finishedProcessing.push(mfo.getEntry(likeOfUrl)
-        .then(entry => {
-            slackMessage.text = `<${receivedWebmention.post.url}|liked> <${likeOfUrl}|'${entry.name}'>`;
-            micropubNotification.properties.content = [{
-                html: `<a href="${receivedWebmention.post.url}">liked</a> <a href="${likeOfUrl}">${entry.name}</a>`,
-                value: `liked ${entry.name} (${likeOfUrl})`,
-            }];
-        }).catch((error) => {
-            slackMessage.text = `<${receivedWebmention.post.url}|liked> ${likeOfUrl}`;
-             micropubNotification.properties.content = [{
-                 html: `<a href="${receivedWebmention.post.url}">liked</a> <a href="${likeOfUrl}">${likeOfUrl}</a>`,
-                 value: `liked ${likeOfUrl}`,
-             }];
-        }));
+        micropubNotification.properties.content = [{
+            html: `liked <a href="${likeOfUrl}">${likeOfUrl}</a>`,
+            value: `liked ${likeOfUrl}`,
+        }];
+
+        //  finishedProcessing.push(mfo.getEntry(likeOfUrl)
+        // .then(entry => {
+        //     // slackMessage.text = `<${receivedWebmention.post.url}|liked> <${likeOfUrl}|'${entry.name}'>`;
+        //     micropubNotification.properties.content = [{
+        //         html: `<a href="${receivedWebmention.post.url}">liked</a> <a href="${likeOfUrl}">${entry.name}</a>`,
+        //         value: `liked ${entry.name} (${likeOfUrl})`,
+        //     }];
+        // }).catch((error) => {
+            // slackMessage.text = `<${receivedWebmention.post.url}|liked> ${likeOfUrl}`;
+        // }));
     }
     // If it is in reply to
     else if (receivedWebmention.post["wm-property"] == "in-reply-to") {
-        let replyToUrl = receivedWebmention.post[receivedWebmention.post['wm-property']];
-        finishedProcessing.push(mfo.getEntry(replyToUrl)
-        .then(entry => {
-            slackMessage.text = `<${receivedWebmention.post.url}|New Reply>: <${replyToUrl}|${entry.name}>`;
-            let htmlContent = (receivedWebmention.post.content.html ? receivedWebmention.post.content.html : receivedWebmention.post.content.value);
-            micropubNotification.properties.content = [{
-                html: `${htmlContent} (<a href="${receivedWebmention.post.url}">in reply to</a>: <a href="${replyToUrl}">${entry.name}</a>)`,
-                value: `${receivedWebmention.post.content.value} (in reply to: ${entry.name} [${replyToUrl}])`,
-            }];
-        }).catch((error) => {
-            slackMessage.text = `<${receivedWebmention.post.url}|New Reply>: ${replyToUrl})`;
-            let htmlContent = (receivedWebmention.post.content.html ? receivedWebmention.post.content.html : receivedWebmention.post.content.value);
-            micropubNotification.properties.content = [{
-                html: `${htmlContent} (<a href="${receivedWebmention.post.url}">in reply to</a>: ${replyToUrl})`,
-                value: `${receivedWebmention.post.content.value} (in reply to: ${replyToUrl})`,
-            }];
-        }));
+        // let replyToUrl = receivedWebmention.post[receivedWebmention.post['wm-property']];
+        let htmlContent = (receivedWebmention.post.content.html ? receivedWebmention.post.content.html : receivedWebmention.post.content.value);
+        micropubNotification.properties.content = [{
+            html: `${htmlContent}`,
+            value: `${receivedWebmention.post.content.value}`,
+        }];
 
-        if (receivedWebmention.post['swarm-coins'] != undefined) {
-            micropubNotification.properties.content = [`${micropubNotification.properties.content} (${receivedWebmention.post['swarm-coins']} Coins Awarded)`];
-        }
+        // finishedProcessing.push(mfo.getEntry(replyToUrl)
+        // .then(entry => {
+            // slackMessage.text = `<${receivedWebmention.post.url}|New Reply>: <${replyToUrl}|${entry.name}>`;
+            // let htmlContent = (receivedWebmention.post.content.html ? receivedWebmention.post.content.html : receivedWebmention.post.content.value);
+            // micropubNotification.properties.content = [{
+            //     html: `${htmlContent}`,
+            //     value: `${receivedWebmention.post.content.value}`,
+            // }];
+        // }).catch((error) => {
+            // slackMessage.text = `<${receivedWebmention.post.url}|New Reply>: ${replyToUrl})`;
+        // }));
+
+        // if (receivedWebmention.post['swarm-coins'] != undefined) {
+        //     micropubNotification.properties.content = [`${micropubNotification.properties.content} (${receivedWebmention.post['swarm-coins']} Coins Awarded)`];
+        // }
     }
     // We don't know what it is, act generically
     else {
-        slackMessage.attachments = [
-            {
-                "fallback": `${receivedWebmention.post.author.name}: ${receivedWebmention.post.content.value}`,
-                "color": "#36a64f",
-                "author_name": (receivedWebmention.post.name ? receivedWebmention.post.name : 'Note'),
-                "author_link": receivedWebmention.post.url,
-                "title": receivedWebmention.post['wm-property'],
-                "title_link": receivedWebmention.post[receivedWebmention.post['wm-property']],
-                "fields": [],
-            }
-        ]
+        let htmlContent = (receivedWebmention.post.content.html ? receivedWebmention.post.content.html : receivedWebmention.post.content.value);
+        micropubNotification.properties.content = [{
+            html: `${htmlContent}`,
+            value: `${receivedWebmention.post.content.value}`,
+        }];
+
+        // slackMessage.attachments = [
+        //     {
+        //         "fallback": `${receivedWebmention.post.author.name}: ${receivedWebmention.post.content.value}`,
+        //         "color": "#36a64f",
+        //         "author_name": (receivedWebmention.post.name ? receivedWebmention.post.name : 'Note'),
+        //         "author_link": receivedWebmention.post.url,
+        //         "title": receivedWebmention.post['wm-property'],
+        //         "title_link": receivedWebmention.post[receivedWebmention.post['wm-property']],
+        //         "fields": [],
+        //     }
+        // ]
     }
 
-    Promise.all(finishedProcessing).then(() => {
+    // Promise.all(finishedProcessing).then(() => {
 
-        if (receivedWebmention.post.author.name !== 'Swarm') {
-            // Slack Incoming Webhook
-            request.post({
-                url: `https://hooks.slack.com/services/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`,
-                json: slackMessage
-            }, (err, data) => {
-                if (err != undefined) {
-                    console.log(`ERROR: ${err}`);
-                }
-                if (data.statusCode != 200) {
-                    console.log("oops Slack Error");
-                } else {
-                    console.log("Successfully sent Slack Message");
-                }
-
-            });
-        }
+        // if (receivedWebmention.post.author.name !== 'Swarm') {
+        //     // Slack Incoming Webhook
+        //     request.post({
+        //         url: `https://hooks.slack.com/services/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`,
+        //         json: slackMessage
+        //     }, (err, data) => {
+        //         if (err != undefined) {
+        //             console.log(`ERROR: ${err}`);
+        //         }
+        //         if (data.statusCode != 200) {
+        //             console.log("oops Slack Error");
+        //         } else {
+        //             console.log("Successfully sent Slack Message");
+        //         }
+        //
+        //     });
+        // }
 
         request.post(`https://aperture.eddiehinkle.com/micropub/`, {
             'auth': {
@@ -232,7 +240,7 @@ function webmentionAlert(req, res) {
                 console.log("Successfully sent Microsub Notification");
             }
         });
-    });
+    // });
 
     res.status(200).send("ok");
 
