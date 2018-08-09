@@ -99,7 +99,7 @@ export function getMicropubConfig(queryType, req): Promise<any> {
                             return post.toMf2();
                         } else {
 
-                            return req.query.properties;
+                            return post.toMf2LimitedProperties(req.query.properties);
 
                         }
                     });

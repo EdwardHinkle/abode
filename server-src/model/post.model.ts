@@ -349,6 +349,18 @@ export class Post {
             "properties": mf2Properties
         }
     }
+
+    public toMf2LimitedProperties(properties): any {
+        let mf2Properties = this.properties.toMf2LimitedProperties(properties);
+
+        if (properties.indexOf('url') > -1) {
+            mf2Properties.url = `https://eddiehinkle.com${this.getOfficialPermalink()}`;
+        }
+
+        return {
+            "properties": mf2Properties
+        }
+    }
 }
 
 export class PostProperties {
@@ -383,6 +395,20 @@ export class PostProperties {
                 key !== "postIndex" &&
                 key !== "weather") {
 
+                if (key === "syndication") {
+                    propertiesToReturn[key] = this[key].map(syndication => syndication.url);
+                } else {
+                    propertiesToReturn[key] = this[key];
+                }
+            }
+        }
+        return propertiesToReturn;
+    }
+
+    public toMf2LimitedProperties(properties): any {
+        let propertiesToReturn: any = {};
+        for (let key in this) {
+            if (properties.indexOf(key) > -1) {
                 if (key === "syndication") {
                     propertiesToReturn[key] = this[key].map(syndication => syndication.url);
                 } else {
