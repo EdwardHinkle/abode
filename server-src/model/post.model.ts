@@ -341,9 +341,12 @@ export class Post {
     }
 
     public toMf2(): any {
+        let mf2Properties = this.properties.toMf2();
+        mf2Properties.url = `https://eddiehinkle.com${this.getOfficialPermalink()}`;
+
         return {
             "type": `h-${this.type}`,
-            "properties": this.properties.toMf2()
+            "properties": mf2Properties
         }
     }
 }
