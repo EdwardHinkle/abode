@@ -93,7 +93,16 @@ export function getMicropubConfig(queryType, req): Promise<any> {
                         month: month,
                         day: day,
                         postIndex: index
-                    }).then(post => post.toMf2());
+                    }).then(post => {
+
+                        if (req.query.properties === undefined) {
+                            return post.toMf2();
+                        } else {
+
+                            return req.query.properties;
+
+                        }
+                    });
                 }
         }
     });
