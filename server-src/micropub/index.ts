@@ -23,27 +23,29 @@ var upload = multer({ dest: `${__dirname}/../../media-server-storage/` });
 // micropubRouter.get('/local', convertSavedJsonToMarkdown);
 micropubRouter.post('/media', upload.single('file'), getMediaEndpointRequest);
 
-micropubRouter.get('/', (req, res, next) => {
-	if (req.query.q !== 'source') {
-		next();
-		return;
-	}
-
-    let thisYear = moment().format("YYYY");
-    let thisMonth = moment().format("MM");
-
-    Posts.getPosts({
-        year: thisYear,
-        month: thisMonth
-    }).then(posts => {
-
-    	if (req.query['post-type'] !== undefined) {
-    		posts = posts.filter(post => post.getPostType().toLowerCase() === req.query['post-type']);
-		}
-
-        res.json({ "items": posts.map(post => post.toMf2()) });
-	});
-});
+// micropubRouter.get('/', (req, res, next) => {
+//
+//
+// 	if (req.query.q !== 'source') {
+// 		next();
+// 		return;
+// 	}
+//
+//     let thisYear = moment().format("YYYY");
+//     let thisMonth = moment().format("MM");
+//
+//     Posts.getPosts({
+//         year: thisYear,
+//         month: thisMonth
+//     }).then(posts => {
+//
+//     	if (req.query['post-type'] !== undefined) {
+//     		posts = posts.filter(post => post.getPostType().toLowerCase() === req.query['post-type']);
+// 		}
+//
+//         res.json({ "items": posts.map(post => post.toMf2()) });
+// 	});
+// });
 
 micropubRouter.use('/', micropub({
 	tokenReference: {
