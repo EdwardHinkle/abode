@@ -390,6 +390,7 @@ export class PostProperties {
 
     public toMf2(properties?): any {
         let propertiesToReturn: any = {};
+        console.log('1a');
         for (let key in this) {
             if ((properties == undefined &&
                 key !== "date" &&
@@ -405,6 +406,7 @@ export class PostProperties {
                 }
             }
         }
+        console.log('2b');
         return propertiesToReturn;
     }
 }
