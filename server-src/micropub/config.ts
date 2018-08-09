@@ -22,7 +22,7 @@ export function getMicropubConfig(queryType, req): Promise<any> {
                 return {
                     "media-endpoint": "https://eddiehinkle.com/micropub/media",
                     "syndicate-to": syndicateTargets,
-                    "post-type": [
+                    "post-types": [
                         {
                             "type": "note",
                             "name": "Note"
