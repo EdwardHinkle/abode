@@ -343,9 +343,13 @@ export class Post {
     public toMf2(properties?): any {
         let mf2Properties = this.properties.toMf2(properties);
 
-        if (properties == undefined || properties.indexOf('url') > -1) {
+        console.log('1');
+
+        if (properties == undefined || (properties.indexOf('url') > -1)) {
             mf2Properties.url = `https://eddiehinkle.com${this.getOfficialPermalink()}`;
         }
+
+        console.log('2');
 
         if (properties == undefined) {
             return {
