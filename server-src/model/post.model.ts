@@ -12,7 +12,7 @@ let dataDir = __dirname + "/../../jekyll/_source";
 export class Post {
 
     public permalink: string;
-    public type: 'entry' | 'event';
+    public type: 'entry' | 'event' = 'entry';
     public properties: PostProperties;
     public client_id: string;
 
