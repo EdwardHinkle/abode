@@ -95,12 +95,13 @@ export function getMicropubConfig(queryType, req): Promise<any> {
                         postIndex: index
                     }).then(post => {
                         let requestedProperties;
+                        console.log('a');
                         if (req.query.properties !== undefined && req.query.properties.length > 0) {
                             requestedProperties = req.query.properties;
                         } else if (typeof req.query.properties === 'string') {
                             requestedProperties = [req.query.properties];
                         }
-
+                        console.log('b');
                         return post.toMf2(requestedProperties);
                     });
                 }
