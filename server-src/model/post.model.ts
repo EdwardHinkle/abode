@@ -340,25 +340,22 @@ export class Post {
         return PostType.Note;
     }
 
-    public toMf2(): any {
-        let mf2Properties = this.properties.toMf2();
-        mf2Properties.url = `https://eddiehinkle.com${this.getOfficialPermalink()}`;
+    public toMf2(properties?): any {
+        let mf2Properties = this.properties.toMf2(properties);
 
-        return {
-            "type": `h-${this.type}`,
-            "properties": mf2Properties
-        }
-    }
-
-    public toMf2LimitedProperties(properties): any {
-        let mf2Properties = this.properties.toMf2LimitedProperties(properties);
-
-        if (properties.indexOf('url') > -1) {
+        if (properties === undefined || properties.indexOf('url') > -1) {
             mf2Properties.url = `https://eddiehinkle.com${this.getOfficialPermalink()}`;
         }
 
-        return {
-            "properties": mf2Properties
+        if (properties === undefined) {
+            return {
+                "type": `h-${this.type}`,
+                "properties": mf2Properties
+            }
+        } else {
+            return {
+                "properties": mf2Properties
+            }
         }
     }
 }
@@ -387,28 +384,16 @@ export class PostProperties {
         return this.date.format("DD");
     }
 
-    public toMf2(): any {
+    public toMf2(properties?): any {
         let propertiesToReturn: any = {};
         for (let key in this) {
-            if (key !== "date" &&
+            if ((properties === undefined &&
+                key !== "date" &&
                 key !== "personTags" &&
                 key !== "postIndex" &&
-                key !== "weather") {
+                key !== "weather") ||
+                properties.indexOf(key) > -1) {
 
-                if (key === "syndication") {
-                    propertiesToReturn[key] = this[key].map(syndication => syndication.url);
-                } else {
-                    propertiesToReturn[key] = this[key];
-                }
-            }
-        }
-        return propertiesToReturn;
-    }
-
-    public toMf2LimitedProperties(properties): any {
-        let propertiesToReturn: any = {};
-        for (let key in this) {
-            if (properties.indexOf(key) > -1) {
                 if (key === "syndication") {
                     propertiesToReturn[key] = this[key].map(syndication => syndication.url);
                 } else {
