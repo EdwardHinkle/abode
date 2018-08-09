@@ -84,7 +84,7 @@ export function getMicropubConfig(queryType, req): Promise<any> {
                         }
 
                         return {
-                            "before": posts[0].getOfficialPermalink().split("/").slice(1, 4).join("-"),
+                            "before": posts[0].getOfficialPermalink().split("/").slice(1, 5).join("-"),
                             "items": posts.map(post => post.toMf2())
                         };
                     });
