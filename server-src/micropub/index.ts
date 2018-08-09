@@ -22,6 +22,15 @@ var upload = multer({ dest: `${__dirname}/../../media-server-storage/` });
 // micropubRouter.get('/local', convertSavedJsonToMarkdown);
 micropubRouter.post('/media', upload.single('file'), getMediaEndpointRequest);
 
+micropubRouter.get('/', (req, res, next) => {
+	if (req.query.q !== 'source') {
+		next();
+		return;
+	}
+
+	res.json({ "testing": "yes" });
+});
+
 micropubRouter.use('/', micropub({
 	tokenReference: {
 		me: config.micropub.authenticationEndpoint,
