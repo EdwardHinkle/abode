@@ -79,6 +79,10 @@ export function getMicropubConfig(queryType, req): Promise<any> {
                             posts = posts.filter(post => post.getPostType().toLowerCase() === req.query['post-type']);
                         }
 
+                        if (req.query.limit !== undefined) {
+                            posts = posts.slice(0, req.query.limit);
+                        }
+
                         return {"items": posts.map(post => post.toMf2())};
                     });
                 } else {
