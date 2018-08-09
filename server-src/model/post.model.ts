@@ -343,11 +343,11 @@ export class Post {
     public toMf2(properties?): any {
         let mf2Properties = this.properties.toMf2(properties);
 
-        if (properties === undefined || properties.indexOf('url') > -1) {
+        if (properties == undefined || properties.indexOf('url') > -1) {
             mf2Properties.url = `https://eddiehinkle.com${this.getOfficialPermalink()}`;
         }
 
-        if (properties === undefined) {
+        if (properties == undefined) {
             return {
                 "type": `h-${this.type}`,
                 "properties": mf2Properties
@@ -387,7 +387,7 @@ export class PostProperties {
     public toMf2(properties?): any {
         let propertiesToReturn: any = {};
         for (let key in this) {
-            if ((properties === undefined &&
+            if ((properties == undefined &&
                 key !== "date" &&
                 key !== "personTags" &&
                 key !== "postIndex" &&
