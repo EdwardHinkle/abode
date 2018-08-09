@@ -83,7 +83,10 @@ export function getMicropubConfig(queryType, req): Promise<any> {
                             posts = posts.slice(0, req.query.limit);
                         }
 
-                        return {"items": posts.map(post => post.toMf2())};
+                        return {
+                            "before": posts[0].getOfficialPermalink().split("/").slice(1, 4).join("-"),
+                            "items": posts.map(post => post.toMf2())
+                        };
                     });
                 } else {
                     let urlSegments = req.query.url.split("/");
