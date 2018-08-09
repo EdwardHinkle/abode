@@ -66,20 +66,25 @@ export function getMicropubConfig(queryType, req): Promise<any> {
                     ]
                 };
             case 'source':
-                let thisYear = moment().format("YYYY");
-                let thisMonth = moment().format("MM");
+                if (req.query.url === undefined) {
+                    let thisYear = moment().format("YYYY");
+                    let thisMonth = moment().format("MM");
 
-                return Posts.getPosts({
-                    year: thisYear,
-                    month: thisMonth
-                }).then(posts => {
+                    return Posts.getPosts({
+                        year: thisYear,
+                        month: thisMonth
+                    }).then(posts => {
 
-                    if (req.query['post-type'] !== undefined) {
-                        posts = posts.filter(post => post.getPostType().toLowerCase() === req.query['post-type']);
-                    }
+                        if (req.query['post-type'] !== undefined) {
+                            posts = posts.filter(post => post.getPostType().toLowerCase() === req.query['post-type']);
+                        }
 
-                    return { "items": posts.map(post => post.toMf2()) };
-                });
+                        return {"items": posts.map(post => post.toMf2())};
+                    });
+                } else {
+                    let urlSegments = req.query.url.split("/");
+                    return urlSegments;
+                }
         }
     });
 }
