@@ -36,6 +36,11 @@ micropubRouter.get('/', (req, res, next) => {
         year: thisYear,
         month: thisMonth
     }).then(posts => {
+
+    	if (req.query['post-type'] !== undefined) {
+    		posts = posts.filter(post => post.getPostType().toLowerCase() === req.query['post-type']);
+		}
+
         res.json({ "items": posts.map(post => post.toMf2()) });
 	});
 });
