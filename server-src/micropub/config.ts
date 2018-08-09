@@ -83,7 +83,17 @@ export function getMicropubConfig(queryType, req): Promise<any> {
                     });
                 } else {
                     let urlSegments = req.query.url.split("/");
-                    return urlSegments;
+                    let year = urlSegments[3];
+                    let month = urlSegments[4];
+                    let day = urlSegments[5];
+                    let index = urlSegments[6];
+
+                    return Posts.getPost({
+                        year: year,
+                        month: month,
+                        day: day,
+                        postIndex: index
+                    }).then(post => post.toMf2());
                 }
         }
     });
