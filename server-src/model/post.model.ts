@@ -375,7 +375,10 @@ export class PostProperties {
     public toMf2(): any {
         let propertiesToReturn: any = {};
         for (let key in this) {
-            if (key !== "date" && key !== "personTags" && key !== "postIndex") {
+            if (key !== "date" &&
+                key !== "personTags" &&
+                key !== "postIndex" &&
+                key !== "weather") {
                 propertiesToReturn[key] = this[key];
             }
         }
