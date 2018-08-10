@@ -243,7 +243,8 @@ dynamicRouter.get('/', (req, res) => {
                     post.properties.photo.length > 0 &&
                     post.getPostType() !== PostType.Listen &&
                     post.getPostType() !== PostType.Watch &&
-                    post.getPostType() !== PostType.Audio) {
+                    post.getPostType() !== PostType.Audio &&
+                    post.properties.category.indexOf("reading") === -1) {
 
                     latestPhotoCount += post.properties.photo.length;
                     latestPhoto.push(post);
