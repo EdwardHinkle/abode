@@ -11,3 +11,4 @@
 /.idea
 /log-files
 /_storage
+*.pem
