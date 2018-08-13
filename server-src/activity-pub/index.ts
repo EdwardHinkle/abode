@@ -29,8 +29,13 @@ activityPubRouter.get('/activitypub/actor', (req, res) => {
 
         "id": "https://eddiehinkle.com/activitypub/actor",
         "type": "Person",
-        "preferredUsername": "me",
+        "preferredUsername": "eddiehinkle",
         "inbox": "https://eddiehinkle.com/activitypub/inbox",
+        "name": "Eddie Hinkle",
+        "summary": "Eddie Hinkle is a husband to Ashley, father to Luke and UI Engineer that lives in Frederick, MD.",
+        "icon": [
+            "https://eddiehinkle.com/images/profile.jpg"
+        ],
 
         "publicKey": {
             "id": "https://eddiehinkle.com/activitypub/actor#main-key",
