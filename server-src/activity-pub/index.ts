@@ -5,19 +5,17 @@ export let activityPubRouter = express.Router();
 activityPubRouter.get('/.well-known/webfinger', (req, res) => {
     let config: any = req.app.get('config');
 
-    if (req.accepts('json')) {
-        res.json({
-            "subject": "acct:me@eddiehinkle.com",
+    res.json({
+        "subject": "acct:me@eddiehinkle.com",
 
-            "links": [
-                {
-                    "rel": "self",
-                    "type": "application/activity+json",
-                    "href": "https://eddiehinkle.com/activitypub"
-                }
-            ]
-        });
-    }
+        "links": [
+            {
+                "rel": "self",
+                "type": "application/activity+json",
+                "href": "https://eddiehinkle.com/activitypub"
+            }
+        ]
+    });
 });
 
 activityPubRouter.get('/activitypub', (req, res) => {
