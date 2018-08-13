@@ -21,7 +21,7 @@ activityPubRouter.get('/.well-known/webfinger', (req, res) => {
 activityPubRouter.get('/activitypub', (req, res) => {
     let config: any = req.app.get('config');
 
-    if (req.accepts('json')) {
+    // if (req.accepts('json')) {
         res.json({
             "@context": [
                 "https://www.w3.org/ns/activitystreams",
@@ -46,5 +46,5 @@ activityPubRouter.get('/activitypub', (req, res) => {
                 "publicKeyPem": config.activitypub.pem
             }
         });
-    }
+    // }
 });
