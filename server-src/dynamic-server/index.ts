@@ -226,7 +226,7 @@ dynamicRouter.get('/', (req, res) => {
                     }
                     break;
                 case PostType.Article:
-                    if (latestArticles.length < 10) {
+                    if (latestArticles.length < 10 && post.isPublic()) {
                         latestArticles.push(post);
                     }
                     break;

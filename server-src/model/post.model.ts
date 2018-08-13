@@ -99,6 +99,10 @@ export class Post {
             });
         });
     }
+    
+    public isPublic(): boolean {
+    	return this.properties.visibility === 'public';
+    }
 
     public verifyPostPermalink(req: any): boolean {
         let officialPostPath = this.permalink.replace(':year', this.properties.getYearString())
