@@ -3,7 +3,7 @@ import * as express from "express";
 export let activityPubRouter = express.Router();
 
 activityPubRouter.get('/.well-known/webfinger', (req, res) => {
-    let config: any = req.get('config');
+    let config: any = req.app.get('config');
 
     res.json({
         "subject": "acct:me@eddiehinkle.com",
@@ -19,7 +19,7 @@ activityPubRouter.get('/.well-known/webfinger', (req, res) => {
 });
 
 activityPubRouter.get('/activitypub/actor', (req, res) => {
-    let config: any = req.get('config');
+    let config: any = req.app.get('config');
 
     res.json({
         "@context": [
