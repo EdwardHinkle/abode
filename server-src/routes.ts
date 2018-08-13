@@ -8,9 +8,11 @@ import { webmentionRouter } from './webmentions';
 import { mediaServerRouter } from './media-server';
 import { authRouter } from './auth';
 import { dynamicRouter } from './dynamic-server';
+import {activityPubRouter} from "./activity-pub";
 
 export let router = express.Router();
 
+router.use('/', activityPubRouter);
 router.use('/', dynamicRouter);
 router.use('/abode', processRouter);
 router.use('/micropub', micropubRouter);
