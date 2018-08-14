@@ -41,9 +41,9 @@ activityPubRouter.get('/activitypub', (req, res) => {
             },
 
             "publicKey": {
-                "id": "https://eddiehinkle.com/activitypub#main-key",
+                "id": "https://eddiehinkle.com/activitypub#key",
                 "owner": "https://eddiehinkle.com/activitypub",
-                "publicKeyPem": config.activitypub.pem
+                "publicKeyPem": config.activitypub['public-pem']
             }
         });
     // }
