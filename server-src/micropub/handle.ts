@@ -236,7 +236,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                 }
 
                 if (micropubDocument.client_id === 'https://micro.blog/') {
-                    micropubDocument.mp['syndicate-to'].push("https://micro.blog/EddieHinkle");
+                    micropubDocument.mp['syndicate-to'].push("https://eddiehinkle.com/timeline");
                 }
 
                 console.log("About to deal with expanded context");
@@ -276,6 +276,9 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                 console.log("About to deal with syndication");
 
+                if (yamlDocument.properties['abode-channel'] === undefined) {
+                    yamlDocument.properties['abode-channel'] = [];
+                }
                 yamlDocument.properties.syndication = [];
 
                 // Set up syndication
@@ -345,18 +348,16 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                 console.log(micropubDocument.mp['syndicate-to']);
 
                 // If syndicate-to micro.blog is set, we should create a syndication entry to allow the feed to display it
-                if (micropubDocument.mp['syndicate-to'].indexOf('https://micro.blog/EddieHinkle') > -1) {
+                if (micropubDocument.mp['syndicate-to'].indexOf('https://eddiehinkle.com/timeline') > -1) {
                     yamlDocument.properties.syndication.push({
                         name: "micro.blog",
                         include: '<svg aria-labelledby="simpleicons-microblog-icon" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title id="simpleicons-microblog-icon">Micro.blog icon</title><path d="M21.4 17.7c-2 2.6-1 4.8-.3 5.9.3.4-.1.4-.3.4a6 6 0 0 1-4-2.7c-.2-.1-.3-.2-.5-.1-1.4.4-2.8.7-4.3.6C5.4 21.8 0 17 0 11 0 5 5.4 0 12 0s12 4.9 12 11c0 2.5-1 4.8-2.6 6.7zM12 14l3.2 2.2a.4.4 0 0 0 .6-.4L14.6 12l3.1-2.4a.4.4 0 0 0-.2-.6h-3.9l-1.3-3.8a.4.4 0 0 0-.6 0L10.4 9h-4a.4.4 0 0 0-.1.7l3 2.4-1 3.7a.4.4 0 0 0 .5.4L12 14z"/></svg>',
                         url: 'https://micro.blog/EddieHinkle'
                     });
 
-                    // todo: This shouldn't be needed when I move away from using Jekyll/liquid
-                    if (yamlDocument.visibility === 'public') {
-                        yamlDocument['feed-syndication'] = true;
-                    }
-                    let mblogIndex = micropubDocument.mp['syndicate-to'].indexOf('https://micro.blog/EddieHinkle');
+                    yamlDocument.properties['abode-channel'].push('timeline');
+
+                    let mblogIndex = micropubDocument.mp['syndicate-to'].indexOf('https://eddiehinkle.com/timeline');
                     micropubDocument.mp['syndicate-to'].splice(mblogIndex, 1);
                 }
 
