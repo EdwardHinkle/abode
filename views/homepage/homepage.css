@@ -51,6 +51,14 @@ h2 {
     margin-left: 10%;
 }
 
+.watch a {
+    margin-left: 20%;
+}
+
+.checkin-contents {
+    margin-left: 10%;
+}
+
 .articles, .notes, .social {
     max-width: 800px;
     margin-left: auto;
