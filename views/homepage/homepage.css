@@ -47,7 +47,8 @@ h2 {
 }
 
 .listen .media-grid, .photos .media-grid {
-    max-width: 400px;
+    max-width: 200px;
+    margin-left: 10%;
 }
 
 .articles, .notes, .social {
