@@ -112,12 +112,13 @@ html
             if latestWatch
                 div.watch
                     h4 Recently Watched
-                    if latestWatch.properties.show_image
-                        a(href=latestWatch.getOfficialPermalink())
-                            img(src=latestWatch.properties.show_image, width="150")
-                    else
-                        a(href=latestWatch.getOfficialPermalink())
-                            img(src=latestWatch.properties.movie_image, width="150")
+                    div.checkin-contents
+                        if latestWatch.properties.show_image
+                            a(href=latestWatch.getOfficialPermalink())
+                                img(src=latestWatch.properties.show_image, width="150")
+                        else
+                            a(href=latestWatch.getOfficialPermalink())
+                                img(src=latestWatch.properties.movie_image, width="150")
                     a(href="/media/").more-button.no-underline More Media
             div.listen
                 h4 Recently Listened
