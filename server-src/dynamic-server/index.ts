@@ -105,21 +105,24 @@ dynamicRouter.get('/photos/:year(\\d+)?/:month(\\d+)?/:day(\\d+)?/', (req, res) 
 
     let combinedPromises: Promise<Post[]>[] = [];
 
-    let queryYear, queryMonth, queryDay;
+    let pageDate = moment();
 
-    if (req.params.year === undefined) {
-        queryYear = moment().format("YYYY");
-        queryMonth = moment().format("MM");
-    } else {
-        queryYear = req.params.year;
-        queryMonth = req.params.month;
-        queryDay = req.params.day;
+    if (req.params.year !== undefined) {
+        pageDate.year(req.params.year);
+    }
+
+    if (req.params.month !== undefined) {
+        pageDate.month(req.params.month);
+    }
+
+    if (req.params.day !== undefined) {
+        pageDate.day(req.params.day);
     }
 
     Posts.getPosts({
-        year: queryYear,
-        month: queryMonth,
-        day: queryDay
+        year: pageDate.format("YYYY"),
+        month: pageDate.format("MM"),
+        day: pageDate.format("DD")
     }).catch(error => {
             console.log("error loading homepage", error);
             return combinedPromises;
@@ -268,8 +271,12 @@ dynamicRouter.get('/', (req, res) => {
 });
 
 dynamicRouter.get('/:year(\\d+)/', (req, res, next) => {
+
+    let pageDate = moment();
+    pageDate.year(req.params.year);
+
     Posts.getPosts({
-        year: req.params.year
+        year: pageDate.format("YYYY")
     }).then(posts => {
 
         posts.sort((a: Post, b: Post) => {
@@ -286,9 +293,14 @@ dynamicRouter.get('/:year(\\d+)/', (req, res, next) => {
 });
 
 dynamicRouter.get('/:year(\\d+)/:month(\\d+)/', (req, res, next) => {
+
+    let pageDate = moment();
+    pageDate.year(req.params.year);
+    pageDate.month(req.params.month);
+
     Posts.getPosts({
-        year: req.params.year,
-        month: req.params.month
+        year: pageDate.format("YYYY"),
+        month: pageDate.format("MM")
     }).then(posts => {
 
         posts.sort((a: Post, b: Post) => {
@@ -305,19 +317,61 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/', (req, res, next) => {
 });
 
 dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/', (req, res, next) => {
+
+    let pageDate = moment();
+    pageDate.year(req.params.year);
+    pageDate.month(parseInt(req.params.month)-1);
+    pageDate.date(parseInt(req.params.day));
+    pageDate.hour(0).minute(0).second(0).millisecond(0);
+
+    let now = moment().hour(0).minute(0).second(0).millisecond(0);
+
+    if (now.diff(pageDate, "day") < 0) {
+
+        res.render("posts/futureDay", {
+            today: {
+                label: `Check out what's happening today`,
+                link: `/${now.format("YYYY")}/${now.format("MM")}/${now.format("DD")}/`
+            }
+        });
+        return;
+
+    }
+
     Posts.getPosts({
-        year: req.params.year,
-        month: req.params.month,
-        day: req.params.day
+        year: pageDate.format("YYYY"),
+        month: pageDate.format("MM"),
+        day: pageDate.format("DD")
     }).then(posts => {
 
         posts.sort((a: Post, b: Post) => {
             return b.properties.date.diff(a.properties.date);
         });
 
-        res.render("posts/list", {
+        let pageData: any = {
+            title: `${pageDate.format("MMM DD, YYYY")}`,
             posts: posts
-        });
+        };
+
+        let nextDate = pageDate.clone().add(1, "day");
+        if (now.diff(nextDate, "day") >= 0) {
+            let linkDate = nextDate;
+            pageData.next = {
+                label: `${linkDate.format("MMM DD, YYYY")}`,
+                link: `/${linkDate.format("YYYY")}/${linkDate.format("MM")}/${linkDate.format("DD")}/`
+            }
+        }
+
+        let previousDate = pageDate.clone().subtract(1, "day");
+        if (moment("06/21/1987", "MM/DD/YYYY").diff(previousDate, "day") < 0) {
+            let linkDate = previousDate;
+            pageData.previous = {
+                label: `${linkDate.format("MMM DD, YYYY")}`,
+                link: `/${linkDate.format("YYYY")}/${linkDate.format("MM")}/${linkDate.format("DD")}/`
+            }
+        }
+
+        res.render("posts/daySummary", pageData);
     }).catch(error => {
         console.log("ERROR", error);
         next();
@@ -362,7 +416,9 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/debug/'
         if (error !== undefined) {
             console.log('url failed');
             console.log(error);
-            res.render("posts/postUnavailable");
+            res.render("posts/errorMessage", {
+                errorMessage: "post not able to be found"
+            });
             return;
         }
     });
@@ -397,7 +453,9 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postTy
         return;
     }).catch(error => {
         if (error !== undefined) {
-            res.render("posts/postUnavailable");
+            res.render("posts/errorMessage", {
+                errorMessage: "Sorry, the post you are looking for is still processing"
+            });
             return;
         }
     });

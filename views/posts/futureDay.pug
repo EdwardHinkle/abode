@@ -9,5 +9,7 @@ html
         link(rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-xyMU7RufUdPGVOZRrc2z2nRWVWBONzqa0NFctWglHmt5q5ukL22+lvHAqhqsIm3h" crossorigin="anonymous")
     body
         include ../includes/header.pug
-        h2 Sorry, the post you are looking for is still processing
+        h2.text-center The future has yet to be written
+        div.text-center
+            a(href=today.link) #{today.label}
         include ../includes/footer.pug

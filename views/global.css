@@ -191,6 +191,10 @@ a:not(.no-underline):hover, a:not(.no-underline):focus {
     vertical-align: text-bottom;
 }
 
+.text-center {
+    text-align: center;
+}
+
 
 @media (min-width: 600px) {
 
