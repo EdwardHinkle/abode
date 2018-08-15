@@ -10,8 +10,8 @@ html
     body
         include ../includes/header.pug
         h2 Post List
-            ul
-                each post in posts
-                    li
-                        a(href=post.getOfficialPermalink()) #{post.getPostType()}
+        ul
+            each post in posts
+                li
+                    a(href=post.getOfficialPermalink()) #{post.getPostType()}
         include ../includes/footer.pug
