@@ -2,14 +2,12 @@ html
     head
         title EddieHinkle.com
         style
+            include ../global.css
             include post.css
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         link(rel="webmention", href="https://webmention.io/eddiehinkle.com/webmention")
+        link(rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-xyMU7RufUdPGVOZRrc2z2nRWVWBONzqa0NFctWglHmt5q5ukL22+lvHAqhqsIm3h" crossorigin="anonymous")
     body
+        include ../includes/header.pug
         h1 Sorry, the post you are looking for is still processing
-        ul.h-card
-            li
-                img(src="/images/profile.jpg", alt="Eddie Hinkle", style="display: none;").u-photo
-                a(rel="me", href="https://eddiehinkle.com/").u-url.p-name Eddie Hinkle
-                p.p-note Believer, Husband, Software Engineer.
-                    a(href="https://eddiehinkle.com/about") Read More
+        include ../includes/footer.pug
