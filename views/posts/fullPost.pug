@@ -140,7 +140,7 @@ html
                             | .
                             |
             div.meta
-                time(datetime=date.toISOString(true)).dt-published.published-date #{post.semiRelativeDateTimeFormat()}
+                time(datetime=post.getPublishedDate()).dt-published.published-date #{post.semiRelativeDateTimeFormat()}
                 if post.properties.visibility === "private"
                     span Private
                 if post.properties.weather

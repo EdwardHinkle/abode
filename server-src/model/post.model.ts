@@ -104,6 +104,11 @@ export class Post {
     	return this.properties.visibility === 'public';
     }
 
+    public getPublishedDate(): string {
+        // @ts-ignore
+        return this.properties.date.toISOString(true);
+    }
+
     public verifyPostPermalink(req: any): boolean {
         let officialPostPath = this.permalink.replace(':year', this.properties.getYearString())
             .replace(':month', this.properties.getMonthString())
