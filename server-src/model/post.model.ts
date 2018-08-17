@@ -105,8 +105,7 @@ export class Post {
     }
 
     public getPublishedDate(): string {
-        // @ts-ignore
-        return this.properties.date.toISOString(true);
+        return this.properties.date.format();
     }
 
     public verifyPostPermalink(req: any): boolean {
