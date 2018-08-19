@@ -62,7 +62,7 @@ export let authenticationEndpoint = (req, res, next) => {
 
         let $ = Cheerio.load(body);
 
-        manifestUrl = $("[rel='manifest']");
+        manifestUrl = $("[rel='manifest']").attr('href');
         if (manifestUrl) {
             return;
         }
@@ -122,44 +122,46 @@ export let authenticationEndpoint = (req, res, next) => {
 
     });
 
-    if (manifestUrl.indexOf('http') === -1) {
-        manifestUrl = client_id + manifestUrl;
-    }
+    if (manifestUrl !== undefined) {
+        if (manifestUrl.indexOf('http') === -1) {
+            manifestUrl = client_id + manifestUrl;
+        }
 
-    request.get(manifestUrl, { json: true }, (error, response, body) => {
-        console.log('indieauth client manifest');
-        console.log(body);
-        console.log(body.name);
-        console.log(body.icons[0]);
+        request.get(manifestUrl, {json: true}, (error, response, body) => {
+            console.log('indieauth client manifest');
+            console.log(body);
+            console.log(body.name);
+            console.log(body.icons[0]);
 
-        let scopes = [
-            {
-                id: 'id',
-                name: `Identify you as Eddie Hinkle (${req.session.username})`
-            }
-        ];
+            let scopes = [
+                {
+                    id: 'id',
+                    name: `Identify you as Eddie Hinkle (${req.session.username})`
+                }
+            ];
 
-        req.session.indieAuthRequest = {
-            response_type: response_type,
-            me: me,
-            client_id: client_id,
-            redirect_uri: redirect_uri,
-            state: state,
-            scopes: scopes
-        };
+            req.session.indieAuthRequest = {
+                response_type: response_type,
+                me: me,
+                client_id: client_id,
+                redirect_uri: redirect_uri,
+                state: state,
+                scopes: scopes
+            };
 
-        console.log("session");
-        console.log(req.session);
+            console.log("session");
+            console.log(req.session);
 
-        res.render("indieauth/authorization", {
-            app: {
-                name: body.name,
-                logo: body.icons[0].src
-            },
-            me: req.session.username,
-            client_id: client_id,
-            scopes: scopes
+            res.render("indieauth/authorization", {
+                app: {
+                    name: body.name,
+                    logo: body.icons[0].src
+                },
+                me: req.session.username,
+                client_id: client_id,
+                scopes: scopes
+            });
         });
-    });
+    }
 
 };
