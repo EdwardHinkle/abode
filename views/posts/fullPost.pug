@@ -231,12 +231,12 @@ html
                                     i.fab.fa-foursquare
                             else
                                 a(href=syndication.url).no-underline.u-syndication.syndication-box #{syndication.name}
+                div(style="display: none")
+                    a(href="https://brid.gy/publish/twitter").u-bridgy-publish
+                    a(href="https://brid.gy/publish/github").u-bridgy-publish
                 if post.client_id
                     span.client-display posted using
                         |
                         |
                         a(href=post.client_id, target="_blank") #{post.client_id.replace("http://", "").replace("https://", "").split("/").shift()}
-                div(style="display: none")
-                    a(href="https://brid.gy/publish/twitter")
-                    a(href="https://brid.gy/publish/github")
         include ../includes/footer.pug
