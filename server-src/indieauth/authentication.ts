@@ -62,10 +62,10 @@ export let authenticationEndpoint = (req, res, next) => {
 
         let $ = Cheerio.load(body);
 
-        manifestUrl = $("[rel='manifest']").attr('href');
-        if (manifestUrl) {
-            return;
-        }
+        // manifestUrl = $("[rel='manifest']").attr('href');
+        // if (manifestUrl) {
+        //     return;
+        // }
 
         let appInfo = $(".h-app");
         let clientApp = {};

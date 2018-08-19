@@ -58,12 +58,11 @@ export let authorizationEndpoint = (req, res, next) => {
         let $ = Cheerio.load(body);
 
         console.log('looking for manifest');
-        console.log($("[rel='manifest']"))[0];
 
-        manifestUrl = $("[rel='manifest']").attr('href');
-        if (manifestUrl) {
-            return;
-        }
+        // manifestUrl = $("[rel='manifest']").attr('href');
+        // if (manifestUrl) {
+        //     return;
+        // }
 
         let appInfo = $(".h-app");
         let clientApp = {};
