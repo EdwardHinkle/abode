@@ -52,18 +52,60 @@ export let authorizationEndpoint = (req, res, next) => {
         if (error) {
             // todo: Figure out how to gracefully handle client_id error
             console.log("client id error!");
+            console.log(error);
             return;
         }
 
         let $ = Cheerio.load(body);
 
-        console.log('looking for manifest');
-        console.log($("[rel='manifest']"));
+        manifestUrl = $("[rel='manifest']").attr("href");
+        if (manifestUrl) {
+            if (manifestUrl.indexOf('http') === -1) {
+                manifestUrl = client_id + manifestUrl;
+            }
 
-        // manifestUrl = $("[rel='manifest']").attr('href');
-        // if (manifestUrl) {
-        //     return;
-        // }
+            request.get(manifestUrl, {json: true}, (error, response, body) => {
+                console.log('indieauth client manifest');
+                console.log(body);
+                console.log(body.name);
+                console.log(body.icons[0]);
+
+                let scopes = [
+                    {
+                        id: 'id',
+                        name: `Identify you as Eddie Hinkle (${req.session.username})`
+                    }
+                ];
+
+                req.session.indieAuthRequest = {
+                    response_type: response_type,
+                    me: me,
+                    client_id: client_id,
+                    redirect_uri: redirect_uri,
+                    state: state,
+                    scopes: scopes
+                };
+
+                console.log("session");
+                console.log(req.session);
+
+                let iconUrl = body.icons[0].src;
+                // if (iconUrl.indexOf('http') === -1) {
+                //     iconUrl = client_id + iconUrl;
+                // }
+
+                res.render("indieauth/authorization", {
+                    app: {
+                        name: body.name,
+                        logo: iconUrl
+                    },
+                    me: req.session.username,
+                    client_id: client_id,
+                    scopes: scopes
+                });
+            });
+            return;
+        }
 
         let appInfo = $(".h-app");
         let clientApp = {};
@@ -124,47 +166,5 @@ export let authorizationEndpoint = (req, res, next) => {
         });
 
     });
-
-    if (manifestUrl !== undefined) {
-        if (manifestUrl.indexOf('http') === -1) {
-            manifestUrl = client_id + manifestUrl;
-        }
-
-        request.get(manifestUrl, {json: true}, (error, response, body) => {
-            console.log('indieauth client manifest');
-            console.log(body);
-            console.log(body.name);
-            console.log(body.icons[0]);
-
-            let scopes = [
-                {
-                    id: 'id',
-                    name: `Identify you as Eddie Hinkle (${req.session.username})`
-                }
-            ];
-
-            req.session.indieAuthRequest = {
-                response_type: response_type,
-                me: me,
-                client_id: client_id,
-                redirect_uri: redirect_uri,
-                state: state,
-                scopes: scopes
-            };
-
-            console.log("session");
-            console.log(req.session);
-
-            res.render("indieauth/authorization", {
-                app: {
-                    name: body.name,
-                    logo: body.icons[0].src
-                },
-                me: req.session.username,
-                client_id: client_id,
-                scopes: scopes
-            });
-        });
-    }
 
 };
