@@ -29,24 +29,191 @@ a:not(.no-underline):hover, a:not(.no-underline):focus {
 .site-monogram {
     position: absolute;
     left: 20px;
+    top: 20px;
     font-weight: 100;
     font-size: 2em;
     transition: font-weight 0.5s ease-in-out;
-    padding: 10px;
-    border: 1px solid #555;
 }
 
-.site-monogram:hover {
-    border-color: #24b1f3;
+.site-monogram .resume-title {
+    padding-left: 10px;
+    color: #888;
 }
 
 .site-monogram a {
     background-color: transparent;
     color: #555;
     text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #555;
 }
 
-.site-monogram:hover a, .site-monogram a:hover {
+.site-monogram a:hover {
     color: #24b1f3;
     background-color: transparent;
+    border-color: #24b1f3;
+}
+
+.intro {
+    padding-left: 20px;
+    padding-top: 150px;
+    font-size: 3rem;
+    line-height: 4rem;
+}
+
+.intro div {
+    width: fit-content;
+}
+
+/*.intro .name {*/
+    /*margin-top: 50px;*/
+/*}*/
+
+/*.bio {*/
+    /*margin-top: 20px;*/
+    /*display: inline-block;*/
+/*}*/
+
+.intro div:last-of-type strong {
+    color: #24b1f3;
+}
+
+.interest {
+    padding-left: 20px;
+    padding-top: 150px;
+    font-size: 3rem;
+    line-height: 4rem;
+}
+
+.footer {
+    text-align: center;
+    color: #555;
+    padding: 50px 0;
+    margin-top: 50px;
+    background-color: #eee;
+}
+
+.timeline {
+    padding-top: 150px;
+}
+
+.timeline ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.timeline-item {
+    width: 400px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    padding: 10px;
+    margin: 20px;
+    border-radius: 2px;
+}
+
+.timeline-item .header {
+    font-weight: bold;
+    display: flex;
+}
+
+.timeline-item span {
+    padding-right: 10px;
+    flex: 1;
+}
+
+.timeline-item .type {
+    color: #555;
+}
+
+.timeline-item .title {
+    color: #24b1f3;
+}
+
+.external-icons {
+    display: flex;
+    padding-bottom: 20px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.external-icons a {
+    flex: 1;
+    text-decoration: none;
+    color: #24b1f3;
+}
+
+/* Side Tabs */
+/*.side-tabs ul {*/
+    /*padding: 0;*/
+    /*margin: 0;*/
+    /*transform: rotate(90deg);*/
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*bottom: 0;*/
+    /*right: 0;*/
+/*}*/
+
+/*.side-tabs ul li {*/
+    /*display: inline-block;*/
+    /*padding: 0px 20px;*/
+/*}*/
+
+/* Blinking Cursor */
+.blinking-cursor {
+    padding-right: 2px;
+    border-right: #24b1f3 2px solid;
+    -webkit-animation: 1s blink step-end infinite;
+    -moz-animation: 1s blink step-end infinite;
+    -ms-animation: 1s blink step-end infinite;
+    -o-animation: 1s blink step-end infinite;
+    animation: 1s blink step-end infinite;
+}
+
+@keyframes blink {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: #24b1f3;
+    }
+}
+
+@-moz-keyframes blink {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: #24b1f3;
+    }
+}
+
+@-webkit-keyframes blink {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: #24b1f3;
+    }
+}
+
+@-ms-keyframes blink {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: #24b1f3;
+    }
+}
+
+@-o-keyframes blink {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: #24b1f3;
+    }
 }

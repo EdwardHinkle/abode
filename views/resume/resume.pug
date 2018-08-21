@@ -10,3 +10,59 @@ html
     body
         h1.site-monogram(title="Eddie Hinkle")
             a(href="https://eddiehinkle.com").no-underline EH
+            span.resume-title Resume
+        //div.side-tabs
+        //    ul
+        //        li Intro
+        //        li Clients
+        //        li History
+        //        li Recommendations
+        div.intro
+            div Hello,
+            div My name is <strong>Eddie</strong>.
+            div.blinking-cursor I am a <strong id="rolename">UI / UX Engineer</strong>
+        div
+            h2 Clients
+            h3 Google
+            h3 USAID
+            h3 Franklin Covey
+            h3 Wright Medical
+            h3 CSL Plasma
+            h3 ThreatConnect
+            h3 Zimmer Biomet
+            h3 Framework
+            h3 GT Indepedance
+        div
+            h2 Technical Skills
+        div
+            h2 Testimonials
+        div.timeline
+            h2 Work History
+            ul
+                each work in workHistory
+                    li.timeline-item
+                        div.header
+                            span.type #{work.type}
+                            span.date #{work.date}
+                            span.title #{work.position}
+                        h2.company #{work.company}
+                        div #{work.summary}
+
+        div.interest Interested in working together? Hit me up!
+            |
+            a(href="mailto:hello@eddiehinkle.com") hello@eddiehinkle.com
+        div.footer
+            div.external-icons
+                a(href="https://www.linkedin.com/in/edwardhinkle").no-underline
+                    i.fab.fa-2x.fa-linkedin
+                a(href="https://angel.co/edwardhinkle").no-underline
+                    i.fab.fa-2x.fa-angellist
+                a(href="https://github.com/EdwardHinkle").no-underline
+                    i.fab.fa-2x.fa-github
+                a(href="https://dribbble.com/EdwardHinkle").no-underline
+                    i.fab.fa-2x.fa-dribbble
+                a(href="http://stackexchange.com/users/5523972/eddie-hinkle?tab=accounts").no-underline
+                    i.fab.fa-2x.fa-stack-exchange
+            div Designed and Coded with ❤️ in D.C.
+        script(type="text/javascript")
+                    include resume.js
