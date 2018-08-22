@@ -1,5 +1,6 @@
 var roles = [
     "UI / UX Engineer",
+    "iOS App Developer",
     "Frontend Developer",
     "Geospatial Engineer",
     "Backend Developer"
