@@ -132,6 +132,39 @@ a:not(.no-underline):hover, a:not(.no-underline):focus {
     color: #24b1f3;
 }
 
+.section-title {
+    text-align: center;
+    font-weight: 300;
+    font-size: 1.5rem;
+    color: #555;
+}
+
+.client-section {
+    margin-top: 150px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.client-logos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.client-logos .client-logo {
+    height: 75px;
+    margin: 20px;
+}
+
+.client-logos a .client-logo {
+    opacity: 0.5;
+}
+
+.client-logos a:hover .client-logo {
+    opacity: 1;
+}
+
 .external-icons {
     display: flex;
     padding-bottom: 20px;

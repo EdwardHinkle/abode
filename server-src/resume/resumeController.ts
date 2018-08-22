@@ -175,7 +175,7 @@ export class ResumeController {
                 published: "",
                 relation: "",
                 content: ""
-            },
+            }
         ];
 
         res.render("resume/resume", {

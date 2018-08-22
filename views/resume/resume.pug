@@ -20,24 +20,38 @@ html
         div.intro
             div Hello,
             div My name is <strong>Eddie</strong>.
-            div.blinking-cursor I am a <strong id="rolename">UI / UX Engineer</strong>
+            div I am a
+                |
+                |
+                strong#rolename UI / UX Engineer
+                span.blinking-cursor
+        div.client-section
+            h2.section-title Companies I've Worked With
+            div.client-logos
+                a(href="https://google.com", target="_blank").no-underline
+                    img(src="images/google-logo.png").client-logo
+                a(href="https://usaid.gov", target="_blank").no-underline
+                    img(src="images/usaid-logo.png").client-logo
+                a(href="https://www.franklincovey.com", target="_blank").no-underline
+                    img(src="images/franklincovey-logo.png").client-logo
+                a(href="http://www.wmt.com", target="_blank").no-underline
+                    img(src="images/wright-logo.png").client-logo
+                a(href="http://cslplasma.com", target="_blank").no-underline
+                    img(src="images/cslplasma-logo.png").client-logo
+                a(href="http://zimmerbiomet.com", target="_blank").no-underline
+                    img(src="images/zimmerbiomet-logo.png").client-logo
+                a(href="https://www.frameworkhomeownership.org", target="_blank").no-underline
+                    img(src="images/framework-logo.png").client-logo
+                a(href="https://www.threatconnect.com", target="_blank").no-underline
+                    img(src="images/threatconnect-logo.png").client-logo
+                a(href="https://www.gtindependence.com", target="_blank").no-underline
+                    img(src="images/gtindependence-logo.png").client-logo
         div
-            h2 Clients
-            h3 Google
-            h3 USAID
-            h3 Franklin Covey
-            h3 Wright Medical
-            h3 CSL Plasma
-            h3 ThreatConnect
-            h3 Zimmer Biomet
-            h3 Framework
-            h3 GT Indepedance
+            h2.section-title Technical Skills
         div
-            h2 Technical Skills
-        div
-            h2 Testimonials
+            h2.section-title Testimonials
         div.timeline
-            h2 Work History
+            h2.section-title Work History
             ul
                 each work in workHistory
                     li.timeline-item
