@@ -94,7 +94,10 @@ a:not(.no-underline):hover, a:not(.no-underline):focus {
 }
 
 .timeline {
-    padding-top: 150px;
+    padding-top: 50px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .timeline ul {
@@ -103,13 +106,14 @@ a:not(.no-underline):hover, a:not(.no-underline):focus {
     padding: 0;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .timeline-item {
     width: 400px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-    padding: 10px;
+    padding: 16px;
     margin: 20px;
     border-radius: 2px;
 }
@@ -126,6 +130,11 @@ a:not(.no-underline):hover, a:not(.no-underline):focus {
 
 .timeline-item .type {
     color: #555;
+    text-align: left;
+}
+
+.timeline-item .date {
+    text-align: right;
 }
 
 .timeline-item .title {
@@ -136,7 +145,7 @@ a:not(.no-underline):hover, a:not(.no-underline):focus {
     text-align: center;
     font-weight: 300;
     font-size: 1.5rem;
-    color: #555;
+    color: #888;
 }
 
 .client-section {
