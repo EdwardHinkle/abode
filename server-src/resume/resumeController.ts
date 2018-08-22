@@ -1,27 +1,31 @@
 export class ResumeController {
     static resumeRoute(req, res, next) {
 
+        // I am a design-oriented, emotion-centric, human-interaction software engineer. I have extensive experience in both web design and web engineering leading to a solutions-oriented approach to web development. Technology should exist as a conduit to an engaging, human-centered interaction. I believe that software and design are inseparable.
+
         let workHistory = [
             {
                 type: "Work",
                 date: "2017 – Present",
                 position: "Senior UI Engineer",
                 company: "ThreatConnect, Inc.",
-                summary: "I am the senior member of the UI/UX team, leading the effort to transition the platform from a Java/JSF front-end to an Angular front-end communicating with a Java REST API backend. I’ve led the efforts to develop a customizable Dashboard and an associations graph using Cytoscape.js."
+                companyUrl: "https://www.threatconnect.com/",
+                summary: "I am the senior member of the UI/UX team, leading the effort to transition the platform from a Java/JSF front-end to an <strong>Angular</strong> front-end communicating with a Java <strong>REST API</strong> backend. I’ve led the efforts to develop a customizable Dashboard and an associations graph using <strong>Cytoscape.js</strong>."
             },
             {
                 type: "Freelance",
                 date: "2016 – Present",
                 position: "Owner",
                 company: "Studio H",
-                summary: "I’ve developed and released Indigenous, a open source Social Reader app built in Swift that supports the W3C standards of IndieAuth and Micropub. As well as contributed an iOS app to the open source Indiepaper project. I have also released several iMessage stickers packs on the App Store."
+                summary: "I’ve developed and released <a href='https://indigenous.abode.pub/ios/'>Indigenous</a>, a open source Social Reader app built in <strong>Swift</strong> that supports the W3C standards of <strong>IndieAuth</strong> and <strong>Micropub</strong>. As well as contributed an iOS app to the open source <a href='https://github.com/cleverdevil/Indiepaper-macOS/graphs/contributors'>Indiepaper project</a>. I have also released several iMessage stickers packs on the App Store."
             },
             {
                 type: "Work",
                 date: "2015 - 2017",
                 position: "Senior Software Engineer",
                 company: "Maestro, LLC",
-                summary: "I helped lead the services team of Maestro to develop and build beautiful marketing and learning solutions working for clients such as Google, Franklin Covey, Framework Homeownership, Wright Medical. The technologies I’ve used to make solutions for clients are: Angular, Node, Backbone, TypeScript, Rails, Ionic, Sass, Angular Material, Foundation, Bootstrap and the Adapt Framework. Most of our projects are Scorm-compliant e-learning courses."
+                companyUrl: "https://meetmaestro.com",
+                summary: "I helped lead the services team of Maestro to develop and build beautiful marketing and learning solutions working for clients such as Google, Franklin Covey, Framework Homeownership, Wright Medical. The technologies I’ve used to make solutions for clients are: <strong>Angular</strong>, <strong>Node.js</strong>, <strong>Backbone</strong>, <strong>TypeScript</strong>, <strong>Rails</strong>, <strong>Ionic</strong>, <strong>Sass</strong>, <strong>Angular Material</strong>, <strong>Foundation</strong>, <strong>Bootstrap</strong> and the <strong>Adapt Framework</strong>. Most of our projects are <strong>Scorm-compliant</strong> e-learning courses."
             },
             {
                 type: "Freelance",
@@ -35,7 +39,8 @@ export class ResumeController {
                 date: "2011 - 2015",
                 position: "Geospatial Software Engineer",
                 company: "USAID / Macfadden",
-                summary: "Worked as a Macfadden contractor assigned to a USAID internal product development team. My work covered Frontend Development using Backbone.js and Handlebars.js. Geospatial Integration using both Leaflet.js and ArcGIS APIs. Interactive Data Visualizations using d3.js. I also contributed to the Backend Development of a REST API in PHP as a custom module in Drupal 6."
+                companyUrl: "https://usaid.gov",
+                summary: "Worked as a Macfadden contractor assigned to a USAID internal product development team. My work covered Frontend Development using <strong>Backbone.js</strong> and <strong>Handlebars.js</strong>. Geospatial Integration using both <strong>Leaflet.js</strong> and <strong>ArcGIS APIs</strong>. Interactive Data Visualizations using <strong>d3.js</strong>. I also contributed to the Backend Development of a REST API in <strong>PHP</strong> as a custom module in <strong>Drupal 6.</strong>"
             },
             {
                 type: "Work",
@@ -49,6 +54,7 @@ export class ResumeController {
                 date: "2009 - 2010",
                 position: "Biology Dept. Network Administrator",
                 company: "University of Hawaii",
+                companyUrl: "https://www.hawaii.edu",
                 summary: "I ensured the network continued to function and improved the public-facing department website. Re-branded and updating site for contemporary design and intuitive user interaction."
             },
             {
@@ -94,88 +100,88 @@ export class ResumeController {
                 published: "September 20, 2017",
                 relation: "Michael worked with Eddie in different groups",
                 content: "Eddie is one of the most personable, team-player colleagues I've ever had. Always willing to answer questions, give additional context and support the team in whatever way he can. Not to mention, he writes great code! If you have a chance to work with Eddie take it!"
-            },
-            {
-                name: "Kaila Kaltrider",
-                url: "",
-                company: "",
-                position: "",
-                published: "",
-                relation: "",
-                content: ""
-            },
-            {
-                name: "Daniel Bedich",
-                url: "",
-                company: "",
-                position: "",
-                published: "",
-                relation: "",
-                content: ""
-            },
-            {
-                name: "Daniel Krasinski",
-                url: "",
-                company: "",
-                position: "",
-                published: "",
-                relation: "",
-                content: ""
-            },
-            {
-                name: "Jacob Bodnar",
-                url: "",
-                company: "",
-                position: "",
-                published: "",
-                relation: "",
-                content: ""
-            },
-            {
-                name: "John Pinkster",
-                url: "",
-                company: "",
-                position: "",
-                published: "",
-                relation: "",
-                content: ""
-            },
-            {
-                name: "Joe Gasiorek",
-                url: "",
-                company: "",
-                position: "",
-                published: "",
-                relation: "",
-                content: ""
-            },
-            {
-                name: "Markis Snodgrass",
-                url: "",
-                company: "",
-                position: "",
-                published: "",
-                relation: "",
-                content: ""
-            },
-            {
-                name: "Davin Aoyagi",
-                url: "",
-                company: "",
-                position: "",
-                published: "",
-                relation: "",
-                content: ""
-            },
-            {
-                name: "Sandee Carillo",
-                url: "",
-                company: "",
-                position: "",
-                published: "",
-                relation: "",
-                content: ""
             }
+            // {
+            //     name: "Kaila Kaltrider",
+            //     url: "",
+            //     company: "",
+            //     position: "",
+            //     published: "",
+            //     relation: "",
+            //     content: ""
+            // },
+            // {
+            //     name: "Daniel Bedich",
+            //     url: "",
+            //     company: "",
+            //     position: "",
+            //     published: "",
+            //     relation: "",
+            //     content: ""
+            // },
+            // {
+            //     name: "Daniel Krasinski",
+            //     url: "",
+            //     company: "",
+            //     position: "",
+            //     published: "",
+            //     relation: "",
+            //     content: ""
+            // },
+            // {
+            //     name: "Jacob Bodnar",
+            //     url: "",
+            //     company: "",
+            //     position: "",
+            //     published: "",
+            //     relation: "",
+            //     content: ""
+            // },
+            // {
+            //     name: "John Pinkster",
+            //     url: "",
+            //     company: "",
+            //     position: "",
+            //     published: "",
+            //     relation: "",
+            //     content: ""
+            // },
+            // {
+            //     name: "Joe Gasiorek",
+            //     url: "",
+            //     company: "",
+            //     position: "",
+            //     published: "",
+            //     relation: "",
+            //     content: ""
+            // },
+            // {
+            //     name: "Markis Snodgrass",
+            //     url: "",
+            //     company: "",
+            //     position: "",
+            //     published: "",
+            //     relation: "",
+            //     content: ""
+            // },
+            // {
+            //     name: "Davin Aoyagi",
+            //     url: "",
+            //     company: "",
+            //     position: "",
+            //     published: "",
+            //     relation: "",
+            //     content: ""
+            // },
+            // {
+            //     name: "Sandee Carillo",
+            //     url: "",
+            //     company: "",
+            //     position: "",
+            //     published: "",
+            //     relation: "",
+            //     content: ""
+            // }
         ];
 
         res.render("resume/resume", {

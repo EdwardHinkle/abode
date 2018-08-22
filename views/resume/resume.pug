@@ -29,23 +29,23 @@ html
             h2.section-title Companies I've Worked With
             div.client-logos
                 a(href="https://google.com", target="_blank").no-underline
-                    img(src="/resume/images/google-logo.png").client-logo
+                    img(src="/resume/images/logos/google-logo.png").client-logo
                 a(href="https://usaid.gov", target="_blank").no-underline
-                    img(src="/resume/images/usaid-logo.png").client-logo
+                    img(src="/resume/images/logos/usaid-logo.png").client-logo
                 a(href="https://www.franklincovey.com", target="_blank").no-underline
-                    img(src="/resume/images/franklincovey-logo.png").client-logo
+                    img(src="/resume/images/logos/franklincovey-logo.png").client-logo
                 a(href="http://www.wmt.com", target="_blank").no-underline
-                    img(src="/resume/images/wright-logo.png").client-logo
+                    img(src="/resume/images/logos/wright-logo.png").client-logo
                 a(href="http://cslplasma.com", target="_blank").no-underline
-                    img(src="/resume/images/cslplasma-logo.png").client-logo
+                    img(src="/resume/images/logos/cslplasma-logo.png").client-logo
                 a(href="http://zimmerbiomet.com", target="_blank").no-underline
-                    img(src="/resume/images/zimmerbiomet-logo.png").client-logo
+                    img(src="/resume/images/logos/zimmerbiomet-logo.png").client-logo
                 a(href="https://www.frameworkhomeownership.org", target="_blank").no-underline
-                    img(src="/resume/images/framework-logo.png").client-logo
+                    img(src="/resume/images/logos/framework-logo.png").client-logo
                 a(href="https://www.threatconnect.com", target="_blank").no-underline
-                    img(src="/resume/images/threatconnect-logo.png").client-logo
+                    img(src="/resume/images/logos/threatconnect-logo.png").client-logo
                 a(href="https://www.gtindependence.com", target="_blank").no-underline
-                    img(src="/resume/images/gtindependence-logo.png").client-logo
+                    img(src="/resume/images/logos/gtindependence-logo.png").client-logo
         //div
         //    h2.section-title Technical Skills
         //div
@@ -58,10 +58,35 @@ html
                         div.header
                             span.type #{work.type}
                             span.date #{work.date}
-                        h2.company #{work.company}
+                        if work.companyUrl
+                            a(href=work.companyUrl, target="_blank").company
+                                h2 #{work.company}
+                        else
+                            h2.company #{work.company}
                         span.title #{work.position}
-                        div #{work.summary}
-
+                        div !{work.summary}
+        div.portfolio-section
+            h2.section-title Portfolio
+            div.portfolio-container
+                img(src="/resume/images/portfolio/google-1.png").portfolio-item
+                img(src="/resume/images/portfolio/google-2.png").portfolio-item
+                img(src="/resume/images/portfolio/google-3.png").portfolio-item
+                img(src="/resume/images/portfolio/google-4.png").portfolio-item
+                img(src="/resume/images/portfolio/framework-1.png").portfolio-item
+                img(src="/resume/images/portfolio/framework-2.png").portfolio-item
+                img(src="/resume/images/portfolio/framework-3.png").portfolio-item
+                img(src="/resume/images/portfolio/framework-4.png").portfolio-item
+                img(src="/resume/images/portfolio/framework-5.png").portfolio-item
+                img(src="/resume/images/portfolio/framework-6.png").portfolio-item
+                img(src="/resume/images/portfolio/framework-7.png").portfolio-item
+                img(src="/resume/images/portfolio/wright-1.png").portfolio-item
+                img(src="/resume/images/portfolio/podcast-1.jpg").portfolio-item
+                img(src="/resume/images/portfolio/indigenous-1.png").portfolio-item
+                img(src="/resume/images/portfolio/indigenous-2.png").portfolio-item
+                img(src="/resume/images/portfolio/indigenous-3.png").portfolio-item
+                img(src="/resume/images/portfolio/indigenous-4.png").portfolio-item
+                img(src="/resume/images/portfolio/indigenous-5.png").portfolio-item
+                img(src="/resume/images/portfolio/indigenous-6.png").portfolio-item
         div.interest Interested in working together? Hit me up!
             |
             |
