@@ -81,8 +81,9 @@ a:not(.no-underline):hover, a:not(.no-underline):focus {
 .interest {
     padding-left: 20px;
     padding-top: 150px;
-    font-size: 3rem;
-    line-height: 4rem;
+    padding-bottom: 50px;
+    font-size: 1.8rem;
+    line-height: 3rem;
 }
 
 .footer {
