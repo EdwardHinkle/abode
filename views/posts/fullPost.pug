@@ -47,9 +47,9 @@ html
                     div.summary-fallback 🔖 Bookmarked:
                         |
                         |
-                        a(href=post.properties['bookmark-of'].properties.url).u-bookmark-of #{post.properties['bookmark-of'].properties.name}
+                        a(href=post.properties['bookmark-of'].properties.url).u-bookmark-of.p-name #{post.properties['bookmark-of'].properties.name}
                 else
-                    div.summary-fallback 🔖 Bookmarked:
+                    div.summary-fallback.p-name 🔖 Bookmarked:
                         |
                         |
                         a(href=post.properties['bookmark-of']).u-bookmark-of #{post.properties['bookmark-of']}
