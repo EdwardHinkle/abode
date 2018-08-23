@@ -43,10 +43,16 @@ html
                     |
                     a(href=post.properties['like-of']).u-like-of #{post.properties['like-of']}
             if post.properties['bookmark-of']
-                div.summary-fallback 🔖 Bookmarked:
-                    |
-                    |
-                    a(href=post.properties['bookmark-of']).u-bookmark-of #{post.properties['bookmark-of']}
+                if post.properties['bookmark-of'].type === 'h-cite'
+                    div.summary-fallback 🔖 Bookmarked:
+                        |
+                        |
+                        a(href=post.properties['bookmark-of'].properties.url).u-bookmark-of #{post.properties['bookmark-of'].properties.name}
+                else
+                    div.summary-fallback 🔖 Bookmarked:
+                        |
+                        |
+                        a(href=post.properties['bookmark-of']).u-bookmark-of #{post.properties['bookmark-of']}
             if post.properties['drank']
                 div.summary-fallback.p-summary.p-drank Drank
                     |
