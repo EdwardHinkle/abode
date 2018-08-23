@@ -86,7 +86,9 @@ export class Posts {
             });
 
             Promise.all(postPromises).then(arrayOfPosts => {
-                resolve([].concat.apply([], arrayOfPosts));
+                let posts = [].concat.apply([], arrayOfPosts);
+                let filteredPosts = posts.filter((post: Post) => post.isPublic());
+                resolve(filteredPosts);
             });
         });
     }
