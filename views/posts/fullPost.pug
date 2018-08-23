@@ -77,74 +77,75 @@ html
                 div(class="photos-" + post.properties.photo.length).photos-container
                     each photoUrl in post.properties.photo
                         img(src=photoUrl).u-photo
-            div(class=post.properties.name ? "" : "p-name").e-content.p-summary
-                if post.properties['listen-of'] && post.properties['listen-of'].type === "h-cite"
-                    div.summary-fallback.u-listen-of.h-cite 🎧 Listened to
-                        |
-                        |
-                        a(href=post.properties['listen-of'].properties.url).u-url #{post.properties['listen-of'].properties.name}
-                if post.properties.show_name
-                    span.summary-fallback.u-watch-of.h-cite 📺 Watched
-                        |
-                        |
-                        a(href=post.properties.show_url).u-url #{post.properties.show_name}
-                        |
-                        |
-                        if post.properties.show_premiere
-                            | Series Premiere
-                        else if post.properties.show_finale
-                            | Series Finale
-                        else
-                            | Season #{post.properties.show_season}
+            if post.properties.content || post.properties['listen-of'] || post.properties.show_name || post.properties.movie_name || post.properties.checkin
+                div(class=post.properties.name ? "" : "p-name").e-content.p-summary
+                    if post.properties['listen-of'] && post.properties['listen-of'].type === "h-cite"
+                        div.summary-fallback.u-listen-of.h-cite 🎧 Listened to
                             |
-                            if post.properties.season_premiere
-                                | Premiere
-                            else if post.properties.season_finale
-                                | Finale
+                            |
+                            a(href=post.properties['listen-of'].properties.url).u-url #{post.properties['listen-of'].properties.name}
+                    if post.properties.show_name
+                        span.summary-fallback.u-watch-of.h-cite 📺 Watched
+                            |
+                            |
+                            a(href=post.properties.show_url).u-url #{post.properties.show_name}
+                            |
+                            |
+                            if post.properties.show_premiere
+                                | Series Premiere
+                            else if post.properties.show_finale
+                                | Series Finale
                             else
-                                | Episode #{post.properties.show_episode}
-                        if post.properties.episode_name
+                                | Season #{post.properties.show_season}
+                                |
+                                if post.properties.season_premiere
+                                    | Premiere
+                                else if post.properties.season_finale
+                                    | Finale
+                                else
+                                    | Episode #{post.properties.show_episode}
+                            if post.properties.episode_name
+                                | :
+                                |
+                                em #{post.properties.episode_name}
+                            if post.properties.content.length > 0
+                                | :
+                                |
+                    if post.properties.movie_name
+                        span.summary-fallback.u-watch-of.h-cite 🎬 Watched
+                            |
+                            |
+                            a(href=post.properties.movie_url).u-url #{post.properties.movie_name}
+                            if post.properties.content.length > 0
                             | :
                             |
-                            em #{post.properties.episode_name}
-                        if post.properties.content.length > 0
-                            | :
-                            |
-                if post.properties.movie_name
-                    span.summary-fallback.u-watch-of.h-cite 🎬 Watched
+                    if post.properties.content
+                        | !{post.properties.content}
+                        |
+                    else if post.properties.checkin && post.properties.checkin.type === "h-card"
+                        | Checked in
+                        |
+                    if post.properties.checkin && post.properties.checkin.type === "h-card"
+                        |  at
+                        |
+                        a(href=post.properties.checkin.properties.url) #{post.properties.checkin.properties.name}
                         |
                         |
-                        a(href=post.properties.movie_url).u-url #{post.properties.movie_name}
-                        if post.properties.content.length > 0
-                        | :
+                    if post.properties.personTags.length > 0
+                        | with
                         |
-                if post.properties.content
-                    | !{post.properties.content}
-                    |
-                else if post.properties.checkin && post.properties.checkin.type === "h-card"
-                    | Checked in
-                    |
-                if post.properties.checkin && post.properties.checkin.type === "h-card"
-                    |  at
-                    |
-                    a(href=post.properties.checkin.properties.url) #{post.properties.checkin.properties.name}
-                    |
-                    |
-                if post.properties.personTags.length > 0
-                    | with
-                    |
-                    each person, index in post.properties.personTags
-                        a(href=person[person.representitiveUrl]).u-category #{person.nickname}
-                        if index <= post.properties.personTags.length - 3
-                            | ,
-                            |
-                        else if index === post.properties.personTags.length - 2
-                            |
-                            | and
-                            |
-                        else
-                            | .
-                            |
+                        each person, index in post.properties.personTags
+                            a(href=person[person.representitiveUrl]).u-category #{person.nickname}
+                            if index <= post.properties.personTags.length - 3
+                                | ,
+                                |
+                            else if index === post.properties.personTags.length - 2
+                                |
+                                | and
+                                |
+                            else
+                                | .
+                                |
             div.meta
                 time(datetime=post.getPublishedDate()).dt-published.published-date #{post.semiRelativeDateTimeFormat()}
                 if post.properties.visibility === "private"
