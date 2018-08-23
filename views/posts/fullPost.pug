@@ -71,7 +71,7 @@ html
                 div(class="photos-" + post.properties.photo.length).photos-container
                     each photoUrl in post.properties.photo
                         img(src=photoUrl).u-photo
-            div.e-content.p-summary
+            div(class=post.properties.name ? "" : "p-name").e-content.p-summary
                 if post.properties['listen-of'] && post.properties['listen-of'].type === "h-cite"
                     div.summary-fallback.u-listen-of.h-cite 🎧 Listened to
                         |
