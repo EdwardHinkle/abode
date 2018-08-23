@@ -3,7 +3,7 @@ export class ResumeController {
 
         // I am a design-oriented, emotion-centric, human-interaction software engineer. I have extensive experience in both web design and web engineering leading to a solutions-oriented approach to web development. Technology should exist as a conduit to an engaging, human-centered interaction. I believe that software and design are inseparable.
 
-        let workHistory = [
+        let currentWork = [
             {
                 type: "Work",
                 date: "2017 – Present",
@@ -18,7 +18,10 @@ export class ResumeController {
                 position: "Owner",
                 company: "Studio H",
                 summary: "I’ve developed and released <a href='https://indigenous.abode.pub/ios/'>Indigenous</a>, a open source Social Reader app built in <strong>Swift</strong> that supports the W3C standards of <strong>IndieAuth</strong> and <strong>Micropub</strong>. As well as contributed an iOS app to the open source <a href='https://github.com/cleverdevil/Indiepaper-macOS/graphs/contributors'>Indiepaper project</a>. I have also released several iMessage stickers packs on the App Store."
-            },
+            }
+        ];
+
+        let workHistory = [
             {
                 type: "Work",
                 date: "2015 - 2017",
@@ -185,6 +188,7 @@ export class ResumeController {
         ];
 
         res.render("resume/resume", {
+            currentWork: currentWork,
             workHistory: workHistory
         });
     }

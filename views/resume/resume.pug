@@ -7,10 +7,10 @@ html
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         link(rel="webmention", href="https://webmention.io/eddiehinkle.com/webmention")
         link(rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-xyMU7RufUdPGVOZRrc2z2nRWVWBONzqa0NFctWglHmt5q5ukL22+lvHAqhqsIm3h" crossorigin="anonymous")
-    body
+    body.h-resume
         h1.site-monogram(title="Eddie Hinkle")
-            a(href="https://eddiehinkle.com").no-underline EH
-            span.resume-title Resume
+            a(href="https://eddiehinkle.com").no-underline.u-author EH
+            a(href="https://eddiehinkle.com/resume").no-underline.u-url.resume-title.p-name Resume
         //div.side-tabs
         //    ul
         //        li Intro
@@ -50,6 +50,21 @@ html
         //    h2.section-title Technical Skills
         //div
         //    h2.section-title Testimonials
+        div.timeline
+            h2.section-title Current Work
+            ul
+                each work in currentWork
+                    li.timeline-item
+                        div.header
+                            span.type #{work.type}
+                            span.date #{work.date}
+                        if work.companyUrl
+                            a(href=work.companyUrl, target="_blank").company
+                                h2 #{work.company}
+                        else
+                            h2.company #{work.company}
+                        span.title #{work.position}
+                        div !{work.summary}
         div.timeline
             h2.section-title Work History
             ul
