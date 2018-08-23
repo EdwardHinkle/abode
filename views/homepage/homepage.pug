@@ -74,7 +74,7 @@ html
             if latestPodcast
                 div.podcast
                     h4 Latest Podcast
-                    a(href=latestPodcast.getOfficialPermalink())
+                    a(href=latestPodcast.getOfficialPermalink()).no-underline
                         img(src=latestPodcast.properties.photo[0], width="200")
                     //audio(src=latestPodcast.properties.audio, controls=true)
                     p
@@ -84,7 +84,7 @@ html
                 div.checkin
                     h4 Last Seen
                     div.checkin-contents
-                        a(href=latestCheckin.getOfficialPermalink())
+                        a(href=latestCheckin.getOfficialPermalink()).no-underline
                             img(src="https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/pin-m+24b1f3(" + latestCheckin.properties.checkin.properties.longitude + "," + latestCheckin.properties.checkin.properties.latitude + ")/" + latestCheckin.properties.checkin.properties.longitude + "," + latestCheckin.properties.checkin.properties.latitude + ",13,0,60/400x400@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false", width='200px')
                         if latestCheckin.properties.content
                             | !{latestCheckin.properties.content}
@@ -118,24 +118,24 @@ html
                     h4 Recently Watched
                     div.watched-contents
                         if latestWatch.properties.show_image
-                            a(href=latestWatch.getOfficialPermalink())
+                            a(href=latestWatch.getOfficialPermalink()).no-underline
                                 img(src=latestWatch.properties.show_image, width="150")
                         else
-                            a(href=latestWatch.getOfficialPermalink())
+                            a(href=latestWatch.getOfficialPermalink()).no-underline
                                 img(src=latestWatch.properties.movie_image, width="150")
                     a(href="/media/").more-button.no-underline More Media
             div.listen
                 h4 Recently Listened
                 div.media-grid
                     each post in latestListen
-                        a(href=post.getOfficialPermalink())
+                        a(href=post.getOfficialPermalink()).no-underline
                             img(src=post.properties['listen-of'].properties.photo, width="100")
                 a(href="/media/").more-button.no-underline More Media
             div.photos
                 h4 Latest Photos
                 div.media-grid
                     each post in latestPhoto
-                        a(href=post.getOfficialPermalink())
+                        a(href=post.getOfficialPermalink()).no-underline
                             each photo in post.properties.photo
                                 if photo.url !== undefined
                                     img(src=photo.url, width="100")
@@ -155,7 +155,7 @@ html
                 each post in latestNotes
                     div.note !{post.properties.content}
                         |
-                        a(href=post.getOfficialPermalink()).note-date #{post.semiRelativeDateTimeFormat()}
+                        a(href=post.getOfficialPermalink()).note-date.no-underline #{post.semiRelativeDateTimeFormat()}
                 a(href="/timeline/").link-button.no-underline View Full Timeline
         if latestSocial.length > 0
             div.social
@@ -172,8 +172,8 @@ html
                             a(href=post.getOfficialPermalink()).no-underline ↪️
                             |
         div.webring
-            a(href="https://xn--sr8hvo.ws/🏻/previous") ⏪
+            a(href="https://xn--sr8hvo.ws/🏻/previous").no-underline ⏪
             | An IndieWeb Webring 🕸💍
             |
-            a(href="https://xn--sr8hvo.ws/🏻/next") ⏩
+            a(href="https://xn--sr8hvo.ws/🏻/next").no-underline ⏩
         include ../includes/footer.pug
