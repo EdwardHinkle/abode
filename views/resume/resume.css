@@ -34,7 +34,7 @@ a.no-underline {
     color: #888;
 }
 
-.site-monogram a {
+.site-monogram .initials {
     background-color: transparent;
     color: #555;
     text-decoration: none;
