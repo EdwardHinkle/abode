@@ -93,9 +93,9 @@ export class Pages {
     public static getPage(pageInfo: PageInfo): Promise<Page> {
 
         return new Promise((resolve, reject) => {
-            let postFilepath = `${dataDir}/_note/${pageInfo.slug}/post.md`;
+            let postFilepath = `${dataDir}/_note/pages/${pageInfo.slug}/post.md`;
             if (fs.existsSync(postFilepath)) {
-                let fileInfo = fs.readFileSync(`${dataDir}/_note/${pageInfo.slug}/post.md`, 'utf8');
+                let fileInfo = fs.readFileSync(`${dataDir}/_note/pages/${pageInfo.slug}/post.md`, 'utf8');
                 Page.createFromJekyllFile(fileInfo).then(post => {
                     resolve(post);
                 });
@@ -108,9 +108,9 @@ export class Pages {
     public static getPageData(pageInfo: PageInfo): Promise<any> {
 
         return new Promise((resolve, reject) => {
-            let postFilepath = `${dataDir}/_note/${pageInfo.slug}/post.md`;
+            let postFilepath = `${dataDir}/_note/pages/${pageInfo.slug}/post.md`;
             if (fs.existsSync(postFilepath)) {
-                resolve(fs.readFileSync(`${dataDir}/_note/${pageInfo.slug}/post.md`, 'utf8'));
+                resolve(fs.readFileSync(`${dataDir}/_note/pages/${pageInfo.slug}/post.md`, 'utf8'));
             } else {
                 reject(`/${pageInfo.slug} does not exist`);
             }
