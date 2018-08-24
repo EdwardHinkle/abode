@@ -696,8 +696,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                     }
 
                     // If slug exists use that
-                    if (micropubDocument.slug !== undefined) {
-                        yamlDocument.slug = micropubDocument.slug;
+                    if (micropubDocument['mp-slug'] !== undefined) {
+                        yamlDocument.slug = micropubDocument['mp-slug'];
                     } else {
                         // Set slug number to post index
                         yamlDocument.slug = '' + postInfo.postIndex;
@@ -1374,7 +1374,7 @@ function preparePostInfo(preformattedData) {
 
         let postDir;
 
-        if (properties.slug !== undefined) {
+        if (preformattedData['mp-slug'] !== undefined) {
 
             let date;
             if (properties.published != undefined) {
@@ -1419,7 +1419,7 @@ function preparePostInfo(preformattedData) {
 
         } else {
 
-            postDir = dataDir + "_note/" + properties.slug;
+            postDir = dataDir + "_note/" + preformattedData['mp-slug'];
 
         }
 
