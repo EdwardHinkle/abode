@@ -1275,30 +1275,36 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 function formatUrl(micropubDocument): Promise<any> {
 	return new Promise((resolve, reject) => {
         console.log("Formatting URL");
-        let date;
-        if (micropubDocument.properties.published != undefined) {
-            let dateString = (micropubDocument.properties.published instanceof Array ? micropubDocument.properties.published[0] : micropubDocument.properties.published);
-            date = moment(dateString);
-        } else {
-            date = moment();
-        }
-        
-        let year = date.format("YYYY");
-        let month = date.format("MM");
-        let day = date.format("DD");
-        
-        var yearDir = dataDir + "_note/" + year + "/";
-        var monthDir = yearDir + month + "/";
-        var dayDir = monthDir + day + "/";
-        
-        let index = micropubDocument.postInfo.postIndex;
-        
-        // Create type slug for permalink based on post type but lowercase
-        let micropubPostType = mfTypes.getPostType(micropubDocument);
-        let typeSlug = micropubPostType.toLowerCase();
 
-        resolve(`https://eddiehinkle.com/${year}/${month}/${day}/${index}/${typeSlug}/`);
-        console.log("Finished URL Formatting");
+        if (micropubDocument['mp-slug'] === undefined) {
+            let date;
+            if (micropubDocument.properties.published != undefined) {
+                let dateString = (micropubDocument.properties.published instanceof Array ? micropubDocument.properties.published[0] : micropubDocument.properties.published);
+                date = moment(dateString);
+            } else {
+                date = moment();
+            }
+
+            let year = date.format("YYYY");
+            let month = date.format("MM");
+            let day = date.format("DD");
+
+            var yearDir = dataDir + "_note/" + year + "/";
+            var monthDir = yearDir + month + "/";
+            var dayDir = monthDir + day + "/";
+
+            let index = micropubDocument.postInfo.postIndex;
+
+            // Create type slug for permalink based on post type but lowercase
+            let micropubPostType = mfTypes.getPostType(micropubDocument);
+            let typeSlug = micropubPostType.toLowerCase();
+
+            resolve(`https://eddiehinkle.com/${year}/${month}/${day}/${index}/${typeSlug}/`);
+            console.log("Finished URL Formatting");
+        } else {
+            resolve(`https://eddiehinkle.com/${micropubDocument['mp-slug']}`);
+            console.log("Finished URL Formatting");
+        }
     });
 }
 
