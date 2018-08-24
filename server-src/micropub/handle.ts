@@ -884,7 +884,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                 // Save YAML File
                 var fileData = "---\n" + yaml.safeDump(yamlDocument, { lineWidth: 800, skipInvalid: true }) + "---\n" + postContents;
                 // var fileName = formatFilename(yamlDocument);
-                var fileName = postInfo.postDir;
+                var fileName = `${postInfo.postDir}/post.md`;
 
                 console.log(`Test Fileoutput for ${fileName}`);
 
