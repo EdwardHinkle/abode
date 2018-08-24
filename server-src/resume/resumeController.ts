@@ -6,7 +6,7 @@ export class ResumeController {
         let currentWork = [
             {
                 type: "Work",
-                date: "2017 – Present",
+                date: "Since 2017",
                 position: "Senior UI Engineer",
                 company: "ThreatConnect, Inc.",
                 companyUrl: "https://www.threatconnect.com/",
@@ -14,7 +14,7 @@ export class ResumeController {
             },
             {
                 type: "Freelance",
-                date: "2016 – Present",
+                date: "Since 2016",
                 position: "Owner",
                 company: "Studio H",
                 summary: "I’ve developed and released <a href='https://indigenous.abode.pub/ios/'>Indigenous</a>, a open source Social Reader app built in <strong>Swift</strong> that supports the W3C standards of <strong>IndieAuth</strong> and <strong>Micropub</strong>. As well as contributed an iOS app to the open source <a href='https://github.com/cleverdevil/Indiepaper-macOS/graphs/contributors'>Indiepaper project</a>. I have also released several iMessage stickers packs on the App Store."
