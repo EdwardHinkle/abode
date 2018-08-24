@@ -878,7 +878,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                 // Save YAML File
                 var fileData = "---\n" + yaml.safeDump(yamlDocument, { lineWidth: 800, skipInvalid: true }) + "---\n" + postContents;
-                var fileName = formatFilename(yamlDocument);
+                // var fileName = formatFilename(yamlDocument);
+                var fileName = postInfo.postDir;
 
                 console.log(`Test Fileoutput for ${fileName}`);
 
@@ -1365,55 +1366,74 @@ function formatFilenameForLukeSyndication(data) {
 function preparePostInfo(preformattedData) {
     return new Promise((resolve, reject) => {
         let properties = preformattedData.properties;
-        let date;
-        if (properties.published != undefined) {
-            let dateString = (properties.published instanceof Array ? properties.published[0] : properties.published);
-            date = moment(dateString);
+
+        let postDir;
+
+        if (properties.slug !== undefined) {
+
+            let date;
+            if (properties.published != undefined) {
+                let dateString = (properties.published instanceof Array ? properties.published[0] : properties.published);
+                date = moment(dateString);
+            } else {
+                date = moment();
+            }
+
+            let year = date.format("YYYY");
+            let month = date.format("MM");
+            let day = date.format("DD");
+
+            var postIndex = 1;
+            var yearDir = dataDir + "_note/" + year + "/";
+            if (!fs.existsSync(yearDir)) {
+                fs.mkdirSync(yearDir);
+                console.log(yearDir + " created");
+            }
+            var monthDir = yearDir + month + "/";
+            if (!fs.existsSync(monthDir)) {
+                fs.mkdirSync(monthDir);
+                console.log(monthDir + " created");
+            }
+            var dayDir = monthDir + day;
+            if (!fs.existsSync(dayDir)) {
+                fs.mkdirSync(dayDir);
+                console.log(dayDir + " created");
+            } else {
+                var dirContents = fs.readdirSync(dayDir);
+                dirContents = _.filter(dirContents, (filename) => {
+                    return (fs.statSync(dayDir + "/" + filename).isDirectory() && fs.existsSync(`${dayDir}${filename}/post.md`));
+                });
+                postIndex = dirContents.length + 1;
+            }
+
+            while (fs.existsSync(`${dayDir}/${postIndex}/post.md`)) {
+                postIndex++;
+            }
+
+            postDir = `${dayDir}/${postIndex}`;
+
         } else {
-            date = moment();
-        }
-        
-        let year = date.format("YYYY");
-        let month = date.format("MM");
-        let day = date.format("DD");
-        
-        var postIndex = 1;
-        var yearDir = dataDir + "_note/" + year + "/";
-        if (!fs.existsSync(yearDir)) {
-            fs.mkdirSync(yearDir);
-            console.log(yearDir + " created");
-        }
-        var monthDir = yearDir + month + "/";
-        if (!fs.existsSync(monthDir)) {
-            fs.mkdirSync(monthDir);
-            console.log(monthDir + " created");
-        }
-        var dayDir = monthDir + day;
-        if (!fs.existsSync(dayDir)) {
-            fs.mkdirSync(dayDir);
-            console.log(dayDir + " created");
-        } else {
-            var dirContents = fs.readdirSync(dayDir);
-            dirContents = _.filter(dirContents, (filename) => {
-                return (fs.statSync(dayDir + "/" + filename).isDirectory() && fs.existsSync(`${dayDir}${filename}/post.md`));
-            });
-            postIndex = dirContents.length + 1;
+
+            postDir = dataDir + "_note/" + properties.slug;
+
         }
 
-        while(fs.existsSync(`${dayDir}/${postIndex}/post.md`)) {
-            postIndex++;
-        }
-
-        fs.writeFile(`${dayDir}/${postIndex}/post.md`, '', function(err) {
+        fs.writeFile(`${postDir}/post.md`, '', function(err) {
             if(err) {
                 console.log(err);
                 reject(err);
             }
 
-            console.log(`Created: ${dayDir}/${postIndex}/post.md`);
-            resolve({ postIndex: postIndex });
-        }); 
-        resolve({ postIndex: postIndex });
+            console.log(`Created: ${postDir}/post.md`);
+            resolve({
+                postIndex: postIndex,
+                postDir: postDir
+            });
+        });
+        // resolve({
+        //     postIndex: postIndex,
+        //     postDir: postDir
+        // });
         
     });
 }
