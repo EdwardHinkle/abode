@@ -697,7 +697,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                     // If slug exists use that
                     if (micropubDocument.properties['mp-slug'] !== undefined) {
-                        yamlDocument.slug = micropubDocument.properties['mp-slug'];
+                        yamlDocument.slug = micropubDocument.properties['mp-slug'][0];
                     } else {
                         // Set slug number to post index
                         yamlDocument.slug = '' + postInfo.postIndex;
@@ -1302,7 +1302,7 @@ function formatUrl(micropubDocument): Promise<any> {
             resolve(`https://eddiehinkle.com/${year}/${month}/${day}/${index}/${typeSlug}/`);
             console.log("Finished URL Formatting");
         } else {
-            resolve(`https://eddiehinkle.com/${micropubDocument.properties['mp-slug']}`);
+            resolve(`https://eddiehinkle.com/${micropubDocument.properties['mp-slug'][0]}`);
             console.log("Finished URL Formatting");
         }
     });
@@ -1380,7 +1380,7 @@ function preparePostInfo(preformattedData) {
 
         let postDir;
 
-        if (properties['mp-slug'] !== undefined) {
+        if (properties['mp-slug'] === undefined) {
 
             let date;
             if (properties.published != undefined) {
@@ -1428,7 +1428,7 @@ function preparePostInfo(preformattedData) {
             console.log('page filename');
             console.log(preformattedData);
 
-            postDir = dataDir + "_note/pages/" + properties['mp-slug'];
+            postDir = dataDir + "_note/pages/" + properties['mp-slug'][0];
 
         }
 
