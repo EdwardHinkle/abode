@@ -1425,7 +1425,9 @@ function preparePostInfo(preformattedData) {
 
         } else {
 
-            postDir = dataDir + "_note/" + preformattedData['mp-slug'];
+            console.log(preformattedData);
+
+            postDir = dataDir + "_note/pages/" + preformattedData['mp-slug'];
 
         }
 
