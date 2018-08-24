@@ -429,7 +429,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                 }
 
                 // Extract tags from post content
-                let regExTagToken = /\B#((?:\w|-)*)/g;
+                let regExTagToken = /^#((?:\w|-)+)/g;
                 let match = null;
                 let foundTags = [];
                 while(match = regExTagToken.exec(micropubContent)) {
