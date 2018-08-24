@@ -100,7 +100,7 @@ export class Pages {
                     resolve(post);
                 });
             } else {
-                reject("File does not exist");
+                reject(`/${pageInfo.slug} does not exist`);
             }
         });
     }
@@ -112,7 +112,7 @@ export class Pages {
             if (fs.existsSync(postFilepath)) {
                 resolve(fs.readFileSync(`${dataDir}/_note/${pageInfo.slug}/post.md`, 'utf8'));
             } else {
-                reject("file does not exist");
+                reject(`/${pageInfo.slug} does not exist`);
             }
         })
     }
