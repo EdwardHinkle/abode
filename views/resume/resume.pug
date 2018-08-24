@@ -26,7 +26,7 @@ html
                 strong#rolename UI / UX Engineer
                 span.blinking-cursor
         div.client-section
-            h2.section-title Companies I've Worked With
+            h2.section-title#companies Companies I've Worked With
             div.client-logos
                 a(href="https://google.com", target="_blank").no-underline
                     img(src="/resume/images/logos/google-logo.png").client-logo
@@ -51,7 +51,7 @@ html
         //div
         //    h2.section-title Testimonials
         div.timeline
-            h2.section-title Current Work
+            h2.section-title#current-work Current Work
             ul
                 each work in currentWork
                     li.timeline-item
@@ -66,7 +66,7 @@ html
                         span.title #{work.position}
                         div !{work.summary}
         div.timeline
-            h2.section-title Work History
+            h2.section-title#work-history Work History
             ul
                 each work in workHistory
                     li.timeline-item
@@ -81,7 +81,7 @@ html
                         span.title #{work.position}
                         div !{work.summary}
         div.portfolio-section
-            h2.section-title Portfolio
+            h2.section-title#portfolios Portfolio
             div.portfolio-container
                 img(src="/resume/images/portfolio/google-1.png").portfolio-item
                 img(src="/resume/images/portfolio/google-2.png").portfolio-item
