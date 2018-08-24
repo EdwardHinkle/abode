@@ -696,8 +696,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                     }
 
                     // If slug exists use that
-                    if (micropubDocument['mp-slug'] !== undefined) {
-                        yamlDocument.slug = micropubDocument['mp-slug'];
+                    if (micropubDocument.properties['mp-slug'] !== undefined) {
+                        yamlDocument.slug = micropubDocument.properties['mp-slug'];
                     } else {
                         // Set slug number to post index
                         yamlDocument.slug = '' + postInfo.postIndex;
@@ -1276,7 +1276,7 @@ function formatUrl(micropubDocument): Promise<any> {
 	return new Promise((resolve, reject) => {
         console.log("Formatting URL");
 
-        if (micropubDocument['mp-slug'] === undefined) {
+        if (micropubDocument.properties['mp-slug'] === undefined) {
             let date;
             if (micropubDocument.properties.published != undefined) {
                 let dateString = (micropubDocument.properties.published instanceof Array ? micropubDocument.properties.published[0] : micropubDocument.properties.published);
@@ -1302,7 +1302,7 @@ function formatUrl(micropubDocument): Promise<any> {
             resolve(`https://eddiehinkle.com/${year}/${month}/${day}/${index}/${typeSlug}/`);
             console.log("Finished URL Formatting");
         } else {
-            resolve(`https://eddiehinkle.com/${micropubDocument['mp-slug']}`);
+            resolve(`https://eddiehinkle.com/${micropubDocument.properties['mp-slug']}`);
             console.log("Finished URL Formatting");
         }
     });
@@ -1380,7 +1380,7 @@ function preparePostInfo(preformattedData) {
 
         let postDir;
 
-        if (preformattedData['mp-slug'] !== undefined) {
+        if (properties['mp-slug'] !== undefined) {
 
             let date;
             if (properties.published != undefined) {
@@ -1428,7 +1428,7 @@ function preparePostInfo(preformattedData) {
             console.log('page filename');
             console.log(preformattedData);
 
-            postDir = dataDir + "_note/pages/" + preformattedData['mp-slug'];
+            postDir = dataDir + "_note/pages/" + properties['mp-slug'];
 
         }
 
