@@ -695,8 +695,13 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         }
                     }
 
-                    // Set slug number to post index
-                    yamlDocument.slug = '' + postInfo.postIndex;
+                    // If slug exists use that
+                    if (micropubDocument.slug !== undefined) {
+                        yamlDocument.slug = micropubDocument.slug;
+                    } else {
+                        // Set slug number to post index
+                        yamlDocument.slug = '' + postInfo.postIndex;
+                    }
 
                     // Create type slug for permalink based on post type but lowercase
                     let typeSlug = micropubPostType.toLowerCase();

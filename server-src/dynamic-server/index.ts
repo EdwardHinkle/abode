@@ -4,6 +4,8 @@ import {Posts} from "../model/posts.model";
 import {Post, PostType} from "../model/post.model";
 import moment = require("moment");
 import * as pug from 'pug';
+import {Page} from "../model/page.model";
+import {Pages} from "../model/pages.model";
 
 export let dynamicRouter = express.Router();
 
@@ -458,6 +460,23 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postTy
             });
             return;
         }
+    });
+
+});
+
+dynamicRouter.get('/:pageSlug', (req, res, next) => {
+
+    Pages.getPage({
+        slug: req.params.pageSlug
+    }).then(page => {
+
+        res.render("posts/fullPost", {
+            post: page
+        });
+
+    }).catch(error => {
+        console.log("ERROR", error);
+        next();
     });
 
 });
