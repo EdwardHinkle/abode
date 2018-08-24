@@ -3,20 +3,92 @@ html
         title EddieHinkle.com
         style
             include ../global.css
+            include daySummary.css
             include post.css
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         link(rel="webmention", href="https://webmention.io/eddiehinkle.com/webmention")
         link(rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-xyMU7RufUdPGVOZRrc2z2nRWVWBONzqa0NFctWglHmt5q5ukL22+lvHAqhqsIm3h" crossorigin="anonymous")
     body
         include ../includes/header.pug
-        h2 #{title}
+        div.day-header
+            div.previous-day
+                if previous
+                    a(href=previous.link) #{previous.label}
+            div.current-day #{title}
+            div.next-day
+                if next
+                    a(href=next.link) #{next.label}
+        div.watch-container
+            each post in watchPosts
+                img(src=post.properties.show_image, width='100px')
+        div.meal-container
+            each meal in consumed
+                div
+                    each post, index in meal
+                        a(href=post.getOfficialPermalink()) #{post.getPostType() === 'ate' ? post.properties.ate.properties.name : post.properties.drank.properties.name}
+                        if index <= meal.length - 3
+                            | ,
+                            |
+                        else if index === meal.length - 2
+                            |
+                            | and
+                            |
+                        else
+                            | .
+                            |
+        div.articles
+            h4 Latest Articles
+            each post in articles
+                div.social-post
+                    a(href=post.getOfficialPermalink()) !{post.properties.name}
+        div.social
+            h4 Timeline
+            each post in social
+                div.social-post
+                    if post.properties['in-reply-to']
+                        if post.properties['in-reply-to'].indexOf('github.com') > -1
+                            if post.properties.name !== undefined && post.properties.name > ''
+                                - var repoInfo = post.properties['in-reply-to'].split('/')
+                                - var userUrlParts = post.properties['in-reply-to'].split('/')
+                                - userUrlParts.pop()
+                                - userUrl = userUrlParts.join('/')
+                                div.simple-reply 🐛 New issue for
+                                    |
+                                    |
+                                    a(href=post.properties['in-reply-to']).u-in-reply-to #{repoInfo.pop()}
+                                    |
+                                    | by
+                                    |
+                                    a(href=userUrl) #{repoInfo.pop()}
+                            else
+                                div.simple-reply ↪ Commented on an issue:
+                                    |
+                                    |
+                                    a(href=post.properties['in-reply-to']).u-in-reply-to #{post.properties['in-reply-to']}
+                        else
+                            div.simple-reply ↪ In Reply To:
+                                |
+                                |
+                                a(href=post.properties['in-reply-to']).u-in-reply-to #{post.properties['in-reply-to']}
+                    if post.properties['like-of']
+                        div.summary-fallback 👍 Liked:
+                            |
+                            |
+                            a(href=post.properties['like-of']).u-like-of #{post.properties['like-of']}
+                    if post.properties['bookmark-of']
+                        if post.properties['bookmark-of'].type === 'h-cite'
+                            div.summary-fallback 🔖 Bookmarked:
+                                |
+                                |
+                                a(href=post.properties['bookmark-of'].properties.url).u-bookmark-of.p-name #{post.properties['bookmark-of'].properties.name}
+                        else
+                            div.summary-fallback.p-name 🔖 Bookmarked:
+                                |
+                                |
+                                a(href=post.properties['bookmark-of']).u-bookmark-of #{post.properties['bookmark-of']}
+                    | #{post.properties.content}
         ul
             each post in posts
                 li
                     a(href=post.getOfficialPermalink()) #{post.getPostType()}
-        div
-            if previous
-                a(href=previous.link) #{previous.label}
-            if next
-                a(href=next.link) #{next.label}
         include ../includes/footer.pug

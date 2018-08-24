@@ -350,9 +350,70 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/', (req, res, next) => {
             return b.properties.date.diff(a.properties.date);
         });
 
+        let watchPosts = [];
+        let listenPosts = [];
+        let consumed = [];
+        let social = [];
+        let podcasts = [];
+        let articles = [];
+        let postsWithoutType = [];
+
+        posts.forEach((post, index) => {
+            let postType = post.getPostType();
+
+            switch(postType) {
+                case PostType.Audio:
+                    podcasts.push(post);
+                    break;
+                case PostType.Drank:
+                case PostType.Ate:
+                    if (consumed.length > 0) {
+                        let lastMeal = consumed[consumed.length - 1];
+                        if (lastMeal[0].properties.date.diff(post.properties.date, 'minutes') < 30) {
+                            consumed[consumed.length - 1].push(post);
+                        } else {
+                            consumed.push([post]);
+                        }
+                    } else {
+                        consumed.push([post]);
+                    }
+                    break;
+                // case PostType.Checkin:
+                //     if (latestCheckin === undefined) {
+                //         latestCheckin = post;
+                //     }
+                //     break;
+                case PostType.Watch:
+                    watchPosts.push(post);
+                    break;
+                case PostType.Listen:
+                    listenPosts.push(post);
+                    break;
+                case PostType.Note:
+                    social.push(post);
+                    break;
+                case PostType.Article:
+                    articles.push(post);
+                    break;
+                case PostType.Like:
+                case PostType.Reply:
+                case PostType.Bookmark:
+                    social.push(post);
+                    break;
+                default:
+                    postsWithoutType.push(post);
+            }
+        });
+
         let pageData: any = {
             title: `${pageDate.format("MMM DD, YYYY")}`,
-            posts: posts
+            posts: postsWithoutType,
+            watchPosts: watchPosts,
+            listenPosts: listenPosts,
+            consumed: consumed,
+            social: social,
+            podcasts: podcasts,
+            articles: articles
         };
 
         let nextDate = pageDate.clone().add(1, "day");

@@ -1,0 +1,38 @@
+.day-header {
+    width: 35%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.day-header .previous-day {
+    display: inline-block;
+    width: 25%;
+    text-align: left;
+}
+
+.day-header .current-day {
+    text-align: center;
+    font-size: 2rem;
+    display: inline-block;
+    width: 50%;
+}
+
+.day-header .next-day {
+    display: inline-block;
+    width: 25%;
+    text-align: right;
+}
+
+.social-post {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h4 {
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+}
