@@ -19,9 +19,16 @@ html
                 if next
                     a(href=next.link) #{next.label}
         div.watch-container
+            h4 Watched
             each post in watchPosts
                 img(src=post.properties.show_image, width='100px')
+        if listenPosts.length > 0
+            div.listen-container
+                h4 Listened To
+                each post in listenPosts
+                    img(src=post.properties['listen-of'].properties.photo, width='100px')
         div.meal-container
+            h4 Meals
             each meal in consumed
                 div
                     each post, index in meal
@@ -36,11 +43,12 @@ html
                         else
                             | .
                             |
-        div.articles
-            h4 Latest Articles
-            each post in articles
-                div.social-post
-                    a(href=post.getOfficialPermalink()) !{post.properties.name}
+        if articles.length > 0
+            div.articles
+                h4 Articles
+                each post in articles
+                    div.social-post
+                        a(href=post.getOfficialPermalink()) !{post.properties.name}
         div.social
             h4 Timeline
             each post in social

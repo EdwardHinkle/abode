@@ -1,5 +1,5 @@
 .day-header {
-    width: 35%;
+    max-width: 500px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -23,10 +23,16 @@
     text-align: right;
 }
 
+.watch-container {
+	width: fit-content;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 .social-post {
     margin-top: 50px;
     margin-bottom: 50px;
-    width: 40%;
+    max-width: 500px;
     margin-left: auto;
     margin-right: auto;
 }

@@ -1430,11 +1430,11 @@ function preparePostInfo(preformattedData) {
 
             postDir = dataDir + "_note/pages/" + properties['mp-slug'][0];
 
-            if (!fs.existsSync(postDir)) {
+        }
+        
+        if (!fs.existsSync(postDir)) {
                 fs.mkdirSync(postDir);
                 console.log(postDir + " created");
-            }
-
         }
 
         fs.writeFile(`${postDir}/post.md`, '', function(err) {
