@@ -23,10 +23,11 @@
     text-align: right;
 }
 
-.watch-container {
+.watch-container, .listen-container, .meal-container, photos-container {
 	width: fit-content;
 	margin-left: auto;
 	margin-right: auto;
+    max-width: 800px;
 }
 
 .social-post {

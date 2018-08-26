@@ -357,6 +357,7 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/', (req, res, next) => {
         let podcasts = [];
         let articles = [];
         let postsWithoutType = [];
+        let photos = [];
 
         posts.forEach((post, index) => {
             let postType = post.getPostType();
@@ -383,6 +384,9 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/', (req, res, next) => {
                 //         latestCheckin = post;
                 //     }
                 //     break;
+                case PostType.Photo:
+                    photos.push(post);
+                    break;
                 case PostType.Watch:
                     watchPosts.push(post);
                     break;
@@ -413,7 +417,8 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/', (req, res, next) => {
             consumed: consumed,
             social: social,
             podcasts: podcasts,
-            articles: articles
+            articles: articles,
+            photos: photos
         };
 
         let nextDate = pageDate.clone().add(1, "day");

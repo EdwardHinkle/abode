@@ -19,14 +19,23 @@ html
                 if next
                     a(href=next.link) #{next.label}
         if watchPosts.length > 0
+            h4 Watched
             div.watch-container
                 each post in watchPosts
-                    img(src=post.properties.show_image, width='100px')
+                    a(href=post.getOfficialPermalink()).no-underline
+                        img(src=post.properties.show_image, width='100px')
+        if listenPosts.length > 0
+            h4 Listened To
+            div.listen-container
+                each post in listenPosts
+                    a(href=post.getOfficialPermalink()).no-underline
+                        img(src=post.properties['listen-of'].properties.photo, width='100px')
         if consumed.length > 0
+            h4 Meals
             div.meal-container
                 each meal in consumed
                     div
-                        each post, index in meal
+                        each post, index in meal.reverse()
                             a(href=post.getOfficialPermalink()) #{post.getPostType() === 'ate' ? post.properties.ate.properties.name : post.properties.drank.properties.name}
                             if index <= meal.length - 3
                                 | ,
@@ -40,10 +49,17 @@ html
                                 |
         if articles.length > 0
             div.articles
-                h4 Latest Articles
+                h4 Articles
                 each post in articles
                     div.social-post
                         a(href=post.getOfficialPermalink()) !{post.properties.name}
+        if photos.length > 0
+            h4 Photos
+            div.photos-container
+                each post in photos
+                    each photo in post.properties.photo
+                        a(href=post.getOfficialPermalink()).no-underline
+                            img(src=photo, width='100px')
         if social.length > 0
             div.social
                 h4 Timeline
