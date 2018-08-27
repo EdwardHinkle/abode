@@ -1,0 +1,92 @@
+html
+    head
+        title EddieHinkle.com
+        style
+            include ../global.css
+            include daySummary.css
+            include post.css
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="webmention", href="https://webmention.io/eddiehinkle.com/webmention")
+        link(rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-xyMU7RufUdPGVOZRrc2z2nRWVWBONzqa0NFctWglHmt5q5ukL22+lvHAqhqsIm3h" crossorigin="anonymous")
+    body
+        include ../includes/header.pug
+        div.day-header
+            div.previous-day
+                if previous
+                    a(href=previous.link) #{previous.label}
+            div.current-day #{title}
+            div.next-day
+                if next
+                    a(href=next.link) #{next.label}
+        h3 # of Podcasts: #{currentPodcasts.length}
+        each post in currentPodcasts
+            p
+                a(href=post.getOfficialPermalink()) #{post.properties.name}
+        h3 # of Articles: #{currentArticles.length}
+        each post in currentArticles
+            p
+                a(href=post.getOfficialPermalink()) #{post.properties.name}
+        h3 Ate
+        each count, foodName in ate
+            p #{foodName}: #{count}
+        h3 Drank
+        each count, drinkName in drank
+            p #{drinkName}: #{count}
+        h3 # of TV Show Episodes: #{shows.length}
+        h3 # of TV Premieres: #{premieres.length}
+        each post in premieres
+            p
+                a(href=post.getOfficialPermalink()) #{post.properties.show_name}
+                    |
+                    |
+                    if post.properties.show_premiere
+                        | Series Premiere
+                    else if post.properties.show_finale
+                        | Series Finale
+                    else
+                        | Season #{post.properties.show_season}
+                        |
+                        if post.properties.season_premiere
+                            | Premiere
+                        else if post.properties.season_finale
+                            | Finale
+                        else
+                            | Episode #{post.properties.show_episode}
+                    if post.properties.episode_name
+                        | :
+                        |
+                        em #{post.properties.episode_name}
+        h3 # of TV Finales: #{finales.length}
+        each post in finales
+            p
+                a(href=post.getOfficialPermalink()) #{post.properties.show_name}
+                    |
+                    |
+                    if post.properties.show_premiere
+                        | Series Premiere
+                    else if post.properties.show_finale
+                        | Series Finale
+                    else
+                        | Season #{post.properties.show_season}
+                        |
+                        if post.properties.season_premiere
+                            | Premiere
+                        else if post.properties.season_finale
+                            | Finale
+                        else
+                            | Episode #{post.properties.show_episode}
+                    if post.properties.episode_name
+                        | :
+                        |
+                        em #{post.properties.episode_name}
+        h3 # of Movies: #{movies.length}
+        each post in movies
+            p
+                a(href=post.getOfficialPermalink()) #{post.properties.movie_name}
+        h3 # of Listened Podcast Episodes: #{currentListens.length}
+        h3 # of Photos: #{currentPhotos.length}
+        ul
+            each post in posts
+                li
+                    a(href=post.getOfficialPermalink()) #{post.getPostType()}
+        include ../includes/footer.pug

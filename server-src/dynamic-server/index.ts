@@ -318,6 +318,127 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/', (req, res, next) => {
     });
 });
 
+dynamicRouter.get('/:year(\\d+)/:month(\\d+)/stats/', (req, res, next) => {
+
+    let currentMonth = moment();
+    currentMonth.year(req.params.year);
+    currentMonth.month(parseInt(req.params.month) - 1);
+    let lastMonth = currentMonth.clone();
+    lastMonth.subtract(1, "month");
+
+    let postPromises = [];
+
+    postPromises.push(Posts.getPosts({
+        year: currentMonth.format("YYYY"),
+        month: currentMonth.format("MM")
+    }));
+
+    // postPromises.push(Posts.getPosts({
+    //     year: lastMonth.format("YYYY"),
+    //     month: lastMonth.format("MM")
+    // }));
+
+    Promise.all(postPromises).then(posts => {
+
+        let thisMonthPosts = posts[0];
+        // let lastMonthPosts = posts[1];
+
+        let currentPodcasts = [];
+        let currentArticles = [];
+        let currentPhotos = [];
+        let finales = [];
+        let premieres = [];
+        let shows = [];
+        let movies = [];
+        let currentListens = [];
+        let ate = {};
+        let drank = {};
+
+        let postsWithoutType = [];
+
+        thisMonthPosts.forEach((post, index) => {
+            let postType = post.getPostType();
+
+            switch(postType) {
+                case PostType.Audio:
+                    currentPodcasts.push(post);
+                    break;
+                case PostType.Drank:
+                    let drankName = post.properties.drank.properties.name;
+                    if (drank[drankName] === undefined) {
+                        drank[drankName] = 1;
+                    } else {
+                        drank[drankName]++;
+                    }
+                    break;
+                case PostType.Ate:
+                    let ateName = post.properties.ate.properties.name;
+                    if (ate[ateName] === undefined) {
+                        ate[ateName] = 1;
+                    } else {
+                        ate[ateName]++;
+                    }
+                    break;
+                // case PostType.Checkin:
+                //     if (latestCheckin === undefined) {
+                //         latestCheckin = post;
+                //     }
+                //     break;
+                case PostType.Photo:
+                    currentPhotos.push(post);
+                    break;
+                case PostType.Watch:
+                    if (post.properties['show_name']) {
+                        if (post.properties['season_finale'] || post.properties['show_finale']) {
+                            finales.push(post);
+                        }
+                        if (post.properties['season_premiere'] || post.properties['show_premiere']) {
+                            premieres.push(post);
+                        }
+                        shows.push(post);
+                    } else if (post.properties['movie_name']) {
+                        movies.push(post);
+                    }
+                    break;
+                case PostType.Listen:
+                    currentListens.push(post);
+                    break;
+                // case PostType.Note:
+                //     social.push(post);
+                //     break;
+                case PostType.Article:
+                    currentArticles.push(post);
+                    break;
+                // case PostType.Like:
+                // case PostType.Reply:
+                // case PostType.Bookmark:
+                //     social.push(post);
+                //     break;
+                default:
+                    postsWithoutType.push(post);
+            }
+        });
+
+        res.render("posts/monthStats", {
+            title: `${currentMonth.format("MMM YYYY")}`,
+            posts: postsWithoutType,
+            currentPodcasts: currentPodcasts,
+            currentArticles: currentArticles,
+            currentPhotos: currentPhotos,
+            finales: finales,
+            premieres: premieres,
+            movies: movies,
+            shows: shows,
+            currentListens: currentListens,
+            ate: ate,
+            drank: drank
+        });
+    }).catch(error => {
+        console.log("ERROR", error);
+        next();
+    });
+});
+
 dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/', (req, res, next) => {
 
     let pageDate = moment();
