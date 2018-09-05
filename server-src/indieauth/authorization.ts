@@ -56,6 +56,21 @@ export let authorizationEndpoint = (req, res, next) => {
             return;
         }
 
+        let scopes = [
+            {
+                id: 'id',
+                name: `Identify you as Eddie Hinkle (${req.session.username})`
+            },
+        ];
+
+        let scopeArray = scope.split(" ");
+        scopes = scopes.concat(scopeArray.map(scopeValue => {
+            return {
+                id: scopeValue,
+                name: scopeDefinitions[scopeValue]
+            };
+        }));
+
         let $ = Cheerio.load(body);
 
         manifestUrl = $("[rel='manifest']").attr("href");
@@ -69,13 +84,6 @@ export let authorizationEndpoint = (req, res, next) => {
                 console.log(body);
                 console.log(body.name);
                 console.log(body.icons[0]);
-
-                let scopes = [
-                    {
-                        id: 'id',
-                        name: `Identify you as Eddie Hinkle (${req.session.username})`
-                    }
-                ];
 
                 req.session.indieAuthRequest = {
                     response_type: response_type,
@@ -133,21 +141,6 @@ export let authorizationEndpoint = (req, res, next) => {
         // todo: If redirect_uri is NOT part of the client_id's domain, check if it is in the redirect array
         // let redirectUris = data.rels.redirect_uri;
         // todo: if redirect_uri is not official, reject it
-
-        let scopes = [
-            {
-                id: 'id',
-                name: `Identify you as Eddie Hinkle (${req.session.username})`
-            },
-        ];
-
-        let scopeArray = scope.split(" ");
-        scopes = scopes.concat(scopeArray.map(scopeValue => {
-            return {
-                id: scopeValue,
-                name: scopeDefinitions[scopeValue]
-            };
-        }));
 
         req.session.indieAuthRequest = {
             response_type: response_type,
