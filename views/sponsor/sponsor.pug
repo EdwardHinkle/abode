@@ -3,6 +3,7 @@ html
         title Sponsor Eddie
         style
             include ../global.css
+            include sponsor.css
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         link(rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-xyMU7RufUdPGVOZRrc2z2nRWVWBONzqa0NFctWglHmt5q5ukL22+lvHAqhqsIm3h" crossorigin="anonymous")
@@ -12,7 +13,17 @@ html
             include memberful.js
     body
         include ../includes/header.pug
-        div
-            h1 Sponsor Eddie
-            a(href="https://eddiehinkle.memberful.com/checkout?plan=32945") Sponsor for $25/month
+        div.h-entry
+            h1.section-title.p-name Become a Patron
+            div.sponsor-container
+                img(src="/images/profile.jpg").profile-photo
+                div.sponsor-description.e-content
+                    h2 My name is Eddie, and I create <a href="https://indigenous.abode.pub/ios/" target="_blank">open source iOS apps</a> and <a href="https://eddiehinkle.com/tag/podcast/" target="_blank">podcasts</a>.
+                    p The work I do is centered around making the web an open platform. My primary app right now is an iOS app called <a href="https://indigenous.abode.pub" target="_blank">Indigenous</a> that supports <a href="https://indieweb.org" target="_blank">IndieWeb technologies</a> for posting to your website and reading other websites. My primary podcast is called <a href="https://myurlis.com" target="_blank">My Url Is</a> and is a bi-weekly podcast that interviews various people in the IndieWeb community.
+                    p When you choose to provide one-time support or become a monthly sponsor, I deeply appreciate your support and it aids in my ability to continue to provide great open source tools and interesting podcasts.
+            div.sponsor-buttons
+                div.no-underline.sponsor-button.disabled One-Time Support Currently Unavailable
+            div.sponsor-buttons
+                a(href="https://eddiehinkle.memberful.com/checkout?plan=32946").no-underline.sponsor-button Become a Backer ($5/Month)
+                a(href="https://eddiehinkle.memberful.com/checkout?plan=32947").no-underline.sponsor-button Become a Sponsor ($25/Month)
         include ../includes/footer.pug
