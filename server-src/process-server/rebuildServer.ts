@@ -148,37 +148,37 @@ export function rebuildServerFromSlack(req?, res?) {
                             console.log("Successfully sent Microsub Notification");
                         }
                     });
-                    jekyll.runJekyllPrivateBuild().then(() => {
-                        request.post(`https://aperture.eddiehinkle.com/micropub/`, {
-                            'auth': {
-                                'bearer': `my7XNxxxB9EYoyDCLBQppcqD7Hsqz45R`
-                            },
-                            body: {
-                                type: ['h-entry'],
-                                properties: {
-                                    content: [`Private Rebuild Complete`],
-                                    published: [moment().format()],
-                                    author: [{
-                                        type: ['h-card'],
-                                        properties: {
-                                            name: ['eddiehinkle.com'],
-                                            url: ['https://eddiehinkle.com']
-                                        }
-                                    }]
-                                }
-                            },
-                            json: true
-                        }, (err, data) => {
-                            if (err != undefined) {
-                                console.log(`ERROR: ${err}`);
-                            }
-                            if (data.statusCode !== 201 && data.statusCode !== 202) {
-                                console.log("oops Microsub Notification Error");
-                            } else {
-                                console.log("Successfully sent Microsub Notification");
-                            }
-                        });
-                    });
+//                    jekyll.runJekyllPrivateBuild().then(() => {
+//                        request.post(`https://aperture.eddiehinkle.com/micropub/`, {
+//                            'auth': {
+//                                'bearer': `my7XNxxxB9EYoyDCLBQppcqD7Hsqz45R`
+//                            },
+//                            body: {
+//                                type: ['h-entry'],
+//                                properties: {
+//                                    content: [`Private Rebuild Complete`],
+//                                    published: [moment().format()],
+//                                    author: [{
+//                                        type: ['h-card'],
+//                                        properties: {
+//                                            name: ['eddiehinkle.com'],
+//                                            url: ['https://eddiehinkle.com']
+//                                        }
+//                                    }]
+//                                }
+//                            },
+//                            json: true
+//                        }, (err, data) => {
+//                            if (err != undefined) {
+//                                console.log(`ERROR: ${err}`);
+//                            }
+//                            if (data.statusCode !== 201 && data.statusCode !== 202) {
+//                                console.log("oops Microsub Notification Error");
+//                            } else {
+//                                console.log("Successfully sent Microsub Notification");
+//                            }
+//                        });
+//                    });
                 }).catch((error) => {
                     console.log("Caught Error");
                     console.log(error);

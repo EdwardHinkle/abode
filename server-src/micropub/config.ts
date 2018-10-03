@@ -23,6 +23,10 @@ export function getMicropubConfig(queryType, req): Promise<any> {
                     "media-endpoint": "https://eddiehinkle.com/micropub/media",
                     "syndicate-to": syndicateTargets,
                     "post-types": [
+			{
+			    "type": "event",
+    			    "name": "Event"
+			},
                         {
                             "type": "note",
                             "name": "Note"
