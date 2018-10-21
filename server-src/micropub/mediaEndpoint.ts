@@ -56,7 +56,7 @@ export function getMediaEndpointRequest(req, res) {
         fs.renameSync(filePath, `${filePath}.${fileExt}`);
 
         // Send Response
-        res.location(`${config.server}/media/${fileName}`).status(201).send("ok");
+        res.location(`${config.server}/media/${fileName}`).status(201).send(`${config.server}/media/${fileName}`);
     });
 
 }
