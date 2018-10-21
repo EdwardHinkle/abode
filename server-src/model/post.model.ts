@@ -106,13 +106,13 @@ export class Post {
 
     public itineraryDepartureTime() {
         // TODO: Check if departure time is same day as post. If it's not display the date
-        let departure = moment(this.properties.itinerary.properties.departure, ");
+        let departure = moment(this.properties.itinerary.properties.departure, "YYYY-MM-DDTHH:mm:ssZ");
         return departure.format("h:mma");
     }
 
     public itineraryArrivalTime() {
         // TODO: Check if arrival time is same day as post. If it's not display the date
-        let arrival = moment(this.properties.itinerary.properties.arrival);
+        let arrival = moment(this.properties.itinerary.properties.arrival, "YYYY-MM-DDTHH:mm:ssZ");
         return arrival.format("h:mma");
     }
     
