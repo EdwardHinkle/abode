@@ -10,8 +10,8 @@ html
     body
         include ../includes/header.pug
         div.h-entry
-            a(href="/").u-author
-            a(href="").u-url
+            a(href="/").u-author.no-underline
+            a(href="").u-url.no-underline
             if post.properties['in-reply-to']
                 if post.properties['in-reply-to'].indexOf('github.com') > -1
                     if post.properties.name !== undefined && post.properties.name > ''
@@ -63,6 +63,12 @@ html
                     | #{post.properties['ate'].properties.name}
             if post.properties.name
                 h1.page-title.p-name #{post.properties.name}
+            else if post.properties.itinerary
+                div.itinerary-description
+                    div.p-name Traveling via #{post.properties.itinerary.properties['transit-type']} on #{post.properties.itinerary.properties.operator} #{post.properties.itinerary.properties.number} from #{post.properties.itinerary.properties.origin} to #{post.properties.itinerary.properties.destination}
+                    div.itinerary-times
+                        div Leaving at #{post.itineraryDepartureTime()}
+                        div Arriving at #{post.itineraryArrivalTime()}
             if post.properties.checkin && post.properties.checkin.type === "h-card"
                 img(src="https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/pin-m+24b1f3(" + post.properties.checkin.properties.longitude + "," + post.properties.checkin.properties.latitude + ")/" + post.properties.checkin.properties.longitude + "," + post.properties.checkin.properties.latitude + ",13,0,60/1280x350@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false").u-photo.map-image
             .watch-image-container

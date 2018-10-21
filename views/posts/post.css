@@ -46,7 +46,7 @@ body {
     margin-bottom: 40px;
 }
 
-h1.page-title {
+h1.page-title, .itinerary-description {
     line-height: 2.5rem;
     max-width: 800px;
     margin-left: auto;

@@ -99,6 +99,22 @@ export class Post {
             });
         });
     }
+
+    public itineraryList() {
+        return `${this.properties.itinerary.properties.origin} to ${this.properties.itinerary.properties.destination}`;
+    }
+
+    public itineraryDepartureTime() {
+        // TODO: Check if departure time is same day as post. If it's not display the date
+        let departure = moment(this.properties.itinerary.properties.departure, ");
+        return departure.format("h:mma");
+    }
+
+    public itineraryArrivalTime() {
+        // TODO: Check if arrival time is same day as post. If it's not display the date
+        let arrival = moment(this.properties.itinerary.properties.arrival);
+        return arrival.format("h:mma");
+    }
     
     public isPublic(): boolean {
     	return this.properties.visibility === 'public';
@@ -129,10 +145,11 @@ export class Post {
     }
 
     public semiRelativeDateFormat(): string {
-        if (moment().diff(this.properties.date, 'days') > 0) {
-            return this.properties.date.format("MMM DD, YYYY");
-        } else {
+        console.log(moment().diff(this.properties.date, 'days') == 0);
+        if (moment().diff(this.properties.date, 'days') == 0) {
             return 'Today';
+        } else {
+            return this.properties.date.format("MMM DD, YYYY");
         }
     }
 
