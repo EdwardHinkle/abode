@@ -13,7 +13,7 @@ html
             a(href="/").u-author.no-underline
             a(href="").u-url.no-underline
             if post.properties['in-reply-to']
-                if post.properties['in-reply-to'].indexOf('github.com') > -1
+                if post.properties['in-reply-to'].length != undefined && post.properties['in-reply-to'].indexOf('github.com') > -1
                     if post.properties.name !== undefined && post.properties.name > ''
                         - var repoInfo = post.properties['in-reply-to'].split('/')
                         - var userUrlParts = post.properties['in-reply-to'].split('/')
