@@ -215,3 +215,20 @@ a.no-underline {
     }
 
 }
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #121212;
+        color: #ddd;
+    }
+    a:not(.no-underline), .site-monogram a {
+        color: #ddd;
+    }
+    .inprogress {
+        display: block;
+        background-color: #19355c;
+        color: white;
+        padding: 5px 20px;
+        margin-bottom: 100px;
+    }
+}
