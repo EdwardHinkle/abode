@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as yaml from 'js-yaml';
+import {Person} from "../people";
 
 export function importPeopleData(): Promise<any> {
     
@@ -15,7 +16,7 @@ export function importPeopleData(): Promise<any> {
 
         let dataByName = JSON.stringify(personData);
         let personByUrl = {};
-        _.forEach(personData, (person, key) => {
+        _.forEach(personData, (person: Person, key) => {
             let personUrl = person[person.representitiveUrl];
             personByUrl[personUrl] = person;
         });
