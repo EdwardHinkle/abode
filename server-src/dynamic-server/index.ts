@@ -3,6 +3,7 @@ import * as yaml from 'js-yaml';
 import {Posts} from "../model/posts.model";
 import {Post, PostType} from "../model/post.model";
 import moment = require("moment");
+import * as requestPromise from "request-promise";
 import * as pug from 'pug';
 import {Page} from "../model/page.model";
 import {Pages} from "../model/pages.model";
@@ -647,6 +648,61 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postTy
             });
             return;
         }
+    });
+
+});
+
+dynamicRouter.get('/now', (req, res, next) => {
+    let config = req.app.get('config');
+
+    let promises = [];
+    let currentTrip;
+    
+    let locationRequestPromise = new Promise((resolve, reject) => {
+    
+        promises.push(requestPromise.get(`${config.compass.url}api/trip?token=${config.compass.token.read}`, {
+            json: true
+        }).then(tripData => {
+            currentTrip = tripData.trip;
+            let startLocation = currentTrip.start_location.geometry.coordinates;
+            let locationRequestUrl = `https://atlas.p3k.io/api/geocode?latitude=${startLocation[1]}&longitude=${startLocation[0]}`;
+            console.log(locationRequestUrl);
+            requestPromise.get(locationRequestUrl, { json: true }).then(locationInfo => {
+                resolve(locationInfo);
+            })
+        }));
+    });
+    
+    promises.push(locationRequestPromise);
+    
+    promises.push(Pages.getPage({
+        slug: 'now'
+    }));
+    
+    Promise.all(promises).then(data => {
+        
+        console.log('now page');
+        
+        let startLocation = data[1];
+        let page = data[2];
+        
+        console.log(currentTrip);
+        console.log(startLocation);
+        
+        currentTrip.travel_length = moment(currentTrip.start).fromNow();
+        currentTrip.current_speed = currentTrip.current_location.properties.speed > 0 ? ((currentTrip.current_location.properties.speed * 2.236936) : -1
+        currentTrip.origin_location = startLocation;
+        currentTrip.current_time = moment(currentTrip.origin_location.localtime).format("h:mma");
+
+        res.render("posts/nowPage", {
+            post: page,
+            trip: currentTrip
+            startLocation: startLocation
+        });
+
+    }).catch(error => {
+        console.log("ERROR", error);
+        next();
     });
 
 });

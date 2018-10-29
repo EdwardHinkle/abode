@@ -16,7 +16,110 @@ var config = require('../../abodeConfig.json');
 export let webmentionRouter = express.Router();
 
 // Routes
+webmentionRouter.get('/pull-all-webmentions', pullAllWebmentions);
 webmentionRouter.post('/callback', upload.array(), webmentionCallback);
+webmentionRouter.post('/alert', webmentionAlert);
+
+function pullAllWebmentions(req, res, next) {
+    let config = req.app.get('config');
+    
+    let webmentionsToSave = {};
+    let strangeWebmentionsToArchive = {};
+
+    collectWebmentions(config.webmention.token, 0, [], (allWebmentions) => {
+        // We have all our webmentions
+        allWebmentions.forEach(webmention => {
+            let currentPostPermalink = false;
+            
+            let target = webmention[webmention['wm-property']];
+            if (target.indexOf("eddiehinkle.com") > -1) {
+                console.log(target);
+                let targetSplit = target.split('eddiehinkle.com/');
+                if (targetSplit.length > 1) {
+                    let pathSplit = targetSplit[1].split("/");
+//                     console.log(pathSplit);
+                    if (pathSplit.length === 6) {
+                        // Should be able to verify the first 4 paths are numbers
+                        currentPostPermalink = true;
+                    }
+                }
+            }
+            
+            if (currentPostPermalink) {
+//                 console.log('current url structure');
+                // Save in a post's specific folder
+                if (webmentionsToSave[target] === undefined) {
+                    webmentionsToSave[target] = [];
+                }
+                
+                webmentionsToSave[target].push(webmention);
+                
+            } else {
+//                 console.log('old permalink or strange page');
+                // Store strange webmentions for later use
+                if (strangeWebmentionsToArchive[target] === undefined) {
+                    strangeWebmentionsToArchive[target] = [];
+                }
+                
+                strangeWebmentionsToArchive[target].push(webmention);
+            }
+        });
+       
+       Object.keys(webmentionsToSave).forEach(webmentionTarget => {
+            let targetSplit = webmentionTarget.split("eddiehinkle.com/");
+            let pathSplit = targetSplit[1].split("/");
+            
+            let targetPath = `${__dirname}/../../jekyll/_source/_note/${pathSplit[0]}/${pathSplit[1]}/${pathSplit[2]}/${pathSplit[3]}`;
+            
+            if (fs.existsSync(targetPath)) {
+                    
+               fs.writeFile(`${targetPath}/webmentions.json`, JSON.stringify(webmentionsToSave[webmentionTarget]), (err) => {
+                    if(err) {
+                        return console.log(err);
+                    }
+               });
+           } else {
+                let convertWebmentionObject = {};
+                convertWebmentionObject[webmentionTarget] = webmentionsToSave[webmentionTarget];
+               strangeWebmentionsToArchive = {...strangeWebmentionsToArchive, ...convertWebmentionObject};
+           }
+       });
+       
+      fs.writeFile(`${__dirname}/../../jekyll/_source/_note/strangeWebmentionsArchive.json`, JSON.stringify(strangeWebmentionsToArchive), (err) => {
+            if(err) {
+                return console.log(err);
+            }
+        });
+
+
+        res.json(allWebmentions.length);
+    });
+
+    
+}
+
+function collectWebmentions(token, page, webmentions, callback) {
+
+
+    request.get(`http://webmention.io/api/mentions.jf2?page=${page}&per-page=100&token=${token}`, {
+        json: true
+    }, (err, data) => {
+        if (err != undefined) {
+            console.log(`ERROR: ${err}`);
+        }
+        
+        console.log(page);
+        
+        if (data.body.children.length === 0) {
+            callback(webmentions);
+        } else {
+            webmentions = webmentions.concat(data.body.children);
+            collectWebmentions(token, page+1, webmentions, (allWebmentions) => {
+                callback(allWebmentions);
+            });
+        }
+    });
+}
 
 function webmentionCallback(req, res, next) {
     console.log('WEBMENTION CALLBACK');
@@ -90,9 +193,6 @@ function webmentionCallback(req, res, next) {
     }
     res.status(200);
 }
-
-
-webmentionRouter.post('/alert', webmentionAlert);
 
 function webmentionAlert(req, res) {
     

@@ -1,0 +1,142 @@
+html
+    head
+        title EddieHinkle.com
+        style
+            include ../global.css
+            include post.css
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="webmention", href="https://webmention.io/eddiehinkle.com/webmention")
+        link(rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-xyMU7RufUdPGVOZRrc2z2nRWVWBONzqa0NFctWglHmt5q5ukL22+lvHAqhqsIm3h" crossorigin="anonymous")
+    body
+        include ../includes/header.pug
+        div.h-entry
+            a(href="/").u-author
+            a(href="").u-url
+            if post.properties.name
+                h1.page-title #{post.properties.name}
+            div.p-name.e-content
+                if trip
+                    div I'm currently traveling on a #{trip.mode}
+                        if trip.origin_location
+                            |
+                            |
+                            | from #{trip.origin_location.full_name}
+                        if trip.current_speed && trip.current_speed > 0
+                            |
+                            |
+                            | at #{trip.current_speed} mph
+                        if trip.travel_length
+                            | 
+                            | 
+                            | since #{trip.travel_length}
+                        |.
+            if trip.current_time
+                div It is currently #{trip.current_time} for me.
+            br
+            if post.properties.photo
+                div(class="photos-" + post.properties.photo.length).photos-container
+                    each photoUrl in post.properties.photo
+                        img(src=photoUrl).u-photo
+            if post.properties.content
+                div !{post.properties.content}
+            div.meta
+                time(datetime=post.getPublishedDate()).dt-published.published-date #{post.semiRelativeDateTimeFormat()}
+                if post.properties.visibility === "private"
+                    span Private
+                if post.properties.weather
+                    span.weather-info
+                        span.temperature.p-temperature #{post.properties.weather.properties.apparentTemperature} ℉
+                        data(value=post.properties.weather.properties.icon).p-weather.weather-icon
+                            if post.properties.weather.properties.icon === "clear-night" || post.properties.weather.properties.icon === "partly-cloudy-night"
+                                if post.properties.weather.properties.moonPhase
+                                    if post.properties.weather.properties.moonPhase === 0
+                                        span(title="night new moon") 🌑
+                                    else if post.properties.weather.properties.moonPhase > 0 && post.properties.weather.properties.moonPhase < 0.25
+                                        span(title="night waxing crescent") 🌒
+                                    else if post.properties.weather.properties.moonPhase === 0.25
+                                        span(title="night first quarter moon") 🌓
+                                    else if post.properties.weather.properties.moonPhase > 0.25 && post.properties.weather.properties.moonPhase < 0.5
+                                        span(title="night waxing gibbous") 🌔
+                                    else if post.properties.weather.properties.moonPhase === 0.5
+                                        span(title="night full moon") 🌕
+                                    else if post.properties.weather.properties.moonPhase > 0.5 && post.properties.weather.properties.moonPhase < 0.75
+                                        span(title="night waning gibbous") 🌖
+                                    else if post.properties.weather.properties.moonPhase === 0.75
+                                        span(title="night last quarter moon") 🌗
+                                    else if post.properties.weather.properties.moonPhase > 0.75
+                                        span(title="night waning crescent") 🌘
+                                else
+                                    | 🌙
+                            else
+                                span(title=post.properties.weather.properties.summary)
+                                    if post.properties.weather.properties.icon === "clear-day"
+                                        | ☀️
+                                    else if post.properties.weather.properties.icon === "rain"
+                                        | 🌧
+                                    else if post.properties.weather.properties.icon === "snow"
+                                        | ❄️
+                                    else if post.properties.weather.properties.icon === "sleet"
+                                        | 🌨
+                                    else if post.properties.weather.properties.icon === "wind"
+                                        | 💨
+                                    else if post.properties.weather.properties.icon === "fog"
+                                        | 🌫
+                                    else if post.properties.weather.properties.icon === "cloudy"
+                                        | ☁️
+                                    else if post.properties.weather.properties.icon === "partly-cloudy-day"
+                                        | ⛅
+                                    else if post.properties.weather.properties.icon === "hail"
+                                        | 🌨
+                                    else if post.properties.weather.properties.icon === "thunderstorm"
+                                        | ⛈
+                                    else if post.properties.weather.properties.icon === "tornado"
+                                        | 🌪
+                if post.properties.location
+                    if post.properties.location.properties.name || post.properties.location.properties.locality
+                        span
+                            if post.properties.location.properties.name
+                                | #{post.properties.location.properties.name}
+                            if post.properties.location.properties.locality
+                                | #{post.properties.location.properties.locality}
+                                if post.properties.location.properties.region
+                                    |, #{post.properties.location.properties.region}
+                                if post.properties.location.properties.country-name && post.properties.location.properties.country-name !== "USA"
+                                    |, #{post.properties.location.properties.country-name}
+                if post.properties.category.length > 0
+                    span.tags-container
+                        i.fal.fa-tags
+                        each tag, index in post.properties.category
+                            a(href="https://eddiehinkle.com/tag/" + tag.replace(" ", "").toLowerCase()).no-underline.p-category.tag-box #{tag}
+                if post.properties.syndication.length > 0
+                    span.syndication-container
+                        i.fal.fa-share-alt
+                        each syndication in post.properties.syndication
+                            if syndication.url.indexOf('micro.blog') > 0
+                                a(href=syndication.url).no-underline.u-syndication.syndication-box
+                                    include ../resources/microblog-icon.svg
+                            else if syndication.url.indexOf('twitter.com') > 0
+                                a(href=syndication.url).no-underline.u-syndication.syndication-box
+                                    i.fab.fa-twitter
+                            else if syndication.url.indexOf('facebook.com') > 0
+                                a(href=syndication.url).no-underline.u-syndication.syndication-box
+                                    i.fab.fa-facebook
+                            else if syndication.url.indexOf('github.com') > 0
+                                a(href=syndication.url).no-underline.u-syndication.syndication-box
+                                    i.fab.fa-github
+                            else if syndication.url.indexOf('instagram.com') > 0
+                                a(href=syndication.url).no-underline.u-syndication.syndication-box
+                                    i.fab.fa-instagram
+                            else if syndication.url.indexOf('swarmapp.com') > 0
+                                a(href=syndication.url).no-underline.u-syndication.syndication-box
+                                    i.fab.fa-foursquare
+                            else
+                                a(href=syndication.url).no-underline.u-syndication.syndication-box #{syndication.name}
+                div(style="display: none")
+                    a(href="https://brid.gy/publish/twitter").u-bridgy-publish
+                    a(href="https://brid.gy/publish/github").u-bridgy-publish
+                if post.client_id
+                    span.client-display posted using
+                        |
+                        |
+                        a(href=post.client_id, target="_blank") #{post.client_id.replace("http://", "").replace("https://", "").split("/").shift()}
+        include ../includes/footer.pug
