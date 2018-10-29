@@ -11,6 +11,7 @@ import { dynamicRouter } from './dynamic-server';
 import {activityPubRouter} from "./activity-pub";
 import {resumeRouter} from "./resume";
 import { sponsorRouter } from "./sponsor";
+import {locationRouter} from "./location";
 
 export let router = express.Router();
 
@@ -22,5 +23,6 @@ router.use('/micropub', micropubRouter);
 router.use('/webmention', webmentionRouter);
 router.use('/media', mediaServerRouter);
 router.use('/auth', authRouter);
+router.use('/location', locationRouter);
 router.use('/sponsor', sponsorRouter);
 router.use('/', staticSiteRouter);
