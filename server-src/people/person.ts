@@ -2,14 +2,14 @@ export type urlType = 'url' | 'facebook' | 'twitter';
 
 export class Person {
 
-    nickname: String;
-    firstName: String;
-    lastName: String;
+    nickname: string;
+    firstName: string;
+    lastName: string;
 
     representitiveUrl: urlType;
-    url?: String;
-    facebook?: String;
-    twitter?: String;
+    url?: string;
+    facebook?: string;
+    twitter?: string;
 
     constructor(personData: PersonYamlData) {
         if (personData != undefined) {
@@ -31,11 +31,11 @@ export class Person {
 }
 
 export interface PersonYamlData {
-    nickname: String;
-    firstName: String;
-    lastName: String;
+    nickname: string;
+    firstName: string;
+    lastName: string;
     representitiveUrl: urlType;
-    url?: String;
-    facebook?: String;
-    twitter?: String;
+    url?: string;
+    facebook?: string;
+    twitter?: string;
 }

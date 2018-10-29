@@ -422,7 +422,8 @@ export class PostProperties {
                 properties.indexOf(key) > -1)) {
 
                 if (key === "syndication") {
-                    propertiesToReturn[key] = this[key].map(syndication => syndication.url);
+                    let syndicationItems: any[] = this[key];
+                    propertiesToReturn[key] = syndicationItems.map(syndication => syndication.url);
                 } else {
                     propertiesToReturn[key] = this[key];
                 }

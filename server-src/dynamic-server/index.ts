@@ -690,13 +690,13 @@ dynamicRouter.get('/now', (req, res, next) => {
         console.log(startLocation);
         
         currentTrip.travel_length = moment(currentTrip.start).fromNow();
-        currentTrip.current_speed = currentTrip.current_location.properties.speed > 0 ? ((currentTrip.current_location.properties.speed * 2.236936) : -1
+        currentTrip.current_speed = currentTrip.current_location.properties.speed > 0 ? (currentTrip.current_location.properties.speed * 2.236936) : -1;
         currentTrip.origin_location = startLocation;
         currentTrip.current_time = moment(currentTrip.origin_location.localtime).format("h:mma");
 
         res.render("posts/nowPage", {
             post: page,
-            trip: currentTrip
+            trip: currentTrip,
             startLocation: startLocation
         });
 
