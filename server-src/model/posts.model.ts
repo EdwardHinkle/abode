@@ -12,7 +12,7 @@ export class Posts {
     public static getAllPosts(): Promise<Post[]> {
 
         return new Promise((resolve, reject) => {
-            let postFilepath = `${dataDir}/_note`;
+            let postFilepath = `${dataDir}/_note/posts`;
 
             if (fs.existsSync(postFilepath)) {
                 this.getPostsInDir(postFilepath, true).then(posts => {
@@ -28,7 +28,7 @@ export class Posts {
     public static getPosts(postsInfo: PostsInfo): Promise<Post[]> {
 
         return new Promise((resolve, reject) => {
-            let postFilepath = `${dataDir}/_note`;
+            let postFilepath = `${dataDir}/_note/posts`;
 
             if (postsInfo.year !== undefined) {
                 postFilepath += `/${postsInfo.year}`;
@@ -45,6 +45,10 @@ export class Posts {
             if (fs.existsSync(postFilepath)) {
                 this.getPostsInDir(postFilepath, true).then(posts => {
                     resolve(posts);
+                }).catch(error => {
+                    console.log('oops!');
+                    console.log(error);
+                    reject(error);
                 })
             } else {
             	if (postsInfo.required) {
@@ -89,6 +93,8 @@ export class Posts {
                 let posts = [].concat.apply([], arrayOfPosts);
                 let filteredPosts = posts.filter((post: Post) => post.isPublic());
                 resolve(filteredPosts);
+            }).catch(error => {
+                reject(error);
             });
         });
     }
@@ -96,9 +102,9 @@ export class Posts {
     public static getPost(postInfo: PostInfo): Promise<Post> {
 
         return new Promise((resolve, reject) => {
-            let postFilepath = `${dataDir}/_note/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`;
+            let postFilepath = `${dataDir}/_note/posts/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`;
             if (fs.existsSync(postFilepath)) {
-                let fileInfo = fs.readFileSync(`${dataDir}/_note/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`, 'utf8');
+                let fileInfo = fs.readFileSync(`${dataDir}/_note/posts/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`, 'utf8');
                 Post.createFromJekyllFile(fileInfo).then(post => {
                     resolve(post);
                 });
@@ -111,9 +117,9 @@ export class Posts {
     public static getPostData(postInfo: PostInfo): Promise<any> {
 
         return new Promise((resolve, reject) => {
-            let postFilepath = `${dataDir}/_note/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`;
+            let postFilepath = `${dataDir}/_note/posts/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`;
             if (fs.existsSync(postFilepath)) {
-                resolve(fs.readFileSync(`${dataDir}/_note/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`, 'utf8'));
+                resolve(fs.readFileSync(`${dataDir}/_note/posts/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`, 'utf8'));
             } else {
                 reject("file does not exist");
             }

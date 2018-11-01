@@ -225,7 +225,7 @@ export class Page {
     }
 
     getPostDir(): string {
-        let postDir = `${dataDir}/_note/${this.slug}`;
+        let postDir = `${dataDir}/_note/pages/${this.slug}`;
         if (!fs.existsSync(postDir)) {
             fs.mkdirSync(postDir);
             console.log(postDir + " created");

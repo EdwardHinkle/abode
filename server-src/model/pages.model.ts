@@ -9,7 +9,7 @@ export class Pages {
     // public static getAllPosts(): Promise<Post[]> {
     //
     //     return new Promise((resolve, reject) => {
-    //         let postFilepath = `${dataDir}/_note`;
+    //         let postFilepath = `${dataDir}/_note/posts`;
     //
     //         if (fs.existsSync(postFilepath)) {
     //             this.getPostsInDir(postFilepath, true).then(posts => {
@@ -25,7 +25,7 @@ export class Pages {
     // public static getPosts(postsInfo: PostsInfo): Promise<Post[]> {
     //
     //     return new Promise((resolve, reject) => {
-    //         let postFilepath = `${dataDir}/_note`;
+    //         let postFilepath = `${dataDir}/_note/posts`;
     //
     //         if (postsInfo.year !== undefined) {
     //             postFilepath += `/${postsInfo.year}`;

@@ -25,7 +25,13 @@ export class Post {
         return new Promise((resolve, reject) => {
 
             let fileArray = fileData.split("---\n");
-            let doc = yaml.safeLoad(fileArray[1]);
+            let doc;
+            try {
+                doc = yaml.safeLoad(fileArray[1]);
+            } catch (error) {
+                console.log("Failed loading YAML for post " + fileData.split("---\n")[1]);
+                reject(error);
+            }
             let post = new Post();
 
             // Import all initial properties
@@ -284,7 +290,7 @@ export class Post {
         let month = this.properties.date.format("MM");
         let day = this.properties.date.format("DD");
 
-        let yearDir = `${dataDir}/_note/${year}`;
+        let yearDir = `${dataDir}/_note/posts/${year}`;
         let monthDir = `${yearDir}/${month}`;
         let dayDir = `${monthDir}/${day}`;
 

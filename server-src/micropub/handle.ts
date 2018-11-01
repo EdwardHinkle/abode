@@ -1289,7 +1289,7 @@ function formatUrl(micropubDocument): Promise<any> {
             let month = date.format("MM");
             let day = date.format("DD");
 
-            var yearDir = dataDir + "_note/" + year + "/";
+            var yearDir = dataDir + "_note/posts/" + year + "/";
             var monthDir = yearDir + month + "/";
             var dayDir = monthDir + day + "/";
 
@@ -1315,7 +1315,7 @@ function formatFilename(data) {
         let month = date.format("MM");
         let day = date.format("DD");
 
-        var yearDir = dataDir + "_note/" + year + "/";
+        var yearDir = dataDir + "_note/posts/" + year + "/";
         var monthDir = yearDir + month + "/";
         var dayDir = monthDir + day + "/";
         
@@ -1395,7 +1395,7 @@ function preparePostInfo(preformattedData) {
             let day = date.format("DD");
 
             var postIndex = 1;
-            var yearDir = dataDir + "_note/" + year + "/";
+            var yearDir = dataDir + "_note/posts/" + year + "/";
             if (!fs.existsSync(yearDir)) {
                 fs.mkdirSync(yearDir);
                 console.log(yearDir + " created");

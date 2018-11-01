@@ -69,7 +69,7 @@ function pullAllWebmentions(req, res, next) {
             let targetSplit = webmentionTarget.split("eddiehinkle.com/");
             let pathSplit = targetSplit[1].split("/");
             
-            let targetPath = `${__dirname}/../../jekyll/_source/_note/${pathSplit[0]}/${pathSplit[1]}/${pathSplit[2]}/${pathSplit[3]}`;
+            let targetPath = `${__dirname}/../../jekyll/_source/_note/posts/${pathSplit[0]}/${pathSplit[1]}/${pathSplit[2]}/${pathSplit[3]}`;
             
             if (fs.existsSync(targetPath)) {
                     
