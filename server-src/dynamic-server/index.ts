@@ -94,42 +94,48 @@ function getChannelFeed(req, res, next) {
 
                 Posts.searchPosts(channelQuery).then(posts => {
 
-                    let postsByYearMonth = [];
-                    let yearIndex = 0;
-                    let monthIndex = 0;
-                    let lastYear = posts[0].properties.date.format("YYYY");
-                    let lastMonth = posts[0].properties.date.format("MM");
+                    let finalPosts;
 
-                    posts.forEach(post => {
-                        let year = post.properties.date.format("YYYY");
-                        let month = post.properties.date.format("MM");
-                        let monthLabel = post.properties.date.format("MMMM");
+                    if (channel.layout === 'archives') {
+                        finalPosts = [];
+                        let yearIndex = 0;
+                        let monthIndex = 0;
+                        let lastYear = posts[0].properties.date.format("YYYY");
+                        let lastMonth = posts[0].properties.date.format("MM");
 
-                        if (year != lastYear) {
-                            yearIndex++;
-                            monthIndex = 0;
-                        } else if (month != lastMonth) {
-                            monthIndex++;
-                        }
+                        posts.forEach(post => {
+                            let year = post.properties.date.format("YYYY");
+                            let month = post.properties.date.format("MM");
+                            let monthLabel = post.properties.date.format("MMMM");
 
-                        if (postsByYearMonth[yearIndex] === undefined) {
-                            postsByYearMonth[yearIndex] = { label: year, items: [] };
-                        }
+                            if (year != lastYear) {
+                                yearIndex++;
+                                monthIndex = 0;
+                            } else if (month != lastMonth) {
+                                monthIndex++;
+                            }
 
-                        if (postsByYearMonth[yearIndex].items[monthIndex] === undefined) {
-                            postsByYearMonth[yearIndex].items[monthIndex] = { label: monthLabel, items: [] };
-                        }
+                            if (finalPosts[yearIndex] === undefined) {
+                                finalPosts[yearIndex] = {label: year, items: []};
+                            }
 
-                        postsByYearMonth[yearIndex].items[monthIndex].items.push(post);
+                            if (finalPosts[yearIndex].items[monthIndex] === undefined) {
+                                finalPosts[yearIndex].items[monthIndex] = {label: monthLabel, items: []};
+                            }
 
-                        lastYear = year;
-                        lastMonth = month;
-                    });
+                            finalPosts[yearIndex].items[monthIndex].items.push(post);
+
+                            lastYear = year;
+                            lastMonth = month;
+                        });
+                    } else {
+                        finalPosts = posts;
+                    }
 
                     res.render(`posts/${channel.layout}`, {
                         feed_url: getRequestedUrl(req),
                         title: channel.name,
-                        posts: postsByYearMonth
+                        posts: finalPosts
                     })
                 });
             }
