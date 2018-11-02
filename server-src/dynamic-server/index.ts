@@ -22,11 +22,11 @@ dynamicRouter.get('/microblog-syndication.json', getMicroblogSyndicationFeed);
 
 // Channel Routes
 dynamicRouter.get('/:channel([a-z]+)', requireDatabaseCache, getChannelFeed);
-dynamicRouter.get('/:channel([a-z]+).json', requireDatabaseCache, getChannelJsonFeed);
+dynamicRouter.get('/:channel([a-z]+)/feed.json', requireDatabaseCache, getChannelJsonFeed);
 
 // Tag Routes
 dynamicRouter.get('/tag/:tag([a-z]+)', requireDatabaseCache, getTagFeed);
-dynamicRouter.get('/tag/:tag([a-z]+).json', requireDatabaseCache, getTagJsonFeed);
+dynamicRouter.get('/tag/:tag([a-z]+)/feed.json', requireDatabaseCache, getTagJsonFeed);
 
 // Photo Routes
 dynamicRouter.get('/photos/:year(\\d+)?/:month(\\d+)?/:day(\\d+)?/', requireDatabaseCache, getDatePhotoGallery);
@@ -59,6 +59,14 @@ function getRequestedUrl(req) {
     return `${req.protocol}://${req.headers.host}${req.url}`;
 }
 
+function getJSONFeedUrl(currentUrl: string) {
+    let jsonFeedUrl = currentUrl;
+    if (jsonFeedUrl.charAt(jsonFeedUrl.length-1) !== "/") {
+        jsonFeedUrl = jsonFeedUrl + "/";
+    }
+    return jsonFeedUrl + "feed.json";
+}
+
 function getChannelFeed(req, res, next) {
 
     return new Promise((resolve, reject) => {
@@ -81,8 +89,11 @@ function getChannelFeed(req, res, next) {
                     orderDirection: ['DESC'],
                     limit: 20
                 }).then(posts => {
+                    let currentUrl = getRequestedUrl(req);
+
                     res.render(`posts/${channel.layout}`, {
-                        feed_url: getRequestedUrl(req),
+                        feed_url: currentUrl,
+                        jsonfeed_url: getJSONFeedUrl(currentUrl),
                         title: channel.name,
                         posts: posts
                     })
@@ -132,8 +143,11 @@ function getChannelFeed(req, res, next) {
                         finalPosts = posts;
                     }
 
+                    let currentUrl = getRequestedUrl(req);
+
                     res.render(`posts/${channel.layout}`, {
-                        feed_url: getRequestedUrl(req),
+                        feed_url: currentUrl,
+                        jsonfeed_url: getJSONFeedUrl(currentUrl),
                         title: channel.name,
                         posts: finalPosts
                     })
@@ -195,8 +209,12 @@ function getTagFeed(req, res, next) {
         orderDirection: ['DESC'],
         limit: 20
     }).then(posts => {
+
+        let currentUrl = getRequestedUrl(req);
+
         res.render(`posts/cards`, {
-            feed_url: getRequestedUrl(req),
+            feed_url: currentUrl,
+            jsonfeed_url: getJSONFeedUrl(currentUrl),
             title: tagName,
             posts: posts
         })
