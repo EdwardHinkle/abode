@@ -1,6 +1,5 @@
 div.h-entry
     a(href="/").u-author.no-underline
-    a(href="").u-url.no-underline
     if post.properties['in-reply-to']
         if post.properties['in-reply-to'].length != undefined && post.properties['in-reply-to'].indexOf('github.com') > -1
             if post.properties.name !== undefined && post.properties.name > ''
@@ -142,7 +141,8 @@ div.h-entry
                         | .
                         |
     div.meta
-        time(datetime=post.getPublishedDate()).dt-published.published-date #{post.semiRelativeDateTimeFormat()}
+        a(href=post.getOfficialPermalink()).u-url
+            time(datetime=post.getPublishedDate()).dt-published.published-date #{post.semiRelativeDateTimeFormat()}
         if post.properties.visibility === "private"
             span Private
         if post.properties.weather
