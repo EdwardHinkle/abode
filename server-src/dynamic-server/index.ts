@@ -42,6 +42,9 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postTy
 // Generic page route
 dynamicRouter.get('/:pageSlug', getPage);
 
+function getRequestedUrl(req) {
+    return `${req.protocol}://${req.headers.host}${req.url}`;
+}
 
 function getChannelFeed(req, res, next) {
 
@@ -77,6 +80,7 @@ function getChannelFeed(req, res, next) {
 
                 Posts.searchPosts(channelQuery).then(posts => {
                     res.render(`posts/${channel.layout}`, {
+                        feed_url: getRequestedUrl(req),
                         title: channel.name,
                         posts: posts
                     })
@@ -113,7 +117,7 @@ function getChannelJsonFeed(req, res, next) {
                     limit: 20
                 }).then(posts => {
 
-                    convertPostsToJsonFeed(posts, `${channel.name} Feed`, `${req.protocol}://${req.headers.host}${req.url}`).then(jsonFeed => {
+                    convertPostsToJsonFeed(posts, `${channel.name} Feed`, getRequestedUrl(req)).then(jsonFeed => {
                         res.json(jsonFeed);
                     });
 
@@ -139,6 +143,7 @@ function getTagFeed(req, res, next) {
         limit: 20
     }).then(posts => {
         res.render(`posts/cards`, {
+            feed_url: getRequestedUrl(req),
             title: tagName,
             posts: posts
         })
@@ -157,7 +162,7 @@ function getTagJsonFeed(req, res, next) {
         orderDirection: 'DESC',
         limit: 20
     }).then(posts => {
-        convertPostsToJsonFeed(posts, `${tagName} tag feed`, `${req.protocol}://${req.headers.host}${req.url}`).then(jsonFeed => {
+        convertPostsToJsonFeed(posts, `${tagName} tag feed`, getRequestedUrl(req)).then(jsonFeed => {
             res.json(jsonFeed);
         });
     });
