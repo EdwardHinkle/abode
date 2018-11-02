@@ -8,6 +8,7 @@ import {Pages} from "../model/pages.model";
 import * as fs from "fs";
 import {ChannelData} from "../model/channel.model";
 import moment = require("moment");
+import {DataController} from "../model/data.controller";
 
 export let dynamicRouter = express.Router();
 
@@ -19,15 +20,15 @@ dynamicRouter.get('/now', getNowPage);
 dynamicRouter.get('/microblog-syndication.json', getMicroblogSyndicationFeed);
 
 // Channel Routes
-dynamicRouter.get('/:channel([a-z]+)', getChannelFeed);
-dynamicRouter.get('/:channel([a-z]+).json', getChannelJsonFeed);
+dynamicRouter.get('/:channel([a-z]+)', requireDatabaseCache, getChannelFeed);
+dynamicRouter.get('/:channel([a-z]+).json', requireDatabaseCache, getChannelJsonFeed);
 
 // Tag Routes
-dynamicRouter.get('/tag/:tag([a-z]+)', getTagFeed);
-dynamicRouter.get('/tag/:tag([a-z]+).json', getTagJsonFeed);
+dynamicRouter.get('/tag/:tag([a-z]+)', requireDatabaseCache, getTagFeed);
+dynamicRouter.get('/tag/:tag([a-z]+).json', requireDatabaseCache, getTagJsonFeed);
 
 // Photo Routes
-dynamicRouter.get('/photos/:year(\\d+)?/:month(\\d+)?/:day(\\d+)?/', getDatePhotoGallery);
+dynamicRouter.get('/photos/:year(\\d+)?/:month(\\d+)?/:day(\\d+)?/', requireDatabaseCache, getDatePhotoGallery);
 
 // Date based Routes
 dynamicRouter.get('/:year(\\d+)/', getYearSummary);
@@ -41,6 +42,17 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postTy
 
 // Generic page route
 dynamicRouter.get('/:pageSlug', getPage);
+
+
+function requireDatabaseCache(req, res, next) {
+    if (DataController.available) {
+        next();
+    } else {
+        return res.status(503).render('posts/errorMessage', {
+            errorMessage: "Site is temporarily down for maintenance. Please try back in 10 minutes."
+        });
+    }
+}
 
 function getRequestedUrl(req) {
     return `${req.protocol}://${req.headers.host}${req.url}`;

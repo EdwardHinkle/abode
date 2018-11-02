@@ -31,6 +31,9 @@ export class CacheController {
 
     public static buildCache() {
 
+        console.log('Database Cache has started building');
+        DataController.available = false;
+
         let channels = Channel.getChannels();
 
         DataController.db.serialize(() => {
@@ -49,11 +52,8 @@ export class CacheController {
             });
             addChannels.finalize();
 
-            console.log('Fetching Posts');
-
             // Insert Posts Database
             Posts.getAllPosts(true).then(posts => {
-                console.log('posts fetched');
 
                 DataController.db.serialize(() => {
 
@@ -106,10 +106,36 @@ export class CacheController {
 
                     });
 
-                    addPost.finalize();
-                    addTag.finalize();
-                    addPostTags.finalize();
-                    addPostChannels.finalize();
+                    let databasePromises = [];
+
+                    databasePromises.push(new Promise(resolve => {
+                        addPost.finalize(() => {
+                            resolve();
+                        });
+                    }));
+
+                    databasePromises.push(new Promise(resolve => {
+                        addTag.finalize(() => {
+                            resolve();
+                        });
+                    }));
+
+                    databasePromises.push(new Promise(resolve => {
+                        addPostTags.finalize(() => {
+                            resolve();
+                        });
+                    }));
+
+                    databasePromises.push(new Promise(resolve => {
+                        addPostChannels.finalize(() => {
+                            resolve();
+                        });
+                    }));
+
+                    Promise.all(databasePromises).then(() => {
+                        console.log('Database Cache has finished rebuilding');
+                        DataController.available = true;
+                    });
 
                 });
 

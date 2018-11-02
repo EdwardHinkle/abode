@@ -14,6 +14,7 @@ let imageType = require('image-type');
 let readingTime = require('reading-time');
 
 import { People } from '../people';
+import {Posts} from "../model/posts.model";
 
 // let config = require('../../abodeConfig.json');
 let dataDir = __dirname + "/../../jekyll/_source/";
@@ -895,6 +896,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                     console.log(`Finished saving: ${fileName}`);
 
+                    // POST ADDED HOOK
+
                     // Make sure the document has the post index
                     infoForUrl.postInfo = postInfo;
 
@@ -1232,6 +1235,62 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                             });
                         }
+
+                        let date = moment(yamlDocument.date, "YYYY-MM-DD HH:mm:ss ZZ");
+                        let year = date.format("YYYY");
+                        let month = date.format("MM");
+                        let day = date.format("DD");
+
+                        Posts.getPost({
+                            year: year,
+                            month: month,
+                            day: day,
+                            postIndex: yamlDocument.properties.slug
+                        }).then(post => {
+
+                            post.updateDatabaseCache();
+
+                            let updated_feeds = [];
+
+                            post.properties['abode-channel'].forEach(channel => {
+                                updated_feeds.push(`https://eddiehinkle.com/${channel}/`);
+                            });
+
+                            post.properties.category.forEach(tag => {
+                                updated_feeds.push(`https://eddiehinkle.com/tag/${tag}/`);
+                            });
+
+                            switch(post.getPostType()) {
+                                case 'article':
+                                    updated_feeds.push(`https://eddiehinkle.com/articles/`);
+                                    break;
+                                case 'watch':
+                                    updated_feeds.push(`https://eddiehinkle.com/watched/`);
+                                    break;
+                                case 'listen':
+                                    updated_feeds.push(`https://eddiehinkle.com/listened/`);
+                                    break;
+                            }
+
+                            updated_feeds.forEach(feed => {
+                                request.post('https://switchboard.p3k.io/', {
+                                    form: {
+                                        "hub.mode": "publish",
+                                        "hub.url": feed
+                                    }
+                                }, (err, data) => {
+                                    if (err != undefined) {
+                                        console.log(`ERROR: ${err}`);
+                                    }
+
+                                    console.log('pinged switchboard');
+                                    console.log(data);
+                                });
+                            });
+
+                        });
+
+                        // END OF POST ADDED HOOK
 
                     });
                 });

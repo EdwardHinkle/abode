@@ -4,7 +4,8 @@ import * as marked from 'marked';
 import * as moment from 'moment'; // Actual Library
 import { Moment } from "moment";
 import {People, Person} from "../people";
-import * as fs from "fs"; // TypeScript Type
+import * as fs from "fs";
+import {DataController} from "./data.controller"; // TypeScript Type
 
 const JEKYLL_DATE_FORMAT = 'YYYY-MM-DD h:mm:ss ZZ';
 let dataDir = __dirname + "/../../jekyll/_source";
@@ -182,6 +183,67 @@ export class Post {
             }
 
             console.log("Saving Finished");
+        });
+    }
+
+    public updateDatabaseCache(): any {
+
+        let sql = "";
+
+        return new Promise((resolve, reject) => {
+            DataController.db.serialize(() => {
+
+                let addPost = DataController.db.prepare("INSERT OR UPDATE INTO `posts` (year, month, day, post_index, name, published, post_type, visibility, content) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                let addTag = DataController.db.prepare("INSERT OR IGNORE INTO `tags` (name) VALUES (?)");
+                let addPostTags = DataController.db.prepare("INSERT OR IGNORE INTO `posts_tags` (post_year, post_month, post_day, post_index, tag_name) VALUES (?, ?, ?, ?, ?)");
+                let addPostChannels = DataController.db.prepare("INSERT OR IGNORE INTO `posts_channels` (post_year, post_month, post_day, post_index, channel) VALUES (?, ?, ?, ?, ?)");
+
+                addPost.run(
+                    this.properties.getYearString(),
+                    this.properties.getMonthString(),
+                    this.properties.getDayString(),
+                    this.properties.postIndex,
+                    this.properties.name ? this.properties.name : '',
+                    this.properties.date.format(),
+                    this.getPostType(),
+                    this.properties.visibility,
+                    this.properties.content
+                );
+
+                // console.log(post.properties);
+                if (this.properties.category) {
+                    this.properties.category.forEach(tagName => {
+                        addTag.run(
+                            tagName
+                        );
+
+                        addPostTags.run(
+                            this.properties.getYearString(),
+                            this.properties.getMonthString(),
+                            this.properties.getDayString(),
+                            this.properties.postIndex,
+                            tagName
+                        );
+                    });
+                }
+                if (this.properties['abode-channel']) {
+                    this.properties['abode-channel'].forEach(channelName => {
+                        addPostChannels.run(
+                            this.properties.getYearString(),
+                            this.properties.getMonthString(),
+                            this.properties.getDayString(),
+                            this.properties.postIndex,
+                            channelName
+                        );
+                    });
+                }
+
+                addPost.finalize();
+                addTag.finalize();
+                addPostTags.finalize();
+                addPostChannels.finalize();
+
+            });
         });
     }
 
