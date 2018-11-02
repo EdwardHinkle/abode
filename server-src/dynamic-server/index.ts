@@ -157,8 +157,7 @@ function getTagJsonFeed(req, res, next) {
         orderDirection: 'DESC',
         limit: 20
     }).then(posts => {
-        console.log(req.headers);
-        convertPostsToJsonFeed(posts, `${tagName} Feed`, `${req.protocol}://${req.headers.host}${req.url}`).then(jsonFeed => {
+        convertPostsToJsonFeed(posts, `${tagName} tag feed`, `${req.protocol}://${req.headers.host}${req.url}`).then(jsonFeed => {
             res.json(jsonFeed);
         });
     });
