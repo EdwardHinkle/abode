@@ -11,7 +11,7 @@ a:not(.no-underline) {
     padding: 2px;
 }
 
-a:not(.no-underline):hover {
+a:not(.no-underline):not(.no-background):hover {
     background-color: #24b1f3;
     color: white;
 }

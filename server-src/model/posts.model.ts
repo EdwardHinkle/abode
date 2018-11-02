@@ -122,11 +122,39 @@ export class Posts {
             }
         });
 
-        if (searchInfo.orderBy) {
-            sql += ` ORDER BY ${searchInfo.orderBy}`;
+        if (searchInfo.groupBy) {
+            let sqlStatement = ` GROUP BY `;
+
+            searchInfo.groupBy.forEach((groupByName, i, groupByItems) => {
+                sqlStatement += `"${groupByName}"`;
+                if (i < groupByItems.length - 1) {
+                    sqlStatement += `, `;
+                }
+            });
+
+            sqlStatement += ` `;
+
+            sql += sqlStatement;
         }
-        if (searchInfo.orderDirection) {
-            sql += ` ${searchInfo.orderDirection}`;
+
+        if (searchInfo.orderBy) {
+            let sqlStatement = ` ORDER BY `;
+
+            searchInfo.orderBy.forEach((orderByName, i, orderByItems) => {
+                sqlStatement += `"${orderByName}"`;
+
+                if (searchInfo.orderDirection) {
+                    sqlStatement += (searchInfo.orderDirection[i] ? searchInfo.orderDirection[i] : 'DESC');
+                }
+
+                if (i < orderByItems.length - 1) {
+                    sqlStatement += `, `;
+                }
+            });
+
+            sqlStatement += ` `;
+
+            sql += sqlStatement;
         }
 
         if (searchInfo.limit) {
@@ -311,7 +339,8 @@ export interface SearchPostsInfo {
     days?: [number];
     inChannel?: string;
     showPrivate?: boolean;
-    orderBy?: string;
-    orderDirection?: 'ASC' | 'DESC';
+    groupBy?: [string];
+    orderBy?: [string];
+    orderDirection?: ['ASC' | 'DESC'];
     limit?: number;
 }

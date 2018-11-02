@@ -8,6 +8,68 @@ body {
     text-align: center;
 }
 
+.archive-list {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.archive-row-header {
+    display: flex;
+    flex-direction: row;
+    font-size: 1.7em;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.archive-row-header .year-label {
+    flex: 1;
+    text-align: left;
+}
+
+.archive-row-header .month-label {
+    flex: 1;
+    text-align: right;
+}
+
+.archive-row {
+    display: flex;
+    flex-direction: row;
+    font-size: 1.2em;
+    line-height: 2em;
+    font-style: italic;
+}
+
+.archive-row .archive-item {
+    text-align: left;
+}
+
+.archive-row .archive-item a {
+    border-bottom-width: 1px;
+    border-bottom-style: dotted;
+    padding-bottom: 4px;
+}
+
+.archive-row .day-label {
+    text-align: right;
+}
+
+.archive-row .archive-row-spacer {
+    margin-top: 0;
+    margin-bottom: 3px;
+    margin-right: -2.5rem;
+    margin-left: 0rem;
+    border: none;
+    border-bottom: 1px dotted currentColor;
+    flex: 1 0 1rem;
+    opacity: 0.2;
+}
+
+.archive-row:hover .archive-row-spacer {
+    border-bottom-color: #24b1f3;
+    opacity: 1;
+}
+
 .post-list {
 }
 

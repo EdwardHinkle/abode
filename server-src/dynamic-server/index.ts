@@ -9,6 +9,7 @@ import * as fs from "fs";
 import {ChannelData} from "../model/channel.model";
 import moment = require("moment");
 import {DataController} from "../model/data.controller";
+import * as _ from 'lodash';
 
 export let dynamicRouter = express.Router();
 
@@ -76,8 +77,8 @@ function getChannelFeed(req, res, next) {
                 Posts.searchPosts({
                     inChannel: channel.id,
                     showPrivate: false, // this should be based on logged in
-                    orderBy: 'published',
-                    orderDirection: 'DESC',
+                    orderBy: ['published'],
+                    orderDirection: ['DESC'],
                     limit: 20
                 }).then(posts => {
                     res.render(`posts/${channel.layout}`, {
@@ -92,10 +93,43 @@ function getChannelFeed(req, res, next) {
                 channelQuery.showPrivate = false; // this should be based on logged in
 
                 Posts.searchPosts(channelQuery).then(posts => {
+
+                    let postsByYearMonth = [];
+                    let yearIndex = 0;
+                    let monthIndex = 0;
+                    let lastYear = posts[0].properties.date.format("YYYY");
+                    let lastMonth = posts[0].properties.date.format("MM");
+
+                    posts.forEach(post => {
+                        let year = post.properties.date.format("YYYY");
+                        let month = post.properties.date.format("MM");
+                        let monthLabel = post.properties.date.format("MMMM");
+
+                        if (year != lastYear) {
+                            yearIndex++;
+                            monthIndex = 0;
+                        } else if (month != lastMonth) {
+                            monthIndex++;
+                        }
+
+                        if (postsByYearMonth[yearIndex] === undefined) {
+                            postsByYearMonth[yearIndex] = { label: year, items: [] };
+                        }
+
+                        if (postsByYearMonth[yearIndex].items[monthIndex] === undefined) {
+                            postsByYearMonth[yearIndex].items[monthIndex] = { label: monthLabel, items: [] };
+                        }
+
+                        postsByYearMonth[yearIndex].items[monthIndex].items.push(post);
+
+                        lastYear = year;
+                        lastMonth = month;
+                    });
+
                     res.render(`posts/${channel.layout}`, {
                         feed_url: getRequestedUrl(req),
                         title: channel.name,
-                        posts: posts
+                        posts: postsByYearMonth
                     })
                 });
             }
@@ -125,8 +159,8 @@ function getChannelJsonFeed(req, res, next) {
                 Posts.searchPosts({
                     inChannel: channel.id,
                     showPrivate: false, // this should be based on logged in
-                    orderBy: 'published',
-                    orderDirection: 'DESC',
+                    orderBy: ['published'],
+                    orderDirection: ['DESC'],
                     limit: 20
                 }).then(posts => {
 
@@ -151,8 +185,8 @@ function getTagFeed(req, res, next) {
     Posts.searchPosts({
         taggedWith: [tagName.toLowerCase()],
         showPrivate: false, // This should be based on logged in
-        orderBy: 'published',
-        orderDirection: 'DESC',
+        orderBy: ['published'],
+        orderDirection: ['DESC'],
         limit: 20
     }).then(posts => {
         res.render(`posts/cards`, {
@@ -171,8 +205,8 @@ function getTagJsonFeed(req, res, next) {
     Posts.searchPosts({
         taggedWith: [tagName.toLowerCase()],
         showPrivate: false, // This should be based on logged in
-        orderBy: 'published',
-        orderDirection: 'DESC',
+        orderBy: ['published'],
+        orderDirection: ['DESC'],
         limit: 20
     }).then(posts => {
         convertPostsToJsonFeed(posts, `${tagName} tag feed`, getRequestedUrl(req)).then(jsonFeed => {
@@ -584,8 +618,8 @@ function getDatePhotoGallery(req, res) {
     let searchQuery: SearchPostsInfo = {
         hasType: [PostType.Photo],
         showPrivate: false, // This should be based on logged in
-        orderBy: 'published',
-        orderDirection: 'DESC',
+        orderBy: ['published'],
+        orderDirection: ['DESC'],
     };
 
     if (req.params.year) {
