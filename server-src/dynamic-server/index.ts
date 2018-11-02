@@ -69,6 +69,7 @@ function getChannelFeed(req, res, next) {
                     limit: 20
                 }).then(posts => {
                     res.render(`posts/${channel.layout}`, {
+                        feed_url: getRequestedUrl(req),
                         title: channel.name,
                         posts: posts
                     })
