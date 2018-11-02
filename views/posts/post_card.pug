@@ -72,7 +72,7 @@ div.h-entry
             each photoUrl in post.properties.photo
                 img(src=photoUrl).u-photo
     if post.properties.content || post.properties['listen-of'] || post.properties.show_name || post.properties.movie_name || post.properties.checkin
-        div(class=post.properties.name ? "" : "p-name").e-content.p-summary
+        div(class=post.properties.name ? "" : "p-name").e-content
             if post.properties['listen-of'] && post.properties['listen-of'].type === "h-cite"
                 div.summary-fallback.u-listen-of.h-cite 🎧 Listened to
                     |
