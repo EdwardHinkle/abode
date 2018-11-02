@@ -1,0 +1,57 @@
+if post.properties['in-reply-to']
+    a(href=post.properties['in-reply-to']).u-in-reply-to ↪
+if post.properties['like-of']
+    a(href=post.properties['like-of']).u-like-of 👍
+if post.properties['bookmark-of']
+    a(href=post.properties['bookmark-of']).u-bookmark-of 🔖
+if post.properties['listen-of'] && post.properties['listen-of'].type === "h-cite"
+    a(href=post.properties['listen-of'].properties.url).u-url 🎧 #{post.properties['listen-of'].properties.name}
+if post.properties.checkin && post.properties.checkin.type === "h-card"
+    img(src="https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/pin-m+24b1f3(" + post.properties.checkin.properties.longitude + "," + post.properties.checkin.properties.latitude + ")/" + post.properties.checkin.properties.longitude + "," + post.properties.checkin.properties.latitude + ",13,0,60/1280x350@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false", width='600px').u-photo
+    br
+if post.properties.photo
+    each photoUrl in post.properties.photo
+        img(src=photoUrl, width='300px').u-photo
+        br
+if post.properties.show_image
+    img(src=post.properties.show_image)
+if post.properties.movie_image
+    img(src=post.properties.movie_image)
+if post.properties['drank']
+    p
+        | 🥤 Drank #{post.properties['drank'].properties.name}
+if post.properties['ate']
+    p
+        | 🍽 Ate #{post.properties['ate'].properties.name}
+p.e-content.p-summary
+    if post.properties.content
+        | !{post.properties.content}
+        |
+    else if post.properties.checkin && post.properties.checkin.type === "h-card"
+        | Checked in
+        |
+    if post.properties.checkin && post.properties.checkin.type === "h-card"
+        |  at
+        |
+        a(href=post.properties.checkin.properties.url) #{post.properties.checkin.properties.name}
+        |
+        |
+    if post.properties.personTags.length > 0
+        | with
+        |
+        each person, index in post.properties.personTags
+            a(href=person[person.representitiveUrl]).u-category #{person.nickname}
+            if index <= post.properties.personTags.length - 3
+                | ,
+                |
+            else if index === post.properties.personTags.length - 2
+                |
+                | and
+                |
+            else
+                | .
+                |
+if post.properties.video
+    | (Watch the video on
+    a(href="https://eddiehinkle.com"+post.getOfficialPermalink()) eddiehinkle.com
+    | )

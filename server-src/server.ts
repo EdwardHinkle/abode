@@ -8,12 +8,31 @@ import * as path from 'path';
 import * as session from 'express-session';
 import { router } from './routes';
 import { rebuildServer } from './process-server/rebuildServer';
+import * as sqlite3 from 'sqlite3';
+import {CacheController} from "./model/cache.controller";
+import {DataController} from "./model/data.controller";
 
+const sqlite = sqlite3.verbose();
 var config = require('../abodeConfig.json');
 
 var app = express();
 
 config.app_root = path.resolve(__dirname);
+config.db = new sqlite.Database(`${config.app_root}/../_storage/cache.db`, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
+
+    if (err) {
+        console.error(err.message);
+    }
+
+    DataController.db = config.db;
+    CacheController.cacheExists(exists => {
+        if (!exists) {
+            console.log('Building Cache...');
+            CacheController.buildCache();
+        }
+    });
+
+});
 
 app.set('views', './views');
 app.set('view engine', 'pug');
@@ -72,3 +91,10 @@ app.use(function(req, res, next){
   res.type('txt').send('Not found');
 });
 
+process.on('SIGINT', () => {
+    console.log('Closing Database Connection');
+    if (config.db !== undefined) {
+        config.db.close();
+        config.db = undefined;
+    }
+});

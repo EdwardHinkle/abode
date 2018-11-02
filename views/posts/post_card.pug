@@ -1,0 +1,243 @@
+div.h-entry
+    a(href="/").u-author.no-underline
+    a(href="").u-url.no-underline
+    if post.properties['in-reply-to']
+        if post.properties['in-reply-to'].length != undefined && post.properties['in-reply-to'].indexOf('github.com') > -1
+            if post.properties.name !== undefined && post.properties.name > ''
+                - var repoInfo = post.properties['in-reply-to'].split('/')
+                - var userUrlParts = post.properties['in-reply-to'].split('/')
+                - userUrlParts.pop()
+                - userUrl = userUrlParts.join('/')
+                div.simple-reply 🐛 New issue for
+                    |
+                    |
+                    a(href=post.properties['in-reply-to']).u-in-reply-to #{repoInfo.pop()}
+                    |
+                    | by
+                    |
+                    a(href=userUrl) #{repoInfo.pop()}
+            else
+                div.simple-reply ↪ Commented on an issue:
+                    |
+                    |
+                    a(href=post.properties['in-reply-to']).u-in-reply-to #{post.properties['in-reply-to']}
+        else
+            div.simple-reply ↪ In Reply To:
+                |
+                |
+                a(href=post.properties['in-reply-to']).u-in-reply-to #{post.properties['in-reply-to']}
+    if post.properties['like-of']
+        div.summary-fallback 👍 Liked:
+            |
+            |
+            a(href=post.properties['like-of']).u-like-of #{post.properties['like-of']}
+    if post.properties['bookmark-of']
+        if post.properties['bookmark-of'].type === 'h-cite'
+            div.summary-fallback 🔖 Bookmarked:
+                |
+                |
+                a(href=post.properties['bookmark-of'].properties.url).u-bookmark-of.p-name #{post.properties['bookmark-of'].properties.name}
+        else
+            div.summary-fallback.p-name 🔖 Bookmarked:
+                |
+                |
+                a(href=post.properties['bookmark-of']).u-bookmark-of #{post.properties['bookmark-of']}
+    if post.properties['drank']
+        div.summary-fallback.p-summary.p-drank Drank
+            |
+            | #{post.properties['drank'].properties.name}
+    if post.properties['ate']
+        div.summary-fallback.p-summary.p-ate Ate
+            |
+            | #{post.properties['ate'].properties.name}
+    if post.properties.name
+        h1.page-title.p-name #{post.properties.name}
+    else if post.properties.itinerary
+        div.itinerary-description
+            div.p-name Traveling via #{post.properties.itinerary.properties['transit-type']} on #{post.properties.itinerary.properties.operator} #{post.properties.itinerary.properties.number} from #{post.properties.itinerary.properties.origin} to #{post.properties.itinerary.properties.destination}
+            div.itinerary-times
+                div Leaving at #{post.itineraryDepartureTime()}
+                div Arriving at #{post.itineraryArrivalTime()}
+    if post.properties.checkin && post.properties.checkin.type === "h-card"
+        img(src="https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/pin-m+24b1f3(" + post.properties.checkin.properties.longitude + "," + post.properties.checkin.properties.latitude + ")/" + post.properties.checkin.properties.longitude + "," + post.properties.checkin.properties.latitude + ",13,0,60/1280x350@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false").u-photo.map-image
+    .watch-image-container
+        if post.properties.show_image
+            img(src=post.properties.show_image, width='300px').u-photo.watch-image
+        if post.properties.movie_image
+            img(src=post.properties.movie_image, width='300px').u-photo.watch-image
+    .listen-image-container
+        if post.properties['listen-of'] && post.properties['listen-of'].properties.photo
+            img(src=post.properties['listen-of'].properties.photo, width='300px').u-photo.listen-image
+    if post.properties.photo
+        div(class="photos-" + post.properties.photo.length).photos-container
+            each photoUrl in post.properties.photo
+                img(src=photoUrl).u-photo
+    if post.properties.content || post.properties['listen-of'] || post.properties.show_name || post.properties.movie_name || post.properties.checkin
+        div(class=post.properties.name ? "" : "p-name").e-content.p-summary
+            if post.properties['listen-of'] && post.properties['listen-of'].type === "h-cite"
+                div.summary-fallback.u-listen-of.h-cite 🎧 Listened to
+                    |
+                    |
+                    a(href=post.properties['listen-of'].properties.url).u-url #{post.properties['listen-of'].properties.name}
+            if post.properties.show_name
+                span.summary-fallback.u-watch-of.h-cite 📺 Watched
+                    |
+                    |
+                    a(href=post.properties.show_url).u-url #{post.properties.show_name}
+                    |
+                    |
+                    if post.properties.show_premiere
+                        | Series Premiere
+                    else if post.properties.show_finale
+                        | Series Finale
+                    else
+                        | Season #{post.properties.show_season}
+                        |
+                        if post.properties.season_premiere
+                            | Premiere
+                        else if post.properties.season_finale
+                            | Finale
+                        else
+                            | Episode #{post.properties.show_episode}
+                    if post.properties.episode_name
+                        | :
+                        |
+                        em #{post.properties.episode_name}
+                    if post.properties.content.length > 0
+                        | :
+                        |
+            if post.properties.movie_name
+                span.summary-fallback.u-watch-of.h-cite 🎬 Watched
+                    |
+                    |
+                    a(href=post.properties.movie_url).u-url #{post.properties.movie_name}
+                    if post.properties.content.length > 0
+                    | :
+                    |
+            if post.properties.content
+                | !{post.properties.content}
+                |
+            else if post.properties.checkin && post.properties.checkin.type === "h-card"
+                | Checked in
+                |
+            if post.properties.checkin && post.properties.checkin.type === "h-card"
+                |  at
+                |
+                a(href=post.properties.checkin.properties.url) #{post.properties.checkin.properties.name}
+                |
+                |
+            if post.properties.personTags.length > 0
+                | with
+                |
+                each person, index in post.properties.personTags
+                    a(href=person[person.representitiveUrl]).u-category #{person.nickname}
+                    if index <= post.properties.personTags.length - 3
+                        | ,
+                        |
+                    else if index === post.properties.personTags.length - 2
+                        |
+                        | and
+                        |
+                    else
+                        | .
+                        |
+    div.meta
+        time(datetime=post.getPublishedDate()).dt-published.published-date #{post.semiRelativeDateTimeFormat()}
+        if post.properties.visibility === "private"
+            span Private
+        if post.properties.weather
+            span.weather-info
+                span.temperature.p-temperature #{post.properties.weather.properties.apparentTemperature} ℉
+                data(value=post.properties.weather.properties.icon).p-weather.weather-icon
+                    if post.properties.weather.properties.icon === "clear-night" || post.properties.weather.properties.icon === "partly-cloudy-night"
+                        if post.properties.weather.properties.moonPhase
+                            if post.properties.weather.properties.moonPhase === 0
+                                span(title="night new moon") 🌑
+                            else if post.properties.weather.properties.moonPhase > 0 && post.properties.weather.properties.moonPhase < 0.25
+                                span(title="night waxing crescent") 🌒
+                            else if post.properties.weather.properties.moonPhase === 0.25
+                                span(title="night first quarter moon") 🌓
+                            else if post.properties.weather.properties.moonPhase > 0.25 && post.properties.weather.properties.moonPhase < 0.5
+                                span(title="night waxing gibbous") 🌔
+                            else if post.properties.weather.properties.moonPhase === 0.5
+                                span(title="night full moon") 🌕
+                            else if post.properties.weather.properties.moonPhase > 0.5 && post.properties.weather.properties.moonPhase < 0.75
+                                span(title="night waning gibbous") 🌖
+                            else if post.properties.weather.properties.moonPhase === 0.75
+                                span(title="night last quarter moon") 🌗
+                            else if post.properties.weather.properties.moonPhase > 0.75
+                                span(title="night waning crescent") 🌘
+                        else
+                            | 🌙
+                    else
+                        span(title=post.properties.weather.properties.summary)
+                            if post.properties.weather.properties.icon === "clear-day"
+                                | ☀️
+                            else if post.properties.weather.properties.icon === "rain"
+                                | 🌧
+                            else if post.properties.weather.properties.icon === "snow"
+                                | ❄️
+                            else if post.properties.weather.properties.icon === "sleet"
+                                | 🌨
+                            else if post.properties.weather.properties.icon === "wind"
+                                | 💨
+                            else if post.properties.weather.properties.icon === "fog"
+                                | 🌫
+                            else if post.properties.weather.properties.icon === "cloudy"
+                                | ☁️
+                            else if post.properties.weather.properties.icon === "partly-cloudy-day"
+                                | ⛅
+                            else if post.properties.weather.properties.icon === "hail"
+                                | 🌨
+                            else if post.properties.weather.properties.icon === "thunderstorm"
+                                | ⛈
+                            else if post.properties.weather.properties.icon === "tornado"
+                                | 🌪
+        if post.properties.location
+            if post.properties.location.properties.name || post.properties.location.properties.locality
+                span
+                    if post.properties.location.properties.name
+                        | #{post.properties.location.properties.name}
+                    if post.properties.location.properties.locality
+                        | #{post.properties.location.properties.locality}
+                        if post.properties.location.properties.region
+                            |, #{post.properties.location.properties.region}
+                        if post.properties.location.properties.country-name && post.properties.location.properties.country-name !== "USA"
+                            |, #{post.properties.location.properties.country-name}
+        if post.properties.category.length > 0
+            span.tags-container
+                i.fal.fa-tags
+                each tag, index in post.properties.category
+                    a(href="https://eddiehinkle.com/tag/" + tag.replace(" ", "").toLowerCase()).no-underline.p-category.tag-box #{tag}
+        if post.properties.syndication.length > 0
+            span.syndication-container
+                i.fal.fa-share-alt
+                each syndication in post.properties.syndication
+                    if syndication.url.indexOf('micro.blog') > 0
+                        a(href=syndication.url).no-underline.u-syndication.syndication-box
+                            include ../resources/microblog-icon.svg
+                    else if syndication.url.indexOf('twitter.com') > 0
+                        a(href=syndication.url).no-underline.u-syndication.syndication-box
+                            i.fab.fa-twitter
+                    else if syndication.url.indexOf('facebook.com') > 0
+                        a(href=syndication.url).no-underline.u-syndication.syndication-box
+                            i.fab.fa-facebook
+                    else if syndication.url.indexOf('github.com') > 0
+                        a(href=syndication.url).no-underline.u-syndication.syndication-box
+                            i.fab.fa-github
+                    else if syndication.url.indexOf('instagram.com') > 0
+                        a(href=syndication.url).no-underline.u-syndication.syndication-box
+                            i.fab.fa-instagram
+                    else if syndication.url.indexOf('swarmapp.com') > 0
+                        a(href=syndication.url).no-underline.u-syndication.syndication-box
+                            i.fab.fa-foursquare
+                    else
+                        a(href=syndication.url).no-underline.u-syndication.syndication-box #{syndication.name}
+        div(style="display: none")
+            a(href="https://brid.gy/publish/twitter").u-bridgy-publish
+            a(href="https://brid.gy/publish/github").u-bridgy-publish
+        if post.client_id
+            span.client-display posted using
+                |
+                |
+                a(href=post.client_id, target="_blank") #{post.client_id.replace("http://", "").replace("https://", "").split("/").shift()}

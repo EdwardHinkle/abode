@@ -123,14 +123,14 @@ html
                         else
                             a(href=latestWatch.getOfficialPermalink()).no-underline
                                 img(src=latestWatch.properties.movie_image, width="150")
-                    a(href="/media/").more-button.no-underline More Media
+                    a(href="/watched/").more-button.no-underline More Watched
             div.listen
                 h4 Recently Listened
                 div.media-grid
                     each post in latestListen
                         a(href=post.getOfficialPermalink()).no-underline
                             img(src=post.properties['listen-of'].properties.photo, width="100")
-                a(href="/media/").more-button.no-underline More Media
+                a(href="/listened/").more-button.no-underline More Listened
             div.photos
                 h4 Latest Photos
                 div.media-grid

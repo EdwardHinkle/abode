@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as yaml from "js-yaml";
-import {Post} from "./post.model";
+import {Post, PostType} from "./post.model";
+import {DataController} from "./data.controller";
 
 let dataDir = __dirname + "/../../jekyll/_source";
 
@@ -9,13 +10,163 @@ export class Posts {
 
     }
 
-    public static getAllPosts(): Promise<Post[]> {
+    public static searchPosts(searchInfo: SearchPostsInfo): Promise<Post[]> {
+        let posts: Promise<Post>[] = [];
+        // Select the post ids we need to fetch the actual file
+        let sql = `SELECT posts.year, posts.month, posts.day, posts.post_index FROM posts `;
+
+        // If we are grabbing by channel we need to join to the posts_channel
+        if (searchInfo.inChannel) {
+            sql += `INNER JOIN posts_channels ON posts.year = posts_channels.post_year AND posts.month = posts_channels.post_month AND posts.day = posts_channels.post_day AND posts.post_index=posts_channels.post_index `;
+        }
+
+        // If we are grabbing by tag we need to join to the posts_tags
+        if (searchInfo.taggedWith) {
+            sql += `INNER JOIN posts_tags ON posts.year = posts_tags.post_year AND posts.month = posts_tags.post_month AND posts.day = posts_tags.post_day AND posts.post_index=posts_tags.post_index `;
+        }
+
+        // Set up the where statement
+        sql += `WHERE `;
+
+        let where = [];
+
+        if (searchInfo.inChannel) {
+            where.push(` posts_channels.channel = "${searchInfo.inChannel}" `);
+        }
+
+        if (searchInfo.taggedWith) {
+            let whereSql = ` (`;
+
+            searchInfo.taggedWith.forEach((tagName, i, tags) => {
+                whereSql += `posts_tags.tag_name = "${tagName}"`;
+                if (i < tags.length - 1) {
+                    whereSql += ` OR `;
+                }
+            });
+
+            whereSql += `) `;
+
+            where.push(whereSql);
+        }
+
+        if (searchInfo.hasType) {
+            let whereSql = ` (`;
+
+            searchInfo.hasType.forEach((typeName, i, types) => {
+                whereSql += `posts.post_type = "${typeName}"`;
+                if (i < types.length - 1) {
+                    whereSql += ` OR `;
+                }
+            });
+
+            whereSql += `) `;
+
+            where.push(whereSql);
+        }
+
+        if (searchInfo.years) {
+            let whereSql = ` (`;
+
+            searchInfo.years.forEach((year, i, years) => {
+                whereSql += `posts.year = "${year}"`;
+                if (i < years.length - 1) {
+                    whereSql += ` OR `;
+                }
+            });
+
+            whereSql += `) `;
+
+            where.push(whereSql);
+        }
+
+        if (searchInfo.months) {
+            let whereSql = ` (`;
+
+            searchInfo.months.forEach((month, i, months) => {
+                whereSql += `posts.month = "${month}"`;
+                if (i < months.length - 1) {
+                    whereSql += ` OR `;
+                }
+            });
+
+            whereSql += `) `;
+
+            where.push(whereSql);
+        }
+
+        if (searchInfo.days) {
+            let whereSql = ` (`;
+
+            searchInfo.days.forEach((day, i, days) => {
+                whereSql += `posts.day = "${day}"`;
+                if (i < days.length - 1) {
+                    whereSql += ` OR `;
+                }
+            });
+
+            whereSql += `) `;
+
+            where.push(whereSql);
+        }
+
+        if (searchInfo.showPrivate) {
+            where.push(` (posts.visibility = "public" OR posts.visibility = "private") `);
+        } else {
+            where.push(` posts.visibility = "public" `);
+        }
+
+        where.forEach((whereStatement, i) => {
+            sql += whereStatement;
+            if (i < where.length-1) {
+                sql += ' AND ';
+            }
+        });
+
+        if (searchInfo.orderBy) {
+            sql += ` ORDER BY ${searchInfo.orderBy}`;
+        }
+        if (searchInfo.orderDirection) {
+            sql += ` ${searchInfo.orderDirection}`;
+        }
+
+        if (searchInfo.limit) {
+            sql += ` LIMIT ${searchInfo.limit}`;
+        }
+
+        console.log('searching sql');
+        console.log(sql);
+
+        return new Promise((resolve, reject) => {
+            DataController.db.serialize(() => {
+                DataController.db.each(sql,
+                    (error, row) => {
+                        if (error) {
+                            console.log('ERROR!');
+                            console.log(error);
+                        }
+
+                        posts.push(Posts.getPost({
+                            year: row.year,
+                            month: ("0" + row.month).slice(-2),
+                            day: ("0" + row.day).slice(-2),
+                            postIndex: row.post_index
+                        }));
+                    }, (error, count) => {
+                        Promise.all(posts).then(posts => {
+                            resolve(posts);
+                        })
+                    });
+            });
+        });
+    }
+
+    public static getAllPosts(showPrivate: boolean = false): Promise<Post[]> {
 
         return new Promise((resolve, reject) => {
             let postFilepath = `${dataDir}/_note/posts`;
 
             if (fs.existsSync(postFilepath)) {
-                this.getPostsInDir(postFilepath, true).then(posts => {
+                this.getPostsInDir(postFilepath, true, showPrivate).then(posts => {
                     resolve(posts);
                 })
             } else {
@@ -43,7 +194,7 @@ export class Posts {
             }
 
             if (fs.existsSync(postFilepath)) {
-                this.getPostsInDir(postFilepath, true).then(posts => {
+                this.getPostsInDir(postFilepath, true, postsInfo.showPrivate).then(posts => {
                     resolve(posts);
                 }).catch(error => {
                     console.log('oops!');
@@ -61,7 +212,7 @@ export class Posts {
         });
     }
 
-    private static getPostsInDir(dirPath, recursive: boolean = false): Promise<Post[]> {
+    private static getPostsInDir(dirPath, recursive: boolean = false, showPrivate: boolean = false): Promise<Post[]> {
 
         return new Promise((resolve, reject) => {
 
@@ -74,7 +225,7 @@ export class Posts {
                 let fileStat = fs.statSync(`${dirPath}/${filename}`);
                 if (fileStat.isDirectory()) {
                     if (recursive) {
-                        postPromises.push(this.getPostsInDir(`${dirPath}/${filename}`, recursive));
+                        postPromises.push(this.getPostsInDir(`${dirPath}/${filename}`, recursive, showPrivate));
                         // .then(posts => {
                         //     // combinedPosts = combinedPosts.concat([...posts]);
                         // });
@@ -91,7 +242,12 @@ export class Posts {
 
             Promise.all(postPromises).then(arrayOfPosts => {
                 let posts = [].concat.apply([], arrayOfPosts);
-                let filteredPosts = posts.filter((post: Post) => post.isPublic());
+                let filteredPosts;
+                if (!showPrivate) {
+                    filteredPosts = posts.filter((post: Post) => post.isPublic());
+                } else {
+                    filteredPosts = posts;
+                }
                 resolve(filteredPosts);
             }).catch(error => {
                 reject(error);
@@ -144,4 +300,18 @@ export interface PostsInfo {
     month?: string;
     day?: string;
     required?: boolean;
+    showPrivate?: boolean;
+}
+
+export interface SearchPostsInfo {
+    hasType?: PostType[];
+    taggedWith?: string[];
+    years?: [number];
+    months?: [number];
+    days?: [number];
+    inChannel?: string;
+    showPrivate?: boolean;
+    orderBy?: string;
+    orderDirection?: 'ASC' | 'DESC';
+    limit?: number;
 }

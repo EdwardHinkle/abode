@@ -1,279 +1,273 @@
 import * as express from 'express';
 import * as yaml from 'js-yaml';
-import {Posts} from "../model/posts.model";
+import {Posts, SearchPostsInfo} from "../model/posts.model";
 import {Post, PostType} from "../model/post.model";
-import moment = require("moment");
 import * as requestPromise from "request-promise";
 import * as pug from 'pug';
-import {Page} from "../model/page.model";
 import {Pages} from "../model/pages.model";
+import * as fs from "fs";
+import {ChannelData} from "../model/channel.model";
+import moment = require("moment");
 
 export let dynamicRouter = express.Router();
 
-dynamicRouter.get('/microblog-syndication.json', (req, res) => {
-    let numberOfPreviousDays = 3;
+// Static Routes
+dynamicRouter.get('/', getHomepage);
+dynamicRouter.get('/now', getNowPage);
 
-    let combinedPromises: Promise<Post[]>[] = [];
+// TODO: Once Timeline based JSON Feed is done, this should go away
+dynamicRouter.get('/microblog-syndication.json', getMicroblogSyndicationFeed);
 
-    let thisYear = moment().format("YYYY");
-    let thisMonth = moment().format("MM");
-    let thisDate = moment().format("DD");
+// Channel Routes
+dynamicRouter.get('/:channel([a-z]+)', getChannelFeed);
+dynamicRouter.get('/:channel([a-z]+).json', getChannelJsonFeed);
 
-    for (let date = parseInt(thisDate); date >= parseInt(moment().format("DD")) - numberOfPreviousDays; date--) {
-        let dateString = (date <= 9 ? "0" + date : "" + date);
+// Tag Routes
+dynamicRouter.get('/tag/:tag([a-z]+)', getTagFeed);
+dynamicRouter.get('/tag/:tag([a-z]+).json', getTagJsonFeed);
 
-        combinedPromises.push(Posts.getPosts({
-            year: thisYear,
-            month: thisMonth,
-            day: dateString
-        }));
+// Photo Routes
+dynamicRouter.get('/photos/:year(\\d+)?/:month(\\d+)?/:day(\\d+)?/', getDatePhotoGallery);
 
-        if (date === 1) {
-            if (thisMonth === "1") {
-                thisYear = "" + (parseInt(thisYear) - 1);
+// Date based Routes
+dynamicRouter.get('/:year(\\d+)/', getYearSummary);
+dynamicRouter.get('/:year(\\d+)/:month(\\d+)/', getMonthSummary);
+dynamicRouter.get('/:year(\\d+)/:month(\\d+)/stats/', getMonthStats);
+dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/', getDaySummary);
+
+// Post routes
+dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/debug/', debugPostData);
+dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postType?/', getPostPage);
+
+// Generic page route
+dynamicRouter.get('/:pageSlug', getPage);
+
+
+function getChannelFeed(req, res, next) {
+
+    return new Promise((resolve, reject) => {
+        // Fetch Channel Data
+        let channelData: ChannelData[] = JSON.parse(fs.readFileSync(`${__dirname}/../../jekyll/_source/_note/channels/channels.json`, 'utf8'));
+
+        // Check to see if our channel exists
+        let selectedChannel = channelData.filter(channel => channel.id === req.params.channel);
+
+        // Return channel info
+        resolve(selectedChannel.length > 0 ? selectedChannel[0] : undefined);
+    }).then((channel: ChannelData) => {
+        if (channel) {
+
+            if (channel.type === 'static') {
+                Posts.searchPosts({
+                    inChannel: channel.id,
+                    showPrivate: false, // this should be based on logged in
+                    orderBy: 'published',
+                    orderDirection: 'DESC',
+                    limit: 20
+                }).then(posts => {
+                    res.render(`posts/${channel.layout}`, {
+                        title: channel.name,
+                        posts: posts
+                    })
+                });
+            } else if (channel.type === 'dynamic') {
+                let channelQuery = channel.query;
+
+                channelQuery.showPrivate = false; // this should be based on logged in
+
+                Posts.searchPosts(channelQuery).then(posts => {
+                    res.render(`posts/${channel.layout}`, {
+                        title: channel.name,
+                        posts: posts
+                    })
+                });
             }
 
-            thisMonth = "" + (parseInt(thisMonth) - 1);
+        } else {
+            next();
         }
-    }
+    });
 
-    Promise.all(combinedPromises)
-        .catch(error => {
-            console.log("error loading homepage", error);
-            return combinedPromises;
-        })
-        .then(arrayOfPosts => {
+}
 
-            let posts = [].concat.apply([], arrayOfPosts);
+function getChannelJsonFeed(req, res, next) {
 
-            posts.sort((a: Post, b: Post) => {
-                return b.properties.date.diff(a.properties.date);
-            });
+    return new Promise((resolve, reject) => {
+        // Fetch Channel Data
+        let channelData: ChannelData[] = JSON.parse(fs.readFileSync(`${__dirname}/../../jekyll/_source/_note/channels/channels.json`, 'utf8'));
 
-            let jsonFeed = {
-                "version": "https://jsonfeed.org/version/1",
-                "title": "@EddieHinkle feed",
-                "home_page_url": "https://eddiehinkle.com/",
-                "feed_url": "https://eddiehinkle.com/microblog-syndication.json",
-                "hubs": [
-                    {
-                        "type": "WebSub",
-                        "url": "https://switchboard.p3k.io/"
-                    }
-                ],
-                "author": {
-                    "name": "Eddie Hinkle",
-                    "url": "https://eddiehinkle.com/",
-                    "avatar": "https://eddiehinkle.com/images/profile.jpg"
-                },
-                "items": []
-            };
+        // Check to see if our channel exists
+        let selectedChannel = channelData.filter(channel => channel.id === req.params.channel);
 
-            posts.forEach(post => {
+        // Return channel info
+        resolve(selectedChannel.length > 0 ? selectedChannel[0] : undefined);
+    }).then((channel: ChannelData) => {
+        if (channel) {
 
-                if (post.properties.syndication !== undefined &&
-                    post.properties.syndication.length > 0) {
+            if (channel.type === 'static') {
+                Posts.searchPosts({
+                    inChannel: channel.id,
+                    showPrivate: false, // this should be based on logged in
+                    orderBy: 'published',
+                    orderDirection: 'DESC',
+                    limit: 20
+                }).then(posts => {
 
-                    post.properties.syndication.forEach(syndication => {
-
-                        if (syndication.url === 'https://micro.blog/EddieHinkle') {
-                            let feedItem: any = {
-                                "id": `https://eddiehinkle.com${post.getOfficialPermalink()}`,
-                                "url": `https://eddiehinkle.com${post.getOfficialPermalink()}`,
-                                "date_published": post.properties.date.format()
-                            };
-
-                            if (post.properties.name !== undefined && post.properties.name > "") {
-                                feedItem.title = post.properties.name;
-                            }
-
-                            feedItem.content_html = pug.renderFile(`${req.app.get('config').app_root}/../views/posts/microblog-syndication.pug`, {
-                                post: post
-                            });
-
-                            jsonFeed.items.push(feedItem);
-                        }
-
+                    convertPostsToJsonFeed(posts, `${channel.name} Feed`, `${req.protocol}://${req.headers.host}${req.url}`).then(jsonFeed => {
+                        res.json(jsonFeed);
                     });
-                }
 
-            });
+                });
+            }
 
-            res.json(jsonFeed);
+        } else {
+            next();
+        }
+    });
 
-        });
-});
+}
 
-dynamicRouter.get('/photos/:year(\\d+)?/:month(\\d+)?/:day(\\d+)?/', (req, res) => {
+function getTagFeed(req, res, next) {
 
-    let combinedPromises: Promise<Post[]>[] = [];
+    let tagName = req.params.tag;
 
-    let pageDate = moment();
-
-    if (req.params.year !== undefined) {
-        pageDate.year(req.params.year);
-    }
-
-    if (req.params.month !== undefined) {
-        pageDate.month(req.params.month);
-    }
-
-    if (req.params.day !== undefined) {
-        pageDate.day(req.params.day);
-    }
-
-    Posts.getPosts({
-        year: pageDate.format("YYYY"),
-        month: pageDate.format("MM"),
-        day: pageDate.format("DD")
-    }).catch(error => {
-            console.log("error loading homepage", error);
-            return combinedPromises;
+    Posts.searchPosts({
+        taggedWith: [tagName.toLowerCase()],
+        showPrivate: false, // This should be based on logged in
+        orderBy: 'published',
+        orderDirection: 'DESC',
+        limit: 20
+    }).then(posts => {
+        res.render(`posts/cards`, {
+            title: tagName,
+            posts: posts
         })
-        .then(arrayOfPosts => {
+    });
 
-            let posts = [].concat.apply([], arrayOfPosts);
+}
 
-            posts.sort((a: Post, b: Post) => {
-                return b.properties.date.diff(a.properties.date);
-            });
+function getTagJsonFeed(req, res, next) {
 
-            posts = posts.filter(post => post.properties.photo !== undefined &&
-                                         post.properties.photo.length > 0 &&
-                                         post.getPostType() !== PostType.Listen &&
-                                         post.getPostType() !== PostType.Watch &&
-                                         post.getPostType() !== PostType.Audio);
+    let tagName = req.params.tag;
 
-            res.render("posts/photos", {
-                posts: posts
-            });
-        });
-});
-
-dynamicRouter.get('/', (req, res) => {
-
-    let numberOfPreviousDays = 10;
-
-    let combinedPromises: Promise<Post[]>[] = [];
-
-    for (let date = moment(); moment().diff(date, "days") < numberOfPreviousDays; date.subtract(1, "day")) {
-
-        combinedPromises.push(Posts.getPosts({
-            year: date.format("YYYY"),
-            month: date.format("MM"),
-            day: date.format("DD")
-        }));
-
-    }
-
-    Promise.all(combinedPromises)
-    .catch(error => {
-        console.log("error loading homepage", error);
-        return combinedPromises;
-    })
-    .then(arrayOfPosts => {
-
-        let posts = [].concat.apply([], arrayOfPosts);
-        let latestDrank: Post;
-        let latestAte: Post[] = [];
-        let latestCheckin: Post;
-        let latestListen: Post[] = [];
-        let latestWatch: Post;
-        let latestPhoto: Post[] = [];
-        let latestPhotoCount: number = 0;
-        let latestNotes: Post[] = [];
-        let latestArticles: Post[] = [];
-        let latestSocial: Post[] = [];
-        let latestPodcast: Post;
-
-        posts.sort((a: Post, b: Post) => {
-            return b.properties.date.diff(a.properties.date);
-        });
-
-        posts.forEach(post => {
-            let postType = post.getPostType();
-
-            switch(postType) {
-                case PostType.Audio:
-                    if (latestPodcast === undefined) {
-                        latestPodcast = post;
-                    }
-                    break;
-                case PostType.Drank:
-                    if (latestDrank === undefined) {
-                        latestDrank = post;
-                    }
-                    break;
-                case PostType.Ate:
-                    if (latestAte.length === 0) {
-                        latestAte.push(post);
-                    } else if (latestAte[0].properties.date.diff(post.properties.date, 'minutes') < 30) {
-                        latestAte.push(post);
-                    }
-                    break;
-                case PostType.Checkin:
-                    if (latestCheckin === undefined) {
-                        latestCheckin = post;
-                    }
-                    break;
-                case PostType.Watch:
-                    if (latestWatch === undefined && (post.properties.show_name !== undefined || post.properties.movie_name !== undefined)) {
-                        latestWatch = post;
-                    }
-                    break;
-                case PostType.Listen:
-                    if (latestListen.length < 4) {
-                        latestListen.push(post);
-                    }
-                    break;
-                case PostType.Note:
-                    if (latestNotes.length < 10) {
-                        latestNotes.push(post);
-                    }
-                    break;
-                case PostType.Article:
-                    if (latestArticles.length < 10 && post.isPublic()) {
-                        latestArticles.push(post);
-                    }
-                    break;
-                case PostType.Like:
-                case PostType.Reply:
-                case PostType.Bookmark:
-                    latestSocial.push(post);
-                    break;
-                default:
-            }
-
-            if (latestPhotoCount < 4) {
-                if (post.properties.photo !== undefined &&
-                    post.properties.photo.length > 0 &&
-                    post.getPostType() !== PostType.Listen &&
-                    post.getPostType() !== PostType.Watch &&
-                    post.getPostType() !== PostType.Audio &&
-                    post.properties.category.indexOf("reading") === -1) {
-
-                    latestPhotoCount += post.properties.photo.length;
-                    latestPhoto.push(post);
-                }
-            }
-        });
-
-        res.render("homepage/homepage", {
-            latestDrank: latestDrank,
-            latestAte: latestAte.reverse(),
-            latestCheckin: latestCheckin,
-            latestListen: latestListen,
-            latestWatch: latestWatch,
-            latestPhoto: latestPhoto,
-            latestNotes: latestNotes,
-            latestArticles: latestArticles,
-            latestSocial: latestSocial,
-            latestPodcast: latestPodcast
+    Posts.searchPosts({
+        taggedWith: [tagName.toLowerCase()],
+        showPrivate: false, // This should be based on logged in
+        orderBy: 'published',
+        orderDirection: 'DESC',
+        limit: 20
+    }).then(posts => {
+        console.log(req.headers);
+        convertPostsToJsonFeed(posts, `${tagName} Feed`, `${req.protocol}://${req.headers.host}${req.url}`).then(jsonFeed => {
+            res.json(jsonFeed);
         });
     });
-});
 
-dynamicRouter.get('/:year(\\d+)/', (req, res, next) => {
+}
+
+function convertPostsToJsonFeed(posts: Post[], feed_title: string, feed_url: string): Promise<any> {
+
+    return new Promise<any>((resolve, reject) => {
+
+        let jsonFeed = {
+            "version": "https://jsonfeed.org/version/1",
+            "title": feed_title,
+            "home_page_url": "https://eddiehinkle.com/",
+            "feed_url": feed_url,
+            "hubs": [
+                {
+                    "type": "WebSub",
+                    "url": "https://switchboard.p3k.io/"
+                }
+            ],
+            "author": {
+                "name": "Eddie Hinkle",
+                "url": "https://eddiehinkle.com/",
+                "avatar": "https://eddiehinkle.com/images/profile.jpg"
+            },
+            "items": []
+        };
+
+        posts.forEach(post => {
+
+            let feedItem: any = {
+                "id": `https://eddiehinkle.com${post.getOfficialPermalink()}`,
+                "url": `https://eddiehinkle.com${post.getOfficialPermalink()}`,
+                "date_published": post.properties.date.format()
+            };
+
+            if (post.properties.name !== undefined && post.properties.name > "") {
+                feedItem.title = post.properties.name;
+            }
+
+            feedItem.content_html = pug.renderFile(`${__dirname}/../../views/posts/jsonfeed-item.pug`, {
+                post: post
+            });
+
+            jsonFeed.items.push(feedItem);
+
+        });
+
+        resolve(jsonFeed);
+
+    });
+}
+
+function getPostPage(req, res) {
+
+    let year = req.params.year;
+    let month = req.params.month;
+    let day = req.params.day;
+    let postIndex = req.params.postIndex;
+
+    Posts.getPost({
+        year: year,
+        month: month,
+        day: day,
+        postIndex: postIndex
+    }).then(post => {
+
+        // Check if the post path is the official permalink path.
+        if (!post.verifyPostPermalink(req)) {
+            // Redirect to the official permalink path
+            res.redirect(302, post.getOfficialPermalink());
+            return;
+        }
+
+        // Now we need to display the post
+        res.render("posts/fullPost", {
+            post: post
+        });
+        return;
+    }).catch(error => {
+        if (error !== undefined) {
+            res.render("posts/errorMessage", {
+                errorMessage: "Sorry, the post you are looking for is still processing"
+            });
+            return;
+        }
+    });
+
+}
+
+function getPage(req, res, next) {
+
+    Pages.getPage({
+        slug: req.params.pageSlug
+    }).then(page => {
+
+        res.render("posts/fullPost", {
+            post: page
+        });
+
+    }).catch(error => {
+        console.log("ERROR", error);
+        next();
+    });
+
+}
+
+function getYearSummary(req, res, next) {
 
     let pageDate = moment();
     pageDate.year(req.params.year);
@@ -293,9 +287,9 @@ dynamicRouter.get('/:year(\\d+)/', (req, res, next) => {
         console.log("ERROR", error);
         next();
     });
-});
+}
 
-dynamicRouter.get('/:year(\\d+)/:month(\\d+)/', (req, res, next) => {
+function getMonthSummary(req, res, next) {
 
     let pageDate = moment();
     pageDate.year(req.params.year);
@@ -317,130 +311,9 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/', (req, res, next) => {
         console.log("ERROR", error);
         next();
     });
-});
+}
 
-dynamicRouter.get('/:year(\\d+)/:month(\\d+)/stats/', (req, res, next) => {
-
-    let currentMonth = moment();
-    currentMonth.year(req.params.year);
-    currentMonth.month(parseInt(req.params.month) - 1);
-    let lastMonth = currentMonth.clone();
-    lastMonth.subtract(1, "month");
-
-    let postPromises = [];
-
-    postPromises.push(Posts.getPosts({
-        year: currentMonth.format("YYYY"),
-        month: currentMonth.format("MM")
-    }));
-
-    // postPromises.push(Posts.getPosts({
-    //     year: lastMonth.format("YYYY"),
-    //     month: lastMonth.format("MM")
-    // }));
-
-    Promise.all(postPromises).then(posts => {
-
-        let thisMonthPosts = posts[0];
-        // let lastMonthPosts = posts[1];
-
-        let currentPodcasts = [];
-        let currentArticles = [];
-        let currentPhotos = [];
-        let finales = [];
-        let premieres = [];
-        let shows = [];
-        let movies = [];
-        let currentListens = [];
-        let ate = {};
-        let drank = {};
-
-        let postsWithoutType = [];
-
-        thisMonthPosts.forEach((post, index) => {
-            let postType = post.getPostType();
-
-            switch(postType) {
-                case PostType.Audio:
-                    currentPodcasts.push(post);
-                    break;
-                case PostType.Drank:
-                    let drankName = post.properties.drank.properties.name;
-                    if (drank[drankName] === undefined) {
-                        drank[drankName] = 1;
-                    } else {
-                        drank[drankName]++;
-                    }
-                    break;
-                case PostType.Ate:
-                    let ateName = post.properties.ate.properties.name;
-                    if (ate[ateName] === undefined) {
-                        ate[ateName] = 1;
-                    } else {
-                        ate[ateName]++;
-                    }
-                    break;
-                // case PostType.Checkin:
-                //     if (latestCheckin === undefined) {
-                //         latestCheckin = post;
-                //     }
-                //     break;
-                case PostType.Photo:
-                    currentPhotos.push(post);
-                    break;
-                case PostType.Watch:
-                    if (post.properties['show_name']) {
-                        if (post.properties['season_finale'] || post.properties['show_finale']) {
-                            finales.push(post);
-                        }
-                        if (post.properties['season_premiere'] || post.properties['show_premiere']) {
-                            premieres.push(post);
-                        }
-                        shows.push(post);
-                    } else if (post.properties['movie_name']) {
-                        movies.push(post);
-                    }
-                    break;
-                case PostType.Listen:
-                    currentListens.push(post);
-                    break;
-                // case PostType.Note:
-                //     social.push(post);
-                //     break;
-                case PostType.Article:
-                    currentArticles.push(post);
-                    break;
-                // case PostType.Like:
-                // case PostType.Reply:
-                // case PostType.Bookmark:
-                //     social.push(post);
-                //     break;
-                default:
-                    postsWithoutType.push(post);
-            }
-        });
-
-        res.render("posts/monthStats", {
-            title: `${currentMonth.format("MMM YYYY")}`,
-            posts: postsWithoutType,
-            currentPodcasts: currentPodcasts,
-            currentArticles: currentArticles,
-            currentPhotos: currentPhotos,
-            finales: finales,
-            premieres: premieres,
-            movies: movies,
-            shows: shows,
-            currentListens: currentListens,
-            ate: ate,
-            drank: drank
-        });
-    }).catch(error => {
-        console.log("ERROR", error);
-        next();
-    });
-});
-
-dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/', (req, res, next) => {
+function getDaySummary(req, res, next) {
 
     let pageDate = moment();
     pageDate.year(req.params.year);
@@ -566,9 +439,389 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/', (req, res, next) => {
         console.log("ERROR", error);
         next();
     });
-});
+}
 
-dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/debug/', (req, res) => {
+function getMonthStats(req, res, next) {
+
+    let currentMonth = moment();
+    currentMonth.year(req.params.year);
+    currentMonth.month(parseInt(req.params.month) - 1);
+    let lastMonth = currentMonth.clone();
+    lastMonth.subtract(1, "month");
+
+    let postPromises = [];
+
+    postPromises.push(Posts.getPosts({
+        year: currentMonth.format("YYYY"),
+        month: currentMonth.format("MM")
+    }));
+
+    // postPromises.push(Posts.getPosts({
+    //     year: lastMonth.format("YYYY"),
+    //     month: lastMonth.format("MM")
+    // }));
+
+    Promise.all(postPromises).then(posts => {
+
+        let thisMonthPosts = posts[0];
+        // let lastMonthPosts = posts[1];
+
+        let currentPodcasts = [];
+        let currentArticles = [];
+        let currentPhotos = [];
+        let finales = [];
+        let premieres = [];
+        let shows = [];
+        let movies = [];
+        let currentListens = [];
+        let ate = {};
+        let drank = {};
+
+        let postsWithoutType = [];
+
+        thisMonthPosts.forEach((post, index) => {
+            let postType = post.getPostType();
+
+            switch(postType) {
+                case PostType.Audio:
+                    currentPodcasts.push(post);
+                    break;
+                case PostType.Drank:
+                    let drankName = post.properties.drank.properties.name;
+                    if (drank[drankName] === undefined) {
+                        drank[drankName] = 1;
+                    } else {
+                        drank[drankName]++;
+                    }
+                    break;
+                case PostType.Ate:
+                    let ateName = post.properties.ate.properties.name;
+                    if (ate[ateName] === undefined) {
+                        ate[ateName] = 1;
+                    } else {
+                        ate[ateName]++;
+                    }
+                    break;
+                // case PostType.Checkin:
+                //     if (latestCheckin === undefined) {
+                //         latestCheckin = post;
+                //     }
+                //     break;
+                case PostType.Photo:
+                    currentPhotos.push(post);
+                    break;
+                case PostType.Watch:
+                    if (post.properties['show_name']) {
+                        if (post.properties['season_finale'] || post.properties['show_finale']) {
+                            finales.push(post);
+                        }
+                        if (post.properties['season_premiere'] || post.properties['show_premiere']) {
+                            premieres.push(post);
+                        }
+                        shows.push(post);
+                    } else if (post.properties['movie_name']) {
+                        movies.push(post);
+                    }
+                    break;
+                case PostType.Listen:
+                    currentListens.push(post);
+                    break;
+                // case PostType.Note:
+                //     social.push(post);
+                //     break;
+                case PostType.Article:
+                    currentArticles.push(post);
+                    break;
+                // case PostType.Like:
+                // case PostType.Reply:
+                // case PostType.Bookmark:
+                //     social.push(post);
+                //     break;
+                default:
+                    postsWithoutType.push(post);
+            }
+        });
+
+        res.render("posts/monthStats", {
+            title: `${currentMonth.format("MMM YYYY")}`,
+            posts: postsWithoutType,
+            currentPodcasts: currentPodcasts,
+            currentArticles: currentArticles,
+            currentPhotos: currentPhotos,
+            finales: finales,
+            premieres: premieres,
+            movies: movies,
+            shows: shows,
+            currentListens: currentListens,
+            ate: ate,
+            drank: drank
+        });
+    }).catch(error => {
+        console.log("ERROR", error);
+        next();
+    });
+}
+
+function getDatePhotoGallery(req, res) {
+
+    let searchQuery: SearchPostsInfo = {
+        hasType: [PostType.Photo],
+        showPrivate: false, // This should be based on logged in
+        orderBy: 'published',
+        orderDirection: 'DESC',
+    };
+
+    if (req.params.year) {
+        searchQuery.years = [req.params.year];
+    }
+
+    if (req.params.month) {
+        searchQuery.months = [req.params.month+1];
+    }
+
+    if (req.params.day) {
+        searchQuery.days = [req.params.day];
+    }
+
+    if (searchQuery.years === undefined) {
+        let today = moment();
+        searchQuery.years = [today.year()];
+        searchQuery.months = [today.month()+1];
+
+        if (today.date() < 5) {
+            // If we are less then 5 days into the new month, we should also show last months photos
+            searchQuery.months.push(today.month());
+        }
+    }
+
+    Posts.searchPosts(searchQuery).then(posts => {
+        res.render("posts/photos", {
+            posts: posts,
+
+        });
+    });
+
+}
+
+function getHomepage(req, res, next) {
+
+    let numberOfPreviousDays = 10;
+
+    let combinedPromises: Promise<Post[]>[] = [];
+
+    for (let date = moment(); moment().diff(date, "days") < numberOfPreviousDays; date.subtract(1, "day")) {
+
+        combinedPromises.push(Posts.getPosts({
+            year: date.format("YYYY"),
+            month: date.format("MM"),
+            day: date.format("DD"),
+            required: true
+        }));
+
+    }
+
+    Promise.all(combinedPromises)
+        .catch(error => {
+            console.log("error loading homepage", error);
+            return combinedPromises;
+        })
+        .then(arrayOfPosts => {
+
+            let posts = [].concat.apply([], arrayOfPosts);
+            let latestDrank: Post;
+            let latestAte: Post[] = [];
+            let latestCheckin: Post;
+            let latestListen: Post[] = [];
+            let latestWatch: Post;
+            let latestPhoto: Post[] = [];
+            let latestPhotoCount: number = 0;
+            let latestNotes: Post[] = [];
+            let latestArticles: Post[] = [];
+            let latestSocial: Post[] = [];
+            let latestPodcast: Post;
+
+            posts.sort((a: Post, b: Post) => {
+                return b.properties.date.diff(a.properties.date);
+            });
+
+            posts.forEach(post => {
+                let postType = post.getPostType();
+
+                switch(postType) {
+                    case PostType.Audio:
+                        if (latestPodcast === undefined) {
+                            latestPodcast = post;
+                        }
+                        break;
+                    case PostType.Drank:
+                        if (latestDrank === undefined) {
+                            latestDrank = post;
+                        }
+                        break;
+                    case PostType.Ate:
+                        if (latestAte.length === 0) {
+                            latestAte.push(post);
+                        } else if (latestAte[0].properties.date.diff(post.properties.date, 'minutes') < 30) {
+                            latestAte.push(post);
+                        }
+                        break;
+                    case PostType.Checkin:
+                        if (latestCheckin === undefined) {
+                            latestCheckin = post;
+                        }
+                        break;
+                    case PostType.Watch:
+                        if (latestWatch === undefined && (post.properties.show_name !== undefined || post.properties.movie_name !== undefined)) {
+                            latestWatch = post;
+                        }
+                        break;
+                    case PostType.Listen:
+                        if (latestListen.length < 4) {
+                            latestListen.push(post);
+                        }
+                        break;
+                    case PostType.Note:
+                        if (latestNotes.length < 10) {
+                            latestNotes.push(post);
+                        }
+                        break;
+                    case PostType.Article:
+                        if (latestArticles.length < 10 && post.isPublic()) {
+                            latestArticles.push(post);
+                        }
+                        break;
+                    case PostType.Like:
+                    case PostType.Reply:
+                    case PostType.Bookmark:
+                        latestSocial.push(post);
+                        break;
+                    default:
+                }
+
+                if (latestPhotoCount < 4) {
+                    if (post.properties.photo !== undefined &&
+                        post.properties.photo.length > 0 &&
+                        post.getPostType() !== PostType.Listen &&
+                        post.getPostType() !== PostType.Watch &&
+                        post.getPostType() !== PostType.Audio &&
+                        post.properties.category.indexOf("reading") === -1) {
+
+                        latestPhotoCount += post.properties.photo.length;
+                        latestPhoto.push(post);
+                    }
+                }
+            });
+
+            res.render("homepage/homepage", {
+                latestDrank: latestDrank,
+                latestAte: latestAte.reverse(),
+                latestCheckin: latestCheckin,
+                latestListen: latestListen,
+                latestWatch: latestWatch,
+                latestPhoto: latestPhoto,
+                latestNotes: latestNotes,
+                latestArticles: latestArticles,
+                latestSocial: latestSocial,
+                latestPodcast: latestPodcast
+            });
+        });
+}
+
+function getMicroblogSyndicationFeed(req, res, next) {
+    let numberOfPreviousDays = 3;
+
+    let combinedPromises: Promise<Post[]>[] = [];
+
+    let thisYear = moment().format("YYYY");
+    let thisMonth = moment().format("MM");
+    let thisDate = moment().format("DD");
+
+    for (let date = parseInt(thisDate); date >= parseInt(moment().format("DD")) - numberOfPreviousDays; date--) {
+        let dateString = (date <= 9 ? "0" + date : "" + date);
+
+        combinedPromises.push(Posts.getPosts({
+            year: thisYear,
+            month: thisMonth,
+            day: dateString
+        }));
+
+        if (date === 1) {
+            if (thisMonth === "1") {
+                thisYear = "" + (parseInt(thisYear) - 1);
+            }
+
+            thisMonth = "" + (parseInt(thisMonth) - 1);
+        }
+    }
+
+    Promise.all(combinedPromises)
+        .catch(error => {
+            console.log("error loading homepage", error);
+            return combinedPromises;
+        })
+        .then(arrayOfPosts => {
+
+            let posts = [].concat.apply([], arrayOfPosts);
+
+            posts.sort((a: Post, b: Post) => {
+                return b.properties.date.diff(a.properties.date);
+            });
+
+            let jsonFeed = {
+                "version": "https://jsonfeed.org/version/1",
+                "title": "@EddieHinkle feed",
+                "home_page_url": "https://eddiehinkle.com/",
+                "feed_url": "https://eddiehinkle.com/microblog-syndication.json",
+                "hubs": [
+                    {
+                        "type": "WebSub",
+                        "url": "https://switchboard.p3k.io/"
+                    }
+                ],
+                "author": {
+                    "name": "Eddie Hinkle",
+                    "url": "https://eddiehinkle.com/",
+                    "avatar": "https://eddiehinkle.com/images/profile.jpg"
+                },
+                "items": []
+            };
+
+            posts.forEach(post => {
+
+                if (post.properties.syndication !== undefined &&
+                    post.properties.syndication.length > 0) {
+
+                    post.properties.syndication.forEach(syndication => {
+
+                        if (syndication.url === 'https://micro.blog/EddieHinkle') {
+                            let feedItem: any = {
+                                "id": `https://eddiehinkle.com${post.getOfficialPermalink()}`,
+                                "url": `https://eddiehinkle.com${post.getOfficialPermalink()}`,
+                                "date_published": post.properties.date.format()
+                            };
+
+                            if (post.properties.name !== undefined && post.properties.name > "") {
+                                feedItem.title = post.properties.name;
+                            }
+
+                            feedItem.content_html = pug.renderFile(`${req.app.get('config').app_root}/../views/posts/microblog-syndication.pug`, {
+                                post: post
+                            });
+
+                            jsonFeed.items.push(feedItem);
+                        }
+
+                    });
+                }
+
+            });
+
+            res.json(jsonFeed);
+
+        });
+}
+
+function debugPostData(req, res) {
 
     console.log('DEBUG Post');
 
@@ -613,53 +866,16 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/debug/'
         }
     });
 
-});
+}
 
-dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postType?/', (req, res) => {
-
-    let year = req.params.year;
-    let month = req.params.month;
-    let day = req.params.day;
-    let postIndex = req.params.postIndex;
-
-    Posts.getPost({
-        year: year,
-        month: month,
-        day: day,
-        postIndex: postIndex
-    }).then(post => {
-
-        // Check if the post path is the official permalink path.
-        if (!post.verifyPostPermalink(req)) {
-            // Redirect to the official permalink path
-            res.redirect(302, post.getOfficialPermalink());
-            return;
-        }
-
-        // Now we need to display the post
-        res.render("posts/fullPost", {
-            post: post
-        });
-        return;
-    }).catch(error => {
-        if (error !== undefined) {
-            res.render("posts/errorMessage", {
-                errorMessage: "Sorry, the post you are looking for is still processing"
-            });
-            return;
-        }
-    });
-
-});
-
-dynamicRouter.get('/now', (req, res, next) => {
+function getNowPage(req, res, next) {
     let config = req.app.get('config');
 
     let promises = [];
     let currentTrip;
-    
+
     let locationRequestPromise = new Promise((resolve, reject) => {
-    
+
         promises.push(requestPromise.get(`${config.compass.url}api/trip?token=${config.compass.token.read}`, {
             json: true
         }).then(tripData => {
@@ -672,23 +888,23 @@ dynamicRouter.get('/now', (req, res, next) => {
             })
         }));
     });
-    
+
     promises.push(locationRequestPromise);
-    
+
     promises.push(Pages.getPage({
         slug: 'now'
     }));
-    
+
     Promise.all(promises).then(data => {
-        
+
         console.log('now page');
-        
+
         let startLocation = data[1];
         let page = data[2];
-        
+
         console.log(currentTrip);
         console.log(startLocation);
-        
+
         currentTrip.travel_length = moment(currentTrip.start).fromNow();
         currentTrip.current_speed = currentTrip.current_location.properties.speed > 0 ? (currentTrip.current_location.properties.speed * 2.236936) : -1;
         currentTrip.origin_location = startLocation;
@@ -705,21 +921,4 @@ dynamicRouter.get('/now', (req, res, next) => {
         next();
     });
 
-});
-
-dynamicRouter.get('/:pageSlug', (req, res, next) => {
-
-    Pages.getPage({
-        slug: req.params.pageSlug
-    }).then(page => {
-
-        res.render("posts/fullPost", {
-            post: page
-        });
-
-    }).catch(error => {
-        console.log("ERROR", error);
-        next();
-    });
-
-});
+}
