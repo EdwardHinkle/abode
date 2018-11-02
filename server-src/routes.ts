@@ -17,7 +17,6 @@ export let router = express.Router();
 
 router.use('/', activityPubRouter);
 router.use('/', resumeRouter);
-router.use('/', dynamicRouter);
 router.use('/abode', processRouter);
 router.use('/micropub', micropubRouter);
 router.use('/webmention', webmentionRouter);
@@ -25,4 +24,5 @@ router.use('/media', mediaServerRouter);
 router.use('/auth', authRouter);
 router.use('/location', locationRouter);
 router.use('/sponsor', sponsorRouter);
+router.use('/', dynamicRouter);
 router.use('/', staticSiteRouter);
