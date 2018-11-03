@@ -13,8 +13,12 @@ html
     body
         include ../includes/header.pug
         h2.channel-title #{title}
-        div.h-feed.post-list
-            each post in posts
-                div.post-item
-                    include ./post_card.pug
+        if posts.length > 0
+            div.h-feed.post-list
+                each post in posts
+                    div.post-item
+                        include ./post_card.pug
+        else
+            h3.no-posts No posts are in this channel
+            p.no-posts You could check out <a href='/today/'>Today's posts</a>
         include ../includes/footer.pug

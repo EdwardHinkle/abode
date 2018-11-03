@@ -8,6 +8,11 @@ body {
     text-align: center;
 }
 
+.no-posts {
+    margin: 50px 0;
+    text-align: center;
+}
+
 .archive-list {
     max-width: 800px;
     margin-left: auto;

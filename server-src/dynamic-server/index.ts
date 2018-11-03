@@ -16,6 +16,7 @@ export let dynamicRouter = express.Router();
 // Static Routes
 dynamicRouter.get('/', getHomepage);
 dynamicRouter.get('/now', getNowPage);
+dynamicRouter.get('/today/', forwardToToday);
 
 // TODO: Once Timeline based JSON Feed is done, this should go away
 dynamicRouter.get('/microblog-syndication.json', getMicroblogSyndicationFeed);
@@ -57,6 +58,11 @@ function requireDatabaseCache(req, res, next) {
 
 function getRequestedUrl(req) {
     return `${req.protocol}://${req.headers.host}${req.url}`;
+}
+
+function forwardToToday(req, res) {
+    let today = moment();
+    return res.redirect(`/${today.format("YYYY")}/${today.format("MM")}/${today.format("DD")}/`);
 }
 
 function getJSONFeedUrl(currentUrl: string) {
@@ -379,9 +385,15 @@ function getMonthSummary(req, res, next) {
             return b.properties.date.diff(a.properties.date);
         });
 
-        res.render("posts/list", {
+        let currentUrl = getRequestedUrl(req);
+
+        res.render(`posts/cards`, {
+            feed_url: currentUrl,
+            jsonfeed_url: getJSONFeedUrl(currentUrl),
+            title: `${pageDate.format("MMMM")} ${pageDate.format("YYYY")}`,
             posts: posts
         });
+
     }).catch(error => {
         console.log("ERROR", error);
         next();
