@@ -21,12 +21,12 @@ dynamicRouter.get('/now', getNowPage);
 dynamicRouter.get('/microblog-syndication.json', getMicroblogSyndicationFeed);
 
 // Channel Routes
-dynamicRouter.get('/:channel([a-z]+)', requireDatabaseCache, getChannelFeed);
-dynamicRouter.get('/:channel([a-z]+)/feed.json', requireDatabaseCache, getChannelJsonFeed);
+dynamicRouter.get('/:channel([a-z\-]+)', requireDatabaseCache, getChannelFeed);
+dynamicRouter.get('/:channel([a-z\-]+)/feed.json', requireDatabaseCache, getChannelJsonFeed);
 
 // Tag Routes
-dynamicRouter.get('/tag/:tag([a-z]+)', requireDatabaseCache, getTagFeed);
-dynamicRouter.get('/tag/:tag([a-z]+)/feed.json', requireDatabaseCache, getTagJsonFeed);
+dynamicRouter.get('/tag/:tag([a-z\-]+)', requireDatabaseCache, getTagFeed);
+dynamicRouter.get('/tag/:tag([a-z\-]+)/feed.json', requireDatabaseCache, getTagJsonFeed);
 
 // Photo Routes
 dynamicRouter.get('/photos/:year(\\d+)?/:month(\\d+)?/:day(\\d+)?/', requireDatabaseCache, getDatePhotoGallery);

@@ -67,7 +67,15 @@ div.h-entry
     .listen-image-container
         if post.properties['listen-of'] && post.properties['listen-of'].properties.photo
             img(src=post.properties['listen-of'].properties.photo, width='300px').u-photo.listen-image
-    if post.properties.photo
+    if post.properties.video
+        div(class="videos-" + post.properties.video.length).videos-container
+            each videoUrl in post.properties.video
+                if (post.properties.photo !== undefined)
+                    video(controls poster=post.properties.photo[0]).u-featured
+                        source(class="u-video" src=videoUrl)
+                else
+                    video(src=videoUrl controls="controls").u-video
+    if post.properties.video === undefined && post.properties.photo
         div(class="photos-" + post.properties.photo.length).photos-container
             each photoUrl in post.properties.photo
                 img(src=photoUrl).u-photo

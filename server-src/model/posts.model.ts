@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as yaml from "js-yaml";
 import {Post, PostType} from "./post.model";
 import {DataController} from "./data.controller";
+import moment = require("moment");
 
 let dataDir = __dirname + "/../../jekyll/_source";
 
@@ -64,6 +65,15 @@ export class Posts {
             where.push(whereSql);
         }
 
+        if (searchInfo.relativeYears) {
+            searchInfo.years = [0];
+
+            searchInfo.relativeYears.forEach((relativeYear, i) => {
+                let today = moment().add(relativeYear, "year");
+                searchInfo.years[i] = today.year();
+            });
+        }
+
         if (searchInfo.years) {
             let whereSql = ` (`;
 
@@ -79,6 +89,15 @@ export class Posts {
             where.push(whereSql);
         }
 
+        if (searchInfo.relativeMonths) {
+            searchInfo.months = [0];
+
+            searchInfo.relativeMonths.forEach((relativeMonth, i) => {
+                let today = moment().add(relativeMonth, "month");
+                searchInfo.months[i] = today.month() + 1;
+            });
+        }
+
         if (searchInfo.months) {
             let whereSql = ` (`;
 
@@ -92,6 +111,15 @@ export class Posts {
             whereSql += `) `;
 
             where.push(whereSql);
+        }
+
+        if (searchInfo.relativeDays) {
+            searchInfo.days = [0];
+
+            searchInfo.relativeDays.forEach((relativeDay, i) => {
+                let today = moment().add(relativeDay, "day");
+                searchInfo.days[i] = today.date();
+            });
         }
 
         if (searchInfo.days) {
@@ -144,7 +172,7 @@ export class Posts {
                 sqlStatement += `"${orderByName}"`;
 
                 if (searchInfo.orderDirection) {
-                    sqlStatement += (searchInfo.orderDirection[i] ? searchInfo.orderDirection[i] : 'DESC');
+                    sqlStatement += " " + (searchInfo.orderDirection[i] ? searchInfo.orderDirection[i] : 'DESC');
                 }
 
                 if (i < orderByItems.length - 1) {
@@ -337,6 +365,9 @@ export interface SearchPostsInfo {
     years?: [number];
     months?: [number];
     days?: [number];
+    relativeYears?: [number];
+    relativeMonths?: [number];
+    relativeDays?: [number];
     inChannel?: string;
     showPrivate?: boolean;
     groupBy?: [string];

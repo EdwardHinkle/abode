@@ -58,6 +58,10 @@ export class Post {
                 post.properties.photo.push(doc.photo);
             }
 
+            if (typeof post.properties.video === "string") {
+                post.properties.video = [post.properties.video];
+            }
+
             // Convert the jekyll title into a h-entry name
             post.properties.name = doc.title;
 
