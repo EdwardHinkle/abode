@@ -26,8 +26,8 @@ dynamicRouter.get('/:channel([a-z\-]+)', requireDatabaseCache, getChannelFeed);
 dynamicRouter.get('/:channel([a-z\-]+)/feed.json', requireDatabaseCache, getChannelJsonFeed);
 
 // Tag Routes
-dynamicRouter.get('/tag/:tag([a-z\-]+)', requireDatabaseCache, getTagFeed);
-dynamicRouter.get('/tag/:tag([a-z\-]+)/feed.json', requireDatabaseCache, getTagJsonFeed);
+dynamicRouter.get('/tag/:tag([a-z0-9\-]+)', requireDatabaseCache, getTagFeed);
+dynamicRouter.get('/tag/:tag([a-z0-9\-]+)/feed.json', requireDatabaseCache, getTagJsonFeed);
 
 // Photo Routes
 dynamicRouter.get('/photos/:year(\\d+)?/:month(\\d+)?/:day(\\d+)?/', requireDatabaseCache, getDatePhotoGallery);
