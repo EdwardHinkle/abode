@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as moment from "moment";
 import {Posts} from "../model/posts.model";
+import {Channel} from "../model/channel.model";
 
 let config = require('../../abodeConfig.json');
 let dataDir = __dirname + "/../../jekyll/_source/";
@@ -10,19 +11,30 @@ let entryImageDirName = `entry-images`;
 
 let syndicateData = fs.readFileSync(__dirname + '/../../config/syndicate.yaml', 'utf8');
 let syndicateTargets = yaml.safeLoad(syndicateData);
+let syndicationChannels = Channel.getChannels().filter(channel => channel.type === 'static').map(channel => {
+    return {
+        name: `Channel: ${channel.name}`,
+        uid: `https://eddiehinkle.com/${channel.id}`,
+        shortcode: channel.id
+    };
+});
 
 export function getMicropubConfig(queryType, req): Promise<any> {
     return Promise.resolve().then(function () {
         switch(queryType) {
             case 'syndicate-to':
                 return {
-                    "syndicate-to": syndicateTargets
+                    "syndicate-to": syndicationChannels.concat(syndicateTargets)
                 };
             case 'config':
                 return {
                     "media-endpoint": "https://eddiehinkle.com/micropub/media",
-                    "syndicate-to": syndicateTargets,
+                    "syndicate-to": syndicationChannels.concat(syndicateTargets),
                     "post-types": [
+                        {
+                            "type": "itinerary",
+                            "name": "Itinerary"
+                        },
                         {
                             "type": "event",
                             "name": "Event"

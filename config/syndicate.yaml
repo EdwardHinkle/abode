@@ -1,6 +1,3 @@
- - name: "Channel: Timeline"
-   uid: "https://eddiehinkle.com/timeline"
-   shortcode: "timeline"
  - name: "twitter/@eddiehinkle"
    uid: "https://twitter.com/eddiehinkle"
    shortcode: "t"
