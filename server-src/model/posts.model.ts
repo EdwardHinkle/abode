@@ -88,6 +88,21 @@ export class Posts {
 
             where.push(whereSql);
         }
+        
+        if (searchInfo.excludeYears) {
+            let whereSql = ` (`;
+
+            searchInfo.excludeYears.forEach((year, i, years) => {
+                whereSql += `posts.year != "${year}"`;
+                if (i < years.length - 1) {
+                    whereSql += ` OR `;
+                }
+            });
+
+            whereSql += `) `;
+
+            where.push(whereSql);
+        }
 
         if (searchInfo.relativeMonths) {
             searchInfo.months = [0];
@@ -368,6 +383,7 @@ export interface SearchPostsInfo {
     relativeYears?: [number];
     relativeMonths?: [number];
     relativeDays?: [number];
+    excludeYears?: [number];
     inChannel?: string;
     showPrivate?: boolean;
     groupBy?: [string];
