@@ -208,8 +208,10 @@ export class Posts {
             sql += ` LIMIT ${searchInfo.limit}`;
         }
 
-        console.log('searching sql');
-        console.log(sql);
+        if (logSql) {
+            console.log('searching sql');
+            console.log(sql);
+        }
 
         return new Promise((resolve, reject) => {
             DataController.db.serialize(() => {
