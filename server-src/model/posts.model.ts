@@ -152,11 +152,15 @@ export class Posts {
             where.push(whereSql);
         }
 
+        let visibilitySql = ' (';
+
         if (searchInfo.showPrivate) {
-            where.push(` (posts.visibility = "public" OR posts.visibility = "private") `);
-        } else {
-            where.push(` posts.visibility = "public" `);
+            visibilitySql += 'posts.visibility = "private" OR';
+        } else if (searchInfo.showUnlisted) {
+            visibilitySql += 'posts.visibility = "unlisted" OR';
         }
+
+        where.push(`${visibilitySql} posts.visibility = "public")`);
 
         where.forEach((whereStatement, i) => {
             sql += whereStatement;
@@ -386,6 +390,7 @@ export interface SearchPostsInfo {
     excludeYears?: [number];
     inChannel?: string;
     showPrivate?: boolean;
+    showUnlisted?: boolean;
     groupBy?: [string];
     orderBy?: [string];
     orderDirection?: ['ASC' | 'DESC'];
