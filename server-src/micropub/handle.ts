@@ -1091,46 +1091,46 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                 });
 
                                 // Check if we should syndicate to indieweb news
-                                // if (syndication.url.indexOf("https://news.indieweb.org/en") > -1) {
-                                //     request.post(config.telegraph.url, {
-                                //         form: {
-                                //             token: config.telegraph.token,
-                                //             source: returnUrl,
-                                //             target: "https://news.indieweb.org/en",
-                                //             callback: "https://eddiehinkle.com/webmention/callback"
-                                //         }
-                                //     }, (err, data) => {
-                                //         if (err != undefined) {
-                                //             console.log(`ERROR: ${err}`);
-                                //         }
-                                //         if (data.statusCode !== 201 && data.statusCode !== 202) {
-                                //             console.log("oops indieweb news syndication error");
-                                //         } else {
-                                //             console.log("Successfully sent indieweb news syndication webmention");
-                                //         }
-                                //     });
-                                // }
+                                if (syndication.url.indexOf("https://news.indieweb.org/en") > -1) {
+                                    request.post(config.telegraph.url, {
+                                        form: {
+                                            token: config.telegraph.token,
+                                            source: returnUrl,
+                                            target: "https://news.indieweb.org/en",
+                                            callback: "https://eddiehinkle.com/webmention/callback"
+                                        }
+                                    }, (err, data) => {
+                                        if (err != undefined) {
+                                            console.log(`ERROR: ${err}`);
+                                        }
+                                        if (data.statusCode !== 201 && data.statusCode !== 202) {
+                                            console.log("oops indieweb news syndication error");
+                                        } else {
+                                            console.log("Successfully sent indieweb news syndication webmention");
+                                        }
+                                    });
+                                }
 
                                 // Check if we should syndicate to indieweb xyz
-                                // if (syndication.url.indexOf("https://indieweb.xyz/en") > -1) {
-                                //     request.post(config.telegraph.url, {
-                                //         form: {
-                                //             token: config.telegraph.token,
-                                //             source: returnUrl,
-                                //             target: syndication.url,
-                                //             callback: "https://eddiehinkle.com/webmention/callback"
-                                //         }
-                                //     }, (err, data) => {
-                                //         if (err != undefined) {
-                                //             console.log(`ERROR: ${err}`);
-                                //         }
-                                //         if (data.statusCode !== 201 && data.statusCode !== 202) {
-                                //             console.log("oops indieweb xyz syndication error");
-                                //         } else {
-                                //             console.log("Successfully sent indieweb xyz syndication webmention");
-                                //         }
-                                //     });
-                                // }
+                                if (syndication.url.indexOf("https://indieweb.xyz/en") > -1) {
+                                    request.post(config.telegraph.url, {
+                                        form: {
+                                            token: config.telegraph.token,
+                                            source: returnUrl,
+                                            target: syndication.url,
+                                            callback: "https://eddiehinkle.com/webmention/callback"
+                                        }
+                                    }, (err, data) => {
+                                        if (err != undefined) {
+                                            console.log(`ERROR: ${err}`);
+                                        }
+                                        if (data.statusCode !== 201 && data.statusCode !== 202) {
+                                            console.log("oops indieweb xyz syndication error");
+                                        } else {
+                                            console.log("Successfully sent indieweb xyz syndication webmention");
+                                        }
+                                    });
+                                }
                             });
 
                             // TODO: Add Bookmark Webmentions
