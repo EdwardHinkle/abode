@@ -701,56 +701,56 @@ function getHomepage(req, res, next) {
             orderBy: ["published"],
             orderDirection: ["DESC"],
             limit: 1
-        }));
+        }, false));
 
         retrievePosts.push(Posts.searchPosts({
             hasType: [PostType.Listen],
             orderBy: ["published"],
             orderDirection: ["DESC"],
             limit: 4
-        }));
+        }, false));
 
         retrievePosts.push(Posts.searchPosts({
             hasType: [PostType.Watch],
             orderBy: ["published"],
             orderDirection: ["DESC"],
             limit: 1
-        }));
+        }, false));
 
         retrievePosts.push(Posts.searchPosts({
             hasType: [PostType.Photo],
             orderBy: ["published"],
             orderDirection: ["DESC"],
             limit: 4
-        }));
+        }, false));
 
         retrievePosts.push(Posts.searchPosts({
             hasType: [PostType.Note],
             orderBy: ["published"],
             orderDirection: ["DESC"],
             limit: 10
-        }));
+        }, false));
 
         retrievePosts.push(Posts.searchPosts({
             hasType: [PostType.Article],
             orderBy: ["published"],
             orderDirection: ["DESC"],
             limit: 5
-        }));
+        }, false));
 
         retrievePosts.push(Posts.searchPosts({
             hasType: [PostType.Bookmark, PostType.Like, PostType.Reply, PostType.Repost, PostType.RSVP],
             orderBy: ["published"],
             orderDirection: ["DESC"],
             limit: 54
-        }));
+        }, false));
 
         retrievePosts.push(Posts.searchPosts({
             hasType: [PostType.Audio],
             orderBy: ["published"],
             orderDirection: ["DESC"],
             limit: 1
-        }));
+        }, false));
 
 
         Promise.all(retrievePosts).then(posts => {

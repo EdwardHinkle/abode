@@ -11,7 +11,7 @@ export class Posts {
 
     }
 
-    public static searchPosts(searchInfo: SearchPostsInfo): Promise<Post[]> {
+    public static searchPosts(searchInfo: SearchPostsInfo, logSql: boolean = true): Promise<Post[]> {
         let posts: Promise<Post>[] = [];
         // Select the post ids we need to fetch the actual file
         let sql = `SELECT posts.year, posts.month, posts.day, posts.post_index FROM posts `;
