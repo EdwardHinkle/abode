@@ -1029,7 +1029,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                     }
 
                                     console.log('pinged switchboard');
-                                    console.log(data);
+                                    console.log(data.body);
                                 });
                             });
 
