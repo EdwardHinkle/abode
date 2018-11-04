@@ -981,14 +981,14 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             year: year,
                             month: month,
                             day: day,
-                            postIndex: yamlDocument.properties.slug
+                            postIndex: yamlDocument.slug
                         });
 
                         Posts.getPost({
                             year: year,
                             month: month,
                             day: day,
-                            postIndex: yamlDocument.properties.slug
+                            postIndex: yamlDocument.slug
                         }).then(post => {
 
                             console.log('We should update database cache');
