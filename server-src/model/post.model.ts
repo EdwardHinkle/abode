@@ -193,6 +193,8 @@ export class Post {
 
     public updateDatabaseCache(): any {
 
+        console.log('Attempting to update post in database');
+
         return new Promise((resolve, reject) => {
             DataController.db.serialize(() => {
 
@@ -241,10 +243,10 @@ export class Post {
                     });
                 }
 
-                addPost.finalize();
-                addTag.finalize();
-                addPostTags.finalize();
-                addPostChannels.finalize();
+                addPost.finalize(error => console.log(error));
+                addTag.finalize(error => console.log(error));
+                addPostTags.finalize(error => console.log(error));
+                addPostChannels.finalize(error => console.log(error));
 
             });
         });
