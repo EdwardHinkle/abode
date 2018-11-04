@@ -1209,15 +1209,15 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             }
 
                             // Send reply webmentions
-                            // let replyToUrl;
-                            // if (yamlDocument.properties['in-reply-to'] != undefined) {
-                            //     if (yamlDocument.properties['in-reply-to'].type != undefined) {
-                            //         replyToUrl = yamlDocument.properties['in-reply-to'].properties.url;
-                            //     } else {
-                            //         replyToUrl = yamlDocument.properties['in-reply-to'];
-                            //     }
-                            // }
-                            //
+                            let replyToUrl;
+                            if (yamlDocument.properties['in-reply-to'] != undefined) {
+                                if (yamlDocument.properties['in-reply-to'].type != undefined) {
+                                    replyToUrl = yamlDocument.properties['in-reply-to'].properties.url;
+                                } else {
+                                    replyToUrl = yamlDocument.properties['in-reply-to'];
+                                }
+                            }
+
                             // if (replyToUrl) {
                             //     // Special webmentions if twitter or github, else send normal webmention
                             //
