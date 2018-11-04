@@ -1138,15 +1138,15 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             // TODO: Add Webmentions that aren't listed as anything in particular
 
                             // Send like webmentions
-                            // let likeOfUrl;
-                            // if (yamlDocument.properties['like-of'] != undefined) {
-                            //     if (yamlDocument.properties['like-of'].type != undefined) {
-                            //         likeOfUrl = yamlDocument.properties['like-of'].properties.url;
-                            //     } else {
-                            //         likeOfUrl = yamlDocument.properties['like-of'];
-                            //     }
-                            // }
-                            //
+                            let likeOfUrl;
+                            if (yamlDocument.properties['like-of'] != undefined) {
+                                if (yamlDocument.properties['like-of'].type != undefined) {
+                                    likeOfUrl = yamlDocument.properties['like-of'].properties.url;
+                                } else {
+                                    likeOfUrl = yamlDocument.properties['like-of'];
+                                }
+                            }
+
                             // if (likeOfUrl) {
                             //     // Special webmentions if twitter or github, else send normal webmention
                             //
