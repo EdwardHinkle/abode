@@ -1219,6 +1219,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             }
 
                             if (replyToUrl) {
+                                console.log('are we inside replying?');
+                                console.log(replyToUrl);
                                 // Special webmentions if twitter or github, else send normal webmention
 
                                 // Send to Bridgy Twitter
