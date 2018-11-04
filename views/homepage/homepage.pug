@@ -42,33 +42,33 @@ html
                 | that lives in Frederick, MD.
                 |
                 a(href="/about") Read More
-            h2
-                | He
-                if latestDrank
-                    |
-                    | last drank
-                    |
-                    a(href=latestDrank.getOfficialPermalink()) #{latestDrank.properties.drank.properties.name}
-                    |
-                    if latestAte
-                        |
-                        | and
-                if latestAte
-                    |
-                    | last ate
-                    |
-                    each post, index in latestAte
-                         a(href=post.getOfficialPermalink()) #{post.properties.ate.properties.name}
-                         if index <= latestAte.length - 3
-                            | ,
-                            |
-                         else if index === latestAte.length - 2
-                            |
-                            | and
-                            |
-                         else
-                            | .
-                            |
+            //h2
+            //    | He
+            //    if latestDrank
+            //        |
+            //        | last drank
+            //        |
+            //        a(href=latestDrank.getOfficialPermalink()) #{latestDrank.properties.drank.properties.name}
+            //        |
+            //        if latestAte
+            //            |
+            //            | and
+            //    if latestAte
+            //        |
+            //        | last ate
+            //        |
+            //        each post, index in latestAte
+            //             a(href=post.getOfficialPermalink()) #{post.properties.ate.properties.name}
+            //             if index <= latestAte.length - 3
+            //                | ,
+            //                |
+            //             else if index === latestAte.length - 2
+            //                |
+            //                | and
+            //                |
+            //             else
+            //                | .
+            //                |
 
         div.stats
             if latestPodcast
@@ -134,13 +134,16 @@ html
             div.photos
                 h4 Latest Photos
                 div.media-grid
+                    - var photoCount = 0;
                     each post in latestPhoto
                         a(href=post.getOfficialPermalink()).no-underline
                             each photo in post.properties.photo
-                                if photo.url !== undefined
-                                    img(src=photo.url, width="100")
-                                else
-                                    img(src=photo, width="100")
+                                if photoCount < 4
+                                    if photo.url !== undefined
+                                        img(src=photo.url, width="100")
+                                    else
+                                        img(src=photo, width="100")
+                                    - photoCount++
                 a(href="/photos/").more-button.no-underline More Photos
         if latestArticles.length > 0
             div.articles

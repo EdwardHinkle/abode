@@ -692,116 +692,91 @@ function getDatePhotoGallery(req, res) {
 
 function getHomepage(req, res, next) {
 
-    let numberOfPreviousDays = 10;
+    if (DataController.available) {
 
-    let combinedPromises: Promise<Post[]>[] = [];
+        let retrievePosts: Promise<Post[]>[] = [];
 
-    for (let date = moment(); moment().diff(date, "days") < numberOfPreviousDays; date.subtract(1, "day")) {
-
-        combinedPromises.push(Posts.getPosts({
-            year: date.format("YYYY"),
-            month: date.format("MM"),
-            day: date.format("DD"),
-            required: moment().diff(date, "days") !== 0 // Require every day except today (today doesn't always have posts)
+        retrievePosts.push(Posts.searchPosts({
+            hasType: [PostType.Checkin],
+            orderBy: ["published"],
+            orderDirection: ["DESC"],
+            limit: 1
         }));
 
-    }
+        retrievePosts.push(Posts.searchPosts({
+            hasType: [PostType.Listen],
+            orderBy: ["published"],
+            orderDirection: ["DESC"],
+            limit: 4
+        }));
 
-    Promise.all(combinedPromises)
-        .catch(error => {
-            console.log("error loading homepage", error);
-            return combinedPromises;
-        })
-        .then(arrayOfPosts => {
+        retrievePosts.push(Posts.searchPosts({
+            hasType: [PostType.Watch],
+            orderBy: ["published"],
+            orderDirection: ["DESC"],
+            limit: 1
+        }));
 
-            let posts = [].concat.apply([], arrayOfPosts);
-            let latestDrank: Post;
-            let latestAte: Post[] = [];
-            let latestCheckin: Post;
-            let latestListen: Post[] = [];
-            let latestWatch: Post;
+        retrievePosts.push(Posts.searchPosts({
+            hasType: [PostType.Photo],
+            orderBy: ["published"],
+            orderDirection: ["DESC"],
+            limit: 4
+        }));
+
+        retrievePosts.push(Posts.searchPosts({
+            hasType: [PostType.Note],
+            orderBy: ["published"],
+            orderDirection: ["DESC"],
+            limit: 10
+        }));
+
+        retrievePosts.push(Posts.searchPosts({
+            hasType: [PostType.Article],
+            orderBy: ["published"],
+            orderDirection: ["DESC"],
+            limit: 5
+        }));
+
+        retrievePosts.push(Posts.searchPosts({
+            hasType: [PostType.Bookmark, PostType.Like, PostType.Reply, PostType.Repost, PostType.RSVP],
+            orderBy: ["published"],
+            orderDirection: ["DESC"],
+            limit: 54
+        }));
+
+        retrievePosts.push(Posts.searchPosts({
+            hasType: [PostType.Audio],
+            orderBy: ["published"],
+            orderDirection: ["DESC"],
+            limit: 1
+        }));
+
+
+        Promise.all(retrievePosts).then(posts => {
+
+            // let latestDrank: Post;
+            // let latestAte: Post[] = [];
+            let latestCheckin: Post = posts[0][0];
+            let latestListen: Post[] = posts[1];
+            let latestWatch: Post = posts[2][0];
             let latestPhoto: Post[] = [];
             let latestPhotoCount: number = 0;
-            let latestNotes: Post[] = [];
-            let latestArticles: Post[] = [];
-            let latestSocial: Post[] = [];
-            let latestPodcast: Post;
+            let latestNotes: Post[] = posts[4];
+            let latestArticles: Post[] = posts[5];
+            let latestSocial: Post[] = posts[6];
+            let latestPodcast: Post = posts[7][0];
 
-            posts.sort((a: Post, b: Post) => {
-                return b.properties.date.diff(a.properties.date);
-            });
-
-            posts.forEach(post => {
-                let postType = post.getPostType();
-
-                switch(postType) {
-                    case PostType.Audio:
-                        if (latestPodcast === undefined) {
-                            latestPodcast = post;
-                        }
-                        break;
-                    case PostType.Drank:
-                        if (latestDrank === undefined) {
-                            latestDrank = post;
-                        }
-                        break;
-                    case PostType.Ate:
-                        if (latestAte.length === 0) {
-                            latestAte.push(post);
-                        } else if (latestAte[0].properties.date.diff(post.properties.date, 'minutes') < 30) {
-                            latestAte.push(post);
-                        }
-                        break;
-                    case PostType.Checkin:
-                        if (latestCheckin === undefined) {
-                            latestCheckin = post;
-                        }
-                        break;
-                    case PostType.Watch:
-                        if (latestWatch === undefined && (post.properties.show_name !== undefined || post.properties.movie_name !== undefined)) {
-                            latestWatch = post;
-                        }
-                        break;
-                    case PostType.Listen:
-                        if (latestListen.length < 4) {
-                            latestListen.push(post);
-                        }
-                        break;
-                    case PostType.Note:
-                        if (latestNotes.length < 10) {
-                            latestNotes.push(post);
-                        }
-                        break;
-                    case PostType.Article:
-                        if (latestArticles.length < 10 && post.isPublic()) {
-                            latestArticles.push(post);
-                        }
-                        break;
-                    case PostType.Like:
-                    case PostType.Reply:
-                    case PostType.Bookmark:
-                        latestSocial.push(post);
-                        break;
-                    default:
-                }
-
+            posts[3].forEach(photoPost => {
                 if (latestPhotoCount < 4) {
-                    if (post.properties.photo !== undefined &&
-                        post.properties.photo.length > 0 &&
-                        post.getPostType() !== PostType.Listen &&
-                        post.getPostType() !== PostType.Watch &&
-                        post.getPostType() !== PostType.Audio &&
-                        post.properties.category.indexOf("reading") === -1) {
-
-                        latestPhotoCount += post.properties.photo.length;
-                        latestPhoto.push(post);
-                    }
+                    latestPhoto.push(photoPost);
+                    latestPhotoCount += photoPost.properties.photo.length;
                 }
             });
 
             res.render("homepage/homepage", {
-                latestDrank: latestDrank,
-                latestAte: latestAte.reverse(),
+                // latestDrank: latestDrank,
+                // latestAte: latestAte.reverse(),
                 latestCheckin: latestCheckin,
                 latestListen: latestListen,
                 latestWatch: latestWatch,
@@ -811,7 +786,132 @@ function getHomepage(req, res, next) {
                 latestSocial: latestSocial,
                 latestPodcast: latestPodcast
             });
+
         });
+
+    } else {
+        let numberOfPreviousDays = 10;
+
+        let combinedPromises: Promise<Post[]>[] = [];
+
+        for (let date = moment(); moment().diff(date, "days") < numberOfPreviousDays; date.subtract(1, "day")) {
+
+            combinedPromises.push(Posts.getPosts({
+                year: date.format("YYYY"),
+                month: date.format("MM"),
+                day: date.format("DD"),
+                required: moment().diff(date, "days") !== 0 // Require every day except today (today doesn't always have posts)
+            }));
+
+        }
+
+        Promise.all(combinedPromises)
+            .catch(error => {
+                console.log("error loading homepage", error);
+                return combinedPromises;
+            })
+            .then(arrayOfPosts => {
+
+                let posts = [].concat.apply([], arrayOfPosts);
+                let latestDrank: Post;
+                let latestAte: Post[] = [];
+                let latestCheckin: Post;
+                let latestListen: Post[] = [];
+                let latestWatch: Post;
+                let latestPhoto: Post[] = [];
+                let latestPhotoCount: number = 0;
+                let latestNotes: Post[] = [];
+                let latestArticles: Post[] = [];
+                let latestSocial: Post[] = [];
+                let latestPodcast: Post;
+
+                posts.sort((a: Post, b: Post) => {
+                    return b.properties.date.diff(a.properties.date);
+                });
+
+                posts.forEach(post => {
+                    let postType = post.getPostType();
+
+                    switch(postType) {
+                        case PostType.Audio:
+                            if (latestPodcast === undefined) {
+                                latestPodcast = post;
+                            }
+                            break;
+                        case PostType.Drank:
+                            if (latestDrank === undefined) {
+                                latestDrank = post;
+                            }
+                            break;
+                        case PostType.Ate:
+                            if (latestAte.length === 0) {
+                                latestAte.push(post);
+                            } else if (latestAte[0].properties.date.diff(post.properties.date, 'minutes') < 30) {
+                                latestAte.push(post);
+                            }
+                            break;
+                        case PostType.Checkin:
+                            if (latestCheckin === undefined) {
+                                latestCheckin = post;
+                            }
+                            break;
+                        case PostType.Watch:
+                            if (latestWatch === undefined && (post.properties.show_name !== undefined || post.properties.movie_name !== undefined)) {
+                                latestWatch = post;
+                            }
+                            break;
+                        case PostType.Listen:
+                            if (latestListen.length < 4) {
+                                latestListen.push(post);
+                            }
+                            break;
+                        case PostType.Note:
+                            if (latestNotes.length < 10) {
+                                latestNotes.push(post);
+                            }
+                            break;
+                        case PostType.Article:
+                            if (latestArticles.length < 10 && post.isPublic()) {
+                                latestArticles.push(post);
+                            }
+                            break;
+                        case PostType.Like:
+                        case PostType.Reply:
+                        case PostType.Bookmark:
+                            latestSocial.push(post);
+                            break;
+                        default:
+                    }
+
+                    if (latestPhotoCount < 4) {
+                        if (post.properties.photo !== undefined &&
+                            post.properties.photo.length > 0 &&
+                            post.getPostType() !== PostType.Listen &&
+                            post.getPostType() !== PostType.Watch &&
+                            post.getPostType() !== PostType.Audio &&
+                            post.properties.category.indexOf("reading") === -1) {
+
+                            latestPhotoCount += post.properties.photo.length;
+                            latestPhoto.push(post);
+                        }
+                    }
+                });
+
+                res.render("homepage/homepage", {
+                    latestDrank: latestDrank,
+                    latestAte: latestAte.reverse(),
+                    latestCheckin: latestCheckin,
+                    latestListen: latestListen,
+                    latestWatch: latestWatch,
+                    latestPhoto: latestPhoto,
+                    latestNotes: latestNotes,
+                    latestArticles: latestArticles,
+                    latestSocial: latestSocial,
+                    latestPodcast: latestPodcast
+                });
+            });
+    }
+
 }
 
 function getMicroblogSyndicationFeed(req, res, next) {
