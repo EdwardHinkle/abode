@@ -1045,27 +1045,27 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                 console.log(syndication);
 
                                 // Check to see if any syndications are actually a twitter syndication target
-                                // twitterSyndicationTargets.forEach(twitterTarget => {
-                                //     if (syndication.url.indexOf(twitterTarget.uid) > -1) {
-                                //         request.post(config.telegraph.url, {
-                                //             form: {
-                                //                 token: config.telegraph.token,
-                                //                 source: returnUrl,
-                                //                 target: "https://brid.gy/publish/twitter",
-                                //                 callback: "https://eddiehinkle.com/webmention/callback"
-                                //             }
-                                //         }, (err, data) => {
-                                //             if (err != undefined) {
-                                //                 console.log(`ERROR: ${err}`);
-                                //             }
-                                //             if (data.statusCode !== 201 && data.statusCode !== 202) {
-                                //                 console.log("oops twitter syndication error");
-                                //             } else {
-                                //                 console.log("Successfully sent twitter syndication webmention");
-                                //             }
-                                //         });
-                                //     }
-                                // });
+                                twitterSyndicationTargets.forEach(twitterTarget => {
+                                    if (syndication.url.indexOf(twitterTarget.uid) > -1) {
+                                        request.post(config.telegraph.url, {
+                                            form: {
+                                                token: config.telegraph.token,
+                                                source: returnUrl,
+                                                target: "https://brid.gy/publish/twitter",
+                                                callback: "https://eddiehinkle.com/webmention/callback"
+                                            }
+                                        }, (err, data) => {
+                                            if (err != undefined) {
+                                                console.log(`ERROR: ${err}`);
+                                            }
+                                            if (data.statusCode !== 201 && data.statusCode !== 202) {
+                                                console.log("oops twitter syndication error");
+                                            } else {
+                                                console.log("Successfully sent twitter syndication webmention");
+                                            }
+                                        });
+                                    }
+                                });
 
                                 // Check to see if any syndications are actually a github syndication target
                                 // githubSyndicationTargets.forEach(githubTarget => {
