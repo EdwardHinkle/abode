@@ -1068,27 +1068,27 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                 });
 
                                 // Check to see if any syndications are actually a github syndication target
-                                // githubSyndicationTargets.forEach(githubTarget => {
-                                //     if (syndication.url.indexOf(githubTarget.uid) > -1) {
-                                //         request.post(config.telegraph.url, {
-                                //             form: {
-                                //                 token: config.telegraph.token,
-                                //                 source: returnUrl,
-                                //                 target: "https://brid.gy/publish/github",
-                                //                 callback: "https://eddiehinkle.com/webmention/callback"
-                                //             }
-                                //         }, (err, data) => {
-                                //             if (err != undefined) {
-                                //                 console.log(`ERROR: ${err}`);
-                                //             }
-                                //             if (data.statusCode !== 201 && data.statusCode !== 202) {
-                                //                 console.log("oops github syndication error");
-                                //             } else {
-                                //                 console.log("Successfully sent github syndication webmention");
-                                //             }
-                                //         });
-                                //     }
-                                // });
+                                githubSyndicationTargets.forEach(githubTarget => {
+                                    if (syndication.url.indexOf(githubTarget.uid) > -1) {
+                                        request.post(config.telegraph.url, {
+                                            form: {
+                                                token: config.telegraph.token,
+                                                source: returnUrl,
+                                                target: "https://brid.gy/publish/github",
+                                                callback: "https://eddiehinkle.com/webmention/callback"
+                                            }
+                                        }, (err, data) => {
+                                            if (err != undefined) {
+                                                console.log(`ERROR: ${err}`);
+                                            }
+                                            if (data.statusCode !== 201 && data.statusCode !== 202) {
+                                                console.log("oops github syndication error");
+                                            } else {
+                                                console.log("Successfully sent github syndication webmention");
+                                            }
+                                        });
+                                    }
+                                });
 
                                 // Check if we should syndicate to indieweb news
                                 // if (syndication.url.indexOf("https://news.indieweb.org/en") > -1) {
