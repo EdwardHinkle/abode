@@ -976,12 +976,22 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         let month = date.format("MM");
                         let day = date.format("DD");
 
+                        console.log('trying to open file');
+                        console.log({
+                            year: year,
+                            month: month,
+                            day: day,
+                            postIndex: yamlDocument.properties.slug
+                        });
+
                         Posts.getPost({
                             year: year,
                             month: month,
                             day: day,
                             postIndex: yamlDocument.properties.slug
                         }).then(post => {
+
+                            console.log('We should update database cache');
 
                             post.updateDatabaseCache();
 
