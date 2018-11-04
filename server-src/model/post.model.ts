@@ -198,7 +198,7 @@ export class Post {
         return new Promise((resolve, reject) => {
             DataController.db.serialize(() => {
 
-                let addPost = DataController.db.prepare("INSERT OR UPDATE INTO `posts` (year, month, day, post_index, name, published, post_type, visibility, content) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                let addPost = DataController.db.prepare("INSERT OR REPLACE INTO `posts` (year, month, day, post_index, name, published, post_type, visibility, content) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 let addTag = DataController.db.prepare("INSERT OR IGNORE INTO `tags` (name) VALUES (?)");
                 let addPostTags = DataController.db.prepare("INSERT OR IGNORE INTO `posts_tags` (post_year, post_month, post_day, post_index, tag_name) VALUES (?, ?, ?, ?, ?)");
                 let addPostChannels = DataController.db.prepare("INSERT OR IGNORE INTO `posts_channels` (post_year, post_month, post_day, post_index, channel) VALUES (?, ?, ?, ?, ?)");
