@@ -156,8 +156,9 @@ export class Post {
     }
 
     public semiRelativeDateFormat(): string {
-        console.log(moment().diff(this.properties.date, 'days') == 0);
-        if (moment().diff(this.properties.date, 'days') == 0) {
+        let today = moment().hour(0).minute(0).second(0).millisecond(0);
+
+        if (this.properties.date.isSameOrAfter(today)) {
             return 'Today';
         } else {
             return this.properties.date.format("MMM DD, YYYY");
@@ -191,8 +192,6 @@ export class Post {
     }
 
     public updateDatabaseCache(): any {
-
-        let sql = "";
 
         return new Promise((resolve, reject) => {
             DataController.db.serialize(() => {

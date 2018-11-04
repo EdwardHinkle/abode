@@ -702,7 +702,7 @@ function getHomepage(req, res, next) {
             year: date.format("YYYY"),
             month: date.format("MM"),
             day: date.format("DD"),
-            required: true
+            required: moment().diff(date, "days") !== 0 // Require every day except today (today doesn't always have posts)
         }));
 
     }
