@@ -1,6 +1,7 @@
 
 
 export type postType =
+    'Code' |
     'Note' |
     'RSVP' |
     'Reply' |
@@ -35,6 +36,10 @@ let typeInference = {
 export type Visibility = 'public' | 'private';
 
 export function getPostType(postObject): postType {
+
+    if (postObject.properties['abode-content-type'].indexOf('code/') > -1) {
+        return 'Code';
+    }
 
     for (let attribute in typeInference) {
         if (postObject.properties[attribute] != undefined) {
