@@ -199,13 +199,14 @@ function getChannelJsonFeed(req, res, next) {
                 let channelQuery = channel.query;
 
                 channelQuery.showPrivate = false; // this should be based on logged in
+                channelQuery.limit = 40;
 
                 Posts.searchPosts(channelQuery).then(posts => {
 
                     convertPostsToJsonFeed(posts, `${channel.name} Feed`, getRequestedUrl(req)).then(jsonFeed => {
                         res.json(jsonFeed);
                     });
-                    
+
                 });
             }
 
