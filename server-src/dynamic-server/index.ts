@@ -195,6 +195,18 @@ function getChannelJsonFeed(req, res, next) {
                     });
 
                 });
+            } else if (channel.type === 'dynamic') {
+                let channelQuery = channel.query;
+
+                channelQuery.showPrivate = false; // this should be based on logged in
+
+                Posts.searchPosts(channelQuery).then(posts => {
+
+                    convertPostsToJsonFeed(posts, `${channel.name} Feed`, getRequestedUrl(req)).then(jsonFeed => {
+                        res.json(jsonFeed);
+                    });
+                    
+                });
             }
 
         } else {
