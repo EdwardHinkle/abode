@@ -100,7 +100,14 @@ export class Post {
                         loadLanguages(codeLanguage);
                     }
 
-                    post.properties.content = `<pre class="code-container"><code class="language-${codeLanguage}">${Prism.highlight(fileArray[2], Prism.languages[codeLanguage], codeLanguage)}</code></pre>`;
+                    let rawCodeSnippet = Prism.highlight(fileArray[2], Prism.languages[codeLanguage], codeLanguage);
+                    let codeSnippet = '<ol>';
+                    rawCodeSnippet.split("\n").forEach((codeLine, lineNumber) => {
+                        codeSnippet += `<li class="l${lineNumber+1}">${codeLine}</li>`;
+                    });
+                    codeSnippet += '</ol>';
+
+                    post.properties.content = `<pre class="code-container"><code class="language-${codeLanguage}">${codeSnippet}</code></pre>`;
                 } else {
                     post.properties.content = marked(fileArray[2]).replace(/^<p>/, '').replace(/<\/p>\n$/, '');
                 }
