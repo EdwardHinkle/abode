@@ -37,7 +37,7 @@ export type Visibility = 'public' | 'private';
 
 export function getPostType(postObject): postType {
 
-    if (postObject.properties['abode-content-type'].indexOf('code/') > -1) {
+    if (postObject.properties['abode-content-type'] && postObject.properties['abode-content-type'].indexOf('code/') > -1) {
         return 'Code';
     }
 
