@@ -377,7 +377,7 @@ export class Post {
 
     public getPostType(): PostType {
 
-        if (this.properties['abode-content-type'].indexOf('code/') > -1) {
+        if (this.properties['abode-content-type'] && this.properties['abode-content-type'].indexOf('code/') > -1) {
             return PostType.Code;
         }
         if (this.properties.start) {

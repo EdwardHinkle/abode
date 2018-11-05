@@ -80,7 +80,6 @@ app.use(function(req, res, next){
       return res.status(503).render('posts/errorMessage', {
           errorMessage: `Sorry, this page couldn't be found.<br>You could check out <a href='/today'>Today's posts</a> or visit <a href='/'>my homepage</a>.`
       });
-    return;
   }
 
   // respond with json
