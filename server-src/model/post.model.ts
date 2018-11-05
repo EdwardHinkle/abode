@@ -103,7 +103,7 @@ export class Post {
                     let rawCodeSnippet = Prism.highlight(fileArray[2], Prism.languages[codeLanguage], codeLanguage);
                     let codeSnippet = '<ol>';
                     rawCodeSnippet.split("\n").forEach((codeLine, lineNumber) => {
-                        codeSnippet += `<li class="l${lineNumber+1}">${codeLine}</li>`;
+                        codeSnippet += `<li class="L${lineNumber+1}">${codeLine}</li>`;
                     });
                     codeSnippet += '</ol>';
 

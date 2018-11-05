@@ -181,6 +181,10 @@ h1.page-title, .itinerary-description {
     font-size: 15px;
 }
 
+.code-container code .highlight-line {
+    background-color: rgba(31, 53, 89, 0.6);
+}
+
 @media (prefers-color-scheme: dark) {
     .published-date {
         color: rgba(255,255,255,0.3);

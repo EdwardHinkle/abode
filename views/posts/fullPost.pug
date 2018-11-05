@@ -254,3 +254,5 @@ html
                         |
                         a(href=post.client_id, target="_blank") #{post.client_id.replace("http://", "").replace("https://", "").split("/").shift()}
         include ../includes/footer.pug
+        script
+            include ./code-snippet-ui.js
