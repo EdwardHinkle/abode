@@ -66,7 +66,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
         "mp-slug",
         "place_name",
         "mp-syndicate-to",
-        "uid"
+        "uid",
+        "p3k-content-type"
     ];
 
     let micropubPropertiesToExpand = [
@@ -234,6 +235,10 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                         console.log(yamlDocument.properties[propertyName]);
                     }
+                }
+
+                if (micropubDocument.properties['p3k-content-type']) {
+                    yamlDocument.properties['abode-content-type'] = micropubDocument.properties['p3k-content-type'];
                 }
 
                 if (micropubDocument.client_id === 'https://micro.blog/') {

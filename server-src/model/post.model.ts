@@ -377,6 +377,9 @@ export class Post {
 
     public getPostType(): PostType {
 
+        if (this.properties['abode-content-type'].indexOf('code/') > -1) {
+            return PostType.Code;
+        }
         if (this.properties.start) {
             return PostType.Event;
         }
@@ -508,6 +511,7 @@ export class PostProperties {
 }
 
 export enum PostType {
+    Code = "code",
     Event = "event",
     Trip = "trip",
     RSVP = "rsvp",
