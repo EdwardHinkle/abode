@@ -6,6 +6,8 @@ import { Moment } from "moment";
 import {People, Person} from "../people";
 import * as fs from "fs";
 import {DataController} from "./data.controller"; // TypeScript Type
+import * as Prism from "prismjs";
+import * as loadLanguages from "prismjs/components/";
 
 const JEKYLL_DATE_FORMAT = 'YYYY-MM-DD h:mm:ss ZZ';
 let dataDir = __dirname + "/../../jekyll/_source";
@@ -92,7 +94,17 @@ export class Post {
             // Fetch extra data
             People.getPeople().then(peopleData => {
 
-                post.properties.content = marked(fileArray[2]).replace(/^<p>/, '').replace(/<\/p>\n$/, '');
+                if (post.getPostType() === PostType.Code) {
+                    let codeLanguage = post.properties['abode-content-type'].split("/")[1];
+                    if (codeLanguage !== "markup" && codeLanguage !== "markup" && codeLanguage !== "css" && codeLanguage !== "javascript") {
+                        loadLanguages(codeLanguage);
+                    }
+
+                    post.properties.content = `<pre class="code-container"><code class="language-${codeLanguage}">${Prism.highlight(fileArray[2], Prism.languages[codeLanguage], codeLanguage)}</code></pre>`;
+                } else {
+                    post.properties.content = marked(fileArray[2]).replace(/^<p>/, '').replace(/<\/p>\n$/, '');
+                }
+
                 post.properties.personTags = [];
                 post.properties.category = [];
 

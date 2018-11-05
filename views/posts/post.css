@@ -172,6 +172,15 @@ h1.page-title, .itinerary-description {
     margin-left: 20px;
 }
 
+.code-container {
+    background-color: #212121;
+    padding: 20px;
+}
+
+.code-container code {
+    font-size: 15px;
+}
+
 @media (prefers-color-scheme: dark) {
     .published-date {
         color: rgba(255,255,255,0.3);

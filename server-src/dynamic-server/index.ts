@@ -10,8 +10,11 @@ import {ChannelData} from "../model/channel.model";
 import moment = require("moment");
 import {DataController} from "../model/data.controller";
 import * as _ from 'lodash';
+import * as path from "path";
 
 export let dynamicRouter = express.Router();
+
+dynamicRouter.use('/styles/', express.static(path.join(__dirname, '../../resources/styles/')));
 
 // Static Routes
 dynamicRouter.get('/', getHomepage);
@@ -90,7 +93,7 @@ function getChannelFeed(req, res, next) {
             if (channel.type === 'static') {
                 Posts.searchPosts({
                     inChannel: channel.id,
-                    showPrivate: false, // this should be based on logged in
+                    showPrivate: req.session.username === 'eddiehinkle.com',
                     orderBy: ['published'],
                     orderDirection: ['DESC'],
                     limit: 20
@@ -107,7 +110,7 @@ function getChannelFeed(req, res, next) {
             } else if (channel.type === 'dynamic') {
                 let channelQuery = channel.query;
 
-                channelQuery.showPrivate = false; // this should be based on logged in
+                channelQuery.showPrivate = req.session.username === 'eddiehinkle.com';
 
                 Posts.searchPosts(channelQuery).then(posts => {
 
@@ -184,7 +187,7 @@ function getChannelJsonFeed(req, res, next) {
             if (channel.type === 'static') {
                 Posts.searchPosts({
                     inChannel: channel.id,
-                    showPrivate: false, // this should be based on logged in
+                    showPrivate: req.session.username === 'eddiehinkle.com',
                     orderBy: ['published'],
                     orderDirection: ['DESC'],
                     limit: 20
@@ -198,7 +201,7 @@ function getChannelJsonFeed(req, res, next) {
             } else if (channel.type === 'dynamic') {
                 let channelQuery = channel.query;
 
-                channelQuery.showPrivate = false; // this should be based on logged in
+                channelQuery.showPrivate = req.session.username === 'eddiehinkle.com',
                 channelQuery.limit = 40;
 
                 Posts.searchPosts(channelQuery).then(posts => {
@@ -223,7 +226,7 @@ function getTagFeed(req, res, next) {
 
     Posts.searchPosts({
         taggedWith: [tagName.toLowerCase()],
-        showPrivate: false, // This should be based on logged in
+        showPrivate: req.session.username === 'eddiehinkle.com',
         orderBy: ['published'],
         orderDirection: ['DESC'],
         limit: 20
@@ -247,7 +250,7 @@ function getTagJsonFeed(req, res, next) {
 
     Posts.searchPosts({
         taggedWith: [tagName.toLowerCase()],
-        showPrivate: false, // This should be based on logged in
+        showPrivate: req.session.username === 'eddiehinkle.com',
         orderBy: ['published'],
         orderDirection: ['DESC'],
         limit: 20
@@ -666,7 +669,7 @@ function getDatePhotoGallery(req, res) {
 
     let searchQuery: SearchPostsInfo = {
         hasType: [PostType.Photo],
-        showPrivate: false, // This should be based on logged in
+        showPrivate: req.session.username === 'eddiehinkle.com',
         orderBy: ['published'],
         orderDirection: ['DESC'],
     };
@@ -713,56 +716,64 @@ function getHomepage(req, res, next) {
             hasType: [PostType.Checkin],
             orderBy: ["published"],
             orderDirection: ["DESC"],
-            limit: 1
+            limit: 1,
+            showPrivate: req.session.username === 'eddiehinkle.com'
         }, false));
 
         retrievePosts.push(Posts.searchPosts({
             hasType: [PostType.Listen],
             orderBy: ["published"],
             orderDirection: ["DESC"],
-            limit: 4
+            limit: 4,
+            showPrivate: req.session.username === 'eddiehinkle.com'
         }, false));
 
         retrievePosts.push(Posts.searchPosts({
             hasType: [PostType.Watch],
             orderBy: ["published"],
             orderDirection: ["DESC"],
-            limit: 1
+            limit: 1,
+            showPrivate: req.session.username === 'eddiehinkle.com'
         }, false));
 
         retrievePosts.push(Posts.searchPosts({
             hasType: [PostType.Photo],
             orderBy: ["published"],
             orderDirection: ["DESC"],
-            limit: 4
+            limit: 4,
+            showPrivate: req.session.username === 'eddiehinkle.com'
         }, false));
 
         retrievePosts.push(Posts.searchPosts({
             hasType: [PostType.Note],
             orderBy: ["published"],
             orderDirection: ["DESC"],
-            limit: 10
+            limit: 10,
+            showPrivate: req.session.username === 'eddiehinkle.com'
         }, false));
 
         retrievePosts.push(Posts.searchPosts({
             hasType: [PostType.Article],
             orderBy: ["published"],
             orderDirection: ["DESC"],
-            limit: 5
+            limit: 5,
+            showPrivate: req.session.username === 'eddiehinkle.com'
         }, false));
 
         retrievePosts.push(Posts.searchPosts({
             hasType: [PostType.Bookmark, PostType.Like, PostType.Reply, PostType.Repost, PostType.RSVP],
             orderBy: ["published"],
             orderDirection: ["DESC"],
-            limit: 54
+            limit: 54,
+            showPrivate: req.session.username === 'eddiehinkle.com'
         }, false));
 
         retrievePosts.push(Posts.searchPosts({
             hasType: [PostType.Audio],
             orderBy: ["published"],
             orderDirection: ["DESC"],
-            limit: 1
+            limit: 1,
+            showPrivate: req.session.username === 'eddiehinkle.com'
         }, false));
 
 

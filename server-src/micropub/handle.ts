@@ -238,7 +238,12 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                 }
 
                 if (micropubDocument.properties['p3k-content-type']) {
-                    yamlDocument.properties['abode-content-type'] = micropubDocument.properties['p3k-content-type'];
+                    if (micropubDocument.properties['p3k-content-type'].length && micropubDocument.properties['p3k-content-type'].length > 0) {
+                        yamlDocument.properties['abode-content-type'] = micropubDocument.properties['p3k-content-type'][0];
+                    } else {
+                        yamlDocument.properties['abode-content-type'] = micropubDocument.properties['p3k-content-type'];
+                    }
+
                 }
 
                 if (micropubDocument.client_id === 'https://micro.blog/') {
