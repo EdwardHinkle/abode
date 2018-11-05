@@ -77,7 +77,9 @@ app.use(function(req, res, next){
 
   // respond with html page
   if (req.accepts('html')) {
-	res.sendFile(path.join(__dirname, '../jekyll/_build/404.html'));
+      return res.status(503).render('posts/errorMessage', {
+          errorMessage: `Sorry, this page couldn't be found.<br>You could check out <a href='/today'>Today's posts</a> or visit <a href='/'>my homepage</a>.`
+      });
     return;
   }
 
