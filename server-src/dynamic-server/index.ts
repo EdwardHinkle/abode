@@ -245,12 +245,13 @@ function getChannelRssFeed(req, res, next) {
                     orderDirection: ['DESC'],
                     limit: 20
                 }).then(posts => {
-
+                    res.set('Content-Type', 'application/rss+xml');
                     res.render('posts/rss-feed', {
                         title: `${channel.name} Feed`,
                         posts: posts,
                         description: 'This is a sample description',
-                        feed_url: getRequestedUrl(req).replace("feed.xml", ""),
+                        feed_url: getRequestedUrl(req),
+                        parent_url: getRequestedUrl(req).replace("feed.xml", ""),
                         date: moment().format("ddd, DD MMM YYYY HH:mm:ss ZZ")
                     });
 
@@ -258,16 +259,17 @@ function getChannelRssFeed(req, res, next) {
             } else if (channel.type === 'dynamic') {
                 let channelQuery = channel.query;
 
-                channelQuery.showPrivate = req.session.username === 'eddiehinkle.com',
+                channelQuery.showPrivate = req.session.username === 'eddiehinkle.com';
                 channelQuery.limit = 40;
 
                 Posts.searchPosts(channelQuery).then(posts => {
-
+                    res.set('Content-Type', 'application/rss+xml');
                     res.render('posts/rss-feed', {
                         title: `${channel.name} Feed`,
                         posts: posts,
                         description: 'This is a sample description',
-                        feed_url: getRequestedUrl(req).replace("feed.xml", ""),
+                        feed_url: getRequestedUrl(req),
+                        parent_url: getRequestedUrl(req).replace("feed.xml", ""),
                         date: moment().format("ddd, DD MMM YYYY HH:mm:ss ZZ")
                     });
 
@@ -334,11 +336,13 @@ function getTagRssFeed(req, res, next) {
         orderDirection: ['DESC'],
         limit: 20
     }).then(posts => {
+        res.set('Content-Type', 'application/rss+xml');
         res.render('posts/rss-feed', {
             title: `${tagName} tag Feed`,
             posts: posts,
             description: `This is a feed of posts that are tagged with #{tagName}`,
-            feed_url: getRequestedUrl(req).replace("feed.xml", ""),
+            feed_url: getRequestedUrl(req),
+            parent_url: getRequestedUrl(req).replace("feed.xml", ""),
             date: moment().format("ddd, DD MMM YYYY HH:mm:ss ZZ")
         });
     });
