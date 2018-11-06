@@ -11,6 +11,7 @@ import moment = require("moment");
 import {DataController} from "../model/data.controller";
 import * as _ from 'lodash';
 import * as path from "path";
+import {resumeRouter} from "../resume";
 
 export let dynamicRouter = express.Router();
 
@@ -27,10 +28,12 @@ dynamicRouter.get('/microblog-syndication.json', getMicroblogSyndicationFeed);
 // Channel Routes
 dynamicRouter.get('/:channel([a-z\-]+)', requireDatabaseCache, getChannelFeed);
 dynamicRouter.get('/:channel([a-z\-]+)/feed.json', requireDatabaseCache, getChannelJsonFeed);
+dynamicRouter.get('/:channel([a-z\-]+)/feed.xml', requireDatabaseCache, getChannelRssFeed);
 
 // Tag Routes
 dynamicRouter.get('/tag/:tag([a-z0-9\-]+)', requireDatabaseCache, getTagFeed);
 dynamicRouter.get('/tag/:tag([a-z0-9\-]+)/feed.json', requireDatabaseCache, getTagJsonFeed);
+dynamicRouter.get('/tag/:tag([a-z0-9\-]+)/feed.xml', requireDatabaseCache, getTagRssFeed);
 
 // Photo Routes
 dynamicRouter.get('/photos/:year(\\d+)?/:month(\\d+)?/:day(\\d+)?/', requireDatabaseCache, getDatePhotoGallery);
@@ -220,6 +223,64 @@ function getChannelJsonFeed(req, res, next) {
 
 }
 
+function getChannelRssFeed(req, res, next) {
+
+    return new Promise((resolve, reject) => {
+        // Fetch Channel Data
+        let channelData: ChannelData[] = JSON.parse(fs.readFileSync(`${__dirname}/../../jekyll/_source/_note/channels/channels.json`, 'utf8'));
+
+        // Check to see if our channel exists
+        let selectedChannel = channelData.filter(channel => channel.id === req.params.channel);
+
+        // Return channel info
+        resolve(selectedChannel.length > 0 ? selectedChannel[0] : undefined);
+    }).then((channel: ChannelData) => {
+        if (channel) {
+
+            if (channel.type === 'static') {
+                Posts.searchPosts({
+                    inChannel: channel.id,
+                    showPrivate: req.session.username === 'eddiehinkle.com',
+                    orderBy: ['published'],
+                    orderDirection: ['DESC'],
+                    limit: 20
+                }).then(posts => {
+
+                    res.render('posts/rss-feed', {
+                        title: `${channel.name} Feed`,
+                        posts: posts,
+                        description: 'This is a sample description',
+                        feed_url: getRequestedUrl(req).replace("feed.xml", ""),
+                        date: moment().format("ddd, DD MMM YYYY HH:mm:ss ZZ")
+                    });
+
+                });
+            } else if (channel.type === 'dynamic') {
+                let channelQuery = channel.query;
+
+                channelQuery.showPrivate = req.session.username === 'eddiehinkle.com',
+                channelQuery.limit = 40;
+
+                Posts.searchPosts(channelQuery).then(posts => {
+
+                    res.render('posts/rss-feed', {
+                        title: `${channel.name} Feed`,
+                        posts: posts,
+                        description: 'This is a sample description',
+                        feed_url: getRequestedUrl(req).replace("feed.xml", ""),
+                        date: moment().format("ddd, DD MMM YYYY HH:mm:ss ZZ")
+                    });
+
+                });
+            }
+
+        } else {
+            next();
+        }
+    });
+
+}
+
 function getTagFeed(req, res, next) {
 
     let tagName = req.params.tag;
@@ -257,6 +318,28 @@ function getTagJsonFeed(req, res, next) {
     }).then(posts => {
         convertPostsToJsonFeed(posts, `${tagName} tag feed`, getRequestedUrl(req)).then(jsonFeed => {
             res.json(jsonFeed);
+        });
+    });
+
+}
+
+function getTagRssFeed(req, res, next) {
+
+    let tagName = req.params.tag;
+
+    Posts.searchPosts({
+        taggedWith: [tagName.toLowerCase()],
+        showPrivate: req.session.username === 'eddiehinkle.com',
+        orderBy: ['published'],
+        orderDirection: ['DESC'],
+        limit: 20
+    }).then(posts => {
+        res.render('posts/rss-feed', {
+            title: `${tagName} tag Feed`,
+            posts: posts,
+            description: `This is a feed of posts that are tagged with #{tagName}`,
+            feed_url: getRequestedUrl(req).replace("feed.xml", ""),
+            date: moment().format("ddd, DD MMM YYYY HH:mm:ss ZZ")
         });
     });
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+rss(version="2.0", xmlns:atom="http://www.w3.org/2005/Atom")
+    channel
+        title #{title}
+        description #{description}
+        <link>#{feed_url}</link>
+        pubDate #{date}
+        lastBuildDate #{date}
+        generator Abode
+        for post in posts
+            item
+                if post.properties.name && post.properties.name !== ''
+                    title #{post.properties.name}
+                description
+                    include jsonfeed-item
+                pubDate #{post.properties.date.format("ddd, DD MMM YYYY HH:mm:ss ZZ")}
+                <link>https://eddiehinkle.com#{post.getOfficialPermalink()}</link>
+                guid(isPermaLink="true") https://eddiehinkle.com#{post.getOfficialPermalink()}
+                for tag in post.properties.category
+                    category #{tag}
