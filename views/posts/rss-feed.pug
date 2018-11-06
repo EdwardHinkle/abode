@@ -12,7 +12,9 @@ rss(version="2.0", xmlns:atom="http://www.w3.org/2005/Atom")
                 if post.properties.name && post.properties.name !== ''
                     title #{post.properties.name}
                 description
+                    | <![CDATA[
                     include jsonfeed-item
+                    | ]]>
                 pubDate #{post.properties.date.format("ddd, DD MMM YYYY HH:mm:ss ZZ")}
                 <link>https://eddiehinkle.com#{post.getOfficialPermalink()}</link>
                 guid(isPermaLink="true") https://eddiehinkle.com#{post.getOfficialPermalink()}
