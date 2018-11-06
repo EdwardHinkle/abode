@@ -1322,20 +1322,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                 });
 
                 return;
-            // })
-            // .then(() => {
-                // All tasks are done, we can restart the jekyll server, etc.
-                // console.log("Rebuild ready...");
-
-                // git.runGitStageAll()
-                // .then(() => { return git.runGitCommit(); })
-                // .then(() => { return git.runGitPush(); })
-                // .then(() => { return jekyll.runJekyllBuild(); })
-
-                // return;
-
             })
-            //.then(() => { return jekyll.runJekyllBuild(); })
             .catch((error) => {
                 console.log("Caught Error");
                 console.log(error);

@@ -7,7 +7,6 @@ import * as cron from 'cron';
 import * as path from 'path';
 import * as session from 'express-session';
 import { router } from './routes';
-import { rebuildServer } from './process-server/rebuildServer';
 import * as sqlite3 from 'sqlite3';
 import {CacheController} from "./model/cache.controller";
 import {DataController} from "./model/data.controller";
