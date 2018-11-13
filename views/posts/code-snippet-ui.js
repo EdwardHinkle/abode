@@ -54,7 +54,6 @@ function updateFragment(activeLines) {
 }
 
 window.addEventListener("load", function parseFragment() {
-    console.log('checking fragment');
     var lineSegments = window.location.hash.split("#")[1].split(",");
     var activeLines= [];
 
@@ -69,7 +68,7 @@ window.addEventListener("load", function parseFragment() {
     });
 
     activeLines.forEach(function(lineNumber) {
-        document.getElementsByClassName("code-container")[0].getElementsByClassName("L" + lineNumber)[0].classList.add("highlight-line");
+        document.getElementsByTagName('code')[0].getElementsByClassName("L" + lineNumber)[0].classList.add("highlight-line");
     });
 
 });
