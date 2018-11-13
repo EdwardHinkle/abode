@@ -4,6 +4,15 @@ body {
     margin: 0;
 }
 
+#confettiContainer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+}
+
 a:not(.no-underline) {
     color: black;
     text-decoration: none;

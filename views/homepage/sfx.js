@@ -14,6 +14,8 @@ var confettiIteration = 1;
 window.onload = function () {
     if (document.getElementsByClassName("theme-confetti").length > 0) {
         showConfetti = true;
+    } else if (document.getElementsByClassName("theme-snow").length > 0) {
+        showSnow = true;
     }
 
     if (showConfetti) {
@@ -35,5 +37,14 @@ window.onload = function () {
             confettiController.stopConfetti();
             repeatConfetti();
         }, LENGTH_OF_CONFETTI);
+    }
+
+    if (showSnow) {
+        for (var i = 0; i<199; i++) {
+            var newDiv = document.createElement("div");
+            newDiv.classList.add("snow");
+            newDiv.classList.add("s" + (i+1));
+            document.body.appendChild(newDiv);
+        }
     }
 };

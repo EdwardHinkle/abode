@@ -1,0 +1,3144 @@
+.snow {
+    background-color: #fff;
+    border-radius: 30%;
+    bottom: 110vh;
+    position: absolute;
+}
+
+.snow.s1 {
+    height: 9px;
+    left: 35vw;
+    opacity: 0.7;
+    width: 3px;
+    animation: letItSnow 12s 1.2s linear infinite, shakeIt 4s 1.2s linear infinite;
+    -webkit-animation: letItSnow 12s 1.2s linear infinite, shakeIt 4s 1.2s linear infinite;
+    -moz-animation: letItSnow 12s 1.2s linear infinite, shakeIt 4s 1.2s linear infinite;
+    -ms-animation: letItSnow 12s 1.2s linear infinite, shakeIt 4s 1.2s linear infinite;
+    -o-animation: letItSnow 12s 1.2s linear infinite, shakeIt 4s 1.2s linear infinite;
+}
+.snow.s1:after, .snow.s1:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s1:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s2 {
+    height: 9px;
+    left: 76vw;
+    opacity: 0.1;
+    width: 3px;
+    animation: letItSnow 13s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+    -webkit-animation: letItSnow 13s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+    -moz-animation: letItSnow 13s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+    -ms-animation: letItSnow 13s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+    -o-animation: letItSnow 13s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+}
+.snow.s2:after, .snow.s2:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s2:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s3 {
+    height: 12px;
+    left: 41vw;
+    opacity: 0.4;
+    width: 4px;
+    animation: letItSnow 14.2s 7.5s linear infinite, shakeIt 4s 7.5s linear infinite;
+    -webkit-animation: letItSnow 14.2s 7.5s linear infinite, shakeIt 4s 7.5s linear infinite;
+    -moz-animation: letItSnow 14.2s 7.5s linear infinite, shakeIt 4s 7.5s linear infinite;
+    -ms-animation: letItSnow 14.2s 7.5s linear infinite, shakeIt 4s 7.5s linear infinite;
+    -o-animation: letItSnow 14.2s 7.5s linear infinite, shakeIt 4s 7.5s linear infinite;
+}
+.snow.s3:after, .snow.s3:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s3:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s4 {
+    height: 12px;
+    left: 23vw;
+    opacity: 0.3;
+    width: 4px;
+    animation: letItSnow 12.5s 7.5s linear infinite, shakeIt 4s 7.5s linear infinite;
+    -webkit-animation: letItSnow 12.5s 7.5s linear infinite, shakeIt 4s 7.5s linear infinite;
+    -moz-animation: letItSnow 12.5s 7.5s linear infinite, shakeIt 4s 7.5s linear infinite;
+    -ms-animation: letItSnow 12.5s 7.5s linear infinite, shakeIt 4s 7.5s linear infinite;
+    -o-animation: letItSnow 12.5s 7.5s linear infinite, shakeIt 4s 7.5s linear infinite;
+}
+.snow.s4:after, .snow.s4:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s4:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s5 {
+    height: 15px;
+    left: 9vw;
+    opacity: 0.1;
+    width: 5px;
+    animation: letItSnow 15s 6.25s linear infinite, shakeIt 4s 6.25s linear infinite;
+    -webkit-animation: letItSnow 15s 6.25s linear infinite, shakeIt 4s 6.25s linear infinite;
+    -moz-animation: letItSnow 15s 6.25s linear infinite, shakeIt 4s 6.25s linear infinite;
+    -ms-animation: letItSnow 15s 6.25s linear infinite, shakeIt 4s 6.25s linear infinite;
+    -o-animation: letItSnow 15s 6.25s linear infinite, shakeIt 4s 6.25s linear infinite;
+}
+.snow.s5:after, .snow.s5:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s5:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s6 {
+    height: 9px;
+    left: 85vw;
+    opacity: 0.4;
+    width: 3px;
+    animation: letItSnow 11.2s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+    -webkit-animation: letItSnow 11.2s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+    -moz-animation: letItSnow 11.2s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+    -ms-animation: letItSnow 11.2s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+    -o-animation: letItSnow 11.2s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+}
+.snow.s6:after, .snow.s6:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s6:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s7 {
+    height: 6px;
+    left: 59vw;
+    opacity: 0.6;
+    width: 2px;
+    animation: letItSnow 15s 11.5s linear infinite, shakeIt 4s 11.5s linear infinite;
+    -webkit-animation: letItSnow 15s 11.5s linear infinite, shakeIt 4s 11.5s linear infinite;
+    -moz-animation: letItSnow 15s 11.5s linear infinite, shakeIt 4s 11.5s linear infinite;
+    -ms-animation: letItSnow 15s 11.5s linear infinite, shakeIt 4s 11.5s linear infinite;
+    -o-animation: letItSnow 15s 11.5s linear infinite, shakeIt 4s 11.5s linear infinite;
+}
+.snow.s7:after, .snow.s7:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 6px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 2px;
+}
+.snow.s7:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s8 {
+    height: 9px;
+    left: 47vw;
+    opacity: 0.7;
+    width: 3px;
+    animation: letItSnow 13.1666666667s 3.2s linear infinite, shakeIt 4s 3.2s linear infinite;
+    -webkit-animation: letItSnow 13.1666666667s 3.2s linear infinite, shakeIt 4s 3.2s linear infinite;
+    -moz-animation: letItSnow 13.1666666667s 3.2s linear infinite, shakeIt 4s 3.2s linear infinite;
+    -ms-animation: letItSnow 13.1666666667s 3.2s linear infinite, shakeIt 4s 3.2s linear infinite;
+    -o-animation: letItSnow 13.1666666667s 3.2s linear infinite, shakeIt 4s 3.2s linear infinite;
+}
+.snow.s8:after, .snow.s8:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s8:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s9 {
+    height: 9px;
+    left: 26vw;
+    opacity: 0.4;
+    width: 3px;
+    animation: letItSnow 15.1666666667s 11.25s linear infinite, shakeIt 4s 11.25s linear infinite;
+    -webkit-animation: letItSnow 15.1666666667s 11.25s linear infinite, shakeIt 4s 11.25s linear infinite;
+    -moz-animation: letItSnow 15.1666666667s 11.25s linear infinite, shakeIt 4s 11.25s linear infinite;
+    -ms-animation: letItSnow 15.1666666667s 11.25s linear infinite, shakeIt 4s 11.25s linear infinite;
+    -o-animation: letItSnow 15.1666666667s 11.25s linear infinite, shakeIt 4s 11.25s linear infinite;
+}
+.snow.s9:after, .snow.s9:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s9:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s10 {
+    height: 15px;
+    left: 20vw;
+    opacity: 0.2;
+    width: 5px;
+    animation: letItSnow 12.1428571429s 6.25s linear infinite, shakeIt 4s 6.25s linear infinite;
+    -webkit-animation: letItSnow 12.1428571429s 6.25s linear infinite, shakeIt 4s 6.25s linear infinite;
+    -moz-animation: letItSnow 12.1428571429s 6.25s linear infinite, shakeIt 4s 6.25s linear infinite;
+    -ms-animation: letItSnow 12.1428571429s 6.25s linear infinite, shakeIt 4s 6.25s linear infinite;
+    -o-animation: letItSnow 12.1428571429s 6.25s linear infinite, shakeIt 4s 6.25s linear infinite;
+}
+.snow.s10:after, .snow.s10:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s10:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s11 {
+    height: 12px;
+    left: 68vw;
+    opacity: 0.5;
+    width: 4px;
+    animation: letItSnow 14s 2.2s linear infinite, shakeIt 4s 2.2s linear infinite;
+    -webkit-animation: letItSnow 14s 2.2s linear infinite, shakeIt 4s 2.2s linear infinite;
+    -moz-animation: letItSnow 14s 2.2s linear infinite, shakeIt 4s 2.2s linear infinite;
+    -ms-animation: letItSnow 14s 2.2s linear infinite, shakeIt 4s 2.2s linear infinite;
+    -o-animation: letItSnow 14s 2.2s linear infinite, shakeIt 4s 2.2s linear infinite;
+}
+.snow.s11:after, .snow.s11:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s11:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s12 {
+    height: 9px;
+    left: 84vw;
+    opacity: 0.1;
+    width: 3px;
+    animation: letItSnow 15.25s 11.2s linear infinite, shakeIt 4s 11.2s linear infinite;
+    -webkit-animation: letItSnow 15.25s 11.2s linear infinite, shakeIt 4s 11.2s linear infinite;
+    -moz-animation: letItSnow 15.25s 11.2s linear infinite, shakeIt 4s 11.2s linear infinite;
+    -ms-animation: letItSnow 15.25s 11.2s linear infinite, shakeIt 4s 11.2s linear infinite;
+    -o-animation: letItSnow 15.25s 11.2s linear infinite, shakeIt 4s 11.2s linear infinite;
+}
+.snow.s12:after, .snow.s12:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s12:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s13 {
+    height: 6px;
+    left: 79vw;
+    opacity: 0.1;
+    width: 2px;
+    animation: letItSnow 15s 12.3333333333s linear infinite, shakeIt 4s 12.3333333333s linear infinite;
+    -webkit-animation: letItSnow 15s 12.3333333333s linear infinite, shakeIt 4s 12.3333333333s linear infinite;
+    -moz-animation: letItSnow 15s 12.3333333333s linear infinite, shakeIt 4s 12.3333333333s linear infinite;
+    -ms-animation: letItSnow 15s 12.3333333333s linear infinite, shakeIt 4s 12.3333333333s linear infinite;
+    -o-animation: letItSnow 15s 12.3333333333s linear infinite, shakeIt 4s 12.3333333333s linear infinite;
+}
+.snow.s13:after, .snow.s13:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 6px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 2px;
+}
+.snow.s13:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s14 {
+    height: 15px;
+    left: 72vw;
+    opacity: 0.6;
+    width: 5px;
+    animation: letItSnow 16s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+    -webkit-animation: letItSnow 16s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+    -moz-animation: letItSnow 16s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+    -ms-animation: letItSnow 16s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+    -o-animation: letItSnow 16s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+}
+.snow.s14:after, .snow.s14:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s14:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s15 {
+    height: 6px;
+    left: 85vw;
+    opacity: 0.2;
+    width: 2px;
+    animation: letItSnow 12.2s 10.3333333333s linear infinite, shakeIt 4s 10.3333333333s linear infinite;
+    -webkit-animation: letItSnow 12.2s 10.3333333333s linear infinite, shakeIt 4s 10.3333333333s linear infinite;
+    -moz-animation: letItSnow 12.2s 10.3333333333s linear infinite, shakeIt 4s 10.3333333333s linear infinite;
+    -ms-animation: letItSnow 12.2s 10.3333333333s linear infinite, shakeIt 4s 10.3333333333s linear infinite;
+    -o-animation: letItSnow 12.2s 10.3333333333s linear infinite, shakeIt 4s 10.3333333333s linear infinite;
+}
+.snow.s15:after, .snow.s15:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 6px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 2px;
+}
+.snow.s15:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s16 {
+    height: 15px;
+    left: 27vw;
+    opacity: 0.1;
+    width: 5px;
+    animation: letItSnow 13.3333333333s 7.5s linear infinite, shakeIt 4s 7.5s linear infinite;
+    -webkit-animation: letItSnow 13.3333333333s 7.5s linear infinite, shakeIt 4s 7.5s linear infinite;
+    -moz-animation: letItSnow 13.3333333333s 7.5s linear infinite, shakeIt 4s 7.5s linear infinite;
+    -ms-animation: letItSnow 13.3333333333s 7.5s linear infinite, shakeIt 4s 7.5s linear infinite;
+    -o-animation: letItSnow 13.3333333333s 7.5s linear infinite, shakeIt 4s 7.5s linear infinite;
+}
+.snow.s16:after, .snow.s16:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s16:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s17 {
+    height: 12px;
+    left: 24vw;
+    opacity: 0.1;
+    width: 4px;
+    animation: letItSnow 11.5s 4s linear infinite, shakeIt 4s 4s linear infinite;
+    -webkit-animation: letItSnow 11.5s 4s linear infinite, shakeIt 4s 4s linear infinite;
+    -moz-animation: letItSnow 11.5s 4s linear infinite, shakeIt 4s 4s linear infinite;
+    -ms-animation: letItSnow 11.5s 4s linear infinite, shakeIt 4s 4s linear infinite;
+    -o-animation: letItSnow 11.5s 4s linear infinite, shakeIt 4s 4s linear infinite;
+}
+.snow.s17:after, .snow.s17:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s17:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s18 {
+    height: 6px;
+    left: 18vw;
+    opacity: 0.3;
+    width: 2px;
+    animation: letItSnow 13.1666666667s 5.2s linear infinite, shakeIt 4s 5.2s linear infinite;
+    -webkit-animation: letItSnow 13.1666666667s 5.2s linear infinite, shakeIt 4s 5.2s linear infinite;
+    -moz-animation: letItSnow 13.1666666667s 5.2s linear infinite, shakeIt 4s 5.2s linear infinite;
+    -ms-animation: letItSnow 13.1666666667s 5.2s linear infinite, shakeIt 4s 5.2s linear infinite;
+    -o-animation: letItSnow 13.1666666667s 5.2s linear infinite, shakeIt 4s 5.2s linear infinite;
+}
+.snow.s18:after, .snow.s18:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 6px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 2px;
+}
+.snow.s18:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s19 {
+    height: 12px;
+    left: 68vw;
+    opacity: 0.5;
+    width: 4px;
+    animation: letItSnow 14.1666666667s 11.25s linear infinite, shakeIt 4s 11.25s linear infinite;
+    -webkit-animation: letItSnow 14.1666666667s 11.25s linear infinite, shakeIt 4s 11.25s linear infinite;
+    -moz-animation: letItSnow 14.1666666667s 11.25s linear infinite, shakeIt 4s 11.25s linear infinite;
+    -ms-animation: letItSnow 14.1666666667s 11.25s linear infinite, shakeIt 4s 11.25s linear infinite;
+    -o-animation: letItSnow 14.1666666667s 11.25s linear infinite, shakeIt 4s 11.25s linear infinite;
+}
+.snow.s19:after, .snow.s19:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s19:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s20 {
+    height: 9px;
+    left: 22vw;
+    opacity: 0.4;
+    width: 3px;
+    animation: letItSnow 13.2s 2s linear infinite, shakeIt 4s 2s linear infinite;
+    -webkit-animation: letItSnow 13.2s 2s linear infinite, shakeIt 4s 2s linear infinite;
+    -moz-animation: letItSnow 13.2s 2s linear infinite, shakeIt 4s 2s linear infinite;
+    -ms-animation: letItSnow 13.2s 2s linear infinite, shakeIt 4s 2s linear infinite;
+    -o-animation: letItSnow 13.2s 2s linear infinite, shakeIt 4s 2s linear infinite;
+}
+.snow.s20:after, .snow.s20:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s20:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s21 {
+    height: 9px;
+    left: 9vw;
+    opacity: 0.2;
+    width: 3px;
+    animation: letItSnow 13.3333333333s 3.5s linear infinite, shakeIt 4s 3.5s linear infinite;
+    -webkit-animation: letItSnow 13.3333333333s 3.5s linear infinite, shakeIt 4s 3.5s linear infinite;
+    -moz-animation: letItSnow 13.3333333333s 3.5s linear infinite, shakeIt 4s 3.5s linear infinite;
+    -ms-animation: letItSnow 13.3333333333s 3.5s linear infinite, shakeIt 4s 3.5s linear infinite;
+    -o-animation: letItSnow 13.3333333333s 3.5s linear infinite, shakeIt 4s 3.5s linear infinite;
+}
+.snow.s21:after, .snow.s21:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s21:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s22 {
+    height: 12px;
+    left: 77vw;
+    opacity: 0.6;
+    width: 4px;
+    animation: letItSnow 13s 4.5s linear infinite, shakeIt 4s 4.5s linear infinite;
+    -webkit-animation: letItSnow 13s 4.5s linear infinite, shakeIt 4s 4.5s linear infinite;
+    -moz-animation: letItSnow 13s 4.5s linear infinite, shakeIt 4s 4.5s linear infinite;
+    -ms-animation: letItSnow 13s 4.5s linear infinite, shakeIt 4s 4.5s linear infinite;
+    -o-animation: letItSnow 13s 4.5s linear infinite, shakeIt 4s 4.5s linear infinite;
+}
+.snow.s22:after, .snow.s22:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s22:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s23 {
+    height: 9px;
+    left: 64vw;
+    opacity: 0.7;
+    width: 3px;
+    animation: letItSnow 14.25s 7.25s linear infinite, shakeIt 4s 7.25s linear infinite;
+    -webkit-animation: letItSnow 14.25s 7.25s linear infinite, shakeIt 4s 7.25s linear infinite;
+    -moz-animation: letItSnow 14.25s 7.25s linear infinite, shakeIt 4s 7.25s linear infinite;
+    -ms-animation: letItSnow 14.25s 7.25s linear infinite, shakeIt 4s 7.25s linear infinite;
+    -o-animation: letItSnow 14.25s 7.25s linear infinite, shakeIt 4s 7.25s linear infinite;
+}
+.snow.s23:after, .snow.s23:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s23:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s24 {
+    height: 6px;
+    left: 9vw;
+    opacity: 0.5;
+    width: 2px;
+    animation: letItSnow 14.25s 7s linear infinite, shakeIt 4s 7s linear infinite;
+    -webkit-animation: letItSnow 14.25s 7s linear infinite, shakeIt 4s 7s linear infinite;
+    -moz-animation: letItSnow 14.25s 7s linear infinite, shakeIt 4s 7s linear infinite;
+    -ms-animation: letItSnow 14.25s 7s linear infinite, shakeIt 4s 7s linear infinite;
+    -o-animation: letItSnow 14.25s 7s linear infinite, shakeIt 4s 7s linear infinite;
+}
+.snow.s24:after, .snow.s24:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 6px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 2px;
+}
+.snow.s24:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s25 {
+    height: 9px;
+    left: 41vw;
+    opacity: 0.6;
+    width: 3px;
+    animation: letItSnow 12.25s 3.25s linear infinite, shakeIt 4s 3.25s linear infinite;
+    -webkit-animation: letItSnow 12.25s 3.25s linear infinite, shakeIt 4s 3.25s linear infinite;
+    -moz-animation: letItSnow 12.25s 3.25s linear infinite, shakeIt 4s 3.25s linear infinite;
+    -ms-animation: letItSnow 12.25s 3.25s linear infinite, shakeIt 4s 3.25s linear infinite;
+    -o-animation: letItSnow 12.25s 3.25s linear infinite, shakeIt 4s 3.25s linear infinite;
+}
+.snow.s25:after, .snow.s25:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s25:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s26 {
+    height: 12px;
+    left: 76vw;
+    opacity: 0.4;
+    width: 4px;
+    animation: letItSnow 13.2s 6.25s linear infinite, shakeIt 4s 6.25s linear infinite;
+    -webkit-animation: letItSnow 13.2s 6.25s linear infinite, shakeIt 4s 6.25s linear infinite;
+    -moz-animation: letItSnow 13.2s 6.25s linear infinite, shakeIt 4s 6.25s linear infinite;
+    -ms-animation: letItSnow 13.2s 6.25s linear infinite, shakeIt 4s 6.25s linear infinite;
+    -o-animation: letItSnow 13.2s 6.25s linear infinite, shakeIt 4s 6.25s linear infinite;
+}
+.snow.s26:after, .snow.s26:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s26:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s27 {
+    height: 15px;
+    left: 26vw;
+    opacity: 0.6;
+    width: 5px;
+    animation: letItSnow 14s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+    -webkit-animation: letItSnow 14s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+    -moz-animation: letItSnow 14s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+    -ms-animation: letItSnow 14s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+    -o-animation: letItSnow 14s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+}
+.snow.s27:after, .snow.s27:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s27:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s28 {
+    height: 15px;
+    left: 6vw;
+    opacity: 0.4;
+    width: 5px;
+    animation: letItSnow 13s 9.5s linear infinite, shakeIt 4s 9.5s linear infinite;
+    -webkit-animation: letItSnow 13s 9.5s linear infinite, shakeIt 4s 9.5s linear infinite;
+    -moz-animation: letItSnow 13s 9.5s linear infinite, shakeIt 4s 9.5s linear infinite;
+    -ms-animation: letItSnow 13s 9.5s linear infinite, shakeIt 4s 9.5s linear infinite;
+    -o-animation: letItSnow 13s 9.5s linear infinite, shakeIt 4s 9.5s linear infinite;
+}
+.snow.s28:after, .snow.s28:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s28:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s29 {
+    height: 15px;
+    left: 43vw;
+    opacity: 0.5;
+    width: 5px;
+    animation: letItSnow 12.1666666667s 6.2s linear infinite, shakeIt 4s 6.2s linear infinite;
+    -webkit-animation: letItSnow 12.1666666667s 6.2s linear infinite, shakeIt 4s 6.2s linear infinite;
+    -moz-animation: letItSnow 12.1666666667s 6.2s linear infinite, shakeIt 4s 6.2s linear infinite;
+    -ms-animation: letItSnow 12.1666666667s 6.2s linear infinite, shakeIt 4s 6.2s linear infinite;
+    -o-animation: letItSnow 12.1666666667s 6.2s linear infinite, shakeIt 4s 6.2s linear infinite;
+}
+.snow.s29:after, .snow.s29:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s29:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s30 {
+    height: 15px;
+    left: 54vw;
+    opacity: 0.4;
+    width: 5px;
+    animation: letItSnow 14.1428571429s 8.25s linear infinite, shakeIt 4s 8.25s linear infinite;
+    -webkit-animation: letItSnow 14.1428571429s 8.25s linear infinite, shakeIt 4s 8.25s linear infinite;
+    -moz-animation: letItSnow 14.1428571429s 8.25s linear infinite, shakeIt 4s 8.25s linear infinite;
+    -ms-animation: letItSnow 14.1428571429s 8.25s linear infinite, shakeIt 4s 8.25s linear infinite;
+    -o-animation: letItSnow 14.1428571429s 8.25s linear infinite, shakeIt 4s 8.25s linear infinite;
+}
+.snow.s30:after, .snow.s30:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s30:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s31 {
+    height: 6px;
+    left: 37vw;
+    opacity: 0.5;
+    width: 2px;
+    animation: letItSnow 13.1666666667s 6.2s linear infinite, shakeIt 4s 6.2s linear infinite;
+    -webkit-animation: letItSnow 13.1666666667s 6.2s linear infinite, shakeIt 4s 6.2s linear infinite;
+    -moz-animation: letItSnow 13.1666666667s 6.2s linear infinite, shakeIt 4s 6.2s linear infinite;
+    -ms-animation: letItSnow 13.1666666667s 6.2s linear infinite, shakeIt 4s 6.2s linear infinite;
+    -o-animation: letItSnow 13.1666666667s 6.2s linear infinite, shakeIt 4s 6.2s linear infinite;
+}
+.snow.s31:after, .snow.s31:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 6px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 2px;
+}
+.snow.s31:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s32 {
+    height: 9px;
+    left: 25vw;
+    opacity: 0.1;
+    width: 3px;
+    animation: letItSnow 13.3333333333s 6.3333333333s linear infinite, shakeIt 4s 6.3333333333s linear infinite;
+    -webkit-animation: letItSnow 13.3333333333s 6.3333333333s linear infinite, shakeIt 4s 6.3333333333s linear infinite;
+    -moz-animation: letItSnow 13.3333333333s 6.3333333333s linear infinite, shakeIt 4s 6.3333333333s linear infinite;
+    -ms-animation: letItSnow 13.3333333333s 6.3333333333s linear infinite, shakeIt 4s 6.3333333333s linear infinite;
+    -o-animation: letItSnow 13.3333333333s 6.3333333333s linear infinite, shakeIt 4s 6.3333333333s linear infinite;
+}
+.snow.s32:after, .snow.s32:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s32:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s33 {
+    height: 12px;
+    left: 51vw;
+    opacity: 0.7;
+    width: 4px;
+    animation: letItSnow 12.1428571429s 5.5s linear infinite, shakeIt 4s 5.5s linear infinite;
+    -webkit-animation: letItSnow 12.1428571429s 5.5s linear infinite, shakeIt 4s 5.5s linear infinite;
+    -moz-animation: letItSnow 12.1428571429s 5.5s linear infinite, shakeIt 4s 5.5s linear infinite;
+    -ms-animation: letItSnow 12.1428571429s 5.5s linear infinite, shakeIt 4s 5.5s linear infinite;
+    -o-animation: letItSnow 12.1428571429s 5.5s linear infinite, shakeIt 4s 5.5s linear infinite;
+}
+.snow.s33:after, .snow.s33:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s33:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s34 {
+    height: 12px;
+    left: 56vw;
+    opacity: 0.5;
+    width: 4px;
+    animation: letItSnow 12.5s 8.2s linear infinite, shakeIt 4s 8.2s linear infinite;
+    -webkit-animation: letItSnow 12.5s 8.2s linear infinite, shakeIt 4s 8.2s linear infinite;
+    -moz-animation: letItSnow 12.5s 8.2s linear infinite, shakeIt 4s 8.2s linear infinite;
+    -ms-animation: letItSnow 12.5s 8.2s linear infinite, shakeIt 4s 8.2s linear infinite;
+    -o-animation: letItSnow 12.5s 8.2s linear infinite, shakeIt 4s 8.2s linear infinite;
+}
+.snow.s34:after, .snow.s34:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s34:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s35 {
+    height: 12px;
+    left: 41vw;
+    opacity: 0.5;
+    width: 4px;
+    animation: letItSnow 14.25s 8s linear infinite, shakeIt 4s 8s linear infinite;
+    -webkit-animation: letItSnow 14.25s 8s linear infinite, shakeIt 4s 8s linear infinite;
+    -moz-animation: letItSnow 14.25s 8s linear infinite, shakeIt 4s 8s linear infinite;
+    -ms-animation: letItSnow 14.25s 8s linear infinite, shakeIt 4s 8s linear infinite;
+    -o-animation: letItSnow 14.25s 8s linear infinite, shakeIt 4s 8s linear infinite;
+}
+.snow.s35:after, .snow.s35:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s35:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s36 {
+    height: 15px;
+    left: 82vw;
+    opacity: 0.7;
+    width: 5px;
+    animation: letItSnow 13.25s 10.25s linear infinite, shakeIt 4s 10.25s linear infinite;
+    -webkit-animation: letItSnow 13.25s 10.25s linear infinite, shakeIt 4s 10.25s linear infinite;
+    -moz-animation: letItSnow 13.25s 10.25s linear infinite, shakeIt 4s 10.25s linear infinite;
+    -ms-animation: letItSnow 13.25s 10.25s linear infinite, shakeIt 4s 10.25s linear infinite;
+    -o-animation: letItSnow 13.25s 10.25s linear infinite, shakeIt 4s 10.25s linear infinite;
+}
+.snow.s36:after, .snow.s36:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s36:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s37 {
+    height: 15px;
+    left: 47vw;
+    opacity: 0.2;
+    width: 5px;
+    animation: letItSnow 13.2s 10s linear infinite, shakeIt 4s 10s linear infinite;
+    -webkit-animation: letItSnow 13.2s 10s linear infinite, shakeIt 4s 10s linear infinite;
+    -moz-animation: letItSnow 13.2s 10s linear infinite, shakeIt 4s 10s linear infinite;
+    -ms-animation: letItSnow 13.2s 10s linear infinite, shakeIt 4s 10s linear infinite;
+    -o-animation: letItSnow 13.2s 10s linear infinite, shakeIt 4s 10s linear infinite;
+}
+.snow.s37:after, .snow.s37:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s37:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s38 {
+    height: 12px;
+    left: 6vw;
+    opacity: 0.3;
+    width: 4px;
+    animation: letItSnow 14.1428571429s 12s linear infinite, shakeIt 4s 12s linear infinite;
+    -webkit-animation: letItSnow 14.1428571429s 12s linear infinite, shakeIt 4s 12s linear infinite;
+    -moz-animation: letItSnow 14.1428571429s 12s linear infinite, shakeIt 4s 12s linear infinite;
+    -ms-animation: letItSnow 14.1428571429s 12s linear infinite, shakeIt 4s 12s linear infinite;
+    -o-animation: letItSnow 14.1428571429s 12s linear infinite, shakeIt 4s 12s linear infinite;
+}
+.snow.s38:after, .snow.s38:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s38:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s39 {
+    height: 9px;
+    left: 4vw;
+    opacity: 0.2;
+    width: 3px;
+    animation: letItSnow 12.1428571429s 6.5s linear infinite, shakeIt 4s 6.5s linear infinite;
+    -webkit-animation: letItSnow 12.1428571429s 6.5s linear infinite, shakeIt 4s 6.5s linear infinite;
+    -moz-animation: letItSnow 12.1428571429s 6.5s linear infinite, shakeIt 4s 6.5s linear infinite;
+    -ms-animation: letItSnow 12.1428571429s 6.5s linear infinite, shakeIt 4s 6.5s linear infinite;
+    -o-animation: letItSnow 12.1428571429s 6.5s linear infinite, shakeIt 4s 6.5s linear infinite;
+}
+.snow.s39:after, .snow.s39:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s39:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s40 {
+    height: 6px;
+    left: 35vw;
+    opacity: 0.5;
+    width: 2px;
+    animation: letItSnow 14s 4.2s linear infinite, shakeIt 4s 4.2s linear infinite;
+    -webkit-animation: letItSnow 14s 4.2s linear infinite, shakeIt 4s 4.2s linear infinite;
+    -moz-animation: letItSnow 14s 4.2s linear infinite, shakeIt 4s 4.2s linear infinite;
+    -ms-animation: letItSnow 14s 4.2s linear infinite, shakeIt 4s 4.2s linear infinite;
+    -o-animation: letItSnow 14s 4.2s linear infinite, shakeIt 4s 4.2s linear infinite;
+}
+.snow.s40:after, .snow.s40:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 6px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 2px;
+}
+.snow.s40:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s41 {
+    height: 15px;
+    left: 33vw;
+    opacity: 0.4;
+    width: 5px;
+    animation: letItSnow 14.1666666667s 5s linear infinite, shakeIt 4s 5s linear infinite;
+    -webkit-animation: letItSnow 14.1666666667s 5s linear infinite, shakeIt 4s 5s linear infinite;
+    -moz-animation: letItSnow 14.1666666667s 5s linear infinite, shakeIt 4s 5s linear infinite;
+    -ms-animation: letItSnow 14.1666666667s 5s linear infinite, shakeIt 4s 5s linear infinite;
+    -o-animation: letItSnow 14.1666666667s 5s linear infinite, shakeIt 4s 5s linear infinite;
+}
+.snow.s41:after, .snow.s41:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s41:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s42 {
+    height: 15px;
+    left: 92vw;
+    opacity: 0.1;
+    width: 5px;
+    animation: letItSnow 13.1666666667s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+    -webkit-animation: letItSnow 13.1666666667s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+    -moz-animation: letItSnow 13.1666666667s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+    -ms-animation: letItSnow 13.1666666667s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+    -o-animation: letItSnow 13.1666666667s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+}
+.snow.s42:after, .snow.s42:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s42:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s43 {
+    height: 6px;
+    left: 67vw;
+    opacity: 0.1;
+    width: 2px;
+    animation: letItSnow 15.1428571429s 2s linear infinite, shakeIt 4s 2s linear infinite;
+    -webkit-animation: letItSnow 15.1428571429s 2s linear infinite, shakeIt 4s 2s linear infinite;
+    -moz-animation: letItSnow 15.1428571429s 2s linear infinite, shakeIt 4s 2s linear infinite;
+    -ms-animation: letItSnow 15.1428571429s 2s linear infinite, shakeIt 4s 2s linear infinite;
+    -o-animation: letItSnow 15.1428571429s 2s linear infinite, shakeIt 4s 2s linear infinite;
+}
+.snow.s43:after, .snow.s43:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 6px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 2px;
+}
+.snow.s43:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s44 {
+    height: 12px;
+    left: 41vw;
+    opacity: 0.2;
+    width: 4px;
+    animation: letItSnow 11.5s 7s linear infinite, shakeIt 4s 7s linear infinite;
+    -webkit-animation: letItSnow 11.5s 7s linear infinite, shakeIt 4s 7s linear infinite;
+    -moz-animation: letItSnow 11.5s 7s linear infinite, shakeIt 4s 7s linear infinite;
+    -ms-animation: letItSnow 11.5s 7s linear infinite, shakeIt 4s 7s linear infinite;
+    -o-animation: letItSnow 11.5s 7s linear infinite, shakeIt 4s 7s linear infinite;
+}
+.snow.s44:after, .snow.s44:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s44:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s45 {
+    height: 12px;
+    left: 29vw;
+    opacity: 0.4;
+    width: 4px;
+    animation: letItSnow 14.3333333333s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+    -webkit-animation: letItSnow 14.3333333333s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+    -moz-animation: letItSnow 14.3333333333s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+    -ms-animation: letItSnow 14.3333333333s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+    -o-animation: letItSnow 14.3333333333s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+}
+.snow.s45:after, .snow.s45:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s45:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s46 {
+    height: 15px;
+    left: 82vw;
+    opacity: 0.7;
+    width: 5px;
+    animation: letItSnow 13.2s 7s linear infinite, shakeIt 4s 7s linear infinite;
+    -webkit-animation: letItSnow 13.2s 7s linear infinite, shakeIt 4s 7s linear infinite;
+    -moz-animation: letItSnow 13.2s 7s linear infinite, shakeIt 4s 7s linear infinite;
+    -ms-animation: letItSnow 13.2s 7s linear infinite, shakeIt 4s 7s linear infinite;
+    -o-animation: letItSnow 13.2s 7s linear infinite, shakeIt 4s 7s linear infinite;
+}
+.snow.s46:after, .snow.s46:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s46:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s47 {
+    height: 12px;
+    left: 10vw;
+    opacity: 0.6;
+    width: 4px;
+    animation: letItSnow 11.5s 6.2s linear infinite, shakeIt 4s 6.2s linear infinite;
+    -webkit-animation: letItSnow 11.5s 6.2s linear infinite, shakeIt 4s 6.2s linear infinite;
+    -moz-animation: letItSnow 11.5s 6.2s linear infinite, shakeIt 4s 6.2s linear infinite;
+    -ms-animation: letItSnow 11.5s 6.2s linear infinite, shakeIt 4s 6.2s linear infinite;
+    -o-animation: letItSnow 11.5s 6.2s linear infinite, shakeIt 4s 6.2s linear infinite;
+}
+.snow.s47:after, .snow.s47:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s47:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s48 {
+    height: 15px;
+    left: 87vw;
+    opacity: 0.2;
+    width: 5px;
+    animation: letItSnow 15.5s 6.2s linear infinite, shakeIt 4s 6.2s linear infinite;
+    -webkit-animation: letItSnow 15.5s 6.2s linear infinite, shakeIt 4s 6.2s linear infinite;
+    -moz-animation: letItSnow 15.5s 6.2s linear infinite, shakeIt 4s 6.2s linear infinite;
+    -ms-animation: letItSnow 15.5s 6.2s linear infinite, shakeIt 4s 6.2s linear infinite;
+    -o-animation: letItSnow 15.5s 6.2s linear infinite, shakeIt 4s 6.2s linear infinite;
+}
+.snow.s48:after, .snow.s48:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s48:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s49 {
+    height: 9px;
+    left: 85vw;
+    opacity: 0.4;
+    width: 3px;
+    animation: letItSnow 15.2s 12s linear infinite, shakeIt 4s 12s linear infinite;
+    -webkit-animation: letItSnow 15.2s 12s linear infinite, shakeIt 4s 12s linear infinite;
+    -moz-animation: letItSnow 15.2s 12s linear infinite, shakeIt 4s 12s linear infinite;
+    -ms-animation: letItSnow 15.2s 12s linear infinite, shakeIt 4s 12s linear infinite;
+    -o-animation: letItSnow 15.2s 12s linear infinite, shakeIt 4s 12s linear infinite;
+}
+.snow.s49:after, .snow.s49:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s49:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s50 {
+    height: 12px;
+    left: 77vw;
+    opacity: 0.2;
+    width: 4px;
+    animation: letItSnow 13.3333333333s 3.3333333333s linear infinite, shakeIt 4s 3.3333333333s linear infinite;
+    -webkit-animation: letItSnow 13.3333333333s 3.3333333333s linear infinite, shakeIt 4s 3.3333333333s linear infinite;
+    -moz-animation: letItSnow 13.3333333333s 3.3333333333s linear infinite, shakeIt 4s 3.3333333333s linear infinite;
+    -ms-animation: letItSnow 13.3333333333s 3.3333333333s linear infinite, shakeIt 4s 3.3333333333s linear infinite;
+    -o-animation: letItSnow 13.3333333333s 3.3333333333s linear infinite, shakeIt 4s 3.3333333333s linear infinite;
+}
+.snow.s50:after, .snow.s50:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s50:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s51 {
+    height: 15px;
+    left: 72vw;
+    opacity: 0.2;
+    width: 5px;
+    animation: letItSnow 14.3333333333s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+    -webkit-animation: letItSnow 14.3333333333s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+    -moz-animation: letItSnow 14.3333333333s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+    -ms-animation: letItSnow 14.3333333333s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+    -o-animation: letItSnow 14.3333333333s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+}
+.snow.s51:after, .snow.s51:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s51:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s52 {
+    height: 6px;
+    left: 10vw;
+    opacity: 0.4;
+    width: 2px;
+    animation: letItSnow 14s 8.3333333333s linear infinite, shakeIt 4s 8.3333333333s linear infinite;
+    -webkit-animation: letItSnow 14s 8.3333333333s linear infinite, shakeIt 4s 8.3333333333s linear infinite;
+    -moz-animation: letItSnow 14s 8.3333333333s linear infinite, shakeIt 4s 8.3333333333s linear infinite;
+    -ms-animation: letItSnow 14s 8.3333333333s linear infinite, shakeIt 4s 8.3333333333s linear infinite;
+    -o-animation: letItSnow 14s 8.3333333333s linear infinite, shakeIt 4s 8.3333333333s linear infinite;
+}
+.snow.s52:after, .snow.s52:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 6px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 2px;
+}
+.snow.s52:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s53 {
+    height: 12px;
+    left: 52vw;
+    opacity: 0.4;
+    width: 4px;
+    animation: letItSnow 15.25s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+    -webkit-animation: letItSnow 15.25s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+    -moz-animation: letItSnow 15.25s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+    -ms-animation: letItSnow 15.25s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+    -o-animation: letItSnow 15.25s 8.5s linear infinite, shakeIt 4s 8.5s linear infinite;
+}
+.snow.s53:after, .snow.s53:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s53:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s54 {
+    height: 6px;
+    left: 45vw;
+    opacity: 0.2;
+    width: 2px;
+    animation: letItSnow 13.2s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+    -webkit-animation: letItSnow 13.2s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+    -moz-animation: letItSnow 13.2s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+    -ms-animation: letItSnow 13.2s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+    -o-animation: letItSnow 13.2s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+}
+.snow.s54:after, .snow.s54:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 6px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 2px;
+}
+.snow.s54:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s55 {
+    height: 15px;
+    left: 29vw;
+    opacity: 0.5;
+    width: 5px;
+    animation: letItSnow 12s 9.2s linear infinite, shakeIt 4s 9.2s linear infinite;
+    -webkit-animation: letItSnow 12s 9.2s linear infinite, shakeIt 4s 9.2s linear infinite;
+    -moz-animation: letItSnow 12s 9.2s linear infinite, shakeIt 4s 9.2s linear infinite;
+    -ms-animation: letItSnow 12s 9.2s linear infinite, shakeIt 4s 9.2s linear infinite;
+    -o-animation: letItSnow 12s 9.2s linear infinite, shakeIt 4s 9.2s linear infinite;
+}
+.snow.s55:after, .snow.s55:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s55:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s56 {
+    height: 6px;
+    left: 32vw;
+    opacity: 0.6;
+    width: 2px;
+    animation: letItSnow 13.1666666667s 12.5s linear infinite, shakeIt 4s 12.5s linear infinite;
+    -webkit-animation: letItSnow 13.1666666667s 12.5s linear infinite, shakeIt 4s 12.5s linear infinite;
+    -moz-animation: letItSnow 13.1666666667s 12.5s linear infinite, shakeIt 4s 12.5s linear infinite;
+    -ms-animation: letItSnow 13.1666666667s 12.5s linear infinite, shakeIt 4s 12.5s linear infinite;
+    -o-animation: letItSnow 13.1666666667s 12.5s linear infinite, shakeIt 4s 12.5s linear infinite;
+}
+.snow.s56:after, .snow.s56:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 6px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 2px;
+}
+.snow.s56:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s57 {
+    height: 12px;
+    left: 46vw;
+    opacity: 0.1;
+    width: 4px;
+    animation: letItSnow 13s 5s linear infinite, shakeIt 4s 5s linear infinite;
+    -webkit-animation: letItSnow 13s 5s linear infinite, shakeIt 4s 5s linear infinite;
+    -moz-animation: letItSnow 13s 5s linear infinite, shakeIt 4s 5s linear infinite;
+    -ms-animation: letItSnow 13s 5s linear infinite, shakeIt 4s 5s linear infinite;
+    -o-animation: letItSnow 13s 5s linear infinite, shakeIt 4s 5s linear infinite;
+}
+.snow.s57:after, .snow.s57:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s57:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s58 {
+    height: 9px;
+    left: 1vw;
+    opacity: 0.3;
+    width: 3px;
+    animation: letItSnow 15.3333333333s 9.5s linear infinite, shakeIt 4s 9.5s linear infinite;
+    -webkit-animation: letItSnow 15.3333333333s 9.5s linear infinite, shakeIt 4s 9.5s linear infinite;
+    -moz-animation: letItSnow 15.3333333333s 9.5s linear infinite, shakeIt 4s 9.5s linear infinite;
+    -ms-animation: letItSnow 15.3333333333s 9.5s linear infinite, shakeIt 4s 9.5s linear infinite;
+    -o-animation: letItSnow 15.3333333333s 9.5s linear infinite, shakeIt 4s 9.5s linear infinite;
+}
+.snow.s58:after, .snow.s58:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s58:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s59 {
+    height: 12px;
+    left: 76vw;
+    opacity: 0.3;
+    width: 4px;
+    animation: letItSnow 14.1428571429s 10s linear infinite, shakeIt 4s 10s linear infinite;
+    -webkit-animation: letItSnow 14.1428571429s 10s linear infinite, shakeIt 4s 10s linear infinite;
+    -moz-animation: letItSnow 14.1428571429s 10s linear infinite, shakeIt 4s 10s linear infinite;
+    -ms-animation: letItSnow 14.1428571429s 10s linear infinite, shakeIt 4s 10s linear infinite;
+    -o-animation: letItSnow 14.1428571429s 10s linear infinite, shakeIt 4s 10s linear infinite;
+}
+.snow.s59:after, .snow.s59:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s59:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s60 {
+    height: 12px;
+    left: 74vw;
+    opacity: 0.3;
+    width: 4px;
+    animation: letItSnow 12s 2.5s linear infinite, shakeIt 4s 2.5s linear infinite;
+    -webkit-animation: letItSnow 12s 2.5s linear infinite, shakeIt 4s 2.5s linear infinite;
+    -moz-animation: letItSnow 12s 2.5s linear infinite, shakeIt 4s 2.5s linear infinite;
+    -ms-animation: letItSnow 12s 2.5s linear infinite, shakeIt 4s 2.5s linear infinite;
+    -o-animation: letItSnow 12s 2.5s linear infinite, shakeIt 4s 2.5s linear infinite;
+}
+.snow.s60:after, .snow.s60:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s60:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s61 {
+    height: 9px;
+    left: 96vw;
+    opacity: 0.6;
+    width: 3px;
+    animation: letItSnow 11.1428571429s 5.5s linear infinite, shakeIt 4s 5.5s linear infinite;
+    -webkit-animation: letItSnow 11.1428571429s 5.5s linear infinite, shakeIt 4s 5.5s linear infinite;
+    -moz-animation: letItSnow 11.1428571429s 5.5s linear infinite, shakeIt 4s 5.5s linear infinite;
+    -ms-animation: letItSnow 11.1428571429s 5.5s linear infinite, shakeIt 4s 5.5s linear infinite;
+    -o-animation: letItSnow 11.1428571429s 5.5s linear infinite, shakeIt 4s 5.5s linear infinite;
+}
+.snow.s61:after, .snow.s61:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s61:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s62 {
+    height: 12px;
+    left: 82vw;
+    opacity: 0.6;
+    width: 4px;
+    animation: letItSnow 11.25s 1.2s linear infinite, shakeIt 4s 1.2s linear infinite;
+    -webkit-animation: letItSnow 11.25s 1.2s linear infinite, shakeIt 4s 1.2s linear infinite;
+    -moz-animation: letItSnow 11.25s 1.2s linear infinite, shakeIt 4s 1.2s linear infinite;
+    -ms-animation: letItSnow 11.25s 1.2s linear infinite, shakeIt 4s 1.2s linear infinite;
+    -o-animation: letItSnow 11.25s 1.2s linear infinite, shakeIt 4s 1.2s linear infinite;
+}
+.snow.s62:after, .snow.s62:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s62:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s63 {
+    height: 6px;
+    left: 52vw;
+    opacity: 0.2;
+    width: 2px;
+    animation: letItSnow 12.5s 10.3333333333s linear infinite, shakeIt 4s 10.3333333333s linear infinite;
+    -webkit-animation: letItSnow 12.5s 10.3333333333s linear infinite, shakeIt 4s 10.3333333333s linear infinite;
+    -moz-animation: letItSnow 12.5s 10.3333333333s linear infinite, shakeIt 4s 10.3333333333s linear infinite;
+    -ms-animation: letItSnow 12.5s 10.3333333333s linear infinite, shakeIt 4s 10.3333333333s linear infinite;
+    -o-animation: letItSnow 12.5s 10.3333333333s linear infinite, shakeIt 4s 10.3333333333s linear infinite;
+}
+.snow.s63:after, .snow.s63:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 6px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 2px;
+}
+.snow.s63:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s64 {
+    height: 12px;
+    left: 84vw;
+    opacity: 0.6;
+    width: 4px;
+    animation: letItSnow 16s 3s linear infinite, shakeIt 4s 3s linear infinite;
+    -webkit-animation: letItSnow 16s 3s linear infinite, shakeIt 4s 3s linear infinite;
+    -moz-animation: letItSnow 16s 3s linear infinite, shakeIt 4s 3s linear infinite;
+    -ms-animation: letItSnow 16s 3s linear infinite, shakeIt 4s 3s linear infinite;
+    -o-animation: letItSnow 16s 3s linear infinite, shakeIt 4s 3s linear infinite;
+}
+.snow.s64:after, .snow.s64:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s64:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s65 {
+    height: 9px;
+    left: 2vw;
+    opacity: 0.7;
+    width: 3px;
+    animation: letItSnow 12.1666666667s 11.25s linear infinite, shakeIt 4s 11.25s linear infinite;
+    -webkit-animation: letItSnow 12.1666666667s 11.25s linear infinite, shakeIt 4s 11.25s linear infinite;
+    -moz-animation: letItSnow 12.1666666667s 11.25s linear infinite, shakeIt 4s 11.25s linear infinite;
+    -ms-animation: letItSnow 12.1666666667s 11.25s linear infinite, shakeIt 4s 11.25s linear infinite;
+    -o-animation: letItSnow 12.1666666667s 11.25s linear infinite, shakeIt 4s 11.25s linear infinite;
+}
+.snow.s65:after, .snow.s65:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s65:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s66 {
+    height: 12px;
+    left: 5vw;
+    opacity: 0.3;
+    width: 4px;
+    animation: letItSnow 13.2s 3.5s linear infinite, shakeIt 4s 3.5s linear infinite;
+    -webkit-animation: letItSnow 13.2s 3.5s linear infinite, shakeIt 4s 3.5s linear infinite;
+    -moz-animation: letItSnow 13.2s 3.5s linear infinite, shakeIt 4s 3.5s linear infinite;
+    -ms-animation: letItSnow 13.2s 3.5s linear infinite, shakeIt 4s 3.5s linear infinite;
+    -o-animation: letItSnow 13.2s 3.5s linear infinite, shakeIt 4s 3.5s linear infinite;
+}
+.snow.s66:after, .snow.s66:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s66:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s67 {
+    height: 12px;
+    left: 7vw;
+    opacity: 0.2;
+    width: 4px;
+    animation: letItSnow 15.1428571429s 11.2s linear infinite, shakeIt 4s 11.2s linear infinite;
+    -webkit-animation: letItSnow 15.1428571429s 11.2s linear infinite, shakeIt 4s 11.2s linear infinite;
+    -moz-animation: letItSnow 15.1428571429s 11.2s linear infinite, shakeIt 4s 11.2s linear infinite;
+    -ms-animation: letItSnow 15.1428571429s 11.2s linear infinite, shakeIt 4s 11.2s linear infinite;
+    -o-animation: letItSnow 15.1428571429s 11.2s linear infinite, shakeIt 4s 11.2s linear infinite;
+}
+.snow.s67:after, .snow.s67:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s67:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s68 {
+    height: 6px;
+    left: 35vw;
+    opacity: 0.3;
+    width: 2px;
+    animation: letItSnow 11.25s 1.2s linear infinite, shakeIt 4s 1.2s linear infinite;
+    -webkit-animation: letItSnow 11.25s 1.2s linear infinite, shakeIt 4s 1.2s linear infinite;
+    -moz-animation: letItSnow 11.25s 1.2s linear infinite, shakeIt 4s 1.2s linear infinite;
+    -ms-animation: letItSnow 11.25s 1.2s linear infinite, shakeIt 4s 1.2s linear infinite;
+    -o-animation: letItSnow 11.25s 1.2s linear infinite, shakeIt 4s 1.2s linear infinite;
+}
+.snow.s68:after, .snow.s68:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 6px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 2px;
+}
+.snow.s68:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s69 {
+    height: 6px;
+    left: 47vw;
+    opacity: 0.6;
+    width: 2px;
+    animation: letItSnow 12.2s 4.3333333333s linear infinite, shakeIt 4s 4.3333333333s linear infinite;
+    -webkit-animation: letItSnow 12.2s 4.3333333333s linear infinite, shakeIt 4s 4.3333333333s linear infinite;
+    -moz-animation: letItSnow 12.2s 4.3333333333s linear infinite, shakeIt 4s 4.3333333333s linear infinite;
+    -ms-animation: letItSnow 12.2s 4.3333333333s linear infinite, shakeIt 4s 4.3333333333s linear infinite;
+    -o-animation: letItSnow 12.2s 4.3333333333s linear infinite, shakeIt 4s 4.3333333333s linear infinite;
+}
+.snow.s69:after, .snow.s69:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 6px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 2px;
+}
+.snow.s69:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s70 {
+    height: 12px;
+    left: 74vw;
+    opacity: 0.3;
+    width: 4px;
+    animation: letItSnow 11.1666666667s 6s linear infinite, shakeIt 4s 6s linear infinite;
+    -webkit-animation: letItSnow 11.1666666667s 6s linear infinite, shakeIt 4s 6s linear infinite;
+    -moz-animation: letItSnow 11.1666666667s 6s linear infinite, shakeIt 4s 6s linear infinite;
+    -ms-animation: letItSnow 11.1666666667s 6s linear infinite, shakeIt 4s 6s linear infinite;
+    -o-animation: letItSnow 11.1666666667s 6s linear infinite, shakeIt 4s 6s linear infinite;
+}
+.snow.s70:after, .snow.s70:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s70:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s71 {
+    height: 9px;
+    left: 56vw;
+    opacity: 0.5;
+    width: 3px;
+    animation: letItSnow 11.1428571429s 6.5s linear infinite, shakeIt 4s 6.5s linear infinite;
+    -webkit-animation: letItSnow 11.1428571429s 6.5s linear infinite, shakeIt 4s 6.5s linear infinite;
+    -moz-animation: letItSnow 11.1428571429s 6.5s linear infinite, shakeIt 4s 6.5s linear infinite;
+    -ms-animation: letItSnow 11.1428571429s 6.5s linear infinite, shakeIt 4s 6.5s linear infinite;
+    -o-animation: letItSnow 11.1428571429s 6.5s linear infinite, shakeIt 4s 6.5s linear infinite;
+}
+.snow.s71:after, .snow.s71:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s71:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s72 {
+    height: 12px;
+    left: 96vw;
+    opacity: 0.3;
+    width: 4px;
+    animation: letItSnow 11.2s 5.2s linear infinite, shakeIt 4s 5.2s linear infinite;
+    -webkit-animation: letItSnow 11.2s 5.2s linear infinite, shakeIt 4s 5.2s linear infinite;
+    -moz-animation: letItSnow 11.2s 5.2s linear infinite, shakeIt 4s 5.2s linear infinite;
+    -ms-animation: letItSnow 11.2s 5.2s linear infinite, shakeIt 4s 5.2s linear infinite;
+    -o-animation: letItSnow 11.2s 5.2s linear infinite, shakeIt 4s 5.2s linear infinite;
+}
+.snow.s72:after, .snow.s72:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s72:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s73 {
+    height: 12px;
+    left: 82vw;
+    opacity: 0.6;
+    width: 4px;
+    animation: letItSnow 11.3333333333s 3.3333333333s linear infinite, shakeIt 4s 3.3333333333s linear infinite;
+    -webkit-animation: letItSnow 11.3333333333s 3.3333333333s linear infinite, shakeIt 4s 3.3333333333s linear infinite;
+    -moz-animation: letItSnow 11.3333333333s 3.3333333333s linear infinite, shakeIt 4s 3.3333333333s linear infinite;
+    -ms-animation: letItSnow 11.3333333333s 3.3333333333s linear infinite, shakeIt 4s 3.3333333333s linear infinite;
+    -o-animation: letItSnow 11.3333333333s 3.3333333333s linear infinite, shakeIt 4s 3.3333333333s linear infinite;
+}
+.snow.s73:after, .snow.s73:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s73:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s74 {
+    height: 15px;
+    left: 25vw;
+    opacity: 0.6;
+    width: 5px;
+    animation: letItSnow 14.1666666667s 9.5s linear infinite, shakeIt 4s 9.5s linear infinite;
+    -webkit-animation: letItSnow 14.1666666667s 9.5s linear infinite, shakeIt 4s 9.5s linear infinite;
+    -moz-animation: letItSnow 14.1666666667s 9.5s linear infinite, shakeIt 4s 9.5s linear infinite;
+    -ms-animation: letItSnow 14.1666666667s 9.5s linear infinite, shakeIt 4s 9.5s linear infinite;
+    -o-animation: letItSnow 14.1666666667s 9.5s linear infinite, shakeIt 4s 9.5s linear infinite;
+}
+.snow.s74:after, .snow.s74:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s74:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s75 {
+    height: 9px;
+    left: 60vw;
+    opacity: 0.5;
+    width: 3px;
+    animation: letItSnow 12.2s 12.2s linear infinite, shakeIt 4s 12.2s linear infinite;
+    -webkit-animation: letItSnow 12.2s 12.2s linear infinite, shakeIt 4s 12.2s linear infinite;
+    -moz-animation: letItSnow 12.2s 12.2s linear infinite, shakeIt 4s 12.2s linear infinite;
+    -ms-animation: letItSnow 12.2s 12.2s linear infinite, shakeIt 4s 12.2s linear infinite;
+    -o-animation: letItSnow 12.2s 12.2s linear infinite, shakeIt 4s 12.2s linear infinite;
+}
+.snow.s75:after, .snow.s75:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s75:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s76 {
+    height: 15px;
+    left: 24vw;
+    opacity: 0.5;
+    width: 5px;
+    animation: letItSnow 13.1428571429s 10.5s linear infinite, shakeIt 4s 10.5s linear infinite;
+    -webkit-animation: letItSnow 13.1428571429s 10.5s linear infinite, shakeIt 4s 10.5s linear infinite;
+    -moz-animation: letItSnow 13.1428571429s 10.5s linear infinite, shakeIt 4s 10.5s linear infinite;
+    -ms-animation: letItSnow 13.1428571429s 10.5s linear infinite, shakeIt 4s 10.5s linear infinite;
+    -o-animation: letItSnow 13.1428571429s 10.5s linear infinite, shakeIt 4s 10.5s linear infinite;
+}
+.snow.s76:after, .snow.s76:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s76:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s77 {
+    height: 15px;
+    left: 92vw;
+    opacity: 0.5;
+    width: 5px;
+    animation: letItSnow 13s 1.2s linear infinite, shakeIt 4s 1.2s linear infinite;
+    -webkit-animation: letItSnow 13s 1.2s linear infinite, shakeIt 4s 1.2s linear infinite;
+    -moz-animation: letItSnow 13s 1.2s linear infinite, shakeIt 4s 1.2s linear infinite;
+    -ms-animation: letItSnow 13s 1.2s linear infinite, shakeIt 4s 1.2s linear infinite;
+    -o-animation: letItSnow 13s 1.2s linear infinite, shakeIt 4s 1.2s linear infinite;
+}
+.snow.s77:after, .snow.s77:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s77:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s78 {
+    height: 15px;
+    left: 69vw;
+    opacity: 0.2;
+    width: 5px;
+    animation: letItSnow 13.5s 8.3333333333s linear infinite, shakeIt 4s 8.3333333333s linear infinite;
+    -webkit-animation: letItSnow 13.5s 8.3333333333s linear infinite, shakeIt 4s 8.3333333333s linear infinite;
+    -moz-animation: letItSnow 13.5s 8.3333333333s linear infinite, shakeIt 4s 8.3333333333s linear infinite;
+    -ms-animation: letItSnow 13.5s 8.3333333333s linear infinite, shakeIt 4s 8.3333333333s linear infinite;
+    -o-animation: letItSnow 13.5s 8.3333333333s linear infinite, shakeIt 4s 8.3333333333s linear infinite;
+}
+.snow.s78:after, .snow.s78:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s78:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s79 {
+    height: 12px;
+    left: 42vw;
+    opacity: 0.5;
+    width: 4px;
+    animation: letItSnow 14.25s 5.2s linear infinite, shakeIt 4s 5.2s linear infinite;
+    -webkit-animation: letItSnow 14.25s 5.2s linear infinite, shakeIt 4s 5.2s linear infinite;
+    -moz-animation: letItSnow 14.25s 5.2s linear infinite, shakeIt 4s 5.2s linear infinite;
+    -ms-animation: letItSnow 14.25s 5.2s linear infinite, shakeIt 4s 5.2s linear infinite;
+    -o-animation: letItSnow 14.25s 5.2s linear infinite, shakeIt 4s 5.2s linear infinite;
+}
+.snow.s79:after, .snow.s79:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s79:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s80 {
+    height: 15px;
+    left: 26vw;
+    opacity: 0.2;
+    width: 5px;
+    animation: letItSnow 13.1428571429s 8.25s linear infinite, shakeIt 4s 8.25s linear infinite;
+    -webkit-animation: letItSnow 13.1428571429s 8.25s linear infinite, shakeIt 4s 8.25s linear infinite;
+    -moz-animation: letItSnow 13.1428571429s 8.25s linear infinite, shakeIt 4s 8.25s linear infinite;
+    -ms-animation: letItSnow 13.1428571429s 8.25s linear infinite, shakeIt 4s 8.25s linear infinite;
+    -o-animation: letItSnow 13.1428571429s 8.25s linear infinite, shakeIt 4s 8.25s linear infinite;
+}
+.snow.s80:after, .snow.s80:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s80:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s81 {
+    height: 6px;
+    left: 68vw;
+    opacity: 0.3;
+    width: 2px;
+    animation: letItSnow 13.2s 6.5s linear infinite, shakeIt 4s 6.5s linear infinite;
+    -webkit-animation: letItSnow 13.2s 6.5s linear infinite, shakeIt 4s 6.5s linear infinite;
+    -moz-animation: letItSnow 13.2s 6.5s linear infinite, shakeIt 4s 6.5s linear infinite;
+    -ms-animation: letItSnow 13.2s 6.5s linear infinite, shakeIt 4s 6.5s linear infinite;
+    -o-animation: letItSnow 13.2s 6.5s linear infinite, shakeIt 4s 6.5s linear infinite;
+}
+.snow.s81:after, .snow.s81:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 6px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 2px;
+}
+.snow.s81:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s82 {
+    height: 6px;
+    left: 11vw;
+    opacity: 0.2;
+    width: 2px;
+    animation: letItSnow 14.2s 8s linear infinite, shakeIt 4s 8s linear infinite;
+    -webkit-animation: letItSnow 14.2s 8s linear infinite, shakeIt 4s 8s linear infinite;
+    -moz-animation: letItSnow 14.2s 8s linear infinite, shakeIt 4s 8s linear infinite;
+    -ms-animation: letItSnow 14.2s 8s linear infinite, shakeIt 4s 8s linear infinite;
+    -o-animation: letItSnow 14.2s 8s linear infinite, shakeIt 4s 8s linear infinite;
+}
+.snow.s82:after, .snow.s82:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 6px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 2px;
+}
+.snow.s82:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s83 {
+    height: 6px;
+    left: 81vw;
+    opacity: 0.2;
+    width: 2px;
+    animation: letItSnow 15.5s 11.2s linear infinite, shakeIt 4s 11.2s linear infinite;
+    -webkit-animation: letItSnow 15.5s 11.2s linear infinite, shakeIt 4s 11.2s linear infinite;
+    -moz-animation: letItSnow 15.5s 11.2s linear infinite, shakeIt 4s 11.2s linear infinite;
+    -ms-animation: letItSnow 15.5s 11.2s linear infinite, shakeIt 4s 11.2s linear infinite;
+    -o-animation: letItSnow 15.5s 11.2s linear infinite, shakeIt 4s 11.2s linear infinite;
+}
+.snow.s83:after, .snow.s83:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 6px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 2px;
+}
+.snow.s83:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s84 {
+    height: 12px;
+    left: 25vw;
+    opacity: 0.5;
+    width: 4px;
+    animation: letItSnow 13.1428571429s 1.25s linear infinite, shakeIt 4s 1.25s linear infinite;
+    -webkit-animation: letItSnow 13.1428571429s 1.25s linear infinite, shakeIt 4s 1.25s linear infinite;
+    -moz-animation: letItSnow 13.1428571429s 1.25s linear infinite, shakeIt 4s 1.25s linear infinite;
+    -ms-animation: letItSnow 13.1428571429s 1.25s linear infinite, shakeIt 4s 1.25s linear infinite;
+    -o-animation: letItSnow 13.1428571429s 1.25s linear infinite, shakeIt 4s 1.25s linear infinite;
+}
+.snow.s84:after, .snow.s84:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s84:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s85 {
+    height: 9px;
+    left: 31vw;
+    opacity: 0.2;
+    width: 3px;
+    animation: letItSnow 11.2s 10s linear infinite, shakeIt 4s 10s linear infinite;
+    -webkit-animation: letItSnow 11.2s 10s linear infinite, shakeIt 4s 10s linear infinite;
+    -moz-animation: letItSnow 11.2s 10s linear infinite, shakeIt 4s 10s linear infinite;
+    -ms-animation: letItSnow 11.2s 10s linear infinite, shakeIt 4s 10s linear infinite;
+    -o-animation: letItSnow 11.2s 10s linear infinite, shakeIt 4s 10s linear infinite;
+}
+.snow.s85:after, .snow.s85:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s85:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s86 {
+    height: 9px;
+    left: 4vw;
+    opacity: 0.6;
+    width: 3px;
+    animation: letItSnow 12.1666666667s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+    -webkit-animation: letItSnow 12.1666666667s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+    -moz-animation: letItSnow 12.1666666667s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+    -ms-animation: letItSnow 12.1666666667s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+    -o-animation: letItSnow 12.1666666667s 10.2s linear infinite, shakeIt 4s 10.2s linear infinite;
+}
+.snow.s86:after, .snow.s86:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s86:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s87 {
+    height: 15px;
+    left: 17vw;
+    opacity: 0.3;
+    width: 5px;
+    animation: letItSnow 14s 5.2s linear infinite, shakeIt 4s 5.2s linear infinite;
+    -webkit-animation: letItSnow 14s 5.2s linear infinite, shakeIt 4s 5.2s linear infinite;
+    -moz-animation: letItSnow 14s 5.2s linear infinite, shakeIt 4s 5.2s linear infinite;
+    -ms-animation: letItSnow 14s 5.2s linear infinite, shakeIt 4s 5.2s linear infinite;
+    -o-animation: letItSnow 14s 5.2s linear infinite, shakeIt 4s 5.2s linear infinite;
+}
+.snow.s87:after, .snow.s87:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s87:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s88 {
+    height: 9px;
+    left: 52vw;
+    opacity: 0.5;
+    width: 3px;
+    animation: letItSnow 13.5s 7.25s linear infinite, shakeIt 4s 7.25s linear infinite;
+    -webkit-animation: letItSnow 13.5s 7.25s linear infinite, shakeIt 4s 7.25s linear infinite;
+    -moz-animation: letItSnow 13.5s 7.25s linear infinite, shakeIt 4s 7.25s linear infinite;
+    -ms-animation: letItSnow 13.5s 7.25s linear infinite, shakeIt 4s 7.25s linear infinite;
+    -o-animation: letItSnow 13.5s 7.25s linear infinite, shakeIt 4s 7.25s linear infinite;
+}
+.snow.s88:after, .snow.s88:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s88:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s89 {
+    height: 15px;
+    left: 86vw;
+    opacity: 0.7;
+    width: 5px;
+    animation: letItSnow 11.1428571429s 8.25s linear infinite, shakeIt 4s 8.25s linear infinite;
+    -webkit-animation: letItSnow 11.1428571429s 8.25s linear infinite, shakeIt 4s 8.25s linear infinite;
+    -moz-animation: letItSnow 11.1428571429s 8.25s linear infinite, shakeIt 4s 8.25s linear infinite;
+    -ms-animation: letItSnow 11.1428571429s 8.25s linear infinite, shakeIt 4s 8.25s linear infinite;
+    -o-animation: letItSnow 11.1428571429s 8.25s linear infinite, shakeIt 4s 8.25s linear infinite;
+}
+.snow.s89:after, .snow.s89:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s89:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s90 {
+    height: 6px;
+    left: 33vw;
+    opacity: 0.1;
+    width: 2px;
+    animation: letItSnow 15.1666666667s 10.25s linear infinite, shakeIt 4s 10.25s linear infinite;
+    -webkit-animation: letItSnow 15.1666666667s 10.25s linear infinite, shakeIt 4s 10.25s linear infinite;
+    -moz-animation: letItSnow 15.1666666667s 10.25s linear infinite, shakeIt 4s 10.25s linear infinite;
+    -ms-animation: letItSnow 15.1666666667s 10.25s linear infinite, shakeIt 4s 10.25s linear infinite;
+    -o-animation: letItSnow 15.1666666667s 10.25s linear infinite, shakeIt 4s 10.25s linear infinite;
+}
+.snow.s90:after, .snow.s90:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 6px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 2px;
+}
+.snow.s90:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s91 {
+    height: 9px;
+    left: 34vw;
+    opacity: 0.2;
+    width: 3px;
+    animation: letItSnow 11.25s 12.25s linear infinite, shakeIt 4s 12.25s linear infinite;
+    -webkit-animation: letItSnow 11.25s 12.25s linear infinite, shakeIt 4s 12.25s linear infinite;
+    -moz-animation: letItSnow 11.25s 12.25s linear infinite, shakeIt 4s 12.25s linear infinite;
+    -ms-animation: letItSnow 11.25s 12.25s linear infinite, shakeIt 4s 12.25s linear infinite;
+    -o-animation: letItSnow 11.25s 12.25s linear infinite, shakeIt 4s 12.25s linear infinite;
+}
+.snow.s91:after, .snow.s91:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s91:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s92 {
+    height: 9px;
+    left: 46vw;
+    opacity: 0.6;
+    width: 3px;
+    animation: letItSnow 13.1666666667s 5s linear infinite, shakeIt 4s 5s linear infinite;
+    -webkit-animation: letItSnow 13.1666666667s 5s linear infinite, shakeIt 4s 5s linear infinite;
+    -moz-animation: letItSnow 13.1666666667s 5s linear infinite, shakeIt 4s 5s linear infinite;
+    -ms-animation: letItSnow 13.1666666667s 5s linear infinite, shakeIt 4s 5s linear infinite;
+    -o-animation: letItSnow 13.1666666667s 5s linear infinite, shakeIt 4s 5s linear infinite;
+}
+.snow.s92:after, .snow.s92:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s92:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s93 {
+    height: 12px;
+    left: 70vw;
+    opacity: 0.6;
+    width: 4px;
+    animation: letItSnow 15.2s 11.2s linear infinite, shakeIt 4s 11.2s linear infinite;
+    -webkit-animation: letItSnow 15.2s 11.2s linear infinite, shakeIt 4s 11.2s linear infinite;
+    -moz-animation: letItSnow 15.2s 11.2s linear infinite, shakeIt 4s 11.2s linear infinite;
+    -ms-animation: letItSnow 15.2s 11.2s linear infinite, shakeIt 4s 11.2s linear infinite;
+    -o-animation: letItSnow 15.2s 11.2s linear infinite, shakeIt 4s 11.2s linear infinite;
+}
+.snow.s93:after, .snow.s93:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s93:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s94 {
+    height: 9px;
+    left: 73vw;
+    opacity: 0.3;
+    width: 3px;
+    animation: letItSnow 14.2s 10s linear infinite, shakeIt 4s 10s linear infinite;
+    -webkit-animation: letItSnow 14.2s 10s linear infinite, shakeIt 4s 10s linear infinite;
+    -moz-animation: letItSnow 14.2s 10s linear infinite, shakeIt 4s 10s linear infinite;
+    -ms-animation: letItSnow 14.2s 10s linear infinite, shakeIt 4s 10s linear infinite;
+    -o-animation: letItSnow 14.2s 10s linear infinite, shakeIt 4s 10s linear infinite;
+}
+.snow.s94:after, .snow.s94:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s94:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s95 {
+    height: 9px;
+    left: 64vw;
+    opacity: 0.4;
+    width: 3px;
+    animation: letItSnow 15.3333333333s 12.25s linear infinite, shakeIt 4s 12.25s linear infinite;
+    -webkit-animation: letItSnow 15.3333333333s 12.25s linear infinite, shakeIt 4s 12.25s linear infinite;
+    -moz-animation: letItSnow 15.3333333333s 12.25s linear infinite, shakeIt 4s 12.25s linear infinite;
+    -ms-animation: letItSnow 15.3333333333s 12.25s linear infinite, shakeIt 4s 12.25s linear infinite;
+    -o-animation: letItSnow 15.3333333333s 12.25s linear infinite, shakeIt 4s 12.25s linear infinite;
+}
+.snow.s95:after, .snow.s95:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 9px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 3px;
+}
+.snow.s95:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s96 {
+    height: 15px;
+    left: 31vw;
+    opacity: 0.7;
+    width: 5px;
+    animation: letItSnow 12s 6.3333333333s linear infinite, shakeIt 4s 6.3333333333s linear infinite;
+    -webkit-animation: letItSnow 12s 6.3333333333s linear infinite, shakeIt 4s 6.3333333333s linear infinite;
+    -moz-animation: letItSnow 12s 6.3333333333s linear infinite, shakeIt 4s 6.3333333333s linear infinite;
+    -ms-animation: letItSnow 12s 6.3333333333s linear infinite, shakeIt 4s 6.3333333333s linear infinite;
+    -o-animation: letItSnow 12s 6.3333333333s linear infinite, shakeIt 4s 6.3333333333s linear infinite;
+}
+.snow.s96:after, .snow.s96:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 15px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 5px;
+}
+.snow.s96:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s97 {
+    height: 6px;
+    left: 26vw;
+    opacity: 0.1;
+    width: 2px;
+    animation: letItSnow 14.3333333333s 3.3333333333s linear infinite, shakeIt 4s 3.3333333333s linear infinite;
+    -webkit-animation: letItSnow 14.3333333333s 3.3333333333s linear infinite, shakeIt 4s 3.3333333333s linear infinite;
+    -moz-animation: letItSnow 14.3333333333s 3.3333333333s linear infinite, shakeIt 4s 3.3333333333s linear infinite;
+    -ms-animation: letItSnow 14.3333333333s 3.3333333333s linear infinite, shakeIt 4s 3.3333333333s linear infinite;
+    -o-animation: letItSnow 14.3333333333s 3.3333333333s linear infinite, shakeIt 4s 3.3333333333s linear infinite;
+}
+.snow.s97:after, .snow.s97:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 6px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 2px;
+}
+.snow.s97:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s98 {
+    height: 12px;
+    left: 84vw;
+    opacity: 0.5;
+    width: 4px;
+    animation: letItSnow 13s 5.5s linear infinite, shakeIt 4s 5.5s linear infinite;
+    -webkit-animation: letItSnow 13s 5.5s linear infinite, shakeIt 4s 5.5s linear infinite;
+    -moz-animation: letItSnow 13s 5.5s linear infinite, shakeIt 4s 5.5s linear infinite;
+    -ms-animation: letItSnow 13s 5.5s linear infinite, shakeIt 4s 5.5s linear infinite;
+    -o-animation: letItSnow 13s 5.5s linear infinite, shakeIt 4s 5.5s linear infinite;
+}
+.snow.s98:after, .snow.s98:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s98:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s99 {
+    height: 12px;
+    left: 88vw;
+    opacity: 0.4;
+    width: 4px;
+    animation: letItSnow 14.2s 6.3333333333s linear infinite, shakeIt 4s 6.3333333333s linear infinite;
+    -webkit-animation: letItSnow 14.2s 6.3333333333s linear infinite, shakeIt 4s 6.3333333333s linear infinite;
+    -moz-animation: letItSnow 14.2s 6.3333333333s linear infinite, shakeIt 4s 6.3333333333s linear infinite;
+    -ms-animation: letItSnow 14.2s 6.3333333333s linear infinite, shakeIt 4s 6.3333333333s linear infinite;
+    -o-animation: letItSnow 14.2s 6.3333333333s linear infinite, shakeIt 4s 6.3333333333s linear infinite;
+}
+.snow.s99:after, .snow.s99:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s99:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+.snow.s100 {
+    height: 12px;
+    left: 34vw;
+    opacity: 0.5;
+    width: 4px;
+    animation: letItSnow 15.1428571429s 3.2s linear infinite, shakeIt 4s 3.2s linear infinite;
+    -webkit-animation: letItSnow 15.1428571429s 3.2s linear infinite, shakeIt 4s 3.2s linear infinite;
+    -moz-animation: letItSnow 15.1428571429s 3.2s linear infinite, shakeIt 4s 3.2s linear infinite;
+    -ms-animation: letItSnow 15.1428571429s 3.2s linear infinite, shakeIt 4s 3.2s linear infinite;
+    -o-animation: letItSnow 15.1428571429s 3.2s linear infinite, shakeIt 4s 3.2s linear infinite;
+}
+.snow.s100:after, .snow.s100:before {
+    background-color: #fff;
+    border-radius: 100%;
+    content: '';
+    height: 12px;
+    position: absolute;
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+    -moz-transform: rotate(60deg);
+    -ms-transform: rotate(60deg);
+    width: 4px;
+}
+.snow.s100:before {
+    transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+}
+
+@keyframes letItSnow {
+    from {
+        bottom: 100vh;
+    }
+    to {
+        bottom: -20vh;
+    }
+}
+@-webkit-keyframes letItSnow {
+    from {
+        bottom: 100vh;
+    }
+    to {
+        bottom: -20vh;
+    }
+}
+@-moz-keyframes letItSnow {
+    from {
+        bottom: 100vh;
+    }
+    to {
+        bottom: -20vh;
+    }
+}
+@-ms-keyframes letItSnow {
+    from {
+        bottom: 100vh;
+    }
+    to {
+        bottom: -20vh;
+    }
+}
+@keyframes shakeIt {
+    0% {
+        transform: rotate(-10deg);
+        -webkit-transform: rotate(-10deg);
+        -moz-transform: rotate(-10deg);
+        -ms-transform: rotate(-10deg);
+    }
+    40% {
+        transform: rotate(10deg) translateX(0px);
+        -webkit-transform: rotate(10deg) translateX(0px);
+        -moz-transform: rotate(10deg) translateX(0px);
+        -ms-transform: rotate(10deg) translateX(0px);
+    }
+    60% {
+        transform: rotate(10deg) translateX(-10px);
+        -webkit-transform: rotate(10deg) translateX(-10px);
+        -moz-transform: rotate(10deg) translateX(-10px);
+        -ms-transform: rotate(10deg) translateX(-10px);
+    }
+    100% {
+        transform: rotate(-10deg);
+        -webkit-transform: rotate(-10deg);
+        -moz-transform: rotate(-10deg);
+        -ms-transform: rotate(-10deg);
+    }
+}
+@-webkit-keyframes shakeIt {
+    0% {
+        transform: rotate(-10deg);
+        -webkit-transform: rotate(-10deg);
+        -moz-transform: rotate(-10deg);
+        -ms-transform: rotate(-10deg);
+    }
+    40% {
+        transform: rotate(10deg) translateX(0px);
+        -webkit-transform: rotate(10deg) translateX(0px);
+        -moz-transform: rotate(10deg) translateX(0px);
+        -ms-transform: rotate(10deg) translateX(0px);
+    }
+    60% {
+        transform: rotate(10deg) translateX(-10px);
+        -webkit-transform: rotate(10deg) translateX(-10px);
+        -moz-transform: rotate(10deg) translateX(-10px);
+        -ms-transform: rotate(10deg) translateX(-10px);
+    }
+    100% {
+        transform: rotate(-10deg);
+        -webkit-transform: rotate(-10deg);
+        -moz-transform: rotate(-10deg);
+        -ms-transform: rotate(-10deg);
+    }
+}
+@-moz-keyframes shakeIt {
+    0% {
+        transform: rotate(-10deg);
+        -webkit-transform: rotate(-10deg);
+        -moz-transform: rotate(-10deg);
+        -ms-transform: rotate(-10deg);
+    }
+    40% {
+        transform: rotate(10deg) translateX(0px);
+        -webkit-transform: rotate(10deg) translateX(0px);
+        -moz-transform: rotate(10deg) translateX(0px);
+        -ms-transform: rotate(10deg) translateX(0px);
+    }
+    60% {
+        transform: rotate(10deg) translateX(-10px);
+        -webkit-transform: rotate(10deg) translateX(-10px);
+        -moz-transform: rotate(10deg) translateX(-10px);
+        -ms-transform: rotate(10deg) translateX(-10px);
+    }
+    100% {
+        transform: rotate(-10deg);
+        -webkit-transform: rotate(-10deg);
+        -moz-transform: rotate(-10deg);
+        -ms-transform: rotate(-10deg);
+    }
+}
+@-ms-keyframes shakeIt {
+    0% {
+        transform: rotate(-10deg);
+        -webkit-transform: rotate(-10deg);
+        -moz-transform: rotate(-10deg);
+        -ms-transform: rotate(-10deg);
+    }
+    40% {
+        transform: rotate(10deg) translateX(0px);
+        -webkit-transform: rotate(10deg) translateX(0px);
+        -moz-transform: rotate(10deg) translateX(0px);
+        -ms-transform: rotate(10deg) translateX(0px);
+    }
+    60% {
+        transform: rotate(10deg) translateX(-10px);
+        -webkit-transform: rotate(10deg) translateX(-10px);
+        -moz-transform: rotate(10deg) translateX(-10px);
+        -ms-transform: rotate(10deg) translateX(-10px);
+    }
+    100% {
+        transform: rotate(-10deg);
+        -webkit-transform: rotate(-10deg);
+        -moz-transform: rotate(-10deg);
+        -ms-transform: rotate(-10deg);
+    }
+}
+
