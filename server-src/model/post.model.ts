@@ -97,20 +97,14 @@ export class Post {
                 if (post.getPostType() === PostType.Code) {
                     let codeLanguage = post.properties['abode-content-type'].split("/")[1];
                     let codeSnippet = this.prepareCodeBlock(codeLanguage, fileArray[2]);
-                    post.properties.content = `<pre class="code-container"><code class="language-${codeLanguage}">${codeSnippet}</code></pre>`;
+                    post.properties.content = `<pre><code class="language-${codeLanguage}">${codeSnippet}</code></pre>`;
                 } else {
-                    let postContent = marked(fileArray[2]).replace(/^<p>/, '')
+                    let postContent = marked(fileArray[2], {
+                        highlight: (code, lang) => {
+                            return this.prepareCodeBlock(lang, code);
+                        }
+                    }).replace(/^<p>/, '')
                         .replace(/<\/p>\n$/, '');
-
-                    let codeEx = RegExp('<pre><code class="(.*)">([^]+?)<\/code><\/pre>', 'gm');
-                    let codeBlocks;
-                    while ((codeBlocks = codeEx.exec(postContent)) !== null) {
-                        console.log(codeBlocks);
-                        let codeLanguage = codeBlocks[1].split("-")[1];
-                        let codeContent = codeBlocks[2];
-                        postContent = postContent.replace(RegExp(`<pre><code class="language-${codeLanguage}">${codeContent}<\/code><\/pre>`, 'm'),
-                            `<pre class='code-container'><code class='language-${codeLanguage}'>${this.prepareCodeBlock(codeLanguage, codeContent)}</code></pre>`);
-                    }
 
                     post.properties.content = postContent;
                 }

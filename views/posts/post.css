@@ -180,25 +180,25 @@ h1.page-title, .itinerary-description {
 }
 
 /* This is for official code snippets and multi-line code blocks */
-.code-container {
+code > ol {
     background-color: #212121;
-    padding: 20px;
+    padding: 20px 50px;
     overflow-x: auto;
 }
 
-.code-container code {
+code > ol {
     font-size: 15px;
 }
 
-.code-container code .highlight-line {
+code > ol .highlight-line {
     background-color: rgba(31, 53, 89, 0.6);
 }
 
-.code-container ol {
+code > ol {
     list-style: none;
 }
 
-.code-container ol.code-line-numbers {
+code > ol.code-line-numbers {
     list-style: decimal;
 }
 
