@@ -15,6 +15,7 @@ import {resumeRouter} from "../resume";
 
 export let dynamicRouter = express.Router();
 
+dynamicRouter.use('/images/', express.static(path.join(__dirname, '../../images/')));
 dynamicRouter.use('/resources/', express.static(path.join(__dirname, '../../resources/')));
 
 // Static Routes

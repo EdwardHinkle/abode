@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<atom:link href="https://eddiehinkle.com/podcasts/authors-note/feed.rss" rel="self" type="application/rss+xml" />
+<title>{{ page.title }}</title>
+<link>{{ page.podcast_url }}</link>
+<language>en-us</language>
+<copyright>&#x2117; &amp; &#xA9; {{ 'now' | date: "%Y" }} {{ page.podcast_author }}</copyright>
+{% if page.podcast_subtitle %}
+<itunes:subtitle>{{ page.podcast_subtitle }}</itunes:subtitle>
+{% endif %}
+<itunes:author>{{ page.podcast_author }}</itunes:author>
+<description><![CDATA[{{page.description | strip_html}}]]></description>
+<itunes:owner>
+<itunes:name>{{ page.podcast_author }}</itunes:name>
+<itunes:email>{{ page.itunes_email }}</itunes:email>
+</itunes:owner>
+<itunes:image href="{{ page.image }}"/>
+{% for category in page.itunes_categories %}
+<itunes:category text="{{ category }}" />
+{% endfor %}
+<itunes:explicit>no</itunes:explicit>
+{% assign episodes = site.note | where:"tags",page.tag %}
+{% for episode in episodes %}
+{% assign episode_permalink = episode.url | prepend: site.baseurl | prepend: site.url %}
+<item>
+<title>{{ episode.title }}</title>
+<itunes:author>{{ page.podcast_author }}</itunes:author>
+{% if episode.subtitle %}
+<itunes:subtitle>{{ episode.subtitle }}</itunes:subtitle>
+{% endif %}
+<description><![CDATA[
+<p>Find this episode on the web at <a href="{{ episode_permalink }}">{{ episode_permalink }}</a>.</p>
+{{ episode.content }}]]></description>
+{% if episode.image %}
+<itunes:image href="{{ episode.properties.image }}"/>
+{% endif %}
+<enclosure type="audio/mpeg" {% if episode.properties.id3-enclosure-length %}length="{{episode.properties.id3-enclosure-length}}"{% endif %} url="{{ episode.properties.audio }}"/>
+<guid>{{ episode_permalink }}</guid>
+<pubDate>{{ episode.date | date_to_rfc822 }}</pubDate>
+{% if episode.properties.id3-duration %}
+<itunes:duration>{{episode.properties.id3-duration}}</itunes:duration>
+{% endif %}
+<itunes:explicit>no</itunes:explicit>
+</item>
+{% endfor %}
+</channel>
+</rss>
