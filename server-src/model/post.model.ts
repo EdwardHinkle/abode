@@ -96,20 +96,23 @@ export class Post {
 
                 if (post.getPostType() === PostType.Code) {
                     let codeLanguage = post.properties['abode-content-type'].split("/")[1];
-                    if (codeLanguage !== "markup" && codeLanguage !== "markup" && codeLanguage !== "css" && codeLanguage !== "javascript") {
-                        loadLanguages(codeLanguage);
-                    }
-
-                    let rawCodeSnippet = Prism.highlight(fileArray[2], Prism.languages[codeLanguage], codeLanguage);
-                    let codeSnippet = '<ol>';
-                    rawCodeSnippet.split("\n").forEach((codeLine, lineNumber) => {
-                        codeSnippet += `<li class="L${lineNumber+1}">${codeLine}</li>`;
-                    });
-                    codeSnippet += '</ol>';
-
+                    let codeSnippet = this.prepareCodeBlock(codeLanguage, fileArray[2]);
                     post.properties.content = `<pre class="code-container"><code class="language-${codeLanguage}">${codeSnippet}</code></pre>`;
                 } else {
-                    post.properties.content = marked(fileArray[2]).replace(/^<p>/, '').replace(/<\/p>\n$/, '');
+                    let postContent = marked(fileArray[2]).replace(/^<p>/, '')
+                        .replace(/<\/p>\n$/, '');
+
+                    let codeEx = RegExp('<pre><code class="(.*)">([^]+?)<\/code><\/pre>', 'gm');
+                    let codeBlocks;
+                    while ((codeBlocks = codeEx.exec(postContent)) !== null) {
+                        console.log(codeBlocks);
+                        let codeLanguage = codeBlocks[1].split("-")[1];
+                        let codeContent = codeBlocks[2];
+                        postContent = postContent.replace(RegExp(`<pre><code class="language-${codeLanguage}">${codeContent}<\/code><\/pre>`, 'm'),
+                            `<pre class='code-container'><code class='language-${codeLanguage}'>${this.prepareCodeBlock(codeLanguage, codeContent)}</code></pre>`);
+                    }
+
+                    post.properties.content = postContent;
                 }
 
                 post.properties.personTags = [];
@@ -128,6 +131,29 @@ export class Post {
                 resolve(post);
             });
         });
+    }
+
+    private static prepareCodeBlock(codeLanguage: string, codeContent: string) {
+        if (codeLanguage !== "markup" && codeLanguage !== "markup" && codeLanguage !== "css" && codeLanguage !== "javascript") {
+            loadLanguages(codeLanguage);
+        }
+
+        let rawCodeSnippet = Prism.highlight(codeContent, Prism.languages[codeLanguage], codeLanguage);
+        let codeLines = rawCodeSnippet.split("\n");
+        let codeSnippet;
+
+        if (codeLines.length > 1) {
+            codeSnippet = '<ol class="code-line-numbers">';
+        } else {
+            codeSnippet = '<ol>';
+        }
+
+        codeLines.forEach((codeLine, lineNumber) => {
+            codeSnippet += `<li class="L${lineNumber + 1}">${codeLine}</li>`;
+        });
+        codeSnippet += '</ol>';
+
+        return codeSnippet;
     }
 
     public itineraryList() {

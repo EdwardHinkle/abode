@@ -172,9 +172,18 @@ h1.page-title, .itinerary-description {
     margin-left: 20px;
 }
 
+/* This is for inline code blocks */
+:not(pre) > code {
+    background-color: #212121;
+    padding: 6px;
+    font-size: 15px;
+}
+
+/* This is for official code snippets and multi-line code blocks */
 .code-container {
     background-color: #212121;
     padding: 20px;
+    overflow-x: auto;
 }
 
 .code-container code {
@@ -183,6 +192,14 @@ h1.page-title, .itinerary-description {
 
 .code-container code .highlight-line {
     background-color: rgba(31, 53, 89, 0.6);
+}
+
+.code-container ol {
+    list-style: none;
+}
+
+.code-container ol.code-line-numbers {
+    list-style: decimal;
 }
 
 @media (prefers-color-scheme: dark) {
