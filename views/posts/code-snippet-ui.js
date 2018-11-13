@@ -1,6 +1,7 @@
 var selectedLines = [];
 
-document.getElementsByClassName('code-container')[0].addEventListener('click', function(evt) {
+
+document.getElementsByTagName('code')[0].addEventListener('click', function(evt) {
     var lineId = evt.target.classList[0];
 
     if (lineId && lineId.indexOf('L') === 0) {
