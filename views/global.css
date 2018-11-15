@@ -4,6 +4,10 @@ body {
     margin: 0;
 }
 
+body.theme-snow {
+    background-color: #999;
+}
+
 #confettiContainer {
     position: absolute;
     top: 0;

@@ -38,6 +38,9 @@ export class Page {
             page.permalink = doc.permalink;
             page.client_id = doc.client_id;
             page.properties.date = moment(doc.date, JEKYLL_DATE_FORMAT);
+            if (page.properties.updated) {
+                page.properties.updated = moment(page.properties.updated, JEKYLL_DATE_FORMAT);
+            }
             page.properties.duration = doc.duration;
             page.properties.visibility = doc.visibility;
 
@@ -85,12 +88,42 @@ export class Page {
     public getPublishedDate(): string {
         return this.properties.date.format();
     }
+    
+    public getUpdatedDate(): string {
+        return this.properties.updated.format();
+    }
 
     public getOfficialPermalink(): string {
         return `/${this.slug}`;
     }
+    
+    public semiRelativeDateFormat(date?: Moment): string {
+        let today = moment().hour(0).minute(0).second(0).millisecond(0);       
+        
+        if (date === undefined) {
+            date = this.properties.date;
+        }
 
-    public semiRelativeDateFormat(): string {
+
+        if (date.isSameOrAfter(today)) {
+            return 'Today';
+        } else {
+            return date.format("MMM DD, YYYY");
+        }
+    }
+
+    public semiRelativeDateTimeFormat(date?: Moment): string {
+        
+        if (date === undefined) {
+            date = this.properties.date;
+        }
+        
+        let dateString = this.semiRelativeDateFormat(date);
+        return date.format("h:mma") + ' ' + dateString;
+    }
+
+
+ /*    public semiRelativeDateFormat(): string {
         if (moment().diff(this.properties.date, 'days') > 0) {
             return this.properties.date.format("MMM DD, YYYY");
         } else {
@@ -101,7 +134,7 @@ export class Page {
     public semiRelativeDateTimeFormat(): string {
         let date = this.semiRelativeDateFormat();
         return this.properties.date.format("h:mma") + ' ' + date;
-    }
+    } */
 
     public save() {
         let postObject = this.getSaveObject();

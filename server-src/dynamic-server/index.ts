@@ -12,6 +12,7 @@ import {DataController} from "../model/data.controller";
 import * as _ from 'lodash';
 import * as path from "path";
 import {resumeRouter} from "../resume";
+import { LocationController } from "../location/location.controller";
 
 export let dynamicRouter = express.Router();
 
@@ -797,6 +798,8 @@ function getHomepage(req, res, next) {
 
         let retrievePosts: Promise<Post[]>[] = [];
 
+        retrievePosts.push(LocationController.getCachedLocation());
+
         retrievePosts.push(Posts.searchPosts({
             hasType: [PostType.Checkin],
             orderBy: ["published"],
@@ -864,19 +867,21 @@ function getHomepage(req, res, next) {
 
         Promise.all(retrievePosts).then(posts => {
 
+            let location = posts[0];
+
             // let latestDrank: Post;
             // let latestAte: Post[] = [];
-            let latestCheckin: Post = posts[0][0];
-            let latestListen: Post[] = posts[1];
-            let latestWatch: Post = posts[2][0];
+            let latestCheckin: Post = posts[1][0];
+            let latestListen: Post[] = posts[2];
+            let latestWatch: Post = posts[3][0];
             let latestPhoto: Post[] = [];
             let latestPhotoCount: number = 0;
-            let latestNotes: Post[] = posts[4];
-            let latestArticles: Post[] = posts[5];
-            let latestSocial: Post[] = posts[6];
-            let latestPodcast: Post = posts[7][0];
+            let latestNotes: Post[] = posts[5];
+            let latestArticles: Post[] = posts[6];
+            let latestSocial: Post[] = posts[7];
+            let latestPodcast: Post = posts[8][0];
 
-            posts[3].forEach(photoPost => {
+            posts[4].forEach(photoPost => {
                 if (latestPhotoCount < 4) {
                     latestPhoto.push(photoPost);
                     latestPhotoCount += photoPost.properties.photo.length;
@@ -886,6 +891,7 @@ function getHomepage(req, res, next) {
             res.render("homepage/homepage", {
                 // latestDrank: latestDrank,
                 // latestAte: latestAte.reverse(),
+                location: location,
                 latestCheckin: latestCheckin,
                 latestListen: latestListen,
                 latestWatch: latestWatch,

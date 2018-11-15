@@ -85,7 +85,7 @@ html
                     each photoUrl in post.properties.photo
                         img(src=photoUrl).u-photo
             if post.properties.content || post.properties['listen-of'] || post.properties.show_name || post.properties.movie_name || post.properties.checkin
-                div(class=post.properties.name ? "" : "p-name").e-content.p-summary
+                div(class=post.properties.name ? "" : "p-name").e-content
                     if post.properties['listen-of'] && post.properties['listen-of'].type === "h-cite"
                         div.summary-fallback.u-listen-of.h-cite 🎧 Listened to
                             |
@@ -154,9 +154,18 @@ html
                                 | .
                                 |
             div.meta
-                time(datetime=post.getPublishedDate()).dt-published.published-date #{post.semiRelativeDateTimeFormat()}
-                if post.properties.visibility === "private"
-                    span Private
+                if post.properties.date
+                    span
+                    if post.properties.updated
+                        | Published:
+                        | 
+                    time(datetime=post.getPublishedDate()).dt-published.published-date #{post.semiRelativeDateTimeFormat()}
+                if post.properties.updated
+                    span Last Updated:
+                    | 
+                    time(datetime=post.getUpdatedDate()).dt-updated.updated-date #{post.semiRelativeDateTimeFormat(post.properties.updated)}
+                if post.properties.visibility !== "public"
+                    span #{post.properties.visibility}
                 if post.properties.weather
                     span.weather-info
                         span.temperature.p-temperature #{post.properties.weather.properties.apparentTemperature} ℉
@@ -248,6 +257,7 @@ html
                 div(style="display: none")
                     a(href="https://brid.gy/publish/twitter").u-bridgy-publish
                     a(href="https://brid.gy/publish/github").u-bridgy-publish
+                    a(href="https://fed.brid.gy/").u-bridgy-publish
                 if post.client_id
                     span.client-display posted using
                         |

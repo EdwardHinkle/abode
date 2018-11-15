@@ -137,6 +137,11 @@ h1.page-title, .itinerary-description {
     margin-right: 20px;
 }
 
+.updated-date {
+    color: rgba(0,0,0,0.3);
+    margin-right: 20px;
+}
+
 .map-image {
     width: 100%;
     margin-bottom: 50px;

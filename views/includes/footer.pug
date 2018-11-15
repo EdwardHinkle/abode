@@ -1,24 +1,25 @@
 footer.page-footer
     .inner-footer
-        div.mini-bio.h-card
-            img(src="/images/profile.jpg", alt="Eddie Hinkle", style="display: none;").u-photo
-            p.p-note
-                a(rel="me", href="https://eddiehinkle.com/").u-url.p-name Eddie Hinkle
-                |
-                | is a husband to
-                |
-                a(href="https://ashleyhinkle.com", target="_blank") Ashley
-                | , father to
-                |
-                a(href="https://luke.hinkle.life", target="_blank") Luke
-                |
-                | and
-                |
-                a(href="https://eddiehinkle.com/resume", target="_blank") UI Engineer
-                |
-                | that lives in Frederick, MD.
-                |
-                a(href="/about") Read More
+        if hideFooterBio == undefined
+            div.mini-bio.h-card
+                img(src="/images/profile.jpg", alt="Eddie Hinkle", style="display: none;").u-photo
+                p.p-note
+                    a(rel="me", href="https://eddiehinkle.com/").u-url.p-name Eddie Hinkle
+                    |
+                    | is a husband to
+                    |
+                    a(href="https://ashleyhinkle.com", target="_blank") Ashley
+                    | , father to
+                    |
+                    a(href="https://luke.hinkle.life", target="_blank") Luke
+                    |
+                    | and
+                    |
+                    a(href="https://eddiehinkle.com/resume", target="_blank") UI Engineer
+                    |
+                    | that lives in Frederick, MD.
+                    |
+                    a(href="/about") Read More
         ul.social-media-list
             li
                 a(href="https://github.com/edwardhinkle" rel="me").no-underline

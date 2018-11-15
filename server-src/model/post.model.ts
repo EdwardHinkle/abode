@@ -44,6 +44,9 @@ export class Post {
             post.permalink = doc.permalink;
             post.client_id = doc.client_id;
             post.properties.date = moment(doc.date, JEKYLL_DATE_FORMAT);
+            if (post.properties.updated) {
+                post.properties.updated = moment(post.properties.updated, JEKYLL_DATE_FORMAT);
+            }
             post.properties.postIndex = doc.slug;
             post.properties.duration = doc.duration;
             post.properties.visibility = doc.visibility;
@@ -173,6 +176,10 @@ export class Post {
     public getPublishedDate(): string {
         return this.properties.date.format();
     }
+    
+    public getUpdatedDate(): string {
+        return this.properties.updated.format();
+    }
 
     public verifyPostPermalink(req: any): boolean {
         let officialPostPath = this.permalink.replace(':year', this.properties.getYearString())
@@ -194,19 +201,29 @@ export class Post {
             .replace(':slug', this.properties.postIndex.toString());
     }
 
-    public semiRelativeDateFormat(): string {
-        let today = moment().hour(0).minute(0).second(0).millisecond(0);
+    public semiRelativeDateFormat(date?: Moment): string {
+        let today = moment().hour(0).minute(0).second(0).millisecond(0);       
+        
+        if (date === undefined) {
+            date = this.properties.date;
+        }
 
-        if (this.properties.date.isSameOrAfter(today)) {
+
+        if (date.isSameOrAfter(today)) {
             return 'Today';
         } else {
-            return this.properties.date.format("MMM DD, YYYY");
+            return date.format("MMM DD, YYYY");
         }
     }
 
-    public semiRelativeDateTimeFormat(): string {
-        let date = this.semiRelativeDateFormat();
-        return this.properties.date.format("h:mma") + ' ' + date;
+    public semiRelativeDateTimeFormat(date?: Moment): string {
+        
+        if (date === undefined) {
+            date = this.properties.date;
+        }
+        
+        let dateString = this.semiRelativeDateFormat(date);
+        return date.format("h:mma") + ' ' + dateString;
     }
 
     public save() {

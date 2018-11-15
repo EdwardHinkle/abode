@@ -1008,6 +1008,9 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             let updated_feeds = [];
 
                             post.properties['abode-channel'].forEach(channel => {
+                                if (channel === 'timeline') {
+                                    updated_feeds.push(`https://granary.io/url?url=https://eddiehinkle.com/timeline/&input=html&output=atom&hub=https://switchboard.p3k.io/`);
+                                }
                                 updated_feeds.push(`https://eddiehinkle.com/${channel}/`);
                             });
 
