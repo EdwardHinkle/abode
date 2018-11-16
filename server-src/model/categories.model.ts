@@ -1,4 +1,5 @@
 import { Category } from './category.model';
+import {DataController} from "./data.controller";
 
 export class Categories {
     

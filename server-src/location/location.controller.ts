@@ -9,7 +9,7 @@ export class LocationController {
     
     static getCachedLocation(): Promise<any> {
         return new Promise((resolve, reject) => {
-            let weatherFile = fs.readFileSync(path.join(storagePath, 'currentWeather.json'));
+            let weatherFile = fs.readFileSync(path.join(storagePath, 'currentWeather.json'), { encoding: 'utf8' });
             try {
                 let weatherData = JSON.parse(weatherFile);
                 resolve(weatherData);
