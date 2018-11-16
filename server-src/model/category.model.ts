@@ -11,5 +11,9 @@ export class Category {
     toString(): string {
         return this._value;
     }
+
+    toJSON(): any {
+        return this.toString();
+    }
     
 }
