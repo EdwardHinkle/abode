@@ -98,7 +98,9 @@ export function getMicropubConfig(queryType, req): Promise<any> {
                 }
 
                 return fetchedCategories.then(categories => {
-                    categories: categories
+                    return {
+                        categories: categories
+                    }
                 });
             case 'source':
                 if (req.query.url === undefined) {
