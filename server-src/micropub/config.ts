@@ -3,6 +3,8 @@ import * as yaml from 'js-yaml';
 import * as moment from "moment";
 import {Posts} from "../model/posts.model";
 import {Channel} from "../model/channel.model";
+import {Categories} from "../model/categories.model";
+import {Category} from "../model/category.model";
 
 let config = require('../../abodeConfig.json');
 let dataDir = __dirname + "/../../jekyll/_source/";
@@ -85,6 +87,17 @@ export function getMicropubConfig(queryType, req): Promise<any> {
                         }
                     ]
                 };
+            case 'category':
+                let fetchedCategories: Promise<Category[]>;
+                if (req.query.search === undefined) {
+                    fetchedCategories = Categories.getAll();
+                } else {
+                    fetchedCategories = Categories.search({
+                        tag_name: req.query.search
+                    });
+                }
+
+                return fetchedCategories;
             case 'source':
                 if (req.query.url === undefined) {
                     let thisYear = moment().format("YYYY");
