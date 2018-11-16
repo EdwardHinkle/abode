@@ -97,7 +97,9 @@ export function getMicropubConfig(queryType, req): Promise<any> {
                     });
                 }
 
-                return fetchedCategories;
+                return fetchedCategories.then(categories => {
+                    categories: categories
+                });
             case 'source':
                 if (req.query.url === undefined) {
                     let thisYear = moment().format("YYYY");
