@@ -125,6 +125,21 @@ h2 {
     text-decoration: none;
 }
 
+.watched-contents {
+    position: relative;
+}
+
+.watched-contents .personTags {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.watched-contents .personTag {
+    width: 25px;
+    border-radius: 2px;
+}
+
 @media (max-width: 900px) {
     .stats {
         display: block;

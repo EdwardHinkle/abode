@@ -3,11 +3,12 @@ import {PostInfo} from "./posts.model";
 import * as marked from 'marked';
 import * as moment from 'moment'; // Actual Library
 import { Moment } from "moment";
-import {People, Person} from "../people";
 import * as fs from "fs";
 import {DataController} from "./data.controller"; // TypeScript Type
 import * as Prism from "prismjs";
 import * as loadLanguages from "prismjs/components/";
+import {Cards} from "./cards.model";
+import {Card} from "./card.model";
 
 const JEKYLL_DATE_FORMAT = 'YYYY-MM-DD h:mm:ss ZZ';
 let dataDir = __dirname + "/../../jekyll/_source";
@@ -24,6 +25,8 @@ export class Post {
     }
 
     public static createFromJekyllFile(fileData): Promise<Post> {
+
+        let constructionPromises: Promise<any>[] = [];
 
         return new Promise((resolve, reject) => {
 
@@ -95,36 +98,39 @@ export class Post {
             }
 
             // Fetch extra data
-            People.getPeople().then(peopleData => {
+            if (post.getPostType() === PostType.Code) {
+                let codeLanguage = post.properties['abode-content-type'].split("/")[1];
+                let codeSnippet = this.prepareCodeBlock(codeLanguage, fileArray[2]);
+                post.properties.content = `<pre><code class="language-${codeLanguage}">${codeSnippet}</code></pre>`;
+            } else {
+                let postContent = marked(fileArray[2], {
+                    highlight: (code, lang) => {
+                        return this.prepareCodeBlock(lang, code);
+                    }
+                }).replace(/^<p>/, '')
+                    .replace(/<\/p>\n$/, '');
 
-                if (post.getPostType() === PostType.Code) {
-                    let codeLanguage = post.properties['abode-content-type'].split("/")[1];
-                    let codeSnippet = this.prepareCodeBlock(codeLanguage, fileArray[2]);
-                    post.properties.content = `<pre><code class="language-${codeLanguage}">${codeSnippet}</code></pre>`;
-                } else {
-                    let postContent = marked(fileArray[2], {
-                        highlight: (code, lang) => {
-                            return this.prepareCodeBlock(lang, code);
-                        }
-                    }).replace(/^<p>/, '')
-                        .replace(/<\/p>\n$/, '');
+                post.properties.content = postContent;
+            }
 
-                    post.properties.content = postContent;
-                }
+            post.properties.personTags = [];
+            post.properties.category = [];
 
-                post.properties.personTags = [];
-                post.properties.category = [];
+            if (doc.tags) {
+                doc.tags.forEach(tag => {
+                    if (tag.indexOf('http') > -1) {
+                        constructionPromises.push(Cards.getCardByUid(tag).then(card => {
+                            if (card !== undefined) {
+                                post.properties.personTags.push(card);
+                            }
+                        }));
+                    } else {
+                        post.properties.category.push(tag);
+                    }
+                });
+            }
 
-                if (doc.tags) {
-                    doc.tags.forEach(tag => {
-                        if (tag.indexOf('http') > -1) {
-                            post.properties.personTags.push(peopleData.getPersonByUrl(tag));
-                        } else {
-                            post.properties.category.push(tag);
-                        }
-                    });
-                }
-
+            Promise.all(constructionPromises).then(results => {
                 resolve(post);
             });
         });
@@ -519,7 +525,7 @@ export class Post {
 
 export class PostProperties {
     date: Moment;
-    personTags: Person[];
+    personTags: Card[];
     postIndex: number;
     [key: string]: any;
 

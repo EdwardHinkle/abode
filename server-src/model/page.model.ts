@@ -3,9 +3,10 @@ import {PostInfo} from "./posts.model";
 import * as marked from 'marked';
 import * as moment from 'moment'; // Actual Library
 import { Moment } from "moment";
-import {People, Person} from "../people";
 import * as fs from "fs";
-import {PostType} from "./post.model"; // TypeScript Type
+import {PostType} from "./post.model";
+import {Cards} from "./cards.model";
+import {Card} from "./card.model"; // TypeScript Type
 
 const JEKYLL_DATE_FORMAT = 'YYYY-MM-DD h:mm:ss ZZ';
 let dataDir = __dirname + "/../../jekyll/_source";
@@ -23,6 +24,8 @@ export class Page {
     }
 
     public static createFromJekyllFile(fileData): Promise<Page> {
+
+        let constructionPromises: Promise<any>[] = [];
 
         return new Promise((resolve, reject) => {
 
@@ -60,22 +63,25 @@ export class Page {
             page.properties.name = doc.title;
 
             // Fetch extra data
-            People.getPeople().then(peopleData => {
+            page.properties.content = marked(fileArray[2]).replace(/^<p>/, '').replace(/<\/p>\n$/, '');
+            page.properties.personTags = [];
+            page.properties.category = [];
 
-                page.properties.content = marked(fileArray[2]).replace(/^<p>/, '').replace(/<\/p>\n$/, '');
-                page.properties.personTags = [];
-                page.properties.category = [];
+            if (doc.tags) {
+                doc.tags.forEach(tag => {
+                    if (tag.indexOf('http') > -1) {
+                        constructionPromises.push(Cards.getCardByUid(tag).then(card => {
+                            if (card !== undefined) {
+                                page.properties.personTags.push(card);
+                            }
+                        }));
+                    } else {
+                        page.properties.category.push(tag);
+                    }
+                });
+            }
 
-                if (doc.tags) {
-                    doc.tags.forEach(tag => {
-                        if (tag.indexOf('http') > -1) {
-                            page.properties.personTags.push(peopleData.getPersonByUrl(tag));
-                        } else {
-                            page.properties.category.push(tag);
-                        }
-                    });
-                }
-
+            Promise.all(constructionPromises).then(results => {
                 resolve(page);
             });
         });
@@ -357,7 +363,7 @@ export class Page {
 
 export class PostProperties {
     date: Moment;
-    personTags: Person[];
+    personTags: Card[];
     postIndex: number;
     [key: string]: any;
 

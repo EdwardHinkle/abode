@@ -11,6 +11,7 @@ import * as sqlite3 from 'sqlite3';
 import {CacheController} from "./model/cache.controller";
 import {DataController} from "./model/data.controller";
 import { LocationController } from "./location/location.controller";
+import {Cards} from "./model/cards.model";
 
 const sqlite = sqlite3.verbose();
 var config = require('../abodeConfig.json');
@@ -96,7 +97,6 @@ new cron.CronJob('0 */20 * * * *', function() {
   console.log('running routine cron job');
   LocationController.cacheCurrentLocation();
 }).start();
-
 
 process.on('SIGINT', () => {
     console.log('Closing Database Connection');

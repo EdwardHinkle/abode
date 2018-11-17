@@ -139,10 +139,11 @@ html
                         |
                         |
                     if post.properties.personTags.length > 0
+                        |
                         | with
                         |
                         each person, index in post.properties.personTags
-                            a(href=person[person.representitiveUrl]).u-category #{person.nickname}
+                            a(href=person[person.getRepresentitiveUrl()]).u-category #{person.properties.nickname}
                             if index <= post.properties.personTags.length - 3
                                 | ,
                                 |

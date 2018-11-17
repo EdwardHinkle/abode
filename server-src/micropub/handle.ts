@@ -13,8 +13,8 @@ import * as getWebmentionUrl from 'get-webmention-url';
 let imageType = require('image-type');
 let readingTime = require('reading-time');
 
-import { People } from '../people';
 import {Posts} from "../model/posts.model";
+import {Cards} from "../model/cards.model";
 
 // let config = require('../../abodeConfig.json');
 let dataDir = __dirname + "/../../jekyll/_source/";
@@ -686,7 +686,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                 }));
 
                 // Check if there are any person tags within the content
-                yamlDocumentReady.push(People.getPeople().then((people) => {
+                yamlDocumentReady.push(Cards.getContacts().then((people) => {
 
                     // Detect person tags such as +ash
                     let regExNicknameToken = /\+(\w*)/g
@@ -698,7 +698,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                     for (let nickname of foundIdentities) {
                         console.log(nickname);
-                        let taggedPerson = people.getPersonByNickname(nickname);
+                        let taggedPerson = Cards.findCardByNickname(nickname, people);
                         console.log(taggedPerson);
                         if (taggedPerson != undefined) {
                             yamlDocument.tags.push(taggedPerson.getRepresentitiveUrl());
@@ -730,7 +730,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                     for (let nickname of foundIdentitiesMention) {
                         console.log(nickname);
-                        let taggedPerson = people.getPersonByNickname(nickname);
+                        let taggedPerson = Cards.findCardByNickname(nickname, people);
                         console.log(taggedPerson);
                         if (taggedPerson != undefined) {
                             yamlDocument.content = yamlDocument.content.replace(`@${nickname}`, `[@${nickname}](${taggedPerson.getRepresentitiveUrl()})`);

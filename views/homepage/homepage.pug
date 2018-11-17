@@ -125,6 +125,11 @@ html
                             else
                                 a(href=latestWatch.getOfficialPermalink()).no-underline
                                     img(src=latestWatch.properties.movie_image, width="150")
+                            if latestWatch.properties.personTags
+                                div.personTags
+                                    each person in latestWatch.properties.personTags
+                                        if person.properties.photo
+                                            img(src=person.properties.photo[0], width="20", title=person.properties.name[0]).personTag
                         a(href="/watched/").more-button.no-underline More Watched
                 div.listen
                     h4 Recently Listened
