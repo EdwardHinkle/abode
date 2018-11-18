@@ -17,12 +17,20 @@ export class Cards {
     static getCardByUid(uid: string): Promise<Card> {
         return new Promise((resolve, reject) => {
 
-            let cardFilename = uid.replace('https://', '')
-                                  .replace('http://', '')
-                                  .replace('.json', '')
-                                  .replace(/\//g, '-')
-                                  .replace(/\?/g, '-')
-                                  .replace(/-$/, '');
+            console.log('card uid before replacements');
+            console.log(1, uid);
+
+            let cardFilename = uid.replace('https://', '');
+            console.log(2, cardFilename);
+            cardFilename = cardFilename.replace('http://', '');
+            console.log(3, cardFilename);
+            cardFilename = cardFilename.replace('.json', '');
+            console.log(4, cardFilename);
+            cardFilename = cardFilename.replace(/\//g, '-');
+            console.log(5, cardFilename);
+            cardFilename = cardFilename.replace(/\?/g, '-');
+            console.log(6, cardFilename);
+            cardFilename = cardFilename.replace(/-$/, '');
 
             try {
                 let cardData = JSON.parse(fs.readFileSync(`${cardsDirectory}/${cardFilename}.json`, 'utf8'));
