@@ -10,6 +10,7 @@ body {
 
 .audience-display {
     background-color: #19355c;
+    border-radius: 2px;
 }
 
 .audience-display a, .audience-display a:hover, .audience-display a:visited {
@@ -17,7 +18,7 @@ body {
 }
 
 .audience-display .fa {
-    margin-right: 10px;
+    margin: 0 10px;
 }
 
 .no-posts {
