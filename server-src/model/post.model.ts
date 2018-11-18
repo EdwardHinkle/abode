@@ -93,7 +93,7 @@ export class Post {
             post.properties['movie_url'] = doc['movie_url'];
             post.properties['movie_image'] = doc['movie_image'];
 
-            if (doc.properties['watch-of'] !== undefined) {
+            if (doc.properties !== undefined && doc.properties['watch-of'] !== undefined) {
 
                 post.properties['task-status'] = doc.properties['task-status'];
                 post.properties['imdb_id'] = doc.properties['watch-of'].properties['imdb-id'];
