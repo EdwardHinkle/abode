@@ -178,62 +178,68 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                     if (micropubPropertiesToIgnore.indexOf(propertyName) == -1) {
 
                         console.log(`Working on property ${propertyName}`);
-                        console.log(micropubDocument.properties[propertyName][0]);
 
-                        if (typeof micropubDocument.properties[propertyName][0] === 'object' && micropubDocument.properties[propertyName][0].type != undefined) {
-                            yamlDocument.properties[propertyName] = {
-                                type: micropubDocument.properties[propertyName][0].type[0],
-                                properties: {}
-                            };
+                        if (propertyName === 'watch-of') {
+                            yamlDocument.properties[propertyName] = micropubDocument.properties[propertyName];
                         } else {
-                            // Specific Embeded Use-Cases
+                            console.log(micropubDocument.properties[propertyName][0]);
 
-                            // Add h-food to ate and drank
-                            if (propertyName == "drank") {
+                            if (typeof micropubDocument.properties[propertyName][0] === 'object' && micropubDocument.properties[propertyName][0].type != undefined) {
                                 yamlDocument.properties[propertyName] = {
-                                    type: "h-food",
+                                    type: micropubDocument.properties[propertyName][0].type[0],
                                     properties: {}
                                 };
+                            } else {
+                                // Specific Embeded Use-Cases
+
+                                // Add h-food to ate and drank
+                                if (propertyName == "drank") {
+                                    yamlDocument.properties[propertyName] = {
+                                        type: "h-food",
+                                        properties: {}
+                                    };
+                                }
+
+                                if (propertyName == "ate") {
+                                    yamlDocument.properties[propertyName] = {
+                                        type: "h-food",
+                                        properties: {}
+                                    };
+                                }
                             }
 
-                            if (propertyName == "ate") {
-                                yamlDocument.properties[propertyName] = {
-                                    type: "h-food",
-                                    properties: {}
-                                };
-                            }
-                        }
-
-                        if (typeof yamlDocument.properties[propertyName] === 'object' && yamlDocument.properties[propertyName].type) {
-                            console.log("In switch");
-                            switch(yamlDocument.properties[propertyName].type) {
-                                case 'h-card':
+                            if (typeof yamlDocument.properties[propertyName] === 'object' && yamlDocument.properties[propertyName].type) {
+                                console.log("In switch");
+                                switch (yamlDocument.properties[propertyName].type) {
+                                    case 'h-card':
                                         for (let subPropertyName in micropubDocument.properties[propertyName][0].properties) {
                                             if (micropubDocument.properties[propertyName][0].properties[subPropertyName] instanceof Array) {
                                                 yamlDocument.properties[propertyName].properties[subPropertyName] = micropubDocument.properties[propertyName][0].properties[subPropertyName][0];
                                             } else {
                                                 yamlDocument.properties[propertyName].properties[subPropertyName] = micropubDocument.properties[propertyName][0].properties[subPropertyName];
                                             }
-                                        };
+                                        }
+                                        ;
                                         break;
-                                default:
+                                    default:
                                         yamlDocument.properties[propertyName].properties = micropubDocument.properties[propertyName][0].properties;
                                         break;
-                            }
-                        } else {
-                            console.log("Outside switch");
-                            if (typeof yamlDocument.properties[propertyName] === 'object') {
-                                yamlDocument.properties[propertyName].properties = micropubDocument.properties[propertyName].properties;
+                                }
                             } else {
-                                if (micropubDocument.properties[propertyName].length > 1) {
-                                    yamlDocument.properties[propertyName] = micropubDocument.properties[propertyName];
+                                console.log("Outside switch");
+                                if (typeof yamlDocument.properties[propertyName] === 'object') {
+                                    yamlDocument.properties[propertyName].properties = micropubDocument.properties[propertyName].properties;
                                 } else {
-                                    yamlDocument.properties[propertyName] = micropubDocument.properties[propertyName][0];
+                                    if (micropubDocument.properties[propertyName].length > 1) {
+                                        yamlDocument.properties[propertyName] = micropubDocument.properties[propertyName];
+                                    } else {
+                                        yamlDocument.properties[propertyName] = micropubDocument.properties[propertyName][0];
+                                    }
                                 }
                             }
-                        }
 
-                        console.log(yamlDocument.properties[propertyName]);
+                            console.log(yamlDocument.properties[propertyName]);
+                        }
                     }
                 }
 
