@@ -50,7 +50,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
     });
     // This is the end of the debugging section
 
-    if (micropubDocument.type === 'h-card') {
+    if (micropubDocument.type[0] === 'h-card') {
 
         new Promise((resolve, reject) => {
             console.log(micropubDocument);
