@@ -8,6 +8,18 @@ body {
     text-align: center;
 }
 
+.audience-display {
+    background-color: #19355c;
+}
+
+.audience-display a, .audience-display a:hover, .audience-display a:visited {
+    color: white;
+}
+
+.audience-display .fa {
+    margin-right: 10px;
+}
+
 .no-posts {
     margin: 50px 0;
     text-align: center;
@@ -125,7 +137,7 @@ body {
     margin-bottom: 40px;
 }
 
-h1.page-title, .itinerary-description {
+h1.page-title, .itinerary-description, .audience-display {
     line-height: 2.5rem;
     max-width: 800px;
     margin-left: auto;
