@@ -12,6 +12,7 @@ import {CacheController} from "./model/cache.controller";
 import {DataController} from "./model/data.controller";
 import { LocationController } from "./location/location.controller";
 import {Cards} from "./model/cards.model";
+import {GitController} from "./git";
 
 const sqlite = sqlite3.verbose();
 var config = require('../abodeConfig.json');
@@ -95,6 +96,15 @@ app.use(function(req, res, next){
 
 new cron.CronJob('0 */20 * * * *', function() {
   console.log('running routine cron job');
+  GitController.runGitStageAll().then(() => {
+     GitController.runGitCommit().then(() => {
+        GitController.runGitPull().then(() => {
+            GitController.runGitPush().then(() => {
+                console.log('Git committed and pushed');
+            });
+        });
+     });
+  });
   LocationController.cacheCurrentLocation();
 }).start();
 
