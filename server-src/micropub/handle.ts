@@ -192,8 +192,10 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                             console.log(`Working on property ${propertyName}`);
 
-                            if (propertyName === 'watch-of') {
+                            if (propertyName === 'watch-of' || propertyName === 'audience') {
+
                                 yamlDocument.properties[propertyName] = micropubDocument.properties[propertyName];
+
                             } else {
                                 console.log(micropubDocument.properties[propertyName][0]);
 
