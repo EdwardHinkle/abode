@@ -93,6 +93,33 @@ export class Post {
             post.properties['movie_url'] = doc['movie_url'];
             post.properties['movie_image'] = doc['movie_image'];
 
+            if (doc.properties['watch-of'] !== undefined) {
+
+                post.properties['task-status'] = doc.properties['task-status'];
+                post.properties['imdb_id'] = doc.properties['watch-of'].properties['imdb-id'];
+
+                if (doc.properties['watch-of'].properties.episode !== undefined) {
+                    post.properties['show_name'] = doc.properties['watch-of'].properties.name;
+                    post.properties['show_url'] = doc.properties['watch-of'].properties.url;
+                    post.properties['show_image'] = doc.properties['watch-of'].properties.photo;
+
+                    post.properties['episode_name'] = doc.properties['watch-of'].properties.episode.properties.name;
+                    post.properties['episode_image'] = doc.properties['watch-of'].properties.episode.properties.photo;
+                    post.properties['show_season'] = doc.properties['watch-of'].properties.episode.properties['season-number'];
+                    post.properties['show_episode'] = doc.properties['watch-of'].properties.episode.properties['episode-number'];
+                    post.properties['season_finale'] = doc.properties['watch-of'].properties.episode.properties['special-episode'] === 'season_finale' ? true : undefined;
+                    post.properties['season_premiere'] = doc.properties['watch-of'].properties.episode.properties['special-episode'] === 'season_premiere' ? true : undefined;
+                    post.properties['show_premiere'] = doc.properties['watch-of'].properties.episode.properties['special-episode'] === 'show_premiere' ? true : undefined;
+                    post.properties['show_finale'] = doc.properties['watch-of'].properties.episode.properties['special-episode'] === 'show_finale' ? true : undefined;
+                }
+
+                if (doc.properties['watch-of'].properties.episode === undefined) {
+                    post.properties['movie_name'] = doc.properties['watch-of'].properties.name;
+                    post.properties['movie_url'] = doc.properties['watch-of'].properties.url;
+                    post.properties['movie_image'] = doc.properties['watch-of'].properties.photo;
+                }
+            }
+
             if (post.properties.syndication === undefined) {
                 post.properties.syndication = [];
             }
