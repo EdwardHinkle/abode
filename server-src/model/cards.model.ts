@@ -24,8 +24,6 @@ export class Cards {
                                   .replace(/\?/g, '-')
                                   .replace(/-$/, '');
 
-            console.log('should read card file ', cardFilename);
-
             try {
                 let cardData = JSON.parse(fs.readFileSync(`${cardsDirectory}/${cardFilename}.json`, 'utf8'));
                 resolve(new Card(cardData));
