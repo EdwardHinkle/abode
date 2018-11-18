@@ -146,7 +146,6 @@ export class Post {
             if (doc.tags) {
                 doc.tags.forEach(tag => {
                     if (tag.indexOf('http') > -1) {
-                        console.log(post.getOfficialPermalink());
                         constructionPromises.push(Cards.getCardByUid(tag).then(card => {
                             if (card !== undefined) {
                                 post.properties.personTags.push(card);
