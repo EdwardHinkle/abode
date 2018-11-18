@@ -4,8 +4,11 @@ div.h-entry
         div.audience-display
             i.fa.fa-users
             each audience in post.properties.audience
-                if audience.name
-                    a(href=audience.url).no-underline.p-audience=audience.name
+                if audience.properties.name
+                    if audience.properties.url
+                        a(href=audience.properties.url).no-underline.p-audience=audience.properties.name
+                    else
+                        span.p-audience=audience.properties.name
     if post.properties['in-reply-to']
         if post.properties['in-reply-to'].length != undefined && post.properties['in-reply-to'].indexOf('github.com') > -1
             if post.properties.name !== undefined && post.properties.name > ''
