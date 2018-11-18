@@ -15,6 +15,7 @@ let readingTime = require('reading-time');
 
 import {Posts} from "../model/posts.model";
 import {Cards} from "../model/cards.model";
+import {UrlUtility} from "../utilities/url.utility";
 
 // let config = require('../../abodeConfig.json');
 let dataDir = __dirname + "/../../jekyll/_source/";
@@ -55,7 +56,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
         new Promise((resolve, reject) => {
             console.log(micropubDocument);
 
-            return { url: `https://eddiehinkle.com/contact/${micropubDocument.properties.uid[0]}/` };
+            return { url: `https://eddiehinkle.com/contact/${UrlUtility.getCleanDomain(micropubDocument.properties.uid[0])}/` };
         });
 
     } else {
