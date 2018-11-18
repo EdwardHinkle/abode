@@ -5,6 +5,8 @@ import {Posts} from "../model/posts.model";
 import {Channel} from "../model/channel.model";
 import {Categories} from "../model/categories.model";
 import {Category} from "../model/category.model";
+import {Card} from "../model/card.model";
+import {Cards} from "../model/cards.model";
 
 let config = require('../../abodeConfig.json');
 let dataDir = __dirname + "/../../jekyll/_source/";
@@ -100,6 +102,24 @@ export function getMicropubConfig(queryType, req): Promise<any> {
                 return fetchedCategories.then(categories => {
                     return {
                         categories: categories
+                    }
+                });
+            case 'contact':
+                let fetchedCards: Promise<Card[]>;
+                if (req.query.search === undefined) {
+                    fetchedCards = Cards.getAllContacts();
+                } else {
+                    // fetchedCards = Cards.searchContacts({
+                    //     all: req.query.search
+                    // });
+                    return {
+                        error: "Contact Search Unsupported"
+                    };
+                }
+
+                return fetchedCards.then(cards => {
+                    return {
+                        contacts: cards
                     }
                 });
             case 'source':
