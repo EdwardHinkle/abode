@@ -53,7 +53,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
     if (micropubDocument.type[0] === 'h-card') {
 
-        new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             console.log(micropubDocument);
 
             resolve({ url: `https://eddiehinkle.com/contact/${UrlUtility.getCleanDomain(micropubDocument.properties.uid[0])}/` });
