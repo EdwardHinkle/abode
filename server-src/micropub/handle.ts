@@ -56,7 +56,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
         new Promise((resolve, reject) => {
             console.log(micropubDocument);
 
-            return { url: `https://eddiehinkle.com/contact/${UrlUtility.getCleanDomain(micropubDocument.properties.uid[0])}/` };
+            resolve({ url: `https://eddiehinkle.com/contact/${UrlUtility.getCleanDomain(micropubDocument.properties.uid[0])}/` });
         });
 
     } else {
