@@ -25,11 +25,11 @@ export class Cards {
     }
 
     static getContacts(): Promise<Card[]> {
-        return this.getCards().then(cards => cards.filter(card => card.properties.category.indexOf("contact") > -1));
+        return this.getCards().then(cards => cards.filter(card => card.properties.category !== undefined && card.properties.category.indexOf("contact") > -1));
     }
 
     static getVenues(): Promise<Card[]> {
-        return this.getCards().then(cards => cards.filter(card => card.properties.category.indexOf("venue") > -1));
+        return this.getCards().then(cards => cards.filter(card => card.properties.category !== undefined && card.properties.category.indexOf("venue") > -1));
     }
 
     static getCards(): Promise<Card[]> {
