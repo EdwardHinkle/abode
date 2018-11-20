@@ -671,7 +671,11 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                 weatherQueryUrl += `,${postTimestamp.format('YYYY-MM-DDTHH:mm:ssZZ')}`;
                             }
 
-                            request(weatherQueryUrl, function (error, response, body) {
+                            let waitingForWeather = true;
+
+                            let weatherRequest = request(weatherQueryUrl, function (error, response, body) {
+                                waitingForWeather = false;
+
                                 if (error !== null) {
                                     console.log('error getting weather');
                                     console.log(error);
@@ -706,6 +710,14 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                                 resolve()
                             });
+
+                            setTimeout(() => {
+                                if (waitingForWeather) {
+                                    console.log('Weather did not return for request. Aborted.');
+                                    weatherRequest.abort();
+                                    resolve();
+                                }
+                            }, 10000);
 
                         });
                     }));
