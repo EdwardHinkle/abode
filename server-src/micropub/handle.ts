@@ -16,6 +16,7 @@ let readingTime = require('reading-time');
 import {Posts} from "../model/posts.model";
 import {Cards} from "../model/cards.model";
 import {UrlUtility} from "../utilities/url.utility";
+import {Card} from "../model/card.model";
 
 // let config = require('../../abodeConfig.json');
 let dataDir = __dirname + "/../../jekyll/_source/";
@@ -54,9 +55,11 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
     if (micropubDocument.type[0] === 'h-card') {
 
         return new Promise((resolve, reject) => {
-            console.log(micropubDocument);
 
-            resolve({ url: `https://eddiehinkle.com/contact/${UrlUtility.getCleanDomain(micropubDocument.properties.uid[0])}/` });
+            let card = new Card(micropubDocument);
+            Card.saveCard(card);
+            resolve({ url: card.getOfficialPermalink() });
+
         });
 
     } else {

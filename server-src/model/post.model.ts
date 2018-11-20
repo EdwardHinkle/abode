@@ -43,6 +43,16 @@ export class Post {
             // Import all initial properties
             post.properties = new PostProperties(doc.properties);
 
+            // Fetch audience h-cards
+            if (doc.properties.audience) {
+                post.properties.audience = [];
+                doc.properties.audience.forEach(audienceFilename => {
+                    Card.loadCard(audienceFilename).then(audienceCard => {
+                        post.properties.audience.push(audienceCard);
+                    });
+                });
+            }
+
             // Custom properties and attribute overrides
             post.permalink = doc.permalink;
             post.client_id = doc.client_id;
@@ -146,7 +156,7 @@ export class Post {
             if (doc.tags) {
                 doc.tags.forEach(tag => {
                     if (tag.indexOf('http') > -1) {
-                        constructionPromises.push(Cards.getCardByUid(tag).then(card => {
+                        constructionPromises.push(Card.loadCard(tag).then(card => {
                             if (card !== undefined) {
                                 post.properties.personTags.push(card);
                             }
@@ -553,6 +563,7 @@ export class Post {
 export class PostProperties {
     date: Moment;
     personTags: Card[];
+    audience: Card[];
     postIndex: number;
     [key: string]: any;
 

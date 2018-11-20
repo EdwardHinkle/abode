@@ -70,7 +70,7 @@ export class Page {
             if (doc.tags) {
                 doc.tags.forEach(tag => {
                     if (tag.indexOf('http') > -1) {
-                        constructionPromises.push(Cards.getCardByUid(tag).then(card => {
+                        constructionPromises.push(Card.loadCard(tag).then(card => {
                             if (card !== undefined) {
                                 page.properties.personTags.push(card);
                             }
