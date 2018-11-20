@@ -676,6 +676,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                             let weatherRequest = request(weatherQueryUrl, function (error, response, body) {
                                 waitingForWeather = false;
 
+                                console.log('weather returned');
+
                                 if (error !== null) {
                                     console.log('error getting weather');
                                     console.log(error);
