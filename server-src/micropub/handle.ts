@@ -913,6 +913,9 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                     Promise.all(yamlDocumentReady).then(() => {
                         console.log("Yaml Document Complete");
                         resolve(yamlDocument);
+                    }).catch((error) => {
+                        console.log('Failure trying to save post');
+                        console.log(error);
                     });
 
                 })
