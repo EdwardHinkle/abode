@@ -47,8 +47,6 @@ export class Post {
             if (doc.properties && doc.properties.audience) {
                 post.properties.audience = [];
                 doc.properties.audience.forEach(audienceFilename => {
-                    console.log('loading audience');
-                    console.log(audienceFilename);
                     Card.loadCard(audienceFilename).then(audienceCard => {
                         post.properties.audience.push(audienceCard);
                     });
@@ -158,8 +156,6 @@ export class Post {
             if (doc.tags) {
                 doc.tags.forEach(tag => {
                     if (tag.indexOf('http') > -1) {
-                        console.log('loading person tag as card');
-                        console.log(tag);
                         constructionPromises.push(Card.loadCard(tag).then(card => {
                             if (card !== undefined) {
                                 post.properties.personTags.push(card);
