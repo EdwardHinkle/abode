@@ -6,6 +6,8 @@ export class UrlUtility {
         url = url.replace(/\//g, '-');
         url = url.replace(/\?/g, '-');
         url = url.replace(/-$/, '');
+        console.log('fetching file based on cleaned domain');
+        console.log(url);
         return url;
     }
 }
