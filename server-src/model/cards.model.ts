@@ -38,6 +38,8 @@ export class Cards {
 
             let cardsDir = fs.readdirSync(cardsDirectory, { encoding: 'utf8' });
             cardsDir.forEach(cardFile => {
+                console.log('fetch card');
+                console.log(cardFile);
                 cards.push(Card.loadCard(cardFile));
             });
 
