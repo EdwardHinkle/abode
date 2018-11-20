@@ -727,6 +727,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                     // Check if there are any person tags within the content
                     yamlDocumentReady.push(Cards.getContacts().then((people) => {
 
+                        console.log('done fetching people');
+
                         // Detect person tags such as +ash
                         let regExNicknameToken = /\+(\w*)/g
                         let match = null;
