@@ -222,7 +222,7 @@ code > ol.code-line-numbers {
 }
 
 code[class*="language-"], pre[class*="language-"] {
-    color: #333;
+    color: #333 !important;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -245,6 +245,6 @@ code[class*="language-"], pre[class*="language-"] {
     }
 
     code[class*="language-"], pre[class*="language-"] {
-        color: #CCC;
+        color: #CCC !important;
     }
 }
