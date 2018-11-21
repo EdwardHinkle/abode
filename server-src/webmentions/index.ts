@@ -8,6 +8,7 @@ import * as mfo from 'mf-obj';
 import * as Bluebird from 'bluebird';
 import * as multer from 'multer';
 import {Posts} from "../model/posts.model";
+import {Mention} from "../model/mention.model";
 
 let upload = multer();
 var emojiData = require('emoji-data');
@@ -28,68 +29,59 @@ function pullAllWebmentions(req, res, next) {
 
     collectWebmentions(config.webmention.token, 0, [], (allWebmentions) => {
         // We have all our webmentions
-        allWebmentions.forEach(webmention => {
-            let currentPostPermalink = false;
+        allWebmentions.forEach(webmentionData => {
+
+            let mention = new Mention(webmentionData);
+            let target = mention.getTarget();
             
-            let target = webmention[webmention['wm-property']];
-            if (target.indexOf("eddiehinkle.com") > -1) {
-                console.log(target);
-                let targetSplit = target.split('eddiehinkle.com/');
-                if (targetSplit.length > 1) {
-                    let pathSplit = targetSplit[1].split("/");
-//                     console.log(pathSplit);
-                    if (pathSplit.length === 6) {
-                        // Should be able to verify the first 4 paths are numbers
-                        currentPostPermalink = true;
-                    }
-                }
-            }
-            
-            if (currentPostPermalink) {
-//                 console.log('current url structure');
+            if (mention.isCurrentPermalink()) {
                 // Save in a post's specific folder
                 if (webmentionsToSave[target] === undefined) {
                     webmentionsToSave[target] = [];
                 }
                 
-                webmentionsToSave[target].push(webmention);
+                webmentionsToSave[target].push(mention);
                 
             } else {
-//                 console.log('old permalink or strange page');
                 // Store strange webmentions for later use
                 if (strangeWebmentionsToArchive[target] === undefined) {
                     strangeWebmentionsToArchive[target] = [];
                 }
                 
-                strangeWebmentionsToArchive[target].push(webmention);
+                strangeWebmentionsToArchive[target].push(mention);
             }
         });
        
        Object.keys(webmentionsToSave).forEach(webmentionTarget => {
-            let targetSplit = webmentionTarget.split("eddiehinkle.com/");
-            let pathSplit = targetSplit[1].split("/");
+
+           console.log('test post path');
+           let postPath = webmentionsToSave[webmentionTarget][0].getPostPath();
+           console.log(`${__dirname}/../../jekyll/_source/_note/${postPath}`);
+
+            // let targetSplit = webmentionTarget.split("eddiehinkle.com/");
+            // let pathSplit = targetSplit[1].split("/");
+            //
+            // let targetPath = `${__dirname}/../../jekyll/_source/_note/posts/${pathSplit[0]}/${pathSplit[1]}/${pathSplit[2]}/${pathSplit[3]}`;
             
-            let targetPath = `${__dirname}/../../jekyll/_source/_note/posts/${pathSplit[0]}/${pathSplit[1]}/${pathSplit[2]}/${pathSplit[3]}`;
-            
-            if (fs.existsSync(targetPath)) {
-                    
-               fs.writeFile(`${targetPath}/webmentions.json`, JSON.stringify(webmentionsToSave[webmentionTarget]), (err) => {
-                    if(err) {
-                        return console.log(err);
-                    }
-               });
-           } else {
-                let convertWebmentionObject = {};
-                convertWebmentionObject[webmentionTarget] = webmentionsToSave[webmentionTarget];
-               strangeWebmentionsToArchive = {...strangeWebmentionsToArchive, ...convertWebmentionObject};
-           }
+           //  if (fs.existsSync(targetPath)) {
+           //
+           //     fs.writeFile(`${targetPath}/webmentions.json`, JSON.stringify(webmentionsToSave[webmentionTarget]), (err) => {
+           //          if(err) {
+           //              return console.log(err);
+           //          }
+           //     });
+           // } else {
+           //      let convertWebmentionObject = {};
+           //      convertWebmentionObject[webmentionTarget] = webmentionsToSave[webmentionTarget];
+           //     strangeWebmentionsToArchive = {...strangeWebmentionsToArchive, ...convertWebmentionObject};
+           // }
        });
        
-      fs.writeFile(`${__dirname}/../../jekyll/_source/_note/strangeWebmentionsArchive.json`, JSON.stringify(strangeWebmentionsToArchive), (err) => {
-            if(err) {
-                return console.log(err);
-            }
-        });
+      // fs.writeFile(`${__dirname}/../../jekyll/_source/_note/strangeWebmentionsArchive.json`, JSON.stringify(strangeWebmentionsToArchive), (err) => {
+      //       if(err) {
+      //           return console.log(err);
+      //       }
+      //   });
 
 
         res.json(allWebmentions.length);
