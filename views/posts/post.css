@@ -193,6 +193,7 @@ h1.page-title, .itinerary-description, .audience-display {
 /* This is for inline code blocks */
 :not(pre) > code {
     background-color: #212121;
+    color: #fff;
     padding: 6px;
     font-size: 15px;
 }
