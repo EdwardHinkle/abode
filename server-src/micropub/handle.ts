@@ -1114,8 +1114,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                                     form: {
                                                         token: config.telegraph.token,
                                                         source: returnUrl,
-                                                        target: "https://brid.gy/publish/twitter",
-                                                        callback: "https://eddiehinkle.com/webmention/callback"
+                                                        target: "https://brid.gy/publish/twitter"
+                                                        // callback: "https://eddiehinkle.com/webmention/callback"
                                                     }
                                                 }, (err, data) => {
                                                     if (err != undefined) {
@@ -1137,8 +1137,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                                     form: {
                                                         token: config.telegraph.token,
                                                         source: returnUrl,
-                                                        target: "https://brid.gy/publish/github",
-                                                        callback: "https://eddiehinkle.com/webmention/callback"
+                                                        target: "https://brid.gy/publish/github"
+                                                        // callback: "https://eddiehinkle.com/webmention/callback"
                                                     }
                                                 }, (err, data) => {
                                                     if (err != undefined) {
@@ -1159,8 +1159,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                                 form: {
                                                     token: config.telegraph.token,
                                                     source: returnUrl,
-                                                    target: "https://news.indieweb.org/en",
-                                                    callback: "https://eddiehinkle.com/webmention/callback"
+                                                    target: "https://news.indieweb.org/en"
+                                                    //callback: "https://eddiehinkle.com/webmention/callback"
                                                 }
                                             }, (err, data) => {
                                                 if (err != undefined) {
@@ -1180,8 +1180,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                                 form: {
                                                     token: config.telegraph.token,
                                                     source: returnUrl,
-                                                    target: syndication.url,
-                                                    callback: "https://eddiehinkle.com/webmention/callback"
+                                                    target: syndication.url
+                                                    // callback: "https://eddiehinkle.com/webmention/callback"
                                                 }
                                             }, (err, data) => {
                                                 if (err != undefined) {
@@ -1218,8 +1218,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                             form: {
                                                 token: config.telegraph.token,
                                                 source: returnUrl,
-                                                target: "https://brid.gy/publish/twitter",
-                                                callback: "https://eddiehinkle.com/webmention/callback"
+                                                target: "https://brid.gy/publish/twitter"
+                                                // callback: "https://eddiehinkle.com/webmention/callback"
                                             }
                                         }, (err, data) => {
                                             if (err != undefined) {
@@ -1236,8 +1236,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                             form: {
                                                 token: config.telegraph.token,
                                                 source: returnUrl,
-                                                target: "https://brid.gy/publish/github",
-                                                callback: "https://eddiehinkle.com/webmention/callback"
+                                                target: "https://brid.gy/publish/github"
+                                                //callback: "https://eddiehinkle.com/webmention/callback"
                                             }
                                         }, (err, data) => {
                                             if (err != undefined) {
@@ -1256,8 +1256,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                             form: {
                                                 token: config.telegraph.token,
                                                 source: returnUrl,
-                                                target: likeOfUrl,
-                                                callback: "https://eddiehinkle.com/webmention/callback"
+                                                target: likeOfUrl
+                                                // callback: "https://eddiehinkle.com/webmention/callback"
                                             }
                                         }, (err, data) => {
                                             if (err != undefined) {
@@ -1291,8 +1291,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                             form: {
                                                 token: config.telegraph.token,
                                                 source: returnUrl,
-                                                target: "https://brid.gy/publish/twitter",
-                                                callback: "https://eddiehinkle.com/webmention/callback"
+                                                target: "https://brid.gy/publish/twitter"
+                                                // callback: "https://eddiehinkle.com/webmention/callback"
                                             }
                                         }, (err, data) => {
                                             if (err != undefined) {
@@ -1309,8 +1309,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                             form: {
                                                 token: config.telegraph.token,
                                                 source: returnUrl,
-                                                target: "https://brid.gy/publish/github",
-                                                callback: "https://eddiehinkle.com/webmention/callback"
+                                                target: "https://brid.gy/publish/github"
+                                                // callback: "https://eddiehinkle.com/webmention/callback"
                                             }
                                         }, (err, data) => {
                                             if (err != undefined) {
@@ -1350,8 +1350,8 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                                                 form: {
                                                     token: config.telegraph.token,
                                                     source: returnUrl,
-                                                    target: replyToUrl,
-                                                    callback: "https://eddiehinkle.com/webmention/callback"
+                                                    target: replyToUrl
+                                                    //callback: "https://eddiehinkle.com/webmention/callback"
                                                 }
                                             }, (err, data) => {
                                                 if (err != undefined) {
