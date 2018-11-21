@@ -221,7 +221,7 @@ code > ol.code-line-numbers {
     list-style: decimal;
 }
 
-code[class*="language-"], pre[class*="language-"] {
+code[class*="language-"], pre[class*="language-"], .token.punctuation {
     color: #333 !important;
 }
 
@@ -244,7 +244,7 @@ code[class*="language-"], pre[class*="language-"] {
         background-color: rgba(31, 53, 89, 0.6);
     }
 
-    code[class*="language-"], pre[class*="language-"] {
+    code[class*="language-"], pre[class*="language-"], .token.punctuation {
         color: #CCC !important;
     }
 }
