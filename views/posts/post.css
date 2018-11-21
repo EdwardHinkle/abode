@@ -192,15 +192,15 @@ h1.page-title, .itinerary-description, .audience-display {
 
 /* This is for inline code blocks */
 :not(pre) > code {
-    background-color: #212121;
-    color: #fff;
+    background-color: #F0F0F0;
+    color: #000;
     padding: 6px;
     font-size: 15px;
 }
 
 /* This is for official code snippets and multi-line code blocks */
 code > ol {
-    background-color: #212121;
+    background-color: #F0F0F0;
     padding: 20px 50px;
     overflow-x: auto;
 }
@@ -210,7 +210,7 @@ code > ol {
 }
 
 code > ol .highlight-line {
-    background-color: rgba(31, 53, 89, 0.6);
+    background-color: rgba(230, 200, 89, 0.6);
 }
 
 code > ol {
@@ -224,5 +224,19 @@ code > ol.code-line-numbers {
 @media (prefers-color-scheme: dark) {
     .published-date {
         color: rgba(255,255,255,0.3);
+    }
+
+    :not(pre) > code {
+        background-color: #212121;
+        color: #fff;
+    }
+
+    /* This is for official code snippets and multi-line code blocks */
+    code > ol {
+        background-color: #212121;
+    }
+
+    code > ol .highlight-line {
+        background-color: rgba(31, 53, 89, 0.6);
     }
 }
