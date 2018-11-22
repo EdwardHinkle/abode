@@ -834,6 +834,7 @@ function getHomepage(req, res, next) {
 
         retrievePosts.push(Posts.searchPosts({
             hasType: [PostType.Note],
+            inChannel: "timeline",
             orderBy: ["published"],
             orderDirection: ["DESC"],
             limit: 10,
