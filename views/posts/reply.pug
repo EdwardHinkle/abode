@@ -6,6 +6,16 @@ div.comment-main
             a(href=reply.author.url).u-url.p-name.comment-author-name.no-underline #{reply.author.name}
         a(href=reply.url).u-url.no-underline.comment-permalink
             time(datetime=reply.getPublishedDate()).dt-published.comment-date #{reply.semiRelativeDateTimeFormat()}
+        if reply['swarm-coins']
+            span.swarm-coins
+                img(src="/images/swarm-coin.png")
+                | #{reply['swarm-coins']}
+                if reply['swarm-coins'] > 1
+                    |
+                    | Coins
+                else
+                    |
+                    | Coin
     div.comment-content.p-content
         if reply.content
             | !{reply.content.html ? reply.content.html : reply.content.value}

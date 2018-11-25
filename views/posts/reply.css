@@ -33,6 +33,17 @@
     margin: 0;
 }
 
+.swarm-coins {
+    font-size: 12px;
+    margin-left: 15px;
+}
+
+.swarm-coins img {
+    height: 15px;
+    margin-right: 5px;
+    vertical-align: text-bottom;
+}
+
 
 @media (prefers-color-scheme: dark) {
     .comment-permalink {
