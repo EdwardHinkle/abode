@@ -7,13 +7,11 @@ import * as pug from 'pug';
 import {Pages} from "../model/pages.model";
 import * as fs from "fs";
 import {ChannelData} from "../model/channel.model";
-import moment = require("moment");
 import {DataController} from "../model/data.controller";
-import * as _ from 'lodash';
 import * as path from "path";
-import {resumeRouter} from "../resume";
-import { LocationController } from "../location/location.controller";
+import {LocationController} from "../location/location.controller";
 import {Mention} from "../model/mention.model";
+import moment = require("moment");
 
 export let dynamicRouter = express.Router();
 
@@ -871,7 +869,7 @@ function getHomepage(req, res, next) {
         }, false));
 
         retrievePosts.push(Posts.searchPosts({
-            hasType: [PostType.Bookmark, PostType.Like, PostType.Reply, PostType.Repost, PostType.RSVP],
+            hasType: [PostType.Bookmark, PostType.Like, PostType.Reply, PostType.Repost, PostType.RSVP, PostType.Reacji],
             orderBy: ["published"],
             orderDirection: ["DESC"],
             limit: 54,
@@ -1015,6 +1013,7 @@ function getHomepage(req, res, next) {
                         case PostType.Like:
                         case PostType.Reply:
                         case PostType.Bookmark:
+                        case PostType.Reacji:
                             latestSocial.push(post);
                             break;
                         default:

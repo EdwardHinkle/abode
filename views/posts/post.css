@@ -264,6 +264,11 @@ code[class*="language-"], pre[class*="language-"], .token.punctuation {
     margin-bottom: 20px;
 }
 
+.e-content.reacji {
+    font-size: 4rem;
+    line-height: 6rem;
+}
+
 @media (prefers-color-scheme: dark) {
     .published-date {
         color: rgba(255,255,255,0.3);

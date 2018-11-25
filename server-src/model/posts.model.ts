@@ -296,7 +296,7 @@ export class Posts {
             let postPromises: Promise<Post[]>[] = [];
 
             fs.readdirSync(dirPath).filter((filename) => {
-                return filename.indexOf(".") != 0;
+                return filename.indexOf(".") != 0 && filename !== "mentions";
             }).forEach((filename) => {
 
                 let fileStat = fs.statSync(`${dirPath}/${filename}`);

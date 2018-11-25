@@ -182,6 +182,9 @@ html
                             else if post.getPostType() === "reply"
                                 a(href=post.getOfficialPermalink()).no-underline ↪️
                                 |
+                            else if post.getPostType() === "reacji"
+                                a(href=post.getOfficialPermalink()).no-underline #{post.displayReacji()}
+                                |
             div.webring
                 a(href="https://xn--sr8hvo.ws/🏻/previous").no-underline ⏪
                 | An IndieWeb Webring 🕸💍

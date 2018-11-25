@@ -10,6 +10,9 @@ import * as loadLanguages from "prismjs/components/";
 import {Cards} from "./cards.model";
 import {Card} from "./card.model";
 
+const emojiRegex = require('emoji-regex')();
+const emojiStrip = require('emoji-strip');
+
 const JEKYLL_DATE_FORMAT = 'YYYY-MM-DD h:mm:ss ZZ';
 let dataDir = __dirname + "/../../jekyll/_source";
 
@@ -140,14 +143,23 @@ export class Post {
                 let codeSnippet = this.prepareCodeBlock(codeLanguage, fileArray[2]);
                 post.properties.content = `<pre><code class="language-${codeLanguage}">${codeSnippet}</code></pre>`;
             } else {
-                let postContent = marked(fileArray[2], {
-                    highlight: (code, lang) => {
-                        return this.prepareCodeBlock(lang, code);
-                    }
-                }).replace(/^<p>/, '')
-                    .replace(/<\/p>\n$/, '');
 
-                post.properties.content = postContent;
+                if (Post.checkIfReacji(fileArray[2])) {
+                    post.properties.content = fileArray[2];
+                } else {
+                    if (fileArray[2] != undefined) {
+                        let postContent = marked(fileArray[2], {
+                            highlight: (code, lang) => {
+                                return this.prepareCodeBlock(lang, code);
+                            }
+                        }).replace(/^<p>/, '')
+                            .replace(/<\/p>\n$/, '');
+
+                        post.properties.content = postContent;
+                    } else {
+                        post.properties.content = "";
+                    }
+                }
             }
 
             post.properties.personTags = [];
@@ -267,6 +279,14 @@ export class Post {
         
         let dateString = this.semiRelativeDateFormat(date);
         return date.format("h:mma") + ' ' + dateString;
+    }
+
+    public displayReacji(): string {
+        let matches = this.properties.content.match(emojiRegex);
+        if (matches.length > 0) {
+            return matches[0];
+        }
+        return "";
     }
 
     public save() {
@@ -489,6 +509,10 @@ export class Post {
             return PostType.RSVP;
         }
         if (this.properties['in-reply-to']) {
+            if (Post.checkIfReacji(this.properties.content)) {
+                return PostType.Reacji;
+            }
+
             return PostType.Reply;
         }
         if (this.properties['repost-of']) {
@@ -558,6 +582,17 @@ export class Post {
             }
         }
     }
+
+    public static checkIfReacji(content: string): boolean {
+        if (content) {
+            let testContent = content;
+            let contentWithoutEmoji = emojiStrip(testContent).replace(/\s/, "");
+            if (contentWithoutEmoji.length === 0) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 export class PostProperties {
@@ -615,6 +650,7 @@ export enum PostType {
     Event = "event",
     Trip = "trip",
     RSVP = "rsvp",
+    Reacji = "reacji",
     Reply = "reply",
     Repost = "repost",
     Bookmark = "bookmark",
