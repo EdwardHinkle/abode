@@ -1,0 +1,14 @@
+div.comment-main
+    div.comment-meta
+        span.u-author.h-card.comment-author
+            if (reply.author.photo)
+                img(src=reply.author.photo).u-photo.comment-author-photo
+            a(href=reply.author.url).u-url.p-name.comment-author-name.no-underline #{reply.author.name}
+        a(href=reply.url).u-url.no-underline.comment-permalink
+            time(datetime=reply.getPublishedDate()).dt-published.comment-date #{reply.semiRelativeDateTimeFormat()}
+    div.comment-content.p-content
+        if reply.content
+            | !{reply.content.html ? reply.content.html : reply.content.value}
+        if reply.photo
+            each photo in reply.photo
+                img(src=photo).u-photo

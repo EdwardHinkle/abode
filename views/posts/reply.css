@@ -1,0 +1,41 @@
+.comment-author {
+    position: relative;
+}
+
+.comment-author-photo {
+    width: 60px;
+    border-radius: 2px;
+    position: absolute;
+    left: -70px;
+    top: 0;
+}
+
+.comment-author-name {
+    color: rgba(83, 176, 237, 0.8);
+}
+
+.comment-main {
+    padding-left: 80px;
+}
+
+.comment-permalink {
+    color: #333;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.comment-content {
+    padding: 10px;
+    line-height: 1.5rem;
+}
+
+.comment-content > p {
+    margin: 0;
+}
+
+
+@media (prefers-color-scheme: dark) {
+    .comment-permalink {
+        color: #efefef;
+    }
+}

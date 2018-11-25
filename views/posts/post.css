@@ -145,6 +145,12 @@ h1.page-title, .itinerary-description, .audience-display {
     margin-right: auto;
 }
 
+.reacji-box, .replies-box, .mention-box, .bookmark-box {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .published-date {
     color: rgba(0,0,0,0.3);
     margin-right: 20px;
@@ -223,6 +229,39 @@ code > ol.code-line-numbers {
 
 code[class*="language-"], pre[class*="language-"], .token.punctuation {
     color: #333 !important;
+}
+
+.reacji-container {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    line-height: 1rem;
+}
+
+.reacji-container .reacji-response {
+    font-size: 2rem;
+    display: inline-block;
+    /*width: 10px;*/
+    transition: width 0.5s ease-in-out;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+/*.reacji-box:hover .reacji-response {*/
+    /*width: 40px;*/
+    /*transition: width 0.5s ease-in-out;*/
+/*}*/
+
+.mentions {
+    padding-bottom: 50px;
+}
+
+.bookmark-author-photo {
+    border-radius: 2px;
+    width: 60px;
+}
+
+.reply {
+    margin-bottom: 20px;
 }
 
 @media (prefers-color-scheme: dark) {

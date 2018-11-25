@@ -4,6 +4,7 @@ html
         style
             include ../global.css
             include post.css
+            include reply.css
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         link(rel="webmention", href="https://webmention.io/eddiehinkle.com/webmention")
         link(rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-xyMU7RufUdPGVOZRrc2z2nRWVWBONzqa0NFctWglHmt5q5ukL22+lvHAqhqsIm3h" crossorigin="anonymous")
@@ -273,6 +274,45 @@ html
                         |
                         |
                         a(href=post.client_id, target="_blank") #{post.client_id.replace("http://", "").replace("https://", "").split("/").shift()}
+            div.mentions
+                if mentions
+                    if mentions.reacji
+                        div.reacji-box
+                            h3 Reactions
+                            div.reacji-container
+                                each mention in mentions.reacji
+                                    a(href=mention.url, title=mention.author.name).reacji-response.no-underline #{mention.displayReacji()}
+                    if mentions.reply
+                        div.replies-box
+                            h3 Replies
+                            each reply in mentions.reply
+                                div.reply.u-comment.h-cite
+                                    include ./reply.pug
+                    if mentions.bookmark
+                        div.bookmark-box
+                            h3 People have bookmarked this post:
+                            each bookmark in mentions.bookmark
+                                a(href=bookmark.url).bookmark.no-underline
+                                    img(src=bookmark.author.photo, title=bookmark.author.name).bookmark-author-photo
+                    if mentions.mention
+                        div.mention-box
+                            h3 Other posts that mention this one
+                            each mention in mentions.mention
+                                div.mention-item
+                                    if mention.name && mention.name.length < 200
+                                        a(href=mention.url) #{mention.name}
+                                        if mention.author.name
+                                            |
+                                            | by
+                                            |
+                                            a(href=mention.author.url) #{mention.author.name}
+                                    else
+                                        a(href=mention.url) #{mention.url}
+                                        if mention.author.name
+                                            |
+                                            | by
+                                            |
+                                            a(href=mention.author.url) #{mention.author.name}
         include ../includes/footer.pug
         script
             include ./code-snippet-ui.js

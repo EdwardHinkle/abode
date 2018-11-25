@@ -94,19 +94,22 @@ app.use(function(req, res, next){
   res.type('txt').send('Not found');
 });
 
-new cron.CronJob('0 */20 * * * *', function() {
-  console.log('running routine cron job');
-  GitController.runGitStageAll().then(() => {
-     GitController.runGitCommit().then(() => {
-        GitController.runGitPull().then(() => {
-            GitController.runGitPush().then(() => {
-                console.log('Git committed and pushed');
+if (config.env === 'production') {
+    console.log('Setting up Cron Job because we\'re in production');
+    new cron.CronJob('0 */20 * * * *', function () {
+        console.log('running routine cron job');
+        GitController.runGitStageAll().then(() => {
+            GitController.runGitCommit().then(() => {
+                GitController.runGitPull().then(() => {
+                    GitController.runGitPush().then(() => {
+                        console.log('Git committed and pushed');
+                    });
+                });
             });
         });
-     });
-  });
-  LocationController.cacheCurrentLocation();
-}).start();
+        LocationController.cacheCurrentLocation();
+    }).start();
+}
 
 process.on('SIGINT', () => {
     console.log('Closing Database Connection');

@@ -13,6 +13,7 @@ import * as _ from 'lodash';
 import * as path from "path";
 import {resumeRouter} from "../resume";
 import { LocationController } from "../location/location.controller";
+import {Mention} from "../model/mention.model";
 
 export let dynamicRouter = express.Router();
 
@@ -417,13 +418,33 @@ function getPostPage(req, res) {
             return;
         }
 
+        let mentions = {};
+        let initialMentions = Mention.getMentionsForPost(post);
+        initialMentions.sort((a, b) => a.published.diff(b.published));
+        initialMentions.forEach(mention => {
+
+            let mentionType = mention.getMentionType();
+
+            if (mentions[mentionType] === undefined) {
+                mentions[mentionType] = [];
+            }
+
+            mentions[mentionType].push(mention);
+        });
+
+        // console.log('mentions');
+        // console.log(mentions);
+
         // Now we need to display the post
         res.render("posts/fullPost", {
-            post: post
+            post: post,
+            mentions: mentions
         });
         return;
     }).catch(error => {
         if (error !== undefined) {
+            console.log(`Failed to load post ${year}/${month}/${day}/${postIndex}`);
+            console.log(error);
             res.render("posts/errorMessage", {
                 errorMessage: "Sorry, the post you are looking for is still processing"
             });

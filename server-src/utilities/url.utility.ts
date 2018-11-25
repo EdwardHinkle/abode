@@ -8,4 +8,14 @@ export class UrlUtility {
         url = url.replace(/-$/, '');
         return url;
     }
+
+    static getCleanUrl(url: string): string {
+        url = url.replace('https://', '');
+        url = url.replace('http://', '');
+        url = url.replace('.json', '');
+        url = url.replace(/\//g, '-');
+        url = url.replace(/\?/g, '-');
+        url = url.replace(/-$/, '');
+        return url;
+    }
 }
