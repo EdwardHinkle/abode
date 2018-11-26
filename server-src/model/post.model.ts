@@ -499,6 +499,9 @@ export class Post {
         if (this.properties['abode-content-type'] && this.properties['abode-content-type'].indexOf('code/') > -1) {
             return PostType.Code;
         }
+        if (this.properties['follow-of']) {
+            return PostType.Follow;
+        }
         if (this.properties.start) {
             return PostType.Event;
         }
@@ -651,6 +654,7 @@ export enum PostType {
     Trip = "trip",
     RSVP = "rsvp",
     Reacji = "reacji",
+    Follow = "follow",
     Reply = "reply",
     Repost = "repost",
     Bookmark = "bookmark",

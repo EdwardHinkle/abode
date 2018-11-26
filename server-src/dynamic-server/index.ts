@@ -432,6 +432,9 @@ function getPostPage(req, res) {
 
         // console.log('mentions');
         // console.log(mentions);
+        
+        console.log('post for display');
+        console.log(post);
 
         // Now we need to display the post
         res.render("posts/fullPost", {
