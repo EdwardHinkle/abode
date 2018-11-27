@@ -3,6 +3,7 @@ import * as fs from "fs";
 import {UrlUtility} from "../utilities/url.utility";
 import {Post} from "./post.model";
 import * as moment from "moment";
+import {DataController} from "./data.controller";
 
 const emojiRegex = require('emoji-regex')();
 const emojiStrip = require('emoji-strip');
@@ -151,7 +152,56 @@ export class Mention {
         }
     }
 
+    getPostDate(): { year: number, month: number, day: number, post_index: number } {
+        let regex = new RegExp(/https?:\/\/eddiehinkle.com\/([0-9]{4})\/([0-9]{2})\/([0-9]{2})\/([0-9]{1,2})\/[a-z]+\/?$|https?:\/\/eddiehinkle.com\/([a-z]+)\/?$/);
+        let matches = this.getTarget().match(regex);
+
+        return {
+            year: parseInt(matches[1]),
+            month: parseInt(matches[2]),
+            day: parseInt(matches[3]),
+            post_index: parseInt(matches[4])
+        }
+    }
+
+    public updateDatabaseCache(): any {
+
+        if (this.isCurrentPermalink()) {
+            console.log('Attempting to update mention in database');
+
+            let postDate = this.getPostDate();
+
+            return new Promise((resolve, reject) => {
+                DataController.db.serialize(() => {
+
+                    let addMention = DataController.db.prepare("INSERT OR IGNORE INTO `mentions` (source, type, published, homepage_mention) VALUES (?, ?, ?, ?)");
+                    let addPostMentions = DataController.db.prepare("INSERT OR IGNORE INTO `posts_mentions` (post_year, post_month, post_day, post_index, source) VALUES (?, ?, ?, ?, ?)");
+
+                    addMention.run(
+                        this.url,
+                        this.getMentionType(),
+                        this.getPublishedDate(),
+                        this.isCurrentPermalink()
+                    );
+                    addPostMentions.run(
+                        postDate.year,
+                        postDate.month,
+                        postDate.day,
+                        postDate.post_index,
+                        this.url
+                    );
+
+                    addMention.finalize(() => resolve());
+                    addPostMentions.finalize(() => resolve());
+
+                });
+            });
+        }
+    }
+
     saveFile(overridePath?: string) {
+        this.updateDatabaseCache();
+
         let mentionDir;
 
         if (overridePath) {
