@@ -213,6 +213,10 @@ function webmentionAlert(req, res) {
             return console.log(err);
         }
     });
+    
+    let newMention = new Mention(receivedWebmention.post);
+    newMention.saveFile();
+    console.log(`Saved new mention ${newMention.getPostPath()}`);
 
     let micropubNotification = {
         type: ['h-entry'],
