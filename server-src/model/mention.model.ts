@@ -172,6 +172,15 @@ export class Mention {
                     fs.mkdirSync(mentionDir);
                 }
 
+            } else if (!this.isCurrentPermalink()) {
+
+                mentionDir = `${storageDir}/mentions/unknown`;
+
+                // Create mention directory if it doesn't exist
+                if (!fs.existsSync(mentionDir)) {
+                    fs.mkdirSync(mentionDir);
+                }
+
             } else {
 
                 let postPath = this.getPostPath();
