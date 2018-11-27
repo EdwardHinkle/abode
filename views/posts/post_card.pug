@@ -162,6 +162,21 @@ div.h-entry
                     else
                         | .
                         |
+    div.reactions
+        each mention in post.mentions
+            - var mentionType = mention.getMentionType();
+            if mentionType === "reacji"
+                a(href=mention.url, title=mention.author.name).reacji-response.no-underline #{mention.displayReacji()}
+            else if mentionType === "like"
+                a(href=mention.url, title=mention.author.name).reacji-response.no-underline 👍
+            else if mentionType === "reply"
+                a(href=mention.url, title=mention.author.name).reacji-response.no-underline 💬
+            else if mentionType === "repost"
+                a(href=mention.url, title=mention.author.name).reacji-response.no-underline ♻️
+            else if mentionType === "bookmark"
+                a(href=mention.url, title=mention.author.name).reacji-response.no-underline 🔖
+            else
+                a(href=mention.url, title=mention.author.name).reacji-response.no-underline 💭
     div.meta
         a(href=post.getOfficialPermalink()).u-url
             time(datetime=post.getPublishedDate()).dt-published.published-date #{post.semiRelativeDateTimeFormat()}

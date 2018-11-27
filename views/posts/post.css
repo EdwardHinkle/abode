@@ -269,6 +269,18 @@ code[class*="language-"], pre[class*="language-"], .token.punctuation {
     line-height: 6rem;
 }
 
+.post-list .post-item .meta {
+    margin-top: 20px;
+}
+
+.post-list .post-item .reactions {
+    margin-top: 30px;
+}
+
+.post-list .post-item .reactions .reacji-response {
+    padding: 5px;
+}
+
 @media (prefers-color-scheme: dark) {
     .published-date {
         color: rgba(255,255,255,0.3);

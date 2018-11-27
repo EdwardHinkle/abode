@@ -230,7 +230,17 @@ export class Posts {
                         }));
                     }, (error, count) => {
                         Promise.all(posts).then(posts => {
-                            resolve(posts);
+                            if (searchInfo.includeRecentMentions) {
+                                let mentionsLoaded: Promise<boolean>[] = [];
+                                posts.forEach(post => {
+                                    mentionsLoaded.push(post.loadRecentMentions(searchInfo.mentionsLimit).then((mentions => {
+                                        return mentions;
+                                    })));
+                                });
+                                Promise.all(mentionsLoaded).then(() => resolve(posts));
+                            } else {
+                                resolve(posts);
+                            }
                         })
                     });
             });
@@ -397,4 +407,6 @@ export interface SearchPostsInfo {
     orderBy?: [string];
     orderDirection?: ['ASC' | 'DESC'];
     limit?: number;
+    includeRecentMentions?: boolean;
+    mentionsLimit?: number;
 }

@@ -97,7 +97,9 @@ function getChannelFeed(req, res, next) {
                     showPrivate: req.session.username === 'eddiehinkle.com',
                     orderBy: ['published'],
                     orderDirection: ['DESC'],
-                    limit: 20
+                    limit: 20,
+                    includeRecentMentions: true,
+                    mentionsLimit: 10
                 }).then(posts => {
                     let currentUrl = getRequestedUrl(req);
 
@@ -429,12 +431,6 @@ function getPostPage(req, res) {
 
             mentions[mentionType].push(mention);
         });
-
-        // console.log('mentions');
-        // console.log(mentions);
-        
-        console.log('post for display');
-        console.log(post);
 
         // Now we need to display the post
         res.render("posts/fullPost", {

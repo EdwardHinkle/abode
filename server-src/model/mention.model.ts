@@ -8,7 +8,7 @@ import {DataController} from "./data.controller";
 const emojiRegex = require('emoji-regex')();
 const emojiStrip = require('emoji-strip');
 
-const storageDir = `${__dirname}/../../jekyll/_source/_note`;
+const storageDir = `${__dirname}/../../jekyll/_source/_note/posts`;
 
 export class Mention {
 
@@ -260,6 +260,70 @@ export class Mention {
 
     }
 
+    static getRecentMentionsForPost(postInfo: MentionPostInfo | Post, numberOfMentions: number): Promise<Mention[]> {
+        let year, month, day, postIndex;
+        let mentions: Promise<Mention>[] = [];
+
+
+        if (postInfo instanceof Post) {
+            year = postInfo.properties.getYearString();
+            month = postInfo.properties.getMonthString();
+            day = postInfo.properties.getDayString();
+            postIndex = postInfo.properties.postIndex;
+        } else {
+            year = postInfo.year;
+            month = postInfo.month;
+            day = postInfo.day;
+            postIndex = postInfo.postIndex;
+        }
+
+        let sql = `SELECT mentions.* FROM mentions INNER JOIN posts_mentions ON mentions.source = posts_mentions.source WHERE posts_mentions.post_year = ${year} AND posts_mentions.post_month = ${month} AND posts_mentions.post_day = ${day} AND posts_mentions.post_index = ${postIndex} ORDER BY mentions.published DESC LIMIT ${numberOfMentions}`;
+
+        return new Promise((resolve, reject) => {
+            DataController.db.serialize(() => {
+                DataController.db.each(sql,
+                    (error, row) => {
+                        if (error) {
+                            console.log('ERROR!');
+                            console.log(error);
+                        }
+
+                        mentions.push(Mention.getMention({
+                            year: year,
+                            month: month,
+                            day: day,
+                            postIndex: postIndex,
+                            source: row.source
+                        }));
+                    }, (error, count) => {
+                        Promise.all(mentions).then(mentions => {
+                            resolve(mentions);
+                        })
+                    });
+            });
+        });
+    }
+
+    static getMention(mentionInfo: GetMentionInfo): Promise<Mention> {
+        let mentionPath = `${storageDir}/${mentionInfo.year}/${mentionInfo.month}/${mentionInfo.day}/${mentionInfo.postIndex}/mentions/${UrlUtility.getCleanUrl(mentionInfo.source)}.json`;
+
+        return new Promise((resolve, reject) => {
+            if (fs.existsSync(mentionPath)) {
+                try {
+                    let mentionData = JSON.parse(fs.readFileSync(mentionPath, {encoding: 'utf8'}));
+                    resolve(new Mention(mentionData));
+                } catch (error) {
+                    console.log(`Failed to load mention ${mentionPath}`);
+                    console.log(error);
+                    reject(error);
+                }
+            } else {
+                console.log(`${mentionPath} doesn't exist`);
+                reject(`${mentionPath} doesn't exist`);
+            }
+        });
+    }
+
     static getMentionsForPost(postInfo: MentionPostInfo | Post): Mention[] {
         let mentions = [];
         let mentionPath;
@@ -319,6 +383,14 @@ export interface MentionPostInfo {
     month: number;
     day: number;
     postIndex: number;
+}
+
+export interface GetMentionInfo {
+    year: string;
+    month: string;
+    day: string;
+    postIndex: string;
+    source: string;
 }
 
 export type MentionType = 'mention' | 'reply' | 'bookmark' | 'reacji';

@@ -9,6 +9,7 @@ import * as Prism from "prismjs";
 import * as loadLanguages from "prismjs/components/";
 import {Cards} from "./cards.model";
 import {Card} from "./card.model";
+import {Mention} from "./mention.model";
 
 const emojiRegex = require('emoji-regex')();
 const emojiStrip = require('emoji-strip');
@@ -22,6 +23,7 @@ export class Post {
     public type: 'entry' | 'event' = 'entry';
     public properties: PostProperties;
     public client_id: string;
+    public mentions: Mention[];
 
     public constructor() {
 
@@ -287,6 +289,15 @@ export class Post {
             return matches[0];
         }
         return "";
+    }
+
+    public loadRecentMentions(numberOfMentions: number): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            Mention.getRecentMentionsForPost(this, numberOfMentions).then(mentions => {
+                this.mentions = mentions;
+                resolve(true);
+            });
+        });
     }
 
     public save() {
