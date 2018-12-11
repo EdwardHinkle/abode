@@ -80,6 +80,10 @@ function getJSONFeedUrl(currentUrl: string) {
 function getChannelFeed(req, res, next) {
 
     return new Promise((resolve, reject) => {
+        
+        console.log('user info');
+        console.log(req.session.username);
+        
         // Fetch Channel Data
         let channelData: ChannelData[] = JSON.parse(fs.readFileSync(`${__dirname}/../../jekyll/_source/_note/channels/channels.json`, 'utf8'));
 
@@ -94,12 +98,10 @@ function getChannelFeed(req, res, next) {
             if (channel.type === 'static') {
                 Posts.searchPosts({
                     inChannel: channel.id,
-                    showPrivate: req.session.username === 'eddiehinkle.com',
+                    showPrivate: req.session.username === 'https://eddiehinkle.com/',
                     orderBy: ['published'],
                     orderDirection: ['DESC'],
                     limit: 20,
-                    includeRecentMentions: true,
-                    mentionsLimit: 10
                 }).then(posts => {
                     let currentUrl = getRequestedUrl(req);
 
@@ -113,7 +115,7 @@ function getChannelFeed(req, res, next) {
             } else if (channel.type === 'dynamic') {
                 let channelQuery = channel.query;
 
-                channelQuery.showPrivate = req.session.username === 'eddiehinkle.com';
+                channelQuery.showPrivate = req.session.username === 'https://eddiehinkle.com/';
 
                 Posts.searchPosts(channelQuery).then(posts => {
 
@@ -190,7 +192,7 @@ function getChannelJsonFeed(req, res, next) {
             if (channel.type === 'static') {
                 Posts.searchPosts({
                     inChannel: channel.id,
-                    showPrivate: req.session.username === 'eddiehinkle.com',
+                    showPrivate: req.session.username === 'https://eddiehinkle.com/',
                     orderBy: ['published'],
                     orderDirection: ['DESC'],
                     limit: 20
@@ -204,7 +206,7 @@ function getChannelJsonFeed(req, res, next) {
             } else if (channel.type === 'dynamic') {
                 let channelQuery = channel.query;
 
-                channelQuery.showPrivate = req.session.username === 'eddiehinkle.com',
+                channelQuery.showPrivate = req.session.username === 'https://eddiehinkle.com/',
                 channelQuery.limit = 40;
 
                 Posts.searchPosts(channelQuery).then(posts => {
@@ -240,7 +242,7 @@ function getChannelRssFeed(req, res, next) {
             if (channel.type === 'static') {
                 Posts.searchPosts({
                     inChannel: channel.id,
-                    showPrivate: req.session.username === 'eddiehinkle.com',
+                    showPrivate: req.session.username === 'https://eddiehinkle.com/',
                     orderBy: ['published'],
                     orderDirection: ['DESC'],
                     limit: 20
@@ -259,7 +261,7 @@ function getChannelRssFeed(req, res, next) {
             } else if (channel.type === 'dynamic') {
                 let channelQuery = channel.query;
 
-                channelQuery.showPrivate = req.session.username === 'eddiehinkle.com';
+                channelQuery.showPrivate = req.session.username === 'https://eddiehinkle.com/';
                 channelQuery.limit = 40;
 
                 Posts.searchPosts(channelQuery).then(posts => {
@@ -289,7 +291,7 @@ function getTagFeed(req, res, next) {
 
     Posts.searchPosts({
         taggedWith: [tagName.toLowerCase()],
-        showPrivate: req.session.username === 'eddiehinkle.com',
+        showPrivate: req.session.username === 'https://eddiehinkle.com/',
         orderBy: ['published'],
         orderDirection: ['DESC'],
         limit: 20
@@ -313,7 +315,7 @@ function getTagJsonFeed(req, res, next) {
 
     Posts.searchPosts({
         taggedWith: [tagName.toLowerCase()],
-        showPrivate: req.session.username === 'eddiehinkle.com',
+        showPrivate: req.session.username === 'https://eddiehinkle.com/',
         orderBy: ['published'],
         orderDirection: ['DESC'],
         limit: 20
@@ -331,7 +333,7 @@ function getTagRssFeed(req, res, next) {
 
     Posts.searchPosts({
         taggedWith: [tagName.toLowerCase()],
-        showPrivate: req.session.username === 'eddiehinkle.com',
+        showPrivate: req.session.username === 'https://eddiehinkle.com/',
         orderBy: ['published'],
         orderDirection: ['DESC'],
         limit: 20
@@ -773,7 +775,7 @@ function getDatePhotoGallery(req, res) {
 
     let searchQuery: SearchPostsInfo = {
         hasType: [PostType.Photo],
-        showPrivate: req.session.username === 'eddiehinkle.com',
+        showPrivate: req.session.username === 'https://eddiehinkle.com/',
         orderBy: ['published'],
         orderDirection: ['DESC'],
     };
@@ -823,7 +825,7 @@ function getHomepage(req, res, next) {
             orderBy: ["published"],
             orderDirection: ["DESC"],
             limit: 1,
-            showPrivate: req.session.username === 'eddiehinkle.com'
+            showPrivate: req.session.username === 'https://eddiehinkle.com/'
         }, false));
 
         retrievePosts.push(Posts.searchPosts({
@@ -831,7 +833,7 @@ function getHomepage(req, res, next) {
             orderBy: ["published"],
             orderDirection: ["DESC"],
             limit: 4,
-            showPrivate: req.session.username === 'eddiehinkle.com'
+            showPrivate: req.session.username === 'https://eddiehinkle.com/'
         }, false));
 
         retrievePosts.push(Posts.searchPosts({
@@ -839,7 +841,7 @@ function getHomepage(req, res, next) {
             orderBy: ["published"],
             orderDirection: ["DESC"],
             limit: 1,
-            showPrivate: req.session.username === 'eddiehinkle.com'
+            showPrivate: req.session.username === 'https://eddiehinkle.com/'
         }, false));
 
         retrievePosts.push(Posts.searchPosts({
@@ -847,7 +849,7 @@ function getHomepage(req, res, next) {
             orderBy: ["published"],
             orderDirection: ["DESC"],
             limit: 4,
-            showPrivate: req.session.username === 'eddiehinkle.com'
+            showPrivate: req.session.username === 'https://eddiehinkle.com/'
         }, false));
 
         retrievePosts.push(Posts.searchPosts({
@@ -856,7 +858,7 @@ function getHomepage(req, res, next) {
             orderBy: ["published"],
             orderDirection: ["DESC"],
             limit: 10,
-            showPrivate: req.session.username === 'eddiehinkle.com'
+            showPrivate: req.session.username === 'https://eddiehinkle.com/'
         }, false));
 
         retrievePosts.push(Posts.searchPosts({
@@ -864,7 +866,7 @@ function getHomepage(req, res, next) {
             orderBy: ["published"],
             orderDirection: ["DESC"],
             limit: 5,
-            showPrivate: req.session.username === 'eddiehinkle.com'
+            showPrivate: req.session.username === 'https://eddiehinkle.com/'
         }, false));
 
         retrievePosts.push(Posts.searchPosts({
@@ -872,7 +874,7 @@ function getHomepage(req, res, next) {
             orderBy: ["published"],
             orderDirection: ["DESC"],
             limit: 54,
-            showPrivate: req.session.username === 'eddiehinkle.com'
+            showPrivate: req.session.username === 'https://eddiehinkle.com/'
         }, false));
 
         retrievePosts.push(Posts.searchPosts({
@@ -880,7 +882,7 @@ function getHomepage(req, res, next) {
             orderBy: ["published"],
             orderDirection: ["DESC"],
             limit: 1,
-            showPrivate: req.session.username === 'eddiehinkle.com'
+            showPrivate: req.session.username === 'https://eddiehinkle.com/'
         }, false));
 
 

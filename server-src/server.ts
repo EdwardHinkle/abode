@@ -94,7 +94,7 @@ app.use(function(req, res, next){
   res.type('txt').send('Not found');
 });
 
-if (config.env === 'production') {
+if (config.ENV === 'production') {
     console.log('Setting up Cron Job because we\'re in production');
     new cron.CronJob('0 */20 * * * *', function () {
         console.log('running routine cron job');

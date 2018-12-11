@@ -28,6 +28,7 @@ body {
 
 .archive-list {
     max-width: 800px;
+    width: 85%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -93,6 +94,7 @@ body {
 
 .post-item {
     max-width: 700px;
+    width: 85%;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 100px;
@@ -106,6 +108,7 @@ body {
     font-size: 20px;
     line-height: 30px;
     max-width: 800px;
+    width: 85%;
     margin-left: auto;
     margin-right: auto;
     text-align: justify;
@@ -141,12 +144,14 @@ body {
 h1.page-title, .itinerary-description, .audience-display {
     line-height: 2.5rem;
     max-width: 800px;
+    width: 85%;
     margin-left: auto;
     margin-right: auto;
 }
 
-.reacji-box, .replies-box, .mention-box, .bookmark-box {
+.reacji-box, .replies-box, .mention-box, .bookmark-box, .meta {
     max-width: 800px;
+    width: 85%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -168,6 +173,7 @@ h1.page-title, .itinerary-description, .audience-display {
 
 .watch-image-container, .listen-image-container {
     max-width: 800px;
+    width: 85%;
     margin-left: auto;
     margin-right: auto;
 }

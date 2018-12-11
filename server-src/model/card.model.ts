@@ -49,7 +49,7 @@ export class Card {
                 JSON.stringify({
                     type: card.type,
                     properties: card.properties
-                }), 'utf8');
+                }), { encoding: 'utf8'});
         } catch (error) {
             console.log('Error trying to save card: ' + card.getRepresentitiveUrl());
             console.log(error);

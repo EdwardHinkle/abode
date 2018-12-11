@@ -36,7 +36,7 @@ export class Cards {
         return new Promise((resolve, reject) => {
             let cards: Promise<Card>[] = [];
 
-            let cardsDir = fs.readdirSync(cardsDirectory, { encoding: 'utf8' });
+            let cardsDir = fs.readdirSync(cardsDirectory);
             cardsDir.forEach(cardFile => {
                 cards.push(Card.loadCard(cardFile));
             });
