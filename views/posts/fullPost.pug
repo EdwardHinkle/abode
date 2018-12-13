@@ -157,7 +157,7 @@ html
                         | with
                         |
                         each person, index in post.properties.personTags
-                            a(href=person[person.getRepresentitiveUrl()]).u-category #{person.properties.nickname}
+                            a(href=person.getRepresentitiveUrl()).u-category.h-card #{person.properties.nickname}
                             if index <= post.properties.personTags.length - 3
                                 | ,
                                 |
