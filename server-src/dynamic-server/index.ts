@@ -11,6 +11,7 @@ import {DataController} from "../model/data.controller";
 import * as path from "path";
 import {LocationController} from "../location/location.controller";
 import {Mention} from "../model/mention.model";
+import {Card} from "../model/card.model";
 import moment = require("moment");
 
 export let dynamicRouter = express.Router();
@@ -29,9 +30,14 @@ dynamicRouter.get('/:channel([a-z\-]+)/feed.json', requireDatabaseCache, getChan
 dynamicRouter.get('/:channel([a-z\-]+)/feed.xml', requireDatabaseCache, getChannelRssFeed);
 
 // Tag Routes
-dynamicRouter.get('/tag/:tag([a-z0-9\-]+)', requireDatabaseCache, getTagFeed);
-dynamicRouter.get('/tag/:tag([a-z0-9\-]+)/feed.json', requireDatabaseCache, getTagJsonFeed);
-dynamicRouter.get('/tag/:tag([a-z0-9\-]+)/feed.xml', requireDatabaseCache, getTagRssFeed);
+dynamicRouter.get('/tag/:tag([a-z0-9\-,]+)', requireDatabaseCache, getTagFeed);
+dynamicRouter.get('/tag/:tag([a-z0-9\-,]+)/feed.json', requireDatabaseCache, getTagJsonFeed);
+dynamicRouter.get('/tag/:tag([a-z0-9\-,]+)/feed.xml', requireDatabaseCache, getTagRssFeed);
+
+// Interaction Routes
+dynamicRouter.get('/interaction/:tagUrl([a-z0-9\-\.]+)', requireDatabaseCache, getInteractionFeed);
+//dynamicRouter.get('/interaction/:tag([a-z0-9\-]+)/feed.json', requireDatabaseCache, getTagJsonFeed);
+//dynamicRouter.get('/interaction/:tag([a-z0-9\-]+)/feed.xml', requireDatabaseCache, getTagRssFeed);
 
 // Photo Routes
 dynamicRouter.get('/photos/:year(\\d+)?/:month(\\d+)?/:day(\\d+)?/', requireDatabaseCache, getDatePhotoGallery);
@@ -285,12 +291,43 @@ function getChannelRssFeed(req, res, next) {
 
 }
 
+function getInteractionFeed(req, res, next) {
+    let tagUrl = req.params.tagUrl;
+    
+    Card.loadCard(tagUrl).then(card => {
+        Posts.searchPosts({
+            taggedWith: [card.getRepresentitiveUrl()],
+            showPrivate: req.session.username === 'https://eddiehinkle.com/',
+            orderBy: ['published'],
+            orderDirection: ['DESC'],
+            limit: 20
+        }).then(posts => {
+    
+            let currentUrl = getRequestedUrl(req);
+    
+            res.render(`posts/cards`, {
+                feed_url: currentUrl,
+                jsonfeed_url: getJSONFeedUrl(currentUrl),
+                title: `Interactions with ${card.getName()}`,
+                posts: posts
+            })
+        });
+    });
+    
+}
+
 function getTagFeed(req, res, next) {
 
-    let tagName = req.params.tag;
+    let tags: string[];
+    
+    if (req.params.tag.indexOf(",") > -1) {
+        tags = req.params.tag.split(",").map(tag => tag.toLowerCase());
+    } else {
+        tags = [req.params.tag.toLowerCase()];
+    }
 
     Posts.searchPosts({
-        taggedWith: [tagName.toLowerCase()],
+        taggedWith: tags,
         showPrivate: req.session.username === 'https://eddiehinkle.com/',
         orderBy: ['published'],
         orderDirection: ['DESC'],
@@ -302,7 +339,7 @@ function getTagFeed(req, res, next) {
         res.render(`posts/cards`, {
             feed_url: currentUrl,
             jsonfeed_url: getJSONFeedUrl(currentUrl),
-            title: tagName,
+            title: tags.join(" and "),
             posts: posts
         })
     });
@@ -311,16 +348,22 @@ function getTagFeed(req, res, next) {
 
 function getTagJsonFeed(req, res, next) {
 
-    let tagName = req.params.tag;
+    let tags: string[];
+    
+    if (req.params.tag.indexOf(",") > -1) {
+        tags = req.params.tag.split(",").map(tag => tag.toLowerCase());
+    } else {
+        tags = [req.params.tag.toLowerCase()];
+    }
 
     Posts.searchPosts({
-        taggedWith: [tagName.toLowerCase()],
+        taggedWith: tags,
         showPrivate: req.session.username === 'https://eddiehinkle.com/',
         orderBy: ['published'],
         orderDirection: ['DESC'],
         limit: 20
     }).then(posts => {
-        convertPostsToJsonFeed(posts, `${tagName} tag feed`, getRequestedUrl(req)).then(jsonFeed => {
+        convertPostsToJsonFeed(posts, `${tags.join(" and ")} tag feed`, getRequestedUrl(req)).then(jsonFeed => {
             res.json(jsonFeed);
         });
     });
@@ -329,10 +372,16 @@ function getTagJsonFeed(req, res, next) {
 
 function getTagRssFeed(req, res, next) {
 
-    let tagName = req.params.tag;
+    let tags: string[];
+    
+    if (req.params.tag.indexOf(",") > -1) {
+        tags = req.params.tag.split(",").map(tag => tag.toLowerCase());
+    } else {
+        tags = [req.params.tag.toLowerCase()];
+    }
 
     Posts.searchPosts({
-        taggedWith: [tagName.toLowerCase()],
+        taggedWith: tags,
         showPrivate: req.session.username === 'https://eddiehinkle.com/',
         orderBy: ['published'],
         orderDirection: ['DESC'],
@@ -340,9 +389,9 @@ function getTagRssFeed(req, res, next) {
     }).then(posts => {
         res.set('Content-Type', 'application/rss+xml');
         res.render('posts/rss-feed', {
-            title: `${tagName} tag Feed`,
+            title: `${tags.join(" and ")} tag Feed`,
             posts: posts,
-            description: `This is a feed of posts that are tagged with #{tagName}`,
+            description: `This is a feed of posts that are tagged with #{tags.join(" and ")}`,
             feed_url: getRequestedUrl(req),
             parent_url: getRequestedUrl(req).replace("feed.xml", ""),
             date: moment().format("ddd, DD MMM YYYY HH:mm:ss ZZ")
