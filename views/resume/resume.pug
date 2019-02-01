@@ -48,8 +48,6 @@ html
                     img(src="/resume/images/logos/gtindependence-logo.png").client-logo
         //div
         //    h2.section-title Technical Skills
-        //div
-        //    h2.section-title Testimonials
         div.timeline
             h2.section-title#current-work Current Work
             ul
@@ -102,6 +100,17 @@ html
                 img(src="/resume/images/portfolio/indigenous-4.png").portfolio-item
                 img(src="/resume/images/portfolio/indigenous-5.png").portfolio-item
                 img(src="/resume/images/portfolio/indigenous-6.png").portfolio-item
+        div.feedback#feedback
+            h2.section-title Co-Worker Feedback
+            p.section-subtitle How someone is to work with is just as important as what they can do. Here is what some of my past co-workers have said about working with me.
+            ul
+                each recommendation in recommendations
+                    li.feedback-item
+                        div.feedback-content #{recommendation.content}
+                        div.feedback-meta
+                            a(href=recommendation.url).feedback-author.no-underline #{recommendation.name}
+                            div.feedback-company (#{recommendation.position} @ #{recommendation.company})
+                            div.feedback-date Written on #{recommendation.published}
         div.interest Interested in working together? Hit me up!
             |
             |

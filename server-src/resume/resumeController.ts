@@ -76,7 +76,25 @@ export class ResumeController {
             }
         ];
 
-        let recommendations: [
+        let recommendations = [
+            {
+                name: "Kaila Kaltrider",
+                url: "https://www.linkedin.com/in/kaila-kaltrider-b648936a/",
+                company: "Maestro",
+                position: "Project Manager",
+                published: "September 1, 2017",
+                relation: "Kaila worked with Eddie in different groups",
+                content: "Working with Eddie the past 2 years has been a great experience! Always eager to assist and never without a positive attitude, he made work fun and is the embodiment of a team player. Eddie is a breath of fresh air in a world where developers and other teams often struggle to communicate. As a QA analyst, I rarely saw Eddie without a solution. He was always ready to assist with any bugs that I found, and more than willing to take time to explain not only the solution and impact, but also offer suggestions for how we, as a team, could improve in the future. Eddie is approachable and strives to create an environment where open communication with developers about issues large or small is the norm. Eddie helped set high expectations for team communication and continually provided updates of his progress, complications, time estimates, impacts, and successes throughout the day. Working with Eddie has truly been a pleasure and I hope for the chance to work together again."
+            },
+            {
+                name: "Daniel Bedich",
+                url: "https://www.linkedin.com/in/daniel-bedich-0a0745a8/",
+                company: "Maestro",
+                position: "Product Designer",
+                published: "August 22, 2017",
+                relation: "Eddie worked with Daniel in the same group",
+                content: "A user first thinker! Eddie has taken a user centered approach to the projects we have worked on together. Animations were thoughtfully planned out to ensure the user knew where they are, where they came from and where they are going. His efforts greatly increased the navigational experience in an efficient and cost effective way. He knows the value a good experience can bring works hard to create that for the user"
+            },
             {
                 name: "Carla Nelson",
                 url: "https://www.linkedin.com/in/carlyrnelson/",
@@ -103,93 +121,50 @@ export class ResumeController {
                 published: "September 20, 2017",
                 relation: "Michael worked with Eddie in different groups",
                 content: "Eddie is one of the most personable, team-player colleagues I've ever had. Always willing to answer questions, give additional context and support the team in whatever way he can. Not to mention, he writes great code! If you have a chance to work with Eddie take it!"
+            },
+
+            {
+                name: "Daniel Krasinski",
+                url: "https://www.linkedin.com/in/daniel-krasinski-6a0a4168/",
+                company: "Maestro",
+                position: "Senior Account Manager",
+                published: "August 10, 2017",
+                relation: "Daniel worked with Eddie in different groups",
+                content: "I had the pleasure of working with Eddie on a variety of projects during our time together. I found him knowledgeable as a technology consultant, VERY effective as a Frontend Developer, and peerless when interfacing with clients. Eddie is also a great problem solver and is constantly exploring innovative/fringe techniques to better service his company and their clients. However, Eddie's greatest asset is his character. He would often work tirelessly to meet a deadline or delight a client and could do so joyfully and effectively. His humble nature will be the first thing you notice after meeting him and will strike you more after you get to see his work. Lastly, Eddie's positive attitude can uplift both internal team members and the clients he serves, even in the direst of circumstances. I am truly sad to see him leave and eagerly hope to work with him again!"
+            },
+            {
+                name: "Jacob Bodnar",
+                url: "https://www.linkedin.com/in/jbodnar/",
+                company: "Maestro",
+                position: "VP of Operations",
+                published: "August 5, 2017",
+                relation: "Jacob worked with Eddie in different groups",
+                content: "I worked with Eddie for several years and was always delighted by how easy he was to work with. Eddie is a great thinker, able to quickly determine the appropriate solution to a client's problem. He was always flexible when something didn't go as planned and level headed regardless of the complexity or pressure."
+            },
+            {
+                name: "John Pinkster",
+                url: "https://www.linkedin.com/in/john-pinkster/",
+                company: "Maestro",
+                position: "Principal Software Engineer",
+                published: "August 5, 2017",
+                relation: "John was senior to Eddie but didn't manage directly",
+                content: "His profile says it all ... Amazing personality, reliable, always willing to help out, flexible and teachable! From the moment I interviewed Eddie, I could tell he was going to come in and absolutely thrive at Maestro. He was able to work autonomously as a remote employee while still connecting with our team on a personal level, which is difficult to do. As a developer, he went from caught up to speed very quickly and always looked for new challenges. We are very proud of the growth we saw and are excited for him to step out into a new world and share his talent with others. We will miss you sir. It was a pleasure working with you."
+            },
+            {
+                name: "Joe Gasiorek",
+                url: "https://www.linkedin.com/in/joegasiorek/",
+                company: "Mobile",
+                position: "Director of Engineering",
+                published: "April 16, 2013",
+                relation: "Joe worked with Eddie in different groups",
+                content: "At OTI, I saw Eddie's wide skill set as a Geospatial Software Engineer. His work creating visualizations, that consumed many different data sets, enabled the team to make better programatic decisions. Eddie's flexibility in discussing both technical details and project goals made him a great asset to the team."
             }
-            // {
-            //     name: "Kaila Kaltrider",
-            //     url: "",
-            //     company: "",
-            //     position: "",
-            //     published: "",
-            //     relation: "",
-            //     content: ""
-            // },
-            // {
-            //     name: "Daniel Bedich",
-            //     url: "",
-            //     company: "",
-            //     position: "",
-            //     published: "",
-            //     relation: "",
-            //     content: ""
-            // },
-            // {
-            //     name: "Daniel Krasinski",
-            //     url: "",
-            //     company: "",
-            //     position: "",
-            //     published: "",
-            //     relation: "",
-            //     content: ""
-            // },
-            // {
-            //     name: "Jacob Bodnar",
-            //     url: "",
-            //     company: "",
-            //     position: "",
-            //     published: "",
-            //     relation: "",
-            //     content: ""
-            // },
-            // {
-            //     name: "John Pinkster",
-            //     url: "",
-            //     company: "",
-            //     position: "",
-            //     published: "",
-            //     relation: "",
-            //     content: ""
-            // },
-            // {
-            //     name: "Joe Gasiorek",
-            //     url: "",
-            //     company: "",
-            //     position: "",
-            //     published: "",
-            //     relation: "",
-            //     content: ""
-            // },
-            // {
-            //     name: "Markis Snodgrass",
-            //     url: "",
-            //     company: "",
-            //     position: "",
-            //     published: "",
-            //     relation: "",
-            //     content: ""
-            // },
-            // {
-            //     name: "Davin Aoyagi",
-            //     url: "",
-            //     company: "",
-            //     position: "",
-            //     published: "",
-            //     relation: "",
-            //     content: ""
-            // },
-            // {
-            //     name: "Sandee Carillo",
-            //     url: "",
-            //     company: "",
-            //     position: "",
-            //     published: "",
-            //     relation: "",
-            //     content: ""
-            // }
         ];
 
         res.render("resume/resume", {
             currentWork: currentWork,
-            workHistory: workHistory
+            workHistory: workHistory,
+            recommendations: recommendations
         });
     }
 }
