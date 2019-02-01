@@ -23,7 +23,7 @@
     text-align: right;
 }
 
-.watch-container, .listen-container, .meal-container, photos-container {
+.watch-container, .listen-container, .meal-container, .photos-container, .checkin-container {
 	width: fit-content;
 	margin-left: auto;
 	margin-right: auto;

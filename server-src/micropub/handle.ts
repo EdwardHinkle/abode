@@ -195,7 +195,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                             console.log(`Working on property ${propertyName}`);
 
-                            if (propertyName === 'watch-of' || propertyName === 'audience') {
+                            if (propertyName === 'watch-of' || propertyName === 'audience' || propertyName === 'listen-of') {
 
                                 yamlDocument.properties[propertyName] = micropubDocument.properties[propertyName];
 
@@ -758,6 +758,10 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         // Create type slug for permalink based on post type but lowercase
                         let typeSlug = micropubPostType.toLowerCase();
 
+                        if (typeSlug === "audio") {
+                            typeSlug = "podcast";
+                        }
+
                         // Create Permalink
                         yamlDocument.permalink = `/:year/:month/:day/:slug/${typeSlug}/`;
 
@@ -841,8 +845,12 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         }
 
                     }));
+                    
+                    if (micropubDocument.properties['listen-of']) {
+                        console.log(micropubDocument.properties['listen-of'].type);
+                    }
 
-                    if (micropubDocument.properties['listen-of'] !== undefined) {
+                    if (micropubDocument.properties['listen-of'] !== undefined && micropubDocument.properties['listen-of'].type === undefined) {
 
                         yamlDocumentReady.push(new Promise((resolve, reject) => {
                             var podcastUrl = micropubDocument.properties['listen-of'][0];

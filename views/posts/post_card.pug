@@ -1,5 +1,5 @@
 div.h-entry
-    a(href="/").u-author.no-underline
+    a(href="https://eddiehinkle.com/").u-author.no-underline
     if post.properties.audience
         div.audience-display
             i.fa.fa-users
@@ -88,6 +88,8 @@ div.h-entry
         div(class="photos-" + post.properties.photo.length).photos-container
             each photoUrl in post.properties.photo
                 img(src=photoUrl).u-photo
+    if post.properties.video === undefined && post.properties.featured
+        img(src=post.properties.featured).u-featured.featured-image
     if post.properties.content || post.properties['listen-of'] || post.properties.show_name || post.properties.movie_name || post.properties.checkin || post.properties['follow-of']
         div(class=(post.properties.name ? "" : "p-name") + " " + (post.getPostType() === "reacji" ? "reacji" : "")).e-content
             if post.properties['follow-of']

@@ -3,7 +3,7 @@ html
         title EddieHinkle
         style
             include ../global.css
-            include homepage.css
+            include new-homepage.css
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         link(rel="alternate", type="application/rss+xml", title="Eddie Hinkle RSS Feed" href="https://eddiehinkle.com/timeline/feed.xml")
@@ -25,74 +25,20 @@ html
             include sfx.js
     body(class=(location && location.weather && location.weather.icon === 'snow' ? 'theme-snow' : ''))
             include ../includes/header.pug
-            div.bio.h-card
-                img(src="/images/profile.jpg", alt="Eddie Hinkle", style="display: none;").u-photo
-                h2.p-note
-                    a(rel="me", href="https://eddiehinkle.com/").u-url.p-name Eddie Hinkle
-                    |
-                    | is husband to
-                    |
-                    a(href="https://ashleyhinkle.com", target="_blank") Ashley
-                    | , father to
-                    |
-                    a(href="https://luke.hinkle.life", target="_blank") Luke
-                    |
-                    |, and
-                    |
-                    a(href="https://eddiehinkle.com/resume", target="_blank") UI Engineer
-                    |
-                    | who lives in Frederick, MD.
-                    |
-                    | Podcast host for both 
-                    |
-                    a(href="https://twodads.fm/", target="_blank") Two Dads Talking
-                    |
-                    | and
-                    |
-                    a(href="https://myurlis.com/", target="_blank") My Url Is
-                    |.
-                    a(href="/about") Read More
-                //h2
-                //    | He
-                //    if latestDrank
-                //        |
-                //        | last drank
-                //        |
-                //        a(href=latestDrank.getOfficialPermalink()) #{latestDrank.properties.drank.properties.name}
-                //        |
-                //        if latestAte
-                //            |
-                //            | and
-                //    if latestAte
-                //        |
-                //        | last ate
-                //        |
-                //        each post, index in latestAte
-                //             a(href=post.getOfficialPermalink()) #{post.properties.ate.properties.name}
-                //             if index <= latestAte.length - 3
-                //                | ,
-                //                |
-                //             else if index === latestAte.length - 2
-                //                |
-                //                | and
-                //                |
-                //             else
-                //                | .
-                //                |
-    
-            div.stats
+            div.content-grid
+                div.h-card.bio-box
+                    img(src="/images/profile.jpg", alt="Eddie Hinkle").u-photo 
+                    h2 Eddie Hinkle
                 if latestPodcast
                     div.podcast
-                        h4 Latest Podcast
                         a(href=latestPodcast.getOfficialPermalink()).no-underline
-                            img(src=latestPodcast.properties.featured, width="200")
+                            img(src=latestPodcast.properties.photo[0], width="200")
                         //audio(src=latestPodcast.properties.audio, controls=true)
                         p
                             a(href=latestPodcast.getOfficialPermalink()) #{latestPodcast.properties.name}
-                        a(href="/podcasts/").more-button.no-underline More Podcasts
+                        a(href="/tag/podcast/").more-button.no-underline More Podcasts
                 if latestCheckin
                     div.checkin
-                        h4 Last Seen
                         div.checkin-contents
                             a(href=latestCheckin.getOfficialPermalink()).no-underline
                                 img(src="https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/pin-m+24b1f3(" + latestCheckin.properties.checkin.properties.longitude + "," + latestCheckin.properties.checkin.properties.latitude + ")/" + latestCheckin.properties.checkin.properties.longitude + "," + latestCheckin.properties.checkin.properties.latitude + ",13,0,60/400x400@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false", width='200px')
@@ -126,7 +72,6 @@ html
                         a(href="/tag/checkin/").more-button.no-underline More Checkins
                 if latestWatch
                     div.watch
-                        h4 Recently Watched
                         div.watched-contents
                             if latestWatch.properties.show_image
                                 a(href=latestWatch.getOfficialPermalink()).no-underline
@@ -139,60 +84,30 @@ html
                                     each person in latestWatch.properties.personTags
                                         if person.properties.photo
                                             img(src=person.properties.photo[0], width="20", title=person.properties.name[0]).personTag
-                        a(href="/watched/").more-button.no-underline More Watched
-                div.listen
-                    h4 Recently Listened
-                    div.media-grid
-                        each post in latestListen
-                            a(href=post.getOfficialPermalink()).no-underline
-                                img(src=post.properties['listen-of'].properties.photo, width="100")
-                    a(href="/listened/").more-button.no-underline More Listened
-                div.photos
-                    h4 Latest Photos
-                    div.media-grid
-                        - var photoCount = 0;
-                        each post in latestPhoto
-                            a(href=post.getOfficialPermalink()).no-underline
-                                each photo in post.properties.photo
-                                    if photoCount < 4
-                                        if photo.url !== undefined
-                                            img(src=photo.url, width="100")
-                                        else
-                                            img(src=photo, width="100")
-                                        - photoCount++
-                    a(href="/photos/").more-button.no-underline More Photos
-            if latestArticles.length > 0
-                div.articles
+                each post in latestListen
+                    a(href=post.getOfficialPermalink()).no-underline.listen-box
+                        img(src=post.properties['listen-of'].properties.photo)
+                - var photoCount = 0;
+                each post in latestPhoto
+                    a(href=post.getOfficialPermalink()).no-underline
+                        each photo in post.properties.photo
+                            if photoCount < 4
+                                if photo.url !== undefined
+                                    img(src=photo.url)
+                                else
+                                    img(src=photo)
+                                - photoCount++
+                if latestArticles.length > 0
                     h4 Latest Articles
                     each post in latestArticles
-                        div.article
+                        div.article-box
                             a(href=post.getOfficialPermalink()) !{post.properties.name}
-                    a(href="/articles/").link-button.no-underline View All Articles
-            if latestNotes.length > 0
-                div.notes
+                if latestNotes.length > 0
                     h4 Latest Thoughts
                     each post in latestNotes
-                        div.note !{post.properties.content}
+                        div.note-box !{post.properties.content}
                             |
                             a(href=post.getOfficialPermalink()).note-date.no-underline #{post.semiRelativeDateTimeFormat()}
-                    a(href="/timeline/").link-button.no-underline View Full Timeline
-            if latestSocial.length > 0
-                div.social
-                    h4 Latest Social Interactions
-                    p
-                        each post in latestSocial
-                            if post.getPostType() === "bookmark"
-                                a(href=post.getOfficialPermalink()).no-underline 🔖
-                                |
-                            else if post.getPostType() === "like"
-                                a(href=post.getOfficialPermalink()).no-underline 👍
-                                |
-                            else if post.getPostType() === "reply"
-                                a(href=post.getOfficialPermalink()).no-underline ↪️
-                                |
-                            else if post.getPostType() === "reacji"
-                                a(href=post.getOfficialPermalink()).no-underline #{post.displayReacji()}
-                                |
             div.webring
                 a(href="https://xn--sr8hvo.ws/🏻/previous").no-underline ⏪
                 | An IndieWeb Webring 🕸💍

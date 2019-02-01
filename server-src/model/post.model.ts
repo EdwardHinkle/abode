@@ -29,6 +29,13 @@ export class Post {
 
     }
 
+    public static checkPostExists(postInfo: PostInfo): Promise<Boolean> {
+        return new Promise((resolve, reject) => {
+            let postFilepath = `${dataDir}/_note/posts/${postInfo.year}/${postInfo.month}/${postInfo.day}/${postInfo.postIndex}/post.md`;
+            resolve(fs.existsSync(postFilepath));
+        });
+    }
+
     public static createFromJekyllFile(fileData): Promise<Post> {
 
         let constructionPromises: Promise<any>[] = [];
@@ -58,129 +65,133 @@ export class Post {
                 });
             }
 
-            // Custom properties and attribute overrides
-            post.permalink = doc.permalink;
-            post.client_id = doc.client_id;
-            post.properties.date = moment(doc.date, JEKYLL_DATE_FORMAT);
-            if (post.properties.updated) {
-                post.properties.updated = moment(post.properties.updated, JEKYLL_DATE_FORMAT);
-            }
-            post.properties.postIndex = doc.slug;
-            post.properties.duration = doc.duration;
-            post.properties.visibility = doc.visibility;
-
-            // TODO: These need to be cleaned up in the actual data
-            if (typeof post.properties.photo === "string") {
-                post.properties.photo = [post.properties.photo];
-            }
-
-            if (doc.photo !== undefined) {
-                if (post.properties.photo === undefined) {
-                    post.properties.photo = [];
+            if (doc.date !== undefined) {
+                // Custom properties and attribute overrides
+                post.permalink = doc.permalink;
+                post.client_id = doc.client_id;
+                post.properties.date = moment(doc.date, JEKYLL_DATE_FORMAT);
+                if (post.properties.updated) {
+                    post.properties.updated = moment(post.properties.updated, JEKYLL_DATE_FORMAT);
                 }
-                post.properties.photo.push(doc.photo);
-            }
-
-            if (typeof post.properties.video === "string") {
-                post.properties.video = [post.properties.video];
-            }
-
-            // Convert the jekyll title into a h-entry name
-            post.properties.name = doc.title;
-
-            // TV Show Watch Post
-            post.properties['task-status'] = doc['task-status'];
-            post.properties['show_name'] = doc['show_name'];
-            post.properties['show_season'] = doc['show_season'];
-            post.properties['show_episode'] = doc['show_episode'];
-            post.properties['episode_name'] = doc['episode_name'];
-            post.properties['imdb_id'] = doc['imdb_id'];
-            post.properties['show_url'] = doc['show_url'];
-            post.properties['show_image'] = doc['show_image'];
-            post.properties['episode_image'] = doc['episode_image'];
-            post.properties['season_finale'] = doc['season_finale'];
-            post.properties['season_premiere'] = doc['season_premiere'];
-            post.properties['show_premiere'] = doc['show_premiere'];
-            post.properties['show_finale'] = doc['show_finale'];
-
-            // Movie Watch Post
-            post.properties['movie_name'] = doc['movie_name'];
-            post.properties['movie_url'] = doc['movie_url'];
-            post.properties['movie_image'] = doc['movie_image'];
-
-            if (doc.properties != undefined && doc.properties['watch-of'] !== undefined) {
-
-                post.properties['task-status'] = doc.properties['task-status'];
-                post.properties['imdb_id'] = doc.properties['watch-of'].properties['imdb-id'];
-
-                if (doc.properties['watch-of'].properties.episode !== undefined) {
-                    post.properties['show_name'] = doc.properties['watch-of'].properties.name;
-                    post.properties['show_url'] = doc.properties['watch-of'].properties.url;
-                    post.properties['show_image'] = doc.properties['watch-of'].properties.photo;
-
-                    post.properties['episode_name'] = doc.properties['watch-of'].properties.episode.properties.name;
-                    post.properties['episode_image'] = doc.properties['watch-of'].properties.episode.properties.photo;
-                    post.properties['show_season'] = doc.properties['watch-of'].properties.episode.properties['season-number'];
-                    post.properties['show_episode'] = doc.properties['watch-of'].properties.episode.properties['episode-number'];
-                    post.properties['season_finale'] = doc.properties['watch-of'].properties.episode.properties['special-episode'] === 'season_finale' ? true : undefined;
-                    post.properties['season_premiere'] = doc.properties['watch-of'].properties.episode.properties['special-episode'] === 'season_premiere' ? true : undefined;
-                    post.properties['show_premiere'] = doc.properties['watch-of'].properties.episode.properties['special-episode'] === 'show_premiere' ? true : undefined;
-                    post.properties['show_finale'] = doc.properties['watch-of'].properties.episode.properties['special-episode'] === 'show_finale' ? true : undefined;
+                post.properties.postIndex = doc.slug;
+                post.properties.duration = doc.duration;
+                post.properties.visibility = doc.visibility;
+    
+                // TODO: These need to be cleaned up in the actual data
+                if (typeof post.properties.photo === "string") {
+                    post.properties.photo = [post.properties.photo];
                 }
-
-                if (doc.properties['watch-of'].properties.episode === undefined) {
-                    post.properties['movie_name'] = doc.properties['watch-of'].properties.name;
-                    post.properties['movie_url'] = doc.properties['watch-of'].properties.url;
-                    post.properties['movie_image'] = doc.properties['watch-of'].properties.photo;
+    
+                if (doc.photo !== undefined) {
+                    if (post.properties.photo === undefined) {
+                        post.properties.photo = [];
+                    }
+                    post.properties.photo.push(doc.photo);
                 }
-            }
-
-            if (post.properties.syndication === undefined) {
-                post.properties.syndication = [];
-            }
-
-            // Fetch extra data
-            if (post.getPostType() === PostType.Code) {
-                let codeLanguage = post.properties['abode-content-type'].split("/")[1];
-                let codeSnippet = this.prepareCodeBlock(codeLanguage, fileArray[2]);
-                post.properties.content = `<pre><code class="language-${codeLanguage}">${codeSnippet}</code></pre>`;
-            } else {
-
-                if (Post.checkIfReacji(fileArray[2])) {
-                    post.properties.content = fileArray[2];
+    
+                if (typeof post.properties.video === "string") {
+                    post.properties.video = [post.properties.video];
+                }
+    
+                // Convert the jekyll title into a h-entry name
+                post.properties.name = doc.title;
+    
+                // TV Show Watch Post
+                post.properties['task-status'] = doc['task-status'];
+                post.properties['show_name'] = doc['show_name'];
+                post.properties['show_season'] = doc['show_season'];
+                post.properties['show_episode'] = doc['show_episode'];
+                post.properties['episode_name'] = doc['episode_name'];
+                post.properties['imdb_id'] = doc['imdb_id'];
+                post.properties['show_url'] = doc['show_url'];
+                post.properties['show_image'] = doc['show_image'];
+                post.properties['episode_image'] = doc['episode_image'];
+                post.properties['season_finale'] = doc['season_finale'];
+                post.properties['season_premiere'] = doc['season_premiere'];
+                post.properties['show_premiere'] = doc['show_premiere'];
+                post.properties['show_finale'] = doc['show_finale'];
+    
+                // Movie Watch Post
+                post.properties['movie_name'] = doc['movie_name'];
+                post.properties['movie_url'] = doc['movie_url'];
+                post.properties['movie_image'] = doc['movie_image'];
+    
+                if (doc.properties != undefined && doc.properties['watch-of'] !== undefined) {
+    
+                    post.properties['task-status'] = doc.properties['task-status'];
+                    post.properties['imdb_id'] = doc.properties['watch-of'].properties['imdb-id'];
+    
+                    if (doc.properties['watch-of'].properties.episode !== undefined) {
+                        post.properties['show_name'] = doc.properties['watch-of'].properties.name;
+                        post.properties['show_url'] = doc.properties['watch-of'].properties.url;
+                        post.properties['show_image'] = doc.properties['watch-of'].properties.photo;
+    
+                        post.properties['episode_name'] = doc.properties['watch-of'].properties.episode.properties.name;
+                        post.properties['episode_image'] = doc.properties['watch-of'].properties.episode.properties.photo;
+                        post.properties['show_season'] = doc.properties['watch-of'].properties.episode.properties['season-number'];
+                        post.properties['show_episode'] = doc.properties['watch-of'].properties.episode.properties['episode-number'];
+                        post.properties['season_finale'] = doc.properties['watch-of'].properties.episode.properties['special-episode'] === 'season_finale' ? true : undefined;
+                        post.properties['season_premiere'] = doc.properties['watch-of'].properties.episode.properties['special-episode'] === 'season_premiere' ? true : undefined;
+                        post.properties['show_premiere'] = doc.properties['watch-of'].properties.episode.properties['special-episode'] === 'show_premiere' ? true : undefined;
+                        post.properties['show_finale'] = doc.properties['watch-of'].properties.episode.properties['special-episode'] === 'show_finale' ? true : undefined;
+                    }
+    
+                    if (doc.properties['watch-of'].properties.episode === undefined) {
+                        post.properties['movie_name'] = doc.properties['watch-of'].properties.name;
+                        post.properties['movie_url'] = doc.properties['watch-of'].properties.url;
+                        post.properties['movie_image'] = doc.properties['watch-of'].properties.photo;
+                    }
+                }
+    
+                if (post.properties.syndication === undefined) {
+                    post.properties.syndication = [];
+                }
+    
+                // Fetch extra data
+                if (post.getPostType() === PostType.Code) {
+                    let codeLanguage = post.properties['abode-content-type'].split("/")[1];
+                    let codeSnippet = this.prepareCodeBlock(codeLanguage, fileArray[2]);
+                    post.properties.content = `<pre><code class="language-${codeLanguage}">${codeSnippet}</code></pre>`;
                 } else {
-                    if (fileArray[2] != undefined) {
-                        let postContent = marked(fileArray[2], {
-                            highlight: (code, lang) => {
-                                return this.prepareCodeBlock(lang, code);
-                            }
-                        }).replace(/^<p>/, '')
-                            .replace(/<\/p>\n$/, '');
-
-                        post.properties.content = postContent;
+    
+                    if (Post.checkIfReacji(fileArray[2])) {
+                        post.properties.content = fileArray[2];
                     } else {
-                        post.properties.content = "";
+                        if (fileArray[2] != undefined) {
+                            let postContent = marked(fileArray[2], {
+                                highlight: (code, lang) => {
+                                    return this.prepareCodeBlock(lang, code);
+                                }
+                            }).replace(/^<p>/, '')
+                                .replace(/<\/p>\n$/, '');
+    
+                            post.properties.content = postContent;
+                        } else {
+                            post.properties.content = "";
+                        }
                     }
                 }
+    
+                post.properties.personTags = [];
+                post.properties.category = [];
+    
+                if (doc.tags) {
+                    doc.tags.forEach(tag => {
+                        if (tag.indexOf('http') > -1) {
+                            constructionPromises.push(Card.loadCard(tag).then(card => {
+                                if (card !== undefined) {
+                                    post.properties.personTags.push(card);
+                                }
+                            }));
+                        } else {
+                            post.properties.category.push(tag);
+                        }
+                    });
+                }
+            } else {
+                console.log('post is using new data model');
             }
-
-            post.properties.personTags = [];
-            post.properties.category = [];
-
-            if (doc.tags) {
-                doc.tags.forEach(tag => {
-                    if (tag.indexOf('http') > -1) {
-                        constructionPromises.push(Card.loadCard(tag).then(card => {
-                            if (card !== undefined) {
-                                post.properties.personTags.push(card);
-                            }
-                        }));
-                    } else {
-                        post.properties.category.push(tag);
-                    }
-                });
-            }
-
+            
             Promise.all(constructionPromises).then(results => {
                 resolve(post);
             });
@@ -208,6 +219,20 @@ export class Post {
         codeSnippet += '</ol>';
 
         return codeSnippet;
+    }
+    
+    public getGeoJson(property: string) {
+        let lat = this.properties[property].properties.latitude;
+        let lng = this.properties[property].properties.longitude;
+        
+        return {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "type": "Point",
+                "coordinates": [lng, lat]
+            }
+        };
     }
 
     public itineraryList() {
@@ -289,6 +314,20 @@ export class Post {
             return matches[0];
         }
         return "";
+    }
+    
+    public getNextPostUrl(): string {
+        let nextPostInfo = {
+            year: this.properties.getYearString(),
+            month: this.properties.getMonthString(),
+            day: this.properties.getDayString(),
+            postIndex: this.properties.postIndex
+        };
+       
+         return "";
+/*         Post.checkPostExists({
+            
+        }); */
     }
 
     public loadRecentMentions(numberOfMentions: number): Promise<boolean> {
@@ -396,13 +435,13 @@ export class Post {
         }
 
         // Reverse alterations during Post import phase
-        postObject.date = this.properties.date.format(JEKYLL_DATE_FORMAT);
-        postObject.slug = postObject.properties.postIndex;
-        postObject.title = postObject.properties.name;
+//         postObject.date = this.properties.date.format(JEKYLL_DATE_FORMAT);
+//         postObject.slug = postObject.properties.postIndex;
+//         postObject.title = postObject.properties.name;
 
-        delete postObject.properties.date;
-        delete postObject.properties.postIndex;
-        delete postObject.properties.name;
+//         delete postObject.properties.date;
+//         delete postObject.properties.postIndex;
+//         delete postObject.properties.name;
 
         if (postObject.properties['task-status'] !== undefined) {
             postObject.properties['task-status'] = postObject['task-status'];
@@ -461,7 +500,7 @@ export class Post {
             delete postObject.properties.syndication;
         }
 
-        // Convert person tags and categories back into tags
+/*         // Convert person tags and categories back into tags
         if (postObject.tags === undefined) {
             postObject.tags = [];
         }
@@ -477,7 +516,7 @@ export class Post {
         // If there are no tags on the post object, we should remove it
         if (postObject.tags !== undefined && postObject.tags.length === 0) {
             delete postObject.tags;
-        }
+        } */
 
         return postObject;
     }

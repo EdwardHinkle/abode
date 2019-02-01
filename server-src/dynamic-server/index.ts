@@ -13,6 +13,8 @@ import {LocationController} from "../location/location.controller";
 import {Mention} from "../model/mention.model";
 import {Card} from "../model/card.model";
 import moment = require("moment");
+import * as turf from "@turf/turf";
+import * as geoViewport from "@mapbox/geo-viewport";
 
 export let dynamicRouter = express.Router();
 
@@ -21,6 +23,7 @@ dynamicRouter.use('/resources/', express.static(path.join(__dirname, '../../reso
 
 // Static Routes
 dynamicRouter.get('/', getHomepage);
+dynamicRouter.get('/new-home', getHomepageNew);
 dynamicRouter.get('/now', getNowPage);
 dynamicRouter.get('/today/', forwardToToday);
 
@@ -611,6 +614,7 @@ function getDaySummary(req, res, next) {
         let articles = [];
         let postsWithoutType = [];
         let photos = [];
+        let checkins = [];
 
         posts.forEach((post, index) => {
             let postType = post.getPostType();
@@ -632,11 +636,9 @@ function getDaySummary(req, res, next) {
                         consumed.push([post]);
                     }
                     break;
-                // case PostType.Checkin:
-                //     if (latestCheckin === undefined) {
-                //         latestCheckin = post;
-                //     }
-                //     break;
+                case PostType.Checkin:
+                    checkins.push(post);
+                     break;
                 case PostType.Photo:
                     photos.push(post);
                     break;
@@ -661,6 +663,34 @@ function getDaySummary(req, res, next) {
                     postsWithoutType.push(post);
             }
         });
+        
+        let checkinImageUrl;
+        
+        if (checkins.length > 0) {
+            let checkinPoints = checkins.map(checkin => checkin.getGeoJson('checkin'))
+/*             let mapCenter = turf.centroid({
+                "type": "FeatureCollection",
+                "features": checkinPoints
+            });
+            */ 
+            let checkinMarkers = checkinPoints.map(point => `pin-m+24b1f3(${point.geometry.coordinates[0]},${point.geometry.coordinates[1]})`).join(",");
+            
+            let checkinBox = turf.bbox({
+                "type": "FeatureCollection",
+                "features": checkinPoints
+            });
+            
+            let mapWidth = 800;
+            let mapHeight = 400;
+            console.log('checkin box');
+            console.log(checkinBox);
+            let mapZoomLevel = geoViewport.viewport(checkinBox, [mapWidth, mapHeight])
+            
+            if (checkinMarkers) { 
+                checkinImageUrl = `https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/${checkinMarkers}/${mapZoomLevel.center[0]},${mapZoomLevel.center[1]},${mapZoomLevel.zoom},0,0/${mapWidth}x${mapHeight}@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false`;
+            }
+        
+        }
 
         let pageData: any = {
             title: `${pageDate.format("MMM DD, YYYY")}`,
@@ -671,7 +701,8 @@ function getDaySummary(req, res, next) {
             social: social,
             podcasts: podcasts,
             articles: articles,
-            photos: photos
+            photos: photos,
+            checkinImageUrl: checkinImageUrl
         };
 
         let nextDate = pageDate.clone().add(1, "day");
@@ -1099,6 +1130,246 @@ function getHomepage(req, res, next) {
     }
 
 }
+
+function getHomepageNew(req, res, next) {
+
+    if (DataController.available) {
+
+        let retrievePosts: Promise<Post[]>[] = [];
+
+        retrievePosts.push(LocationController.getCachedLocation());
+
+        retrievePosts.push(Posts.searchPosts({
+            hasType: [PostType.Checkin],
+            orderBy: ["published"],
+            orderDirection: ["DESC"],
+            limit: 1,
+            showPrivate: req.session.username === 'https://eddiehinkle.com/'
+        }, false));
+
+        retrievePosts.push(Posts.searchPosts({
+            hasType: [PostType.Listen],
+            orderBy: ["published"],
+            orderDirection: ["DESC"],
+            limit: 4,
+            showPrivate: req.session.username === 'https://eddiehinkle.com/'
+        }, false));
+
+        retrievePosts.push(Posts.searchPosts({
+            hasType: [PostType.Watch],
+            orderBy: ["published"],
+            orderDirection: ["DESC"],
+            limit: 1,
+            showPrivate: req.session.username === 'https://eddiehinkle.com/'
+        }, false));
+
+        retrievePosts.push(Posts.searchPosts({
+            hasType: [PostType.Photo],
+            orderBy: ["published"],
+            orderDirection: ["DESC"],
+            limit: 4,
+            showPrivate: req.session.username === 'https://eddiehinkle.com/'
+        }, false));
+
+        retrievePosts.push(Posts.searchPosts({
+            hasType: [PostType.Note],
+            inChannel: "timeline",
+            orderBy: ["published"],
+            orderDirection: ["DESC"],
+            limit: 10,
+            showPrivate: req.session.username === 'https://eddiehinkle.com/'
+        }, false));
+
+        retrievePosts.push(Posts.searchPosts({
+            hasType: [PostType.Article],
+            orderBy: ["published"],
+            orderDirection: ["DESC"],
+            limit: 5,
+            showPrivate: req.session.username === 'https://eddiehinkle.com/'
+        }, false));
+
+        retrievePosts.push(Posts.searchPosts({
+            hasType: [PostType.Bookmark, PostType.Like, PostType.Reply, PostType.Repost, PostType.RSVP, PostType.Reacji],
+            orderBy: ["published"],
+            orderDirection: ["DESC"],
+            limit: 54,
+            showPrivate: req.session.username === 'https://eddiehinkle.com/'
+        }, false));
+
+        retrievePosts.push(Posts.searchPosts({
+            hasType: [PostType.Audio],
+            orderBy: ["published"],
+            orderDirection: ["DESC"],
+            limit: 1,
+            showPrivate: req.session.username === 'https://eddiehinkle.com/'
+        }, false));
+
+
+        Promise.all(retrievePosts).then(posts => {
+
+            let location = posts[0];
+
+            // let latestDrank: Post;
+            // let latestAte: Post[] = [];
+            let latestCheckin: Post = posts[1][0];
+            let latestListen: Post[] = posts[2];
+            let latestWatch: Post = posts[3][0];
+            let latestPhoto: Post[] = [];
+            let latestPhotoCount: number = 0;
+            let latestNotes: Post[] = posts[5];
+            let latestArticles: Post[] = posts[6];
+            let latestSocial: Post[] = posts[7];
+            let latestPodcast: Post = posts[8][0];
+
+            posts[4].forEach(photoPost => {
+                if (latestPhotoCount < 4) {
+                    latestPhoto.push(photoPost);
+                    latestPhotoCount += photoPost.properties.photo.length;
+                }
+            });
+
+            res.render("homepage/homepage-new", {
+                // latestDrank: latestDrank,
+                // latestAte: latestAte.reverse(),
+                location: location,
+                latestCheckin: latestCheckin,
+                latestListen: latestListen,
+                latestWatch: latestWatch,
+                latestPhoto: latestPhoto,
+                latestNotes: latestNotes,
+                latestArticles: latestArticles,
+                latestSocial: latestSocial,
+                latestPodcast: latestPodcast
+            });
+
+        });
+
+    } else {
+        let numberOfPreviousDays = 10;
+
+        let combinedPromises: Promise<Post[]>[] = [];
+
+        for (let date = moment(); moment().diff(date, "days") < numberOfPreviousDays; date.subtract(1, "day")) {
+
+            combinedPromises.push(Posts.getPosts({
+                year: date.format("YYYY"),
+                month: date.format("MM"),
+                day: date.format("DD"),
+                required: moment().diff(date, "days") !== 0 // Require every day except today (today doesn't always have posts)
+            }));
+
+        }
+
+        Promise.all(combinedPromises)
+            .catch(error => {
+                console.log("error loading homepage", error);
+                return combinedPromises;
+            })
+            .then(arrayOfPosts => {
+
+                let posts = [].concat.apply([], arrayOfPosts);
+                let latestDrank: Post;
+                let latestAte: Post[] = [];
+                let latestCheckin: Post;
+                let latestListen: Post[] = [];
+                let latestWatch: Post;
+                let latestPhoto: Post[] = [];
+                let latestPhotoCount: number = 0;
+                let latestNotes: Post[] = [];
+                let latestArticles: Post[] = [];
+                let latestSocial: Post[] = [];
+                let latestPodcast: Post;
+
+                posts.sort((a: Post, b: Post) => {
+                    return b.properties.date.diff(a.properties.date);
+                });
+
+                posts.forEach(post => {
+                    let postType = post.getPostType();
+
+                    switch(postType) {
+                        case PostType.Audio:
+                            if (latestPodcast === undefined) {
+                                latestPodcast = post;
+                            }
+                            break;
+                        case PostType.Drank:
+                            if (latestDrank === undefined) {
+                                latestDrank = post;
+                            }
+                            break;
+                        case PostType.Ate:
+                            if (latestAte.length === 0) {
+                                latestAte.push(post);
+                            } else if (latestAte[0].properties.date.diff(post.properties.date, 'minutes') < 30) {
+                                latestAte.push(post);
+                            }
+                            break;
+                        case PostType.Checkin:
+                            if (latestCheckin === undefined) {
+                                latestCheckin = post;
+                            }
+                            break;
+                        case PostType.Watch:
+                            if (latestWatch === undefined && (post.properties.show_name !== undefined || post.properties.movie_name !== undefined)) {
+                                latestWatch = post;
+                            }
+                            break;
+                        case PostType.Listen:
+                            if (latestListen.length < 4) {
+                                latestListen.push(post);
+                            }
+                            break;
+                        case PostType.Note:
+                            if (latestNotes.length < 10) {
+                                latestNotes.push(post);
+                            }
+                            break;
+                        case PostType.Article:
+                            if (latestArticles.length < 10 && post.isPublic()) {
+                                latestArticles.push(post);
+                            }
+                            break;
+                        case PostType.Like:
+                        case PostType.Reply:
+                        case PostType.Bookmark:
+                        case PostType.Reacji:
+                            latestSocial.push(post);
+                            break;
+                        default:
+                    }
+
+                    if (latestPhotoCount < 4) {
+                        if (post.properties.photo !== undefined &&
+                            post.properties.photo.length > 0 &&
+                            post.getPostType() !== PostType.Listen &&
+                            post.getPostType() !== PostType.Watch &&
+                            post.getPostType() !== PostType.Audio &&
+                            post.properties.category.indexOf("reading") === -1) {
+
+                            latestPhotoCount += post.properties.photo.length;
+                            latestPhoto.push(post);
+                        }
+                    }
+                });
+
+                res.render("homepage/homepage-new", {
+                    latestDrank: latestDrank,
+                    latestAte: latestAte.reverse(),
+                    latestCheckin: latestCheckin,
+                    latestListen: latestListen,
+                    latestWatch: latestWatch,
+                    latestPhoto: latestPhoto,
+                    latestNotes: latestNotes,
+                    latestArticles: latestArticles,
+                    latestSocial: latestSocial,
+                    latestPodcast: latestPodcast
+                });
+            });
+    }
+
+}
+
 
 function debugPostData(req, res) {
 

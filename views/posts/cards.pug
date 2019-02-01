@@ -16,6 +16,7 @@ html
         h2.channel-title #{title}
         if posts.length > 0
             div.h-feed.post-list
+                a(href="https://eddiehinkle.com/").u-author.no-underline
                 each post in posts
                     div.post-item
                         include ./post_card.pug

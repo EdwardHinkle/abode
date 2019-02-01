@@ -18,6 +18,16 @@ html
             div.next-day
                 if next
                     a(href=next.link) #{next.label}
+        if checkinImageUrl
+            h4 Checkins
+            div.checkin-container
+                img(src=checkinImageUrl, width='800px').checkin-map
+        if podcasts.length > 0
+            h4 Podcasts
+            div.listen-container
+                each post in podcasts
+                    a(href=post.getOfficialPermalink()).no-underline
+                        img(src=post.properties.featured, width='100px')
         if watchPosts.length > 0
             h4 Watched
             div.watch-container

@@ -152,7 +152,7 @@ a.no-underline {
     margin-right: 10px;
 }
 
-.summary-fallback, .simple-reply, .photos-container {
+.summary-fallback, .simple-reply, .photos-container, .featured-image {
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;

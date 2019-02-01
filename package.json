@@ -8,10 +8,10 @@
     "start": "node ./server-build/server.js --harmony_array_includes",
     "build": "tsc",
     "freshbuild": "npm run build; npm start",
-    "startServer": "npm run build; forever --uid abode-dev --append start ./server-build/server.js",
-    "restartServer": "npm run build; forever restart abode-dev",
+    "startServer": "npm run build; forever --uid abode-personal --append start ./server-build/server.js",
+    "restartServer": "npm run build; forever restart abode-personal",
     "updateServer": "git pull; npm run restartServer",
-    "followLogs": "tail -f ~/.forever/abode-dev.log",
+    "followLogs": "tail -f ~/.forever/abode-personal.log",
     "rebuildJekyll": "cd jekyll; jekyll build",
     "rebuildJekyllLocal": "cd jekyll; jekyll build --config=_config.yml,_local_config.yml",
     "rebuildJekyllPrivate": "cd jekyll; jekyll build --config=_config.yml,_private_config.yml"
@@ -26,6 +26,8 @@
     "url": "git+https://github.com/EdwardHinkle/abode-eddie.git"
   },
   "dependencies": {
+    "@mapbox/geo-viewport": "^0.4.0",
+    "@turf/turf": "^5.1.6",
     "@types/bcrypt": "^1.0.0",
     "@types/bluebird": "^3.5.2",
     "@types/body-parser": "^1.16.0",

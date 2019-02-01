@@ -1,0 +1,58 @@
+.content-grid {
+    width: 100%;
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns:  repeat(auto-fill, minmax(200px, 1fr));
+   grid-template-rows: repeat(auto-fill, 200px);
+    grid-auto-flow: dense;
+}
+
+.content-grid > * {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.content-grid img {
+    width: 100%;
+}
+
+.content-grid .article-box,
+.content-grid .note-box {
+    padding: 20px;
+}
+
+.content-grid h4 {
+    padding: 10px;
+    font-size: 200%
+}
+
+.bio-box {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+}
+
+.listen-box {
+    grid-column: -1;
+}
+
+.listen-box:nth-child(1) {
+    grid-row: 2;
+}
+
+.listen-box:nth-child(2) {
+    grid-row: 3;
+}
+
+.listen-box:nth-child(3) {
+    grid-row: 4;
+}
+
+.listen-box:nth-child(4) {
+    grid-row: 5;
+}
+
+.watch-box {
+    grid-column: -1;
+    row: 1;
+}

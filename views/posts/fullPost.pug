@@ -12,7 +12,7 @@ html
     body
         include ../includes/header.pug
         div.h-entry
-            a(href="/").u-author.no-underline
+            a(href="https://eddiehinkle.com").u-author.no-underline
             a(href="").u-url.no-underline
             if post.properties.audience
                 div.audience-display
@@ -48,6 +48,11 @@ html
                         |
                         |
                         a(href=post.properties['in-reply-to']).u-in-reply-to #{post.properties['in-reply-to']}
+            if post.properties['fork-of']
+                div.simple-reply 🔁 Fork Of:
+                            |
+                            |
+                            a(href=post.properties['fork-of'][0]).u-fork-of #{post.properties['fork-of'][0]}
             if post.properties['like-of']
                 div.summary-fallback 👍 Liked:
                     |
@@ -94,6 +99,8 @@ html
                 div(class="photos-" + post.properties.photo.length).photos-container
                     each photoUrl in post.properties.photo
                         img(src=photoUrl).u-photo
+            if post.properties.featured
+                img(src=post.properties.featured).u-featured
             if post.properties.content || post.properties['listen-of'] || post.properties.show_name || post.properties.movie_name || post.properties.checkin || post.properties['follow-of']
                 div(class=(post.properties.name ? "" : "p-name") + " " + (post.getPostType() === "reacji" ? "reacji" : "")).e-content
                     if post.properties['follow-of']
@@ -317,6 +324,7 @@ html
                                             | by
                                             |
                                             a(href=mention.author.url) #{mention.author.name}
+        - var hideFooterBio = true
         include ../includes/footer.pug
         script
             include ./code-snippet-ui.js
