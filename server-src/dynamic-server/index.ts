@@ -465,6 +465,15 @@ function getPostPage(req, res) {
         postIndex: postIndex
     }).then(post => {
 
+// Check if it is private and if you are authenticated
+if (post.properties.visibility === "private" && req.session.username !== 'https://eddiehinkle.com/') {
+    console.log("tried to view a private post without being authenticated")
+    res.render("posts/errorMessage", {
+                errorMessage: "Sorry, the post you are looking for is still processing"
+            });
+            return;
+}
+
         // Check if the post path is the official permalink path.
         if (!post.verifyPostPermalink(req)) {
             // Redirect to the official permalink path
@@ -526,6 +535,8 @@ function getYearSummary(req, res, next) {
 
     let pageDate = moment();
     pageDate.year(req.params.year);
+    
+    let now = moment().hour(0).minute(0).second(0).millisecond(0);
 
     Posts.getPosts({
         year: pageDate.format("YYYY")
@@ -534,10 +545,148 @@ function getYearSummary(req, res, next) {
         posts.sort((a: Post, b: Post) => {
             return b.properties.date.diff(a.properties.date);
         });
+       
+        let currentUrl = getRequestedUrl(req);       
+        
+        let watchPosts = [];
+        let listenPosts = [];
+        let consumed = [];
+        let social = [];
+        let podcasts = [];
+        let articles = [];
+        let postsWithoutType = [];
+        let photos = [];
+        let checkins = [];
 
-        res.render("posts/list", {
-            posts: posts
+        posts.forEach((post, index) => {
+            let postType = post.getPostType();
+
+            switch(postType) {
+                case PostType.Audio:
+                    podcasts.push(post);
+                    break;
+                case PostType.Drank:
+                case PostType.Ate:
+                    if (consumed.length > 0) {
+                        let lastMeal = consumed[consumed.length - 1];
+                        if (lastMeal[0].properties.date.diff(post.properties.date, 'minutes') < 30) {
+                            consumed[consumed.length - 1].push(post);
+                        } else {
+                            consumed.push([post]);
+                        }
+                    } else {
+                        consumed.push([post]);
+                    }
+                    break;
+                case PostType.Checkin:
+                    checkins.push(post);
+                     break;
+                case PostType.Photo:
+                    photos.push(post);
+                    break;
+                case PostType.Watch:
+                    let tvShowExists = watchPosts.filter(checkPost => checkPost.properties['show_name'] === post.properties['show_name'] && checkPost.properties['show_season'] === post.properties['show_season']);
+                    if (tvShowExists.length === 0) {
+                        watchPosts.push(post);
+                    }
+                    break;
+                case PostType.Listen:
+                    let podcastExists = listenPosts.filter(checkPost => {
+                        if (checkPost.properties['listen-of'].properties.author === undefined || post.properties['listen-of'].properties.author === undefined) {
+                            return true;
+                        } else {
+                            return checkPost.properties['listen-of'].properties.author.properties.name === post.properties['listen-of'].properties.author.properties.name;
+                        }
+                    });
+                    if (podcastExists.length === 0) {
+                        listenPosts.push(post);
+                    }
+                    break;
+                case PostType.Note:
+                    social.push(post);
+                    break;
+                case PostType.Article:
+                    articles.push(post);
+                    break;
+                case PostType.Like:
+                case PostType.Reply:
+                case PostType.Bookmark:
+                    social.push(post);
+                    break;
+                default:
+                    postsWithoutType.push(post);
+            }
         });
+        
+        let checkinImageUrl;
+        
+        if (checkins.length > 0) {
+            let checkinPoints = checkins.map(checkin => checkin.getGeoJson('checkin'))
+/*             let mapCenter = turf.centroid({
+                "type": "FeatureCollection",
+                "features": checkinPoints
+            });
+            */ 
+            let checkinMarkers = checkinPoints.map(point => `pin-m+24b1f3(${point.geometry.coordinates[0]},${point.geometry.coordinates[1]})`).join(",");
+            
+            let checkinBox = turf.bbox({
+                "type": "FeatureCollection",
+                "features": checkinPoints
+            });
+            
+            let mapWidth = 800;
+            let mapHeight = 400;
+            console.log('checkin box');
+            console.log(checkinBox);
+            let mapCenter = geoViewport.viewport(checkinBox, [mapWidth, mapHeight])
+            let mapZoomLevel = mapCenter.zoom - 2;
+            if (mapZoomLevel < 0) {
+                mapZoomLevel = 0;
+            }
+            if (mapZoomLevel > 13) {
+                mapZoomLevel = 13;
+            }
+            
+            if (checkinMarkers) { 
+                checkinImageUrl = `https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/${checkinMarkers}/${mapCenter.center[0]},${mapCenter.center[1]},${mapZoomLevel},0,0/${mapWidth}x${mapHeight}@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false`;
+            }
+        
+        }
+
+        let pageData: any = {
+            feed_url: currentUrl,
+            jsonfeed_url: getJSONFeedUrl(currentUrl),
+            title: `${pageDate.format("YYYY")}`,
+            posts: postsWithoutType,
+            watchPosts: watchPosts,
+            listenPosts: listenPosts,
+            consumed: consumed,
+            social: social,
+            podcasts: podcasts,
+            articles: articles,
+            photos: photos,
+            checkinImageUrl: checkinImageUrl
+        };
+
+        let nextDate = pageDate.clone().add(1, "year");
+        if (now.diff(nextDate, "year") >= 0) {
+            let linkDate = nextDate;
+            pageData.next = {
+                label: `${linkDate.format("YYYY")}`,
+                link: `/${linkDate.format("YYYY")}/`
+            }
+        }
+
+        let previousDate = pageDate.clone().subtract(1, "year");
+        if (moment("06/21/1987", "MM/DD/YYYY").diff(previousDate, "year") < 0) {
+            let linkDate = previousDate;
+            pageData.previous = {
+                label: `${linkDate.format("YYYY")}`,
+                link: `/${linkDate.format("YYYY")}/`
+            }
+        }
+
+        res.render("posts/monthSummary", pageData);
     }).catch(error => {
         console.log("ERROR", error);
         next();
@@ -548,7 +697,9 @@ function getMonthSummary(req, res, next) {
 
     let pageDate = moment();
     pageDate.year(req.params.year);
-    pageDate.month(req.params.month);
+    pageDate.month(parseInt(req.params.month)-1);
+
+    let now = moment().hour(0).minute(0).second(0).millisecond(0);
 
     Posts.getPosts({
         year: pageDate.format("YYYY"),
@@ -560,13 +711,146 @@ function getMonthSummary(req, res, next) {
         });
 
         let currentUrl = getRequestedUrl(req);
+        
+        let watchPosts = [];
+        let listenPosts = [];
+        let consumed = [];
+        let social = [];
+        let podcasts = [];
+        let articles = [];
+        let postsWithoutType = [];
+        let photos = [];
+        let checkins = [];
 
-        res.render(`posts/cards`, {
+        posts.forEach((post, index) => {
+            let postType = post.getPostType();
+
+            switch(postType) {
+                case PostType.Audio:
+                    podcasts.push(post);
+                    break;
+                case PostType.Drank:
+                case PostType.Ate:
+                    if (consumed.length > 0) {
+                        let lastMeal = consumed[consumed.length - 1];
+                        if (lastMeal[0].properties.date.diff(post.properties.date, 'minutes') < 30) {
+                            consumed[consumed.length - 1].push(post);
+                        } else {
+                            consumed.push([post]);
+                        }
+                    } else {
+                        consumed.push([post]);
+                    }
+                    break;
+                case PostType.Checkin:
+                    checkins.push(post);
+                     break;
+                case PostType.Photo:
+                    photos.push(post);
+                    break;
+                case PostType.Watch:
+                    let tvShowExists = watchPosts.filter(checkPost => checkPost.properties['show_name'] === post.properties['show_name'] && checkPost.properties['show_season'] === post.properties['show_season']);
+                    if (tvShowExists.length === 0) {
+                        watchPosts.push(post);
+                    }
+                    break;
+                case PostType.Listen:
+                    let podcastExists = listenPosts.filter(checkPost => {
+                        if (checkPost.properties['listen-of'].properties.author === undefined || post.properties['listen-of'].properties.author === undefined) {
+                            return true;
+                        } else {
+                            return checkPost.properties['listen-of'].properties.author.properties.name === post.properties['listen-of'].properties.author.properties.name;
+                        }
+                    });
+                    if (podcastExists.length === 0) {
+                        listenPosts.push(post);
+                    }
+                    break;
+                case PostType.Note:
+                    social.push(post);
+                    break;
+                case PostType.Article:
+                    articles.push(post);
+                    break;
+                case PostType.Like:
+                case PostType.Reply:
+                case PostType.Bookmark:
+                    social.push(post);
+                    break;
+                default:
+                    postsWithoutType.push(post);
+            }
+        });
+        
+        let checkinImageUrl;
+        
+        if (checkins.length > 0) {
+            let checkinPoints = checkins.map(checkin => checkin.getGeoJson('checkin'))
+/*             let mapCenter = turf.centroid({
+                "type": "FeatureCollection",
+                "features": checkinPoints
+            });
+            */ 
+            let checkinMarkers = checkinPoints.map(point => `pin-m+24b1f3(${point.geometry.coordinates[0]},${point.geometry.coordinates[1]})`).join(",");
+            
+            let checkinBox = turf.bbox({
+                "type": "FeatureCollection",
+                "features": checkinPoints
+            });
+            
+            let mapWidth = 800;
+            let mapHeight = 400;
+            console.log('checkin box');
+            console.log(checkinBox);
+            let mapCenter = geoViewport.viewport(checkinBox, [mapWidth, mapHeight])
+            let mapZoomLevel = mapCenter.zoom - 2;
+            if (mapZoomLevel < 0) {
+                mapZoomLevel = 0;
+            }
+            if (mapZoomLevel > 13) {
+                mapZoomLevel = 13;
+            }
+            
+            if (checkinMarkers) { 
+                checkinImageUrl = `https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/${checkinMarkers}/${mapCenter.center[0]},${mapCenter.center[1]},${mapZoomLevel},0,0/${mapWidth}x${mapHeight}@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false`;
+            }
+        
+        }
+
+        let pageData: any = {
             feed_url: currentUrl,
             jsonfeed_url: getJSONFeedUrl(currentUrl),
-            title: `${pageDate.format("MMMM")} ${pageDate.format("YYYY")}`,
-            posts: posts
-        });
+            title: `${pageDate.format("MMMM YYYY")}`,
+            posts: postsWithoutType,
+            watchPosts: watchPosts,
+            listenPosts: listenPosts,
+            consumed: consumed,
+            social: social,
+            podcasts: podcasts,
+            articles: articles,
+            photos: photos,
+            checkinImageUrl: checkinImageUrl
+        };
+
+        let nextDate = pageDate.clone().add(1, "month");
+        if (now.diff(nextDate, "month") >= 0) {
+            let linkDate = nextDate;
+            pageData.next = {
+                label: `${linkDate.format("MMM YYYY")}`,
+                link: `/${linkDate.format("YYYY")}/${linkDate.format("MM")}/`
+            }
+        }
+
+        let previousDate = pageDate.clone().subtract(1, "month");
+        if (moment("06/21/1987", "MM/DD/YYYY").diff(previousDate, "month") < 0) {
+            let linkDate = previousDate;
+            pageData.previous = {
+                label: `${linkDate.format("MMM YYYY")}`,
+                link: `/${linkDate.format("YYYY")}/${linkDate.format("MM")}/`
+            }
+        }
+
+        res.render(`posts/monthSummary`, pageData);
 
     }).catch(error => {
         console.log("ERROR", error);
@@ -615,6 +899,10 @@ function getDaySummary(req, res, next) {
         let postsWithoutType = [];
         let photos = [];
         let checkins = [];
+        let likes = [];
+        let replies = [];
+        let reacji = [];
+        let bookmarks = [];
 
         posts.forEach((post, index) => {
             let postType = post.getPostType();
@@ -655,9 +943,16 @@ function getDaySummary(req, res, next) {
                     articles.push(post);
                     break;
                 case PostType.Like:
+                    likes.push(post);
+                    break;
                 case PostType.Reply:
+                    replies.push(post);
+                    break;
                 case PostType.Bookmark:
-                    social.push(post);
+                    bookmarks.push(post);
+                    break;
+                case PostType.Reacji:
+                    reacji.push(post);
                     break;
                 default:
                     postsWithoutType.push(post);
@@ -684,10 +979,17 @@ function getDaySummary(req, res, next) {
             let mapHeight = 400;
             console.log('checkin box');
             console.log(checkinBox);
-            let mapZoomLevel = geoViewport.viewport(checkinBox, [mapWidth, mapHeight])
+            let mapCenter = geoViewport.viewport(checkinBox, [mapWidth, mapHeight])
+            let mapZoomLevel = mapCenter.zoom - 2;
+            if (mapZoomLevel < 0) {
+                mapZoomLevel = 0;
+            }
+            if (mapZoomLevel > 13) {
+                mapZoomLevel = 13;
+            }
             
             if (checkinMarkers) { 
-                checkinImageUrl = `https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/${checkinMarkers}/${mapZoomLevel.center[0]},${mapZoomLevel.center[1]},${mapZoomLevel.zoom},0,0/${mapWidth}x${mapHeight}@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false`;
+                checkinImageUrl = `https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/${checkinMarkers}/${mapCenter.center[0]},${mapCenter.center[1]},${mapZoomLevel},0,0/${mapWidth}x${mapHeight}@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false`;
             }
         
         }
@@ -699,9 +1001,14 @@ function getDaySummary(req, res, next) {
             listenPosts: listenPosts,
             consumed: consumed,
             social: social,
+            checkins: checkins,
             podcasts: podcasts,
             articles: articles,
             photos: photos,
+            likes: likes,
+            bookmarks: bookmarks,
+            replies: replies,
+            reacji: reacji,
             checkinImageUrl: checkinImageUrl
         };
 

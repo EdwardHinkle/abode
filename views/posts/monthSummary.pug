@@ -1,0 +1,60 @@
+html
+    head
+        title EddieHinkle.com
+        style
+            include ../global.css
+            include daySummary.css
+            include post.css
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="webmention", href="https://webmention.io/eddiehinkle.com/webmention")
+        link(rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-xyMU7RufUdPGVOZRrc2z2nRWVWBONzqa0NFctWglHmt5q5ukL22+lvHAqhqsIm3h" crossorigin="anonymous")
+    body.h-entry
+        include ../includes/header.pug
+        div.day-header
+            div.previous-day
+                if previous
+                    a(href=previous.link) #{previous.label}
+            div.current-day #{title}
+            div.next-day
+                if next
+                    a(href=next.link) #{next.label}
+        div.summary.e-content 
+        if checkinImageUrl
+            h4 Checkins
+            div.checkin-container
+                img(src=checkinImageUrl, width='800px').checkin-map.u-photo
+        if podcasts.length > 0
+            h4 Podcasts
+            div.listen-container
+                each post in podcasts
+                    a(href=post.getOfficialPermalink()).no-underline
+                        img(src=post.properties.featured, width='100px')
+        if watchPosts.length > 0
+            h4 Watched
+            div.watch-container
+                each post in watchPosts
+                    a(href=post.getOfficialPermalink()).no-underline
+                        if post.properties.show_image
+                            img(src=post.properties.show_image, width='100px')
+                        if post.properties.movie_image
+                            img(src=post.properties.movie_image, width='100px')
+        if listenPosts.length > 0
+            h4 Listened To
+            div.listen-container
+                each post in listenPosts
+                    a(href=post.getOfficialPermalink()).no-underline
+                        img(src=post.properties['listen-of'].properties.photo, width='100px')
+        if articles.length > 0
+            div.articles
+                h4 Articles
+                each post in articles
+                    div.social-post
+                        a(href=post.getOfficialPermalink()) !{post.properties.name}
+        if photos.length > 0
+            h4 Photos
+            div.photos-container
+                each post in photos
+                    each photo in post.properties.photo
+                        a(href=post.getOfficialPermalink()).no-underline
+                            img(src=photo, width='100px')
+        include ../includes/footer.pug

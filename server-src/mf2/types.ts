@@ -38,6 +38,10 @@ let typeInference = {
 export type Visibility = 'public' | 'private';
 
 export function getPostType(postObject): postType {
+    
+    if (postObject.type[0] === 'h-event') {
+        return 'Event';
+    }
 
     if (postObject.properties['abode-content-type'] && postObject.properties['abode-content-type'].indexOf('code/') > -1) {
         return 'Code';

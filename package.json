@@ -51,7 +51,7 @@
     "child_process": "^1.0.2",
     "cron": "^1.2.1",
     "emoji-data": "git@github.com:EdwardHinkle/emoji-data-js.git",
-    "emoji-regex": "^7.0.1",
+    "emoji-regex": "^7.0.3",
     "emoji-strip": "^1.0.1",
     "express": "^4.15.2",
     "express-session": "^1.15.6",

@@ -7,6 +7,7 @@ import * as fs from "fs";
 import {DataController} from "./data.controller"; // TypeScript Type
 import * as Prism from "prismjs";
 import * as loadLanguages from "prismjs/components/";
+import * as emojiRegex from "emoji-regex";
 import {Cards} from "./cards.model";
 import {Card} from "./card.model";
 import {Mention} from "./mention.model";
@@ -54,6 +55,8 @@ export class Post {
 
             // Import all initial properties
             post.properties = new PostProperties(doc.properties);
+            
+            post.type = doc.type;
 
             // Fetch audience h-cards
             if (doc.properties && doc.properties.audience) {
@@ -73,9 +76,20 @@ export class Post {
                 if (post.properties.updated) {
                     post.properties.updated = moment(post.properties.updated, JEKYLL_DATE_FORMAT);
                 }
+                
+                if (post.properties.start) {
+                    post.properties.start = moment(post.properties.start, JEKYLL_DATE_FORMAT)
+                }
+                
+                if (post.properties.end) {
+                    post.properties.end = moment(post.properties.end, JEKYLL_DATE_FORMAT)
+                }
+                
                 post.properties.postIndex = doc.slug;
                 post.properties.duration = doc.duration;
+                if (post.properties.visibility === undefined) {
                 post.properties.visibility = doc.visibility;
+                }
     
                 // TODO: These need to be cleaned up in the actual data
                 if (typeof post.properties.photo === "string") {
@@ -291,7 +305,7 @@ export class Post {
         }
 
 
-        if (date.isSameOrAfter(today)) {
+        if (date.isSame(today)) {
             return 'Today';
         } else {
             return date.format("MMM DD, YYYY");
@@ -634,6 +648,11 @@ export class Post {
                 "properties": mf2Properties
             }
         }
+    }
+    
+    public static getEmojiFromPost(): string[] {
+        const regex = emojiRegex();
+        return regex.exec(this.properties.content);
     }
 
     public static checkIfReacji(content: string): boolean {
