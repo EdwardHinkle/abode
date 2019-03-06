@@ -4,6 +4,10 @@ body {
     margin: 0;
 }
 
+body:not(.homepage) {
+    padding-top: 100px;
+}
+
 body.theme-snow {
     background-color: #999;
 }
@@ -62,7 +66,6 @@ a.no-underline {
     background-color: #efc83d;
     color: white;
     padding: 5px 20px;
-    margin-bottom: 100px;
 }
 
 .site-monogram {

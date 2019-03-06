@@ -2,6 +2,105 @@ h2 {
     line-height: 2.5rem;
 }
 
+.header-map {
+    width: 100%;
+}
+
+.header-map img {
+    width: 100%;
+}
+
+.light-theme-map, .dark-theme-map {
+    height: 300px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.dark-theme-map {
+    display: none;
+}
+
+.right-status-bar {
+    position: absolute;
+    top: 300px;
+    right: 10px;
+    text-align: right;
+    padding: 5px;
+}
+
+.right-status-bar > * {
+    padding: 0 5px;
+}
+
+.left-status-bar {
+    position: absolute;
+    top: 300px;
+    left: 10px;
+    paddinfg: 5px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .light-theme-map {
+        display: none;
+    }
+
+    .dark-theme-map {
+        display: block;
+    }
+
+    .profile-photo {
+        border-color: #50a882;
+    }
+}
+
+.profile-photo {
+    position: absolute;
+    top: 225px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 150px;
+    height: 150px;
+    border-radius: 20px;
+    border: solid 5px #000;
+    box-shadow: 5px 5px red;
+}
+
+.carousel {
+    margin: 10px;
+}
+
+.carousel-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.carousel-bar h2 {
+    flex-grow: 1;
+    font-weight: 800;
+}
+
+.carousel-bar h4 {
+    margin-right: 20px;
+}
+
+.carousel-body {
+    overflow-x: auto;
+    width: 100%;
+    white-space: nowrap;
+}
+
+.carousel-item {
+    width: 18%;
+    box-sizing: border-box;
+    height: auto;
+    border: 10px solid black;
+    margin: 25px 3%;
+    box-shadow: 10px 6px rgba(255, 0, 0, 0.2);
+}
+
 .more-button, .link-button {
     display: block;
     text-decoration: none;
@@ -140,6 +239,36 @@ h2 {
     border-radius: 2px;
 }
 
+@media (max-width: 500px) {
+    .carousel-body {
+        padding-left: 4%;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .carousel-body a:last-child .carousel-item {
+        margin-right: 20%;
+    }
+    
+    .carousel-bar h2 {
+        font-size: 1.2em;
+        padding: 0;
+        line-height: 2em;
+        margin-left: 10px;
+    }
+    
+    .carousel-bar h4 {
+        font-size: 0.8em;
+        padding: 0;
+        text-align: right;
+        margin-right: 10px;
+    }
+    
+    .carousel-item {
+        width: 70%;
+        margin: 10px 0 30px 10%;
+    }
+}
+
 @media (max-width: 900px) {
     .stats {
         display: block;
@@ -159,6 +288,42 @@ h2 {
     .note {
         line-height: 2rem;
     }
+    
+    .light-theme-map, .dark-theme-map {
+        height: 150px;
+    }
+    
+    .profile-photo {
+        top: 100px;
+    }
+    
+    .left-status-bar {
+        display: none;
+    }
+    
+    .right-status-bar {
+        top: 150px;
+        left: 0;
+        right: 0;
+    }
+    
+    .current-time {
+        position: absolute;
+        left: 0;
+        right: auto;
+    }
+    
+    .battery {
+        position: absolute;
+        right: 0;
+        left: auto;
+    }
+    
+    .bio {
+        margin-top: 130px;
+        margin-bottom: 50px;
+    }
+    
 
     /*.stats > div {*/
         /*display: block;*/

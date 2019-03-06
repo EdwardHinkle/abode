@@ -68,6 +68,7 @@
     "micropub-express": "^0.7.1",
     "mime-types": "^2.1.15",
     "moment": "^2.18.0",
+    "moment-timezone": "^0.5.23",
     "multer": "^1.3.1",
     "node-rsa": "^1.0.1",
     "prismjs": "^1.15.0",

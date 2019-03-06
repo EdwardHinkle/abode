@@ -23,9 +23,10 @@ export class LocationController {
     
     static cacheCurrentLocation() {
         this.getCurrentLocation().then(location => {
-            return WeatherController.getCurrentWeather(location).then(weather => {
+            return WeatherController.getCurrentWeather(location.data).then(weather => {
                 return {
-                    location: location,
+                    location: location.data,
+                    geocode: location.geocode,
                     weather: weather
                 }
             });
@@ -39,10 +40,10 @@ export class LocationController {
     }
     
     static getCurrentLocation(): Promise<any> {
-        return requestPromise.get(`${config.compass.url}api/last?token=${config.compass.token.read}`, {
+        return requestPromise.get(`${config.compass.url}api/last?geocode=true&token=${config.compass.token.read}`, {
             json: true
         }).then(tripData => {
-            return tripData.data;
+            return tripData;
         });
     }
     

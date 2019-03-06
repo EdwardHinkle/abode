@@ -7,7 +7,6 @@ import * as fs from "fs";
 import {DataController} from "./data.controller"; // TypeScript Type
 import * as Prism from "prismjs";
 import * as loadLanguages from "prismjs/components/";
-import * as emojiRegex from "emoji-regex";
 import {Cards} from "./cards.model";
 import {Card} from "./card.model";
 import {Mention} from "./mention.model";
@@ -650,7 +649,7 @@ export class Post {
         }
     }
     
-    public static getEmojiFromPost(): string[] {
+    public getEmojiFromPost(): string[] {
         const regex = emojiRegex();
         return regex.exec(this.properties.content);
     }

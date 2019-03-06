@@ -12,7 +12,7 @@ import * as path from "path";
 import {LocationController} from "../location/location.controller";
 import {Mention} from "../model/mention.model";
 import {Card} from "../model/card.model";
-import moment = require("moment");
+import * as moment from "moment-timezone";
 import * as turf from "@turf/turf";
 import * as geoViewport from "@mapbox/geo-viewport";
 
@@ -1227,7 +1227,7 @@ function getHomepage(req, res, next) {
             hasType: [PostType.Watch],
             orderBy: ["published"],
             orderDirection: ["DESC"],
-            limit: 1,
+            limit: 4,
             showPrivate: req.session.username === 'https://eddiehinkle.com/'
         }, false));
 
@@ -1268,26 +1268,26 @@ function getHomepage(req, res, next) {
             hasType: [PostType.Audio],
             orderBy: ["published"],
             orderDirection: ["DESC"],
-            limit: 1,
+            limit: 4,
             showPrivate: req.session.username === 'https://eddiehinkle.com/'
         }, false));
 
 
         Promise.all(retrievePosts).then(posts => {
 
-            let location = posts[0];
+            let location = posts[0] as any;
 
             // let latestDrank: Post;
             // let latestAte: Post[] = [];
             let latestCheckin: Post = posts[1][0];
             let latestListen: Post[] = posts[2];
-            let latestWatch: Post = posts[3][0];
+            let latestWatch: Post[] = posts[3];
             let latestPhoto: Post[] = [];
             let latestPhotoCount: number = 0;
             let latestNotes: Post[] = posts[5];
             let latestArticles: Post[] = posts[6];
             let latestSocial: Post[] = posts[7];
-            let latestPodcast: Post = posts[8][0];
+            let latestPodcast: Post[] = posts[8];
 
             posts[4].forEach(photoPost => {
                 if (latestPhotoCount < 4) {
@@ -1295,10 +1295,19 @@ function getHomepage(req, res, next) {
                     latestPhotoCount += photoPost.properties.photo.length;
                 }
             });
+            
+            let localTime = moment.tz(location.geocode.timezone).format("LT z");
+            
+            let mapUrl = {
+                light: "background-image: url(https://api.mapbox.com/styles/v1/eddiehinkle/cj5csefaa0ei72rphz5zgl03b/static/" + latestCheckin.properties.checkin.properties.longitude + "," + latestCheckin.properties.checkin.properties.latitude + ",8,0,60/1280x400@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false)",
+                dark: "background-image: url(https://api.mapbox.com/styles/v1/eddiehinkle/cj5csefaa0ei72rphz5zgl03b/static/" + latestCheckin.properties.checkin.properties.longitude + "," + latestCheckin.properties.checkin.properties.latitude + ",8,0,60/1280x400@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false)"
+            };
 
             res.render("homepage/homepage", {
                 // latestDrank: latestDrank,
                 // latestAte: latestAte.reverse(),
+                localtime: localTime,
+                mapUrl: mapUrl,
                 location: location,
                 latestCheckin: latestCheckin,
                 latestListen: latestListen,
@@ -1307,7 +1316,7 @@ function getHomepage(req, res, next) {
                 latestNotes: latestNotes,
                 latestArticles: latestArticles,
                 latestSocial: latestSocial,
-                latestPodcast: latestPodcast
+                latestPodcasts: latestPodcast
             });
 
         });

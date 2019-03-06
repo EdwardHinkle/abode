@@ -23,10 +23,54 @@ html
             include ga.js
         script
             include sfx.js
-    body(class=(location && location.weather && location.weather.icon === 'snow' ? 'theme-snow' : ''))
-            include ../includes/header.pug
+    body(class=(location && location.weather && location.weather.icon === 'snow' ? 'theme-snow' : '')).homepage
+            div.header-map
+                div.right-status-bar
+                    if localtime
+                        span.current-time #{localtime}
+                    if location.location.properties.battery_state === 'charging'
+                        i.far.fa-battery-bolt.battery
+                    else if location.location.properties.battery_level >= 0.9
+                        i.far.fa-battery-full.battery
+                    else if location.location.properties.battery_level >= 0.7
+                        i.far.fa-battery-three-quarters.battery
+                    else if location.location.properties.battery_level >= 0.5
+                        i.far.fa-battery-half.battery
+                    else if location.location.properties.battery_level >= 0.15
+                        i.far.fa-battery-quarter.battery
+                    else
+                        i.far.fa-battery-empty.battery
+                div.left-status-bar
+                    if latestCheckin
+                        div.checkin
+                            span Last Seen:
+                            span
+                                | 
+                                a(href=latestCheckin.getOfficialPermalink()) #{latestCheckin.properties.checkin.properties.name}
+                                |
+                                |
+                                if latestCheckin.properties.personTags.length > 0
+                                    |
+                                    | with
+                                    |
+                                    each person, index in latestCheckin.properties.personTags
+                                        a(href=person[person.getRepresentitiveUrl()]).u-category #{person.properties.nickname}
+                                        if index <= latestCheckin.properties.personTags.length - 3
+                                            | ,
+                                            |
+                                        else if index === latestCheckin.properties.personTags.length - 2
+                                            |
+                                            | and
+                                            |
+                                        else
+                                            | .
+                                            |
+
+                if latestCheckin
+                    div(style=mapUrl.light).light-theme-map
+                    div(style=mapUrl.dark).dark-theme-map
             div.bio.h-card
-                img(src="/images/profile.jpg", alt="Eddie Hinkle", style="display: none;").u-photo
+                img(src="/images/profile.jpg", alt="Eddie Hinkle").u-photo.profile-photo
                 h2.p-note
                     a(rel="me", href="https://eddiehinkle.com/").u-url.p-name Eddie Hinkle
                     |
@@ -52,130 +96,71 @@ html
                     a(href="https://myurlis.com/", target="_blank") My Url Is
                     |.
                     a(href="/about") Read More
-                //h2
-                //    | He
-                //    if latestDrank
-                //        |
-                //        | last drank
-                //        |
-                //        a(href=latestDrank.getOfficialPermalink()) #{latestDrank.properties.drank.properties.name}
-                //        |
-                //        if latestAte
-                //            |
-                //            | and
-                //    if latestAte
-                //        |
-                //        | last ate
-                //        |
-                //        each post, index in latestAte
-                //             a(href=post.getOfficialPermalink()) #{post.properties.ate.properties.name}
-                //             if index <= latestAte.length - 3
-                //                | ,
-                //                |
-                //             else if index === latestAte.length - 2
-                //                |
-                //                | and
-                //                |
-                //             else
-                //                | .
-                //                |
-    
-            div.stats
-                if latestPodcast
-                    div.podcast
-                        h4 Latest Podcast
-                        a(href=latestPodcast.getOfficialPermalink()).no-underline
-                            img(src=latestPodcast.properties.featured, width="200")
-                        //audio(src=latestPodcast.properties.audio, controls=true)
-                        p
-                            a(href=latestPodcast.getOfficialPermalink()) #{latestPodcast.properties.name}
-                        a(href="/podcasts/").more-button.no-underline More Podcasts
-                if latestCheckin
-                    div.checkin
-                        h4 Last Seen
-                        div.checkin-contents
-                            a(href=latestCheckin.getOfficialPermalink()).no-underline
-                                img(src="https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/pin-m+24b1f3(" + latestCheckin.properties.checkin.properties.longitude + "," + latestCheckin.properties.checkin.properties.latitude + ")/" + latestCheckin.properties.checkin.properties.longitude + "," + latestCheckin.properties.checkin.properties.latitude + ",13,0,60/400x400@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false", width='200px')
-                            if latestCheckin.properties.content
-                                | !{latestCheckin.properties.content}
-                                |
-                            else
-                                | Checked in
-                                |
-                            |  at
-                            |
-                            a(href=latestCheckin.getOfficialPermalink()) #{latestCheckin.properties.checkin.properties.name}
-                            |
-                            |
-                            if latestCheckin.properties.personTags.length > 0
-                                |
-                                | with
-                                |
-                                each person, index in latestCheckin.properties.personTags
-                                    a(href=person[person.getRepresentitiveUrl()]).u-category #{person.properties.nickname}
-                                    if index <= latestCheckin.properties.personTags.length - 3
-                                        | ,
-                                        |
-                                    else if index === latestCheckin.properties.personTags.length - 2
-                                        |
-                                        | and
-                                        |
-                                    else
-                                        | .
-                                        |
-                        a(href="/tag/checkin/").more-button.no-underline More Checkins
-                if latestWatch
-                    div.watch
-                        h4 Recently Watched
-                        div.watched-contents
-                            if latestWatch.properties.show_image
-                                a(href=latestWatch.getOfficialPermalink()).no-underline
-                                    img(src=latestWatch.properties.show_image, width="150")
-                            else
-                                a(href=latestWatch.getOfficialPermalink()).no-underline
-                                    img(src=latestWatch.properties.movie_image, width="150")
-                            if latestWatch.properties.personTags
-                                div.personTags
-                                    each person in latestWatch.properties.personTags
-                                        if person.properties.photo
-                                            img(src=person.properties.photo[0], width="20", title=person.properties.name[0]).personTag
-                        a(href="/watched/").more-button.no-underline More Watched
-                div.listen
-                    h4 Recently Listened
-                    div.media-grid
-                        each post in latestListen
+            if latestPodcasts
+                div.carousel
+                    div.carousel-bar
+                        h2 Podcasts
+                        h4
+                            a(href="/podcasts/").no-underline View All
+                    div.carousel-body
+                        each post in latestPodcasts
                             a(href=post.getOfficialPermalink()).no-underline
-                                img(src=post.properties['listen-of'].properties.photo, width="100")
-                    a(href="/listened/").more-button.no-underline More Listened
-                div.photos
-                    h4 Latest Photos
-                    div.media-grid
+                                img(src=post.properties.featured, height="200").carousel-item
+            if latestPhoto
+                div.carousel
+                    div.carousel-bar
+                        h2 Recently Photos
+                        h4
+                            a(href="/photos/").no-underline View All
+                    div.carousel-body
                         - var photoCount = 0;
                         each post in latestPhoto
-                            a(href=post.getOfficialPermalink()).no-underline
+                            if photoCount < 4
                                 each photo in post.properties.photo
-                                    if photoCount < 4
-                                        if photo.url !== undefined
-                                            img(src=photo.url, width="100")
+                                    a(href=post.getOfficialPermalink()).no-underline
+                                        if photo.url
+                                            img(src=photo.url, height="200").carousel-item
                                         else
-                                            img(src=photo, width="100")
-                                        - photoCount++
-                    a(href="/photos/").more-button.no-underline More Photos
-            if latestArticles.length > 0
-                div.articles
-                    h4 Latest Articles
-                    each post in latestArticles
-                        div.article
-                            a(href=post.getOfficialPermalink()) !{post.properties.name}
-                    a(href="/articles/").link-button.no-underline View All Articles
-            if latestNotes.length > 0
-                div.notes
-                    h4 Latest Thoughts
-                    each post in latestNotes
-                        div.note !{post.properties.content}
-                            |
-                            a(href=post.getOfficialPermalink()).note-date.no-underline #{post.semiRelativeDateTimeFormat()}
-                    a(href="/timeline/").link-button.no-underline View Full Timeline
+                                            img(src=photo, height="200").carousel-item
+                                    - photoCount++
+            if latestWatch
+                div.carousel
+                    div.carousel-bar
+                        h2 Recently Watched
+                        h4
+                            a(href="/watched/").no-underline View All
+                    div.carousel-body
+                        each post in latestWatch
+                            a(href=post.getOfficialPermalink()).no-underline
+                                if post.properties.show_image
+                                    img(src=post.properties.show_image, height="200").carousel-item
+                                else
+                                    img(src=post.properties.movie_image, height="200").carousel-item
+            if latestListen
+                div.carousel
+                    div.carousel-bar
+                        h2 Recently Listened
+                        h4
+                            a(href="/listened/").no-underline View All
+                    div.carousel-body
+                        each post in latestListen
+                            a(href=post.getOfficialPermalink()).no-underline
+                                img(src=post.properties['listen-of'].properties.photo, height="200").carousel-item
+//-            if latestArticles.length > 0
+//-                div.articles
+//-                    h4 Latest Articles
+//-                    each post in latestArticles
+//-                        div.article
+//-                            a(href=post.getOfficialPermalink()) !{post.properties.name}
+//-                    a(href="/articles/").link-button.no-underline View All Articles
+//-            if latestNotes.length > 0
+//-                div.notes
+//-                    h4 Latest Thoughts
+//-                    each post in latestNotes
+//-                        div.note !{post.properties.content}
+//-                            |
+//-                            a(href=post.getOfficialPermalink()).note-date.no-underline #{post.semiRelativeDateTimeFormat()}
+//-                    a(href="/timeline/").link-button.no-underline View Full Timeline
             if latestSocial.length > 0
                 div.social
                     h4 Latest Social Interactions

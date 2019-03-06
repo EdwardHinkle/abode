@@ -107,8 +107,13 @@ if (config.ENV === 'production') {
                 });
             });
         });
+    }).start();
+
+    new cron.CronJob('0 */2 * * * *', function () {
+        console.log('running location cron job');
         LocationController.cacheCurrentLocation();
     }).start();
+
 }
 
 process.on('SIGINT', () => {
