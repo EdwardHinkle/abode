@@ -13,3 +13,7 @@ if (window.location.hostname === "localhost") {
     fathom('set', 'siteId', 'DXXPC');
     fathom('trackPageview');
 }
+
+document.getElementById("switch-friend-button").addEventListener("click", function(event){
+    alert("Nintendo Switch " + document.getElementById("switch-friend-button").getAttribute("title"));
+});

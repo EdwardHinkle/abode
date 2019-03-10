@@ -73,19 +73,21 @@ a.no-underline {
     top: 40px;
     width: 100%;
     text-align: center;
-    font-weight: 100;
-    font-size: 3em;
+    font-weight: 800;
+    font-size: 2em;
     transition: font-weight 0.5s ease-in-out;
 }
 
 .site-monogram a {
     background-color: transparent;
     color: #000;
+    text-shadow: 3px 3px rgba(255,0,0,0.5);
     text-decoration: none;
 }
 
 .site-monogram a:hover {
-    color: #24b1f3;
+    color: #000;
+    text-shadow: 3px 3px rgba(255,0,0,0.8);
     background-color: transparent;
 }
 
@@ -172,11 +174,11 @@ a.no-underline {
     border-top: #dedede solid 1px;
 }
 
-.social-media-list a {
+.social-media-list a, .social-media-list data {
     color: rgba(83, 176, 237, 0.7);
 }
 
-.social-media-list a:hover {
+.social-media-list a:hover, , .social-media-list data:hover {
     color: rgba(83, 176, 237, 0.3);
 }
 

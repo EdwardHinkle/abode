@@ -1244,7 +1244,7 @@ function getHomepage(req, res, next) {
             inChannel: "timeline",
             orderBy: ["published"],
             orderDirection: ["DESC"],
-            limit: 10,
+            limit: 2,
             showPrivate: req.session.username === 'https://eddiehinkle.com/'
         }, false));
 
@@ -1252,7 +1252,7 @@ function getHomepage(req, res, next) {
             hasType: [PostType.Article],
             orderBy: ["published"],
             orderDirection: ["DESC"],
-            limit: 5,
+            limit: 3,
             showPrivate: req.session.username === 'https://eddiehinkle.com/'
         }, false));
 

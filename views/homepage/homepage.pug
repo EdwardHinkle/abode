@@ -23,7 +23,7 @@ html
             include ga.js
         script
             include sfx.js
-    body(class=(location && location.weather && location.weather.icon === 'snow' ? 'theme-snow' : '')).homepage
+    body(class=(location && location.weather && location.weather.icon === 'snow' ? 'theme-snow' : '')).homepage.h-card
             div.header-map
                 div.right-status-bar
                     if localtime
@@ -69,7 +69,7 @@ html
                 if latestCheckin
                     div(style=mapUrl.light).light-theme-map
                     div(style=mapUrl.dark).dark-theme-map
-            div.bio.h-card
+            div.bio
                 img(src="/images/profile.jpg", alt="Eddie Hinkle").u-photo.profile-photo
                 h2.p-note
                     a(rel="me", href="https://eddiehinkle.com/").u-url.p-name Eddie Hinkle
@@ -96,6 +96,28 @@ html
                     a(href="https://myurlis.com/", target="_blank") My Url Is
                     |.
                     a(href="/about") Read More
+            if latestNotes.length > 0
+                div.carousel.flex-carousel
+                    div.carousel-bar
+                        h2 Notes
+                        h4
+                            a(href="/timeline/").no-underline View All
+                    div.carousel-body
+                        each post in latestNotes
+                            div.carousel-item.note-item
+                                div.content !{post.properties.content}
+                                a(href=post.getOfficialPermalink()).note-date.no-underline #{post.semiRelativeDateTimeFormat()}
+            if latestArticles.length > 0
+                div.carousel.flex-carousel
+                    div.carousel-bar
+                        h2 Articles
+                        h4
+                            a(href="/articles/").no-underline View All
+                    div.carousel-body
+                        each post in latestArticles
+                            div.carousel-item.article-item
+                                div
+                                    a(href=post.getOfficialPermalink()).no-underline !{post.properties.name}
             if latestPodcasts
                 div.carousel
                     div.carousel-bar
@@ -146,21 +168,6 @@ html
                         each post in latestListen
                             a(href=post.getOfficialPermalink()).no-underline
                                 img(src=post.properties['listen-of'].properties.photo, height="200").carousel-item
-//-            if latestArticles.length > 0
-//-                div.articles
-//-                    h4 Latest Articles
-//-                    each post in latestArticles
-//-                        div.article
-//-                            a(href=post.getOfficialPermalink()) !{post.properties.name}
-//-                    a(href="/articles/").link-button.no-underline View All Articles
-//-            if latestNotes.length > 0
-//-                div.notes
-//-                    h4 Latest Thoughts
-//-                    each post in latestNotes
-//-                        div.note !{post.properties.content}
-//-                            |
-//-                            a(href=post.getOfficialPermalink()).note-date.no-underline #{post.semiRelativeDateTimeFormat()}
-//-                    a(href="/timeline/").link-button.no-underline View Full Timeline
             if latestSocial.length > 0
                 div.social
                     h4 Latest Social Interactions

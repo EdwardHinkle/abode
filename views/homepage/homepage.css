@@ -15,6 +15,7 @@ h2 {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
+    border-bottom: 5px solid black;
 }
 
 .dark-theme-map {
@@ -37,7 +38,7 @@ h2 {
     position: absolute;
     top: 300px;
     left: 10px;
-    paddinfg: 5px;
+    padding: 5px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -99,6 +100,42 @@ h2 {
     border: 10px solid black;
     margin: 25px 3%;
     box-shadow: 10px 6px rgba(255, 0, 0, 0.2);
+    display: inline-block;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.note-item {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.note-item .content {
+    flex-grow: 1;
+}
+
+.article-item {
+    padding: 10px;
+    background-color: rgba(255,0,0,0.4);
+    border: 5px solid rgba(255,0,0,0.4);
+    box-shadow: 5px 5px black;
+    font-size: 1.6em;
+    font-weight: 800;
+    line-height: 1.2em;
+    display: flex;
+}
+
+.article-item > div > a {
+    color: white;
+}
+
+.flex-carousel .carousel-body {
+    display: flex;
+}
+
+.flex-carousel .carousel-item {
+    flex: 1;
 }
 
 .more-button, .link-button {
@@ -266,6 +303,10 @@ h2 {
     .carousel-item {
         width: 70%;
         margin: 10px 0 30px 10%;
+    }
+    
+    .flex-carousel .carousel-body {
+        display: block;
     }
 }
 
