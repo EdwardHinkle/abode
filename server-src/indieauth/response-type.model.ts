@@ -1,1 +1,1 @@
-export type ResponseType = 'id' | 'code';
+export type ResponseType = 'id' | 'code' | 'external_token';

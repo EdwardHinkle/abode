@@ -15,6 +15,15 @@ body {
 
 .audience-display a, .audience-display a:hover, .audience-display a:visited {
     color: white;
+    margin: 0 5px;
+}
+
+.audience-display a:after {
+    content: ',';
+}
+
+.audience-display a:last-of-type:after {
+    content: '';
 }
 
 .audience-display .fa {

@@ -36,7 +36,7 @@ export class Card {
     }
 
     getOfficialPermalink() {
-        return `https://eddiehinkle.com/contact/${UrlUtility.getCleanDomain(this.getRepresentitiveUrl())}/`;
+        return `https://eddiehinkle.com/contact/${UrlUtility.getCleanUrl(this.getRepresentitiveUrl())}/`;
     }
 
     isActive() {
@@ -45,7 +45,7 @@ export class Card {
 
     static saveCard(card: Card) {
         try {
-            fs.writeFileSync(`${cardsDirectory}/${UrlUtility.getCleanDomain(card.getRepresentitiveUrl())}.json`,
+            fs.writeFileSync(`${cardsDirectory}/${UrlUtility.getCleanUrl(card.getRepresentitiveUrl())}.json`,
                 JSON.stringify({
                     type: card.type,
                     properties: card.properties
@@ -60,7 +60,7 @@ export class Card {
     static loadCard(cardUid: string): Promise<Card> {
         return new Promise((resolve, reject) => {
             try {
-                let cardData = JSON.parse(fs.readFileSync(`${cardsDirectory}/${UrlUtility.getCleanDomain(cardUid)}.json`, 'utf8'));
+                let cardData = JSON.parse(fs.readFileSync(`${cardsDirectory}/${UrlUtility.getCleanUrl(cardUid)}.json`, 'utf8'));
                 resolve(new Card(cardData));
             } catch (error) {
                 console.log('Error trying to parse card: ' + cardUid);

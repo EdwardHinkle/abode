@@ -12,16 +12,18 @@ export let verificationEndpoint = (req, res, next) => {
 	console.log(req.body);
 
     let config = req.app.get('config');
+    let code = req.body.code;
+    let client_id = req.body.client_id;
+    let redirect_uri = req.body.redirect_uri;
 
-    if (req.body.code === undefined) {
+    if (code === undefined) {
         console.log("no query code");
         next();
         return;
     }
 
-    let code = req.body.code;
-    let client_id = req.body.client_id;
-    let redirect_uri = req.body.redirect_uri;
+    // TODO: Check if client_id is missing and if root_uri is there
+
 
     console.log("IndieAuth Verification Endpoint");
 

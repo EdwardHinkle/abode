@@ -664,6 +664,40 @@ export class Post {
         }
         return false;
     }
+
+    public isAccessibleByUser(username: string): boolean {
+        // If it's not private, you have access
+        if (this.properties.visibility !== "private") {
+            console.log('post is not private');
+            return true;
+        }
+
+        // If user is not authenticated, no access for you!
+        if (username === undefined) {
+            console.log('User is not authenticated', username);
+            return false;
+        }
+
+        // If you are Eddie, you have access
+        if (username === "https://eddiehinkle.com/") {
+            console.log('user is eddie');
+            return true;
+        }
+
+        // if you exist inside the audience property, you have access
+        // @ts-ignore
+        if (this.properties.audience !== undefined && this.properties.audience.length > 0) {
+            console.log('checking audience', this.properties.audience);
+
+            let audienceIndexId = this.properties.audience.findIndex(card => card.properties.uid[0] === username);
+
+            console.log('audience index is ', audienceIndexId);
+            if (audienceIndexId > -1) {
+                console.log('user is in the audience');
+                return true;
+            }
+        }
+    }
 }
 
 export class PostProperties {
