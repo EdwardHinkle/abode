@@ -7,5 +7,6 @@ export let scopeDefinitions = {
     follow: `Manage your following lists`,
     mute: `Manage which users are on your mute list`,
     block: `Manage which users are on your block list`,
-    channels: `Manage your channels`
+    channels: `Manage your channels`,
+    'request_external_token:read': `Allow a third party application to request the ability to read other people's content`
 };
