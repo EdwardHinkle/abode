@@ -1,19 +1,14 @@
 html
     head
-        title #{(post.properties.name ? post.properties.name : (post.properties.content ? post.properties.content : post.getPostType())).replace(/<(?:.|\n)*?>/gm, '')}
+        title #{(post.getPostSummary()).replace(/<(?:.|\n)*?>/gm, '')}
         style
             include ../global.css
             include post.css
             include reply.css
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        if post.properties.video
-            meta(property="og:video", content=post.properties.video[0])
-        if post.properties.featured
-            meta(property="og:image", content=post.properties.featured)
-        else if post.properties.photo
-            meta(property="og:image", content=post.properties.photo[0])
-        else if post.properties.checkin
-            meta(property="og:image", content="https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/pin-m+24b1f3(" + post.properties.checkin.properties.longitude + "," + post.properties.checkin.properties.latitude + ")/" + post.properties.checkin.properties.longitude + "," + post.properties.checkin.properties.latitude + ",13,0,60/1280x350@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false")
+        - var ogPreview = post.getOGPreviewMedia();
+        if ogPreview
+            meta(property=ogPreview.type, content=ogPreview.content)
         link(rel="webmention", href="https://webmention.io/eddiehinkle.com/webmention")
         link(rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-xyMU7RufUdPGVOZRrc2z2nRWVWBONzqa0NFctWglHmt5q5ukL22+lvHAqhqsIm3h" crossorigin="anonymous")
         link(rel="stylesheet" href="/resources/styles/prism-tomorrow-night.css")
@@ -120,6 +115,9 @@ html
             .listen-image-container
                 if post.properties['listen-of'] && post.properties['listen-of'].properties.photo
                     img(src=post.properties['listen-of'].properties.photo, width='300px').u-photo.listen-image
+            .play-image-container
+                if post.properties['play-of'] && post.properties['play-of'].properties.featured
+                    img(src=post.properties['play-of'].properties.featured, width='300px').u-photo.play-image
             if post.properties.photo
                 div(class="photos-" + post.properties.photo.length).photos-container
                     each photoUrl in post.properties.photo
@@ -135,12 +133,19 @@ html
                         | Event Ends:
                         | 
                         time(datetime=post.properties.end.format()).dt-end #{post.semiRelativeDateTimeFormat(post.properties.end)}
-            if post.properties.content || post.properties['listen-of'] || post.properties.show_name || post.properties.movie_name || post.properties.checkin || post.properties['follow-of']
+            if post.properties.content || post.properties['play-of'] || post.properties['listen-of'] || post.properties.show_name || post.properties.movie_name || post.properties.checkin || post.properties['follow-of']
                 div(class=(post.properties.name ? "" : "p-name") + " " + (post.getPostType() === "reacji" ? "reacji" : "")).e-content
                     if post.properties['follow-of']
                         div.following Following
                             | 
                             a(href=post.properties['follow-of'].properties.url).u-follow-of.h-card #{post.properties['follow-of'].properties.name}
+                    if post.properties['play-of'] && post.properties['play-of'].type === "h-cite"
+                        div.summary-fallback.u-play-of.h-cite 🎮 Played
+                            |
+                            |
+                            a(href=post.properties['play-of'].properties.url).u-url #{post.properties['play-of'].properties.name}
+                            |
+                            | for #{post.getDurationText()}
                     if post.properties['listen-of'] && post.properties['listen-of'].type === "h-cite"
                         div.summary-fallback.u-listen-of.h-cite 🎧 Listened to
                             |

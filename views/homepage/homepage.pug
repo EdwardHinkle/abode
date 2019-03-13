@@ -104,7 +104,7 @@ html
                             a(href="/timeline/").no-underline View All
                     div.carousel-body
                         each post in latestNotes
-                            div.carousel-item.note-item
+                            div.carousel-item.note-item.no-link
                                 div.content !{post.properties.content}
                                 a(href=post.getOfficialPermalink()).note-date.no-underline #{post.semiRelativeDateTimeFormat()}
             if latestArticles.length > 0
@@ -115,7 +115,7 @@ html
                             a(href="/articles/").no-underline View All
                     div.carousel-body
                         each post in latestArticles
-                            div.carousel-item.article-item
+                            div.carousel-item.article-item.no-link
                                 div
                                     a(href=post.getOfficialPermalink()).no-underline !{post.properties.name}
             if latestPodcasts
@@ -126,7 +126,7 @@ html
                             a(href="/podcasts/").no-underline View All
                     div.carousel-body
                         each post in latestPodcasts
-                            a(href=post.getOfficialPermalink()).no-underline
+                            a(href=post.getOfficialPermalink()).no-underline.carousel-link
                                 img(src=post.properties.featured, height="200").carousel-item
             if latestPhoto
                 div.carousel
@@ -139,7 +139,7 @@ html
                         each post in latestPhoto
                             if photoCount < 4
                                 each photo in post.properties.photo
-                                    a(href=post.getOfficialPermalink()).no-underline
+                                    a(href=post.getOfficialPermalink()).no-underline.carousel-link
                                         if photo.url
                                             img(src=photo.url, height="200").carousel-item
                                         else
@@ -153,11 +153,16 @@ html
                             a(href="/watched/").no-underline View All
                     div.carousel-body
                         each post in latestWatch
-                            a(href=post.getOfficialPermalink()).no-underline
+                            a(href=post.getOfficialPermalink()).no-underline.carousel-link
                                 if post.properties.show_image
                                     img(src=post.properties.show_image, height="200").carousel-item
                                 else
                                     img(src=post.properties.movie_image, height="200").carousel-item
+                                if post.properties.personTags
+                                    div.personTags
+                                        each person in post.properties.personTags
+                                            if person.properties.photo
+                                                img(src=person.properties.photo[0], width="20", title=person.properties.name[0]).personTag
             if latestListen
                 div.carousel
                     div.carousel-bar
@@ -166,8 +171,23 @@ html
                             a(href="/listened/").no-underline View All
                     div.carousel-body
                         each post in latestListen
-                            a(href=post.getOfficialPermalink()).no-underline
+                            a(href=post.getOfficialPermalink()).no-underline.carousel-link
                                 img(src=post.properties['listen-of'].properties.photo, height="200").carousel-item
+            if latestPlays
+                div.carousel
+                    div.carousel-bar
+                        h2 Recently Played
+                        h4
+                            a(href="/played/").no-underline View All
+                    div.carousel-body
+                        each post in latestPlays
+                            a(href=post.getOfficialPermalink()).no-underline.carousel-link
+                                img(src=post.properties['play-of'].properties.featured, height="200").carousel-item
+                                if post.properties.personTags
+                                    div.personTags
+                                        each person in post.properties.personTags
+                                            if person.properties.photo
+                                                img(src=person.properties.photo[0], width="20", title=person.properties.name[0]).personTag
             if latestSocial.length > 0
                 div.social
                     h4 Latest Social Interactions

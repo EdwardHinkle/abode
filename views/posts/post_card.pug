@@ -76,6 +76,9 @@ div.h-entry
     .listen-image-container
         if post.properties['listen-of'] && post.properties['listen-of'].properties.photo
             img(src=post.properties['listen-of'].properties.photo, width='300px').u-photo.listen-image
+    .play-image-container
+        if post.properties['play-of'] && post.properties['play-of'].properties.featured
+            img(src=post.properties['play-of'].properties.featured, width='300px').u-photo.play-image
     if post.properties.video
         div(class="videos-" + post.properties.video.length).videos-container
             each videoUrl in post.properties.video
@@ -90,12 +93,19 @@ div.h-entry
                 img(src=photoUrl).u-photo
     if post.properties.video === undefined && post.properties.featured
         img(src=post.properties.featured).u-featured.featured-image
-    if post.properties.content || post.properties['listen-of'] || post.properties.show_name || post.properties.movie_name || post.properties.checkin || post.properties['follow-of']
+    if post.properties.content || post.properties['play-of'] || post.properties['listen-of'] || post.properties.show_name || post.properties.movie_name || post.properties.checkin || post.properties['follow-of']
         div(class=(post.properties.name ? "" : "p-name") + " " + (post.getPostType() === "reacji" ? "reacji" : "")).e-content
             if post.properties['follow-of']
                         div.following Following
                             | 
                             a(href=post.properties['follow-of'].properties.url).u-follow-of.h-card #{post.properties['follow-of'].properties.name}
+            if post.properties['play-of'] && post.properties['play-of'].type === "h-cite"
+                div.summary-fallback.u-play-of.h-cite 🎮 Played
+                    |
+                    |
+                    a(href=post.properties['play-of'].properties.url).u-url #{post.properties['play-of'].properties.name}
+                    |
+                    | for #{post.properties.duration / 60} minutes
             if post.properties['listen-of'] && post.properties['listen-of'].type === "h-cite"
                 div.summary-fallback.u-listen-of.h-cite 🎧 Listened to
                     |

@@ -93,16 +93,34 @@ h2 {
     white-space: nowrap;
 }
 
+.carousel-link {
+    margin: 25px 3%;
+    position: relative;
+}
+
+.carousel-link .personTags {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+.carousel-link .personTag {
+    width: 40px;
+}
+
 .carousel-item {
     width: 18%;
     box-sizing: border-box;
     height: auto;
     border: 10px solid black;
-    margin: 25px 3%;
     box-shadow: 10px 6px rgba(255, 0, 0, 0.2);
     display: inline-block;
     word-wrap: break-word;
     white-space: pre-wrap;
+}
+
+.carousel-item.no-link {
+    margin: 25px 3%;
 }
 
 .note-item {
@@ -263,17 +281,6 @@ h2 {
 
 .watched-contents {
     position: relative;
-}
-
-.watched-contents .personTags {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-}
-
-.watched-contents .personTag {
-    width: 25px;
-    border-radius: 2px;
 }
 
 @media (max-width: 500px) {

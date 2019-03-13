@@ -54,6 +54,7 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/', getDaySummary);
 
 // Post routes
 dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/debug/', debugPostData);
+dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/reindex/', reindexPost);
 dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postType?/', checkForUserToken, getPostPage);
 
 // Generic page route
@@ -448,6 +449,28 @@ function convertPostsToJsonFeed(posts: Post[], feed_title: string, feed_url: str
         });
 
         resolve(jsonFeed);
+
+    });
+}
+
+function reindexPost(req, res) {
+    let year = req.params.year;
+    let month = req.params.month;
+    let day = req.params.day;
+    let postIndex = req.params.postIndex;
+
+    Posts.getPost({
+        year: year,
+        month: month,
+        day: day,
+        postIndex: postIndex
+    }).then(post => {
+
+        console.log('Time to reindex this post');
+        console.log(post);
+
+        post.reindexCache();
+        res.redirect(post.getOfficialPermalink());
 
     });
 }
@@ -1277,6 +1300,14 @@ function getHomepage(req, res, next) {
             showPrivate: req.session.username === 'https://eddiehinkle.com/'
         }, false));
 
+        retrievePosts.push(Posts.searchPosts({
+            hasType: [PostType.Play],
+            orderBy: ["published"],
+            orderDirection: ["DESC"],
+            limit: 4,
+            showPrivate: req.session.username === 'https://eddiehinkle.com/'
+        }, false));
+
 
         Promise.all(retrievePosts).then(posts => {
 
@@ -1293,6 +1324,7 @@ function getHomepage(req, res, next) {
             let latestArticles: Post[] = posts[6];
             let latestSocial: Post[] = posts[7];
             let latestPodcast: Post[] = posts[8];
+            let latestPlays: Post[] = posts[9];
 
             posts[4].forEach(photoPost => {
                 if (latestPhotoCount < 4) {
@@ -1321,7 +1353,8 @@ function getHomepage(req, res, next) {
                 latestNotes: latestNotes,
                 latestArticles: latestArticles,
                 latestSocial: latestSocial,
-                latestPodcasts: latestPodcast
+                latestPodcasts: latestPodcast,
+                latestPlays: latestPlays
             });
 
         });

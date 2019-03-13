@@ -173,16 +173,6 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
                         yamlDocument.title = "";
                     }
 
-                    if (yamlDocument.title > "" && micropubContent > "") {
-                        if (micropubDocument.properties['in-reply-to'] === undefined) {
-                            // Add featured if there is a title and content
-                            yamlDocument.featured = true;
-                        }
-
-                        // Add duration estimate
-                        yamlDocument.duration = Math.round(readingTime(micropubContent).minutes);
-                    }
-
                     // Loop through all properties
                     // If they are an object, process them
                     yamlDocument.properties = {};
@@ -195,7 +185,7 @@ export function convertMicropubToJekyll(micropubDocument, req): Promise<any> {
 
                             console.log(`Working on property ${propertyName}`);
 
-                            if (propertyName === 'watch-of' || propertyName === 'audience' || propertyName === 'listen-of') {
+                            if (propertyName === 'watch-of' || propertyName === 'audience' || propertyName === 'listen-of' || propertyName === 'play-of' || propertyName === 'bookmark' || propertyName === 'duration') {
 
                                 yamlDocument.properties[propertyName] = micropubDocument.properties[propertyName];
 
