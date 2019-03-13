@@ -15,6 +15,7 @@ import {Card} from "../model/card.model";
 import * as moment from "moment-timezone";
 import * as turf from "@turf/turf";
 import * as geoViewport from "@mapbox/geo-viewport";
+import {checkForUserToken} from "../indieauth/auto-auth";
 
 export let dynamicRouter = express.Router();
 
@@ -53,7 +54,8 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/', getDaySummary);
 
 // Post routes
 dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/debug/', debugPostData);
-dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postType?/', getPostPage);
+dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/reindex/', reindexPost);
+dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postType?/', checkForUserToken, getPostPage);
 
 // Generic page route
 dynamicRouter.get('/:pageSlug', getPage);
@@ -451,6 +453,28 @@ function convertPostsToJsonFeed(posts: Post[], feed_title: string, feed_url: str
     });
 }
 
+function reindexPost(req, res) {
+    let year = req.params.year;
+    let month = req.params.month;
+    let day = req.params.day;
+    let postIndex = req.params.postIndex;
+
+    Posts.getPost({
+        year: year,
+        month: month,
+        day: day,
+        postIndex: postIndex
+    }).then(post => {
+
+        console.log('Time to reindex this post');
+        console.log(post);
+
+        post.reindexCache();
+        res.redirect(post.getOfficialPermalink());
+
+    });
+}
+
 function getPostPage(req, res) {
 
     let year = req.params.year;
@@ -465,14 +489,18 @@ function getPostPage(req, res) {
         postIndex: postIndex
     }).then(post => {
 
-// Check if it is private and if you are authenticated
-if (post.properties.visibility === "private" && req.session.username !== 'https://eddiehinkle.com/') {
-    console.log("tried to view a private post without being authenticated")
-    res.render("posts/errorMessage", {
+        // Check if it is private and if you are authenticated
+        console.log(req.session.username + ' trying to access ' + post.getPostDir());
+        if (!post.isAccessibleByUser(req.session.username)) {
+            console.log("tried to view a private post without being authenticated");
+            res.setHeader('WWW-Authenticate', 'Bearer scope="read"');
+            res.setHeader('Link', '<https://eddiehinkle.com/auth/token>; rel="token_endpoint"');
+
+            res.status(401).render("posts/errorMessage", {
                 errorMessage: "Sorry, the post you are looking for is still processing"
             });
             return;
-}
+        }
 
         // Check if the post path is the official permalink path.
         if (!post.verifyPostPermalink(req)) {

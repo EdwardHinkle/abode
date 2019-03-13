@@ -18,7 +18,8 @@ export type postType =
     'Ate' |
     'Drank' |
     'Listen' |
-    'Watch';
+    'Watch' |
+    'Play';
 
 let typeInference = {
     "rsvp": 'RSVP',
@@ -32,7 +33,9 @@ let typeInference = {
     "photo": 'Photo',
     "audio": "Audio",
     'listen-of': 'Listen',
-    'watch-of': 'Watch'
+    'watch-of': 'Watch',
+    'play-of': 'Play',
+    'bookmark': 'Bookmark'
 };
 
 export type Visibility = 'public' | 'private';
@@ -43,7 +46,7 @@ export function getPostType(postObject): postType {
         return 'Event';
     }
 
-    if (postObject.properties['abode-content-type'] && postObject.properties['abode-content-type'].indexOf('code/') > -1) {
+    if (postObject.properties['abode-content-type']) {
         return 'Code';
     }
 
@@ -58,7 +61,7 @@ export function getPostType(postObject): postType {
     }
 
     // If name exists and it is not a prefix of the content, this is an article
-    if (postObject.properties.name != undefined && postObject.properties.name != '' && postObject.properties.content.indexOf(postObject.properties.name) != 0) {
+    if (postObject.properties.name != undefined && postObject.properties.name != '' && (postObject.properties.content === undefined || postObject.properties.content.indexOf(postObject.properties.name) != 0)) {
         return 'Article';
     }
 

@@ -85,7 +85,6 @@ export class Post {
                 }
                 
                 post.properties.postIndex = doc.slug;
-                post.properties.duration = doc.duration;
                 if (post.properties.visibility === undefined) {
                 post.properties.visibility = doc.visibility;
                 }
@@ -343,6 +342,151 @@ export class Post {
         }); */
     }
 
+    public getDurationText() {
+        if (this.properties.duration < 60) {
+            return `${this.properties.duration} seconds`;
+        }
+        else if (this.properties.duration > 60 && this.properties.duration < (60 * 60)) {
+            return `${this.properties.duration / 60} minutes`;
+        }
+        else if (this.properties.duration > (60 * 60) && this.properties.duration < (60 * 60 * 24)) {
+            return `${this.properties.duration / (60 * 60)} hours`;
+        }
+        else if (this.properties.duration > (60 * 60 * 24)) {
+            return `${this.properties.duration / (60 * 60 * 24)} days`;
+        }
+    }
+
+    public getPostSummary() {
+        if (this.properties.name) {
+            return this.properties.name;
+        }
+
+        if (this.properties.content) {
+            return this.properties.content;
+        }
+
+        let summary = '';
+
+        if (this.properties.rsvp === 'yes') {
+            summary += "🥳 I'm attending";
+        }
+
+        if (this.properties.rsvp === 'no') {
+            summary += "😔 I'm attending";
+        }
+
+        if (this.properties.rsvp === 'maybe') {
+            summary += "🤔 I may be attending";
+        }
+
+        if (this.properties['like-of']) {
+            summary += "👍 Liked: " + this.properties['like-of'];
+        }
+
+        if (this.properties['bookmark-of']) {
+            if (this.properties['bookmark-of'].properties.name) {
+                summary += "🔖 Bookmarked: " + this.properties['bookmark-of'].properties.name;
+            } else {
+                summary += "🔖 Bookmarked: " + this.properties['bookmark-of'];
+            }
+        }
+
+        if (this.properties['play-of']) {
+            summary += `🎮 Played ${this.properties['play-of'].properties.name} for ${this.getDurationText()}`;
+        }
+
+        if (this.properties['listen-of']) {
+            summary += `🎧 Listened to ${this.properties['listen-of'].properties.name}}`;
+        }
+
+        if (this.properties.movie_name) {
+            summary += `🎬 Watched ${this.properties.movie_name}`
+        }
+
+        if (this.properties.show_name) {
+            summary += `📺 Watched ${this.properties.show_name}`;
+
+            if (this.properties.show_premiere) {
+                summary += ' Series Premiere';
+            }
+            else if (this.properties.show_finale) {
+                summary += ' Series Finale';
+            }
+            else {
+                summary += ` Season ${this.properties.show_season}`;
+            }
+
+            if (this.properties.season_premiere) {
+                summary += ' Premiere';
+            }
+            else if (this.properties.season_finale) {
+                summary += ' Finale';
+            } else {
+                summary += ` ${this.properties.show_episode}: ${this.properties.episode_name}`;
+            }
+        }
+
+        if (this.properties.checkin) {
+            summary += ` at ${this.properties.checkin.properties.name}`
+        }
+
+        if (this.properties.personTags.length > 0) {
+            summary += ' with';
+            this.properties.personTags.map(card => card.properties.nickname).forEach((person, idx, arr)  => {
+                summary += ` ${person}`;
+                if (idx <= arr.length - 3) {
+                    summary += ' ,';
+                }
+                else if (idx === arr.length - 2) {
+                    summary += ' and';
+                }
+                else {
+                    summary += '.';
+                }
+            });
+        }
+
+        if (summary !== '') {
+            return summary;
+        } else {
+            return this.getPostType();
+        }
+    }
+
+    public getOGPreviewMedia() {
+        if (this.properties.video) {
+            return {
+                type: "og:video",
+                content: this.properties.video[0]
+            }
+        }
+        else if (this.properties.featured) {
+            return {
+                type: "og:image",
+                content: this.properties.featured
+            }
+        }
+        else if (this.properties.photo) {
+            return {
+                type: "og:image",
+                content: this.properties.photo[0]
+            }
+        }
+        else if (this.properties['play-of'] && this.properties['play-of'].properties.featured) {
+            return {
+                type: "og:image",
+                content: this.properties['play-of'].properties.featured
+            }
+        }
+        else if (this.properties.checkin) {
+            return {
+                type: "og:image",
+                content: "https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/pin-m+24b1f3(" + this.properties.checkin.properties.longitude + "," + this.properties.checkin.properties.latitude + ")/" + this.properties.checkin.properties.longitude + "," + this.properties.checkin.properties.latitude + ",13,0,60/1280x350@2x?access_token=pk.eyJ1IjoiZWRkaWVoaW5rbGUiLCJhIjoiY2oxa3o1aXdiMDAwNDMzbjFjNGQ0ejl1eSJ9.WQZ6i6b-TYYe_96IQ6iXdg&attribution=false&logo=false"
+            }
+        }
+    }
+
     public loadRecentMentions(numberOfMentions: number): Promise<boolean> {
         return new Promise((resolve, reject) => {
             Mention.getRecentMentionsForPost(this, numberOfMentions).then(mentions => {
@@ -373,6 +517,10 @@ export class Post {
         });
     }
 
+    public reindexCache(): any {
+        this.updateDatabaseCache();
+    }
+
     public updateDatabaseCache(): any {
 
         console.log('Attempting to update post in database');
@@ -382,7 +530,9 @@ export class Post {
 
                 let addPost = DataController.db.prepare("INSERT OR REPLACE INTO `posts` (year, month, day, post_index, name, published, post_type, visibility, content) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 let addTag = DataController.db.prepare("INSERT OR IGNORE INTO `tags` (name) VALUES (?)");
+                // TODO: Remove invalid post tags
                 let addPostTags = DataController.db.prepare("INSERT OR IGNORE INTO `posts_tags` (post_year, post_month, post_day, post_index, tag_name) VALUES (?, ?, ?, ?, ?)");
+                // TODO: Remove invalid post channels
                 let addPostChannels = DataController.db.prepare("INSERT OR IGNORE INTO `posts_channels` (post_year, post_month, post_day, post_index, channel) VALUES (?, ?, ?, ?, ?)");
 
                 addPost.run(
@@ -663,6 +813,40 @@ export class Post {
             }
         }
         return false;
+    }
+
+    public isAccessibleByUser(username: string): boolean {
+        // If it's not private, you have access
+        if (this.properties.visibility !== "private") {
+            console.log('post is not private');
+            return true;
+        }
+
+        // If user is not authenticated, no access for you!
+        if (username === undefined) {
+            console.log('User is not authenticated', username);
+            return false;
+        }
+
+        // If you are Eddie, you have access
+        if (username === "https://eddiehinkle.com/") {
+            console.log('user is eddie');
+            return true;
+        }
+
+        // if you exist inside the audience property, you have access
+        // @ts-ignore
+        if (this.properties.audience !== undefined && this.properties.audience.length > 0) {
+            console.log('checking audience', this.properties.audience);
+
+            let audienceIndexId = this.properties.audience.findIndex(card => card.properties.uid[0] === username);
+
+            console.log('audience index is ', audienceIndexId);
+            if (audienceIndexId > -1) {
+                console.log('user is in the audience');
+                return true;
+            }
+        }
     }
 }
 
