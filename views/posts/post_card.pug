@@ -105,7 +105,7 @@ div.h-entry
                     |
                     a(href=post.properties['play-of'].properties.url).u-url #{post.properties['play-of'].properties.name}
                     |
-                    | for #{post.properties.duration / 60} minutes
+                    | for #{post.getDurationText()}
             if post.properties['listen-of'] && post.properties['listen-of'].type === "h-cite"
                 div.summary-fallback.u-listen-of.h-cite 🎧 Listened to
                     |
