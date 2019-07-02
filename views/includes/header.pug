@@ -1,2 +1,27 @@
-h1.site-monogram(title="Eddie Hinkle")
-    a(href="https://eddiehinkle.com").no-underline Eddie Hinkle
+div.header-section
+    div.left-status-bar
+    div.center-status-bar
+        h1.site-monogram(title="Eddie Hinkle")
+            a(href="https://eddiehinkle.com").no-underline Eddie Hinkle
+    div.right-status-bar
+        if username
+            if user
+                span Hi, #{user.getName().split(" ")[0]}
+            a(href="/logout") Logout
+        else
+            a(href="/login") Login
+            
+//-        if localtime
+//-            span.current-time #{localtime}
+//-        if location.location.properties.battery_state === 'charging'
+//-            i.far.fa-battery-bolt.battery
+//-        else if location.location.properties.battery_level >= 0.9
+//-            i.far.fa-battery-full.battery
+//-        else if location.location.properties.battery_level >= 0.7
+//-            i.far.fa-battery-three-quarters.battery
+//-        else if location.location.properties.battery_level >= 0.5
+//-            i.far.fa-battery-half.battery
+//-        else if location.location.properties.battery_level >= 0.15
+//-            i.far.fa-battery-quarter.battery
+//-        else
+//-            i.far.fa-battery-empty.battery

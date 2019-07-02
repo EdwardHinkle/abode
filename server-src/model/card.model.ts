@@ -23,8 +23,21 @@ export class Card {
                 org: cardData.properties.org,
                 'abode-inactive': cardData.properties['abode-inactive'] ? cardData.properties['abode-inactive'] : false
             }
+        } else {
+            this.properties = {
+                name: [''],
+                nickname: [''],
+                url: ['']
+            };
         }
 
+    }
+    
+    toData(): CardInterface {
+        return {
+            type: this.type,
+            properties: this.properties
+        };
     }
 
     getName() {
@@ -79,11 +92,11 @@ export interface CardInterface {
 
 
 export class CardPropertiesInterface {
-    name: string;
-    nickname: string;
+    name: string[];
+    nickname: string[];
     uid?: string;
     url: string[];
-    category: string;
+    category?: string[];
     photo?: string[];
     org?: CardInterface[];
     'abode-inactive'?: boolean;

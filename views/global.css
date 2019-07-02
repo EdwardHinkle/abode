@@ -4,9 +4,9 @@ body {
     margin: 0;
 }
 
-body:not(.homepage) {
+/* body:not(.homepage) {
     padding-top: 100px;
-}
+} */
 
 body.theme-snow {
     background-color: #999;
@@ -69,8 +69,6 @@ a.no-underline {
 }
 
 .site-monogram {
-    position: absolute;
-    top: 40px;
     width: 100%;
     text-align: center;
     font-weight: 800;
@@ -221,6 +219,30 @@ a.no-underline {
 
 .text-center {
     text-align: center;
+}
+
+.header-section {
+    width: 100%;
+    display: flex;
+    border-top: 5px solid black;
+}
+
+.header-section:before {
+    border-top: 5px rgba(255, 0, 0, 0.2);
+}
+
+.header-section .left-status-bar {
+    flex: 1;
+    text-align: left;
+}
+
+.header-section .center-status-bar {
+    text-align: center;
+}
+
+.header-section .right-status-bar {
+    flex: 1;
+    text-align: right;
 }
 
 

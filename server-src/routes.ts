@@ -10,10 +10,19 @@ import { dynamicRouter } from './dynamic-server';
 import {resumeRouter} from "./resume";
 import { sponsorRouter } from "./sponsor";
 import {locationRouter} from "./location";
+import { loginRouter } from "./login";
+import { Card } from "./model/card.model";
 
 export let router = express.Router();
 
+router.use((req, res, next) => {
+    res.locals.username = req.session.username;
+    res.locals.user = new Card(req.session.user);
+    next();
+});
+
 router.use('/', resumeRouter);
+router.use('/', loginRouter);
 router.use('/auth', authRouter);
 router.use('/media', mediaServerRouter);
 router.use('/micropub', micropubRouter);

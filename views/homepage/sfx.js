@@ -4,7 +4,8 @@ var showConfetti = false;
 // If it is New Year's Eve, New Year's Day or January 2, show Confetti
 if ((todaysDate.getMonth() + 1 == "12" && todaysDate.getDate() == "31") ||
     (todaysDate.getMonth() + 1 == "1" && todaysDate.getDate() == "1") ||
-    (todaysDate.getMonth() + 1 == "1" && todaysDate.getDate() == "2")) {
+    (todaysDate.getMonth() + 1 == "1" && todaysDate.getDate() == "2") ||
+    (todaysDate.getMonth() + 1 == "6" && todaysDate.getDate() == "21")) {
     showConfetti = true;
 }
 

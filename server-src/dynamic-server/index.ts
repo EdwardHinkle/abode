@@ -15,7 +15,6 @@ import {Card} from "../model/card.model";
 import * as moment from "moment-timezone";
 import * as turf from "@turf/turf";
 import * as geoViewport from "@mapbox/geo-viewport";
-import {checkForUserToken} from "../indieauth/auto-auth";
 
 export let dynamicRouter = express.Router();
 
@@ -52,10 +51,12 @@ dynamicRouter.get('/:year(\\d+)/:month(\\d+)/', getMonthSummary);
 dynamicRouter.get('/:year(\\d+)/:month(\\d+)/stats/', getMonthStats);
 dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/', getDaySummary);
 
+dynamicRouter.get('/newsletter/', getNewsletter);
+
 // Post routes
 dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/debug/', debugPostData);
 dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/reindex/', reindexPost);
-dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postType?/', checkForUserToken, getPostPage);
+dynamicRouter.get('/:year(\\d+)/:month(\\d+)/:day(\\d+)/:postIndex(\\d+)/:postType?/', getPostPage);
 
 // Generic page route
 dynamicRouter.get('/:pageSlug', getPage);
@@ -496,8 +497,8 @@ function getPostPage(req, res) {
             res.setHeader('WWW-Authenticate', 'Bearer scope="read"');
             res.setHeader('Link', '<https://eddiehinkle.com/auth/token>; rel="token_endpoint"');
 
-            res.status(401).render("posts/errorMessage", {
-                errorMessage: "Sorry, the post you are looking for is still processing"
+            res.status(403).render("posts/errorMessageLogin", {
+                errorMessage: "There is nothing here you can see. Try logging in?"
             });
             return;
         }
@@ -1363,6 +1364,8 @@ function getHomepage(req, res, next) {
         let numberOfPreviousDays = 10;
 
         let combinedPromises: Promise<Post[]>[] = [];
+        
+        combinedPromises.push(LocationController.getCachedLocation());
 
         for (let date = moment(); moment().diff(date, "days") < numberOfPreviousDays; date.subtract(1, "day")) {
 
@@ -1381,6 +1384,8 @@ function getHomepage(req, res, next) {
                 return combinedPromises;
             })
             .then(arrayOfPosts => {
+
+                let location = arrayOfPosts.shift();
 
                 let posts = [].concat.apply([], arrayOfPosts);
                 let latestDrank: Post;
@@ -1467,8 +1472,12 @@ function getHomepage(req, res, next) {
                         }
                     }
                 });
+                
+                let localTime = moment.tz(location.geocode.timezone).format("LT z");
 
                 res.render("homepage/homepage", {
+                    location: location,
+                    localtime: localtime,
                     latestDrank: latestDrank,
                     latestAte: latestAte.reverse(),
                     latestCheckin: latestCheckin,
@@ -1823,6 +1832,45 @@ function getNowPage(req, res, next) {
     }).catch(error => {
         console.log("ERROR", error);
         next();
+    });
+
+}
+
+function getNewsletter(req, res, next) {
+    let now = moment().subtract(1, 'month').hour(0).minute(0).second(0).millisecond(0);
+    
+    Posts.getPosts({
+        year: now.format("YYYY"),
+        month: now.format("MM")
+    }).then(posts => {
+       
+       let gamePosts = [];
+       
+       posts.forEach(post => {
+           if (post.properties.visibility === undefined || post.properties.visibility === 'public') {
+               let gameName = post.properties['play-of'].properties.name;
+               let gameIndex = gamePosts.findIndex(game => game.name === gameName);
+               if (gameIndex === -1) {
+                   gameIndex = gamePosts.length;
+                   gamePosts.push({
+                       name: gameName,
+                       duration: 0
+                   });
+               }
+               gamePosts[gameIndex].duration += post.properties.duration;
+           }
+       });
+        
+//         posts.filter(post => post.properties.visibility === undefined || post.properties.visibility === "public");
+
+/*         posts.sort((a: Post, b: Post) => {
+            return b.properties.date.diff(a.properties.date);
+        }); */
+        
+        res.render('newsletter', {
+            gamePosts: gamePosts
+        });
+        
     });
 
 }

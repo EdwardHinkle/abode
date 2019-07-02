@@ -386,7 +386,7 @@ export class Post {
         }
 
         if (this.properties['bookmark-of']) {
-            if (this.properties['bookmark-of'].properties.name) {
+            if (this.properties['bookmark-of'].properties && this.properties['bookmark-of'].properties.name) {
                 summary += "🔖 Bookmarked: " + this.properties['bookmark-of'].properties.name;
             } else {
                 summary += "🔖 Bookmarked: " + this.properties['bookmark-of'];
@@ -821,8 +821,13 @@ export class Post {
 
     public isAccessibleByUser(username: string): boolean {
         // If it's not private, you have access
-        if (this.properties.visibility !== "private") {
+        if (this.properties.visibility === undefined || this.properties.visibility === "public" || this.properties.visibility === "unlisted") {
             console.log('post is not private');
+            return true;
+        }
+        
+        if (this.properties.visibility === "protected" && username !== undefined && username != '') {
+            console.log('user?', username);
             return true;
         }
 

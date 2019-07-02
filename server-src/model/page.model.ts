@@ -141,6 +141,22 @@ export class Page {
         let date = this.semiRelativeDateFormat();
         return this.properties.date.format("h:mma") + ' ' + date;
     } */
+    
+    public getPostSummary() {
+        if (this.properties.name) {
+            return this.properties.name;
+        }
+
+        if (this.properties.content) {
+            return this.properties.content;
+        }
+
+        return "Eddie Hinkle";
+    }
+    
+    public getOGPreviewMedia() {
+        return null;
+    }
 
     public save() {
         let postObject = this.getSaveObject();

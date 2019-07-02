@@ -70,31 +70,24 @@ html
                     div(style=mapUrl.light).light-theme-map
                     div(style=mapUrl.dark).dark-theme-map
             div.bio
-                img(src="/images/profile.jpg", alt="Eddie Hinkle").u-photo.profile-photo
-                h2.p-note
-                    a(rel="me", href="https://eddiehinkle.com/").u-url.p-name Eddie Hinkle
-                    |
-                    | is husband to
-                    |
-                    a(href="https://ashleyhinkle.com", target="_blank") Ashley
-                    | , father to
-                    |
-                    a(href="https://luke.hinkle.life", target="_blank") Luke
-                    |
-                    |, and
-                    |
-                    a(href="https://eddiehinkle.com/resume", target="_blank") UI Engineer
-                    |
-                    | who lives in Frederick, MD.
-                    |
-                    | Podcast host for both 
-                    |
-                    a(href="https://twodads.fm/", target="_blank") Two Dads Talking
-                    |
-                    | and
-                    |
-                    a(href="https://myurlis.com/", target="_blank") My Url Is
-                    |.
+                a(rel="me", href="https://eddiehinkle.com/").no-underline.u-url
+                    img(src="/images/profile.jpg", alt="Eddie Hinkle").p-name.u-photo.profile-photo
+                h2
+                    span.p-note Hi 👋 My name is Eddie. I'm a husband and father, as well as a
+                        |
+                        |
+                        a(href="https://eddiehinkle.com/resume", target="_blank") Software Engineer
+                        |,
+                        |
+                        a(href="https://eddiehinkle.com/podcasts", target="_blank") Podcaster
+                        |,
+                        |
+                        | and
+                        | 
+                        a(href="https://eddiehinkle.com/articles") Writer
+                        |.
+                        | I currently live in the D.C. Metro area.
+                        | 
                     a(href="/about") Read More
             if latestNotes.length > 0
                 div.carousel.flex-carousel
