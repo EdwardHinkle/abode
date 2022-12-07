@@ -54,7 +54,7 @@
     "emoji-data": "git@github.com:EdwardHinkle/emoji-data-js.git",
     "emoji-regex": "^7.0.3",
     "emoji-strip": "^1.0.1",
-    "express": "^4.15.2",
+    "express": "^4.17.3",
     "express-session": "^1.15.6",
     "format-microformat": "^0.9.1",
     "get-webmention-url": "^2.0.0",
